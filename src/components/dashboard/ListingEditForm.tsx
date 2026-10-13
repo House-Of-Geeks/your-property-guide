@@ -34,7 +34,7 @@ export function ListingEditForm({ property, agents, isAdmin }: Props) {
 
       {/* Listing status & type */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Listing Details</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Listing Details</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Status</label>
@@ -57,7 +57,7 @@ export function ListingEditForm({ property, agents, isAdmin }: Props) {
 
       {/* Title & price */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Price & Title</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Price & Title</h2>
         <div className="space-y-4">
           <div>
             <label className={labelClass}>Listing title</label>
@@ -78,7 +78,7 @@ export function ListingEditForm({ property, agents, isAdmin }: Props) {
 
       {/* Features */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Features</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Features</h2>
         <div className="grid grid-cols-3 gap-4">
           <div>
             <label className={labelClass}>Bedrooms</label>
@@ -107,7 +107,7 @@ export function ListingEditForm({ property, agents, isAdmin }: Props) {
 
       {/* Description */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Description</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Description</h2>
         <textarea
           name="description"
           defaultValue={property.description}
@@ -118,7 +118,7 @@ export function ListingEditForm({ property, agents, isAdmin }: Props) {
 
       {/* Inspection times */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Inspection Times</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Inspection Times</h2>
         <textarea
           name="inspectionTimes"
           defaultValue={property.inspectionTimes.join("\n")}
@@ -131,7 +131,7 @@ export function ListingEditForm({ property, agents, isAdmin }: Props) {
 
       {/* Co-agent & featured */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Agent Settings</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Agent Settings</h2>
         <div className={isAdmin ? "grid grid-cols-2 gap-4 items-end" : ""}>
           <div>
             <label className={labelClass}>Co-agent <span className="text-gray-400 font-normal">optional</span></label>

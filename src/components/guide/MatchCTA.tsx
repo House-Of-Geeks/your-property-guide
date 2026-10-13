@@ -110,7 +110,7 @@ export function MatchCTA({ kind, lead, ctaLabel, href, audience: audienceProp }:
     <aside className="my-8 rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-7">
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <div className="flex-1">
-          <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-ink-subtle mb-2">
+          <p className="text-[13px] font-sans text-ink-subtle mb-2">
             Free guide · 2026 edition
           </p>
           <p className="font-sans text-base text-ink leading-snug">

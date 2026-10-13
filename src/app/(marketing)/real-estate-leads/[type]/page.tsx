@@ -341,7 +341,7 @@ export default async function LeadTypePage(props: { params: Promise<{ type: stri
             Exclusive · Pay per lead · No lock-in
           </div>
           <h2 className={s.closeTitle}>
-            {page.name}, delivered to <em>one</em> {page.recipient}.
+            {page.name}, delivered to <em>one</em> {page.recipient}
           </h2>
           <p className={s.closeText}>
             Tell us your suburbs. Within one business day you will have

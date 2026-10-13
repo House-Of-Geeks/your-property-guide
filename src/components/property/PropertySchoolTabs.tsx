@@ -73,7 +73,7 @@ export function PropertySchoolTabs({ schools }: { schools: School[] }) {
               <div>
                 <p className="text-sm font-medium text-gray-900">{s.name}</p>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${SECTOR_COLOURS[s.sector] ?? "bg-gray-100 text-gray-600"}`}>
+                  <span className={`text-xs px-2 py-0.5 rounded-md font-medium ${SECTOR_COLOURS[s.sector] ?? "bg-gray-100 text-gray-600"}`}>
                     {sectorLabel(s.sector)}
                   </span>
                   {s.yearRange && (

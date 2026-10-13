@@ -30,20 +30,20 @@ export async function CapitalCityOutlook() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-14 sm:pt-24 sm:pb-16">
         {/* Magazine-style masthead */}
         <div className="flex items-center gap-4 mb-10">
-          <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+          <span className="text-sm font-semibold text-ink-muted leading-none">
             No. 05
           </span>
           <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-          <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+          <span className="text-[13px] text-ink-subtle font-sans font-medium">
             Capital cities · 2026 outlooks
           </span>
         </div>
 
         <div className="grid lg:grid-cols-12 gap-x-8 gap-y-6 mb-12">
           <div className="lg:col-span-7">
-            <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl font-medium">
+            <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl font-bold">
               Each major market,{" "}
-              <span className="italic font-light text-primary">read fresh</span>.
+              <span>read fresh</span>
             </h2>
           </div>
           <div className="lg:col-span-4 lg:col-start-9 flex items-end justify-end">
@@ -74,7 +74,7 @@ export async function CapitalCityOutlook() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-3">
-                    <span className="inline-block rounded-full bg-white/90 backdrop-blur-sm px-3 py-1 text-[10px] font-sans uppercase tracking-[0.2em] text-ink">
+                    <span className="inline-block rounded-md bg-white/90 backdrop-blur-sm px-3 py-1 text-[13px] font-sans text-ink">
                       {state}
                     </span>
                   </div>
@@ -85,13 +85,13 @@ export async function CapitalCityOutlook() {
                 </div>
               )}
               <div className="p-5 flex-1 flex flex-col">
-                <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                <p className="text-[13px] font-sans text-ink-subtle mb-2">
                   {city} 2026
                 </p>
                 <h3 className="font-display text-lg text-ink group-hover:text-primary transition-colors leading-tight mb-3 flex-1">
                   {post.title}
                 </h3>
-                <span className="inline-flex items-center gap-1.5 text-xs font-sans uppercase tracking-wider text-ink group-hover:text-primary transition-colors">
+                <span className="inline-flex items-center gap-1.5 text-[13px] font-sans text-ink group-hover:text-primary transition-colors">
                   Read the outlook <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </div>

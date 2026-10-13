@@ -224,7 +224,7 @@ export function FhssCalculator() {
       )}
 
       <div id="match-fhss" className="scroll-mt-24 rounded-xl border border-line bg-surface-warm p-6 sm:p-7">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-2">Next step</p>
+        <p className="text-[13px] text-cta font-medium mb-2">Next step</p>
         <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight tracking-tight mb-2">
           Plan the rest of your deposit with someone who does this every day
         </h3>

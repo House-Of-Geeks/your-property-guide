@@ -44,7 +44,7 @@ export function HomeValueAppraisal() {
   if (!summary) {
     return (
       <div className="not-prose rounded-2xl border border-cta/30 bg-surface-warm p-6 sm:p-8 shadow-card">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">
+        <p className="text-[13px] text-cta font-medium mb-3">
           Free property appraisal · Start with your suburb
         </p>
         <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-2">
@@ -72,7 +72,7 @@ export function HomeValueAppraisal() {
     <div className="not-prose space-y-4">
       <div className="rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
         <div className="flex items-start justify-between gap-4 mb-4">
-          <p className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-cta font-medium">
+          <p className="inline-flex items-center gap-2 text-[13px] text-cta font-medium">
             <MapPin className="w-3.5 h-3.5" /> {summary.name}, {summary.state} {summary.postcode}
           </p>
           <button type="button" onClick={reset} className="text-xs text-ink-muted hover:text-ink underline underline-offset-4">
@@ -81,7 +81,7 @@ export function HomeValueAppraisal() {
         </div>
         {summary.reliable && summary.medianHousePrice ? (
           <>
-            <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1">Median house price in {summary.name}</p>
+            <p className="text-[13px] font-sans text-ink-subtle mb-1">Median house price in {summary.name}</p>
             <p className="font-display text-4xl sm:text-5xl text-ink leading-none tracking-tight">
               {formatPriceFull(summary.medianHousePrice)}
             </p>

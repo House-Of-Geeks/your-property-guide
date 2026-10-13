@@ -22,7 +22,7 @@ export function ProfileForm({ agent }: { agent: Agent }) {
 
       {/* Personal */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Personal Details</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Personal Details</h2>
         <div className="grid grid-cols-2 gap-4">
           <Field label="First name" name="firstName" defaultValue={agent.firstName} required />
           <Field label="Last name"  name="lastName"  defaultValue={agent.lastName}  required />
@@ -52,7 +52,7 @@ export function ProfileForm({ agent }: { agent: Agent }) {
 
       {/* Bio */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Bio</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Bio</h2>
         <textarea
           name="bio"
           defaultValue={agent.bio}
@@ -64,7 +64,7 @@ export function ProfileForm({ agent }: { agent: Agent }) {
 
       {/* Profile image */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Profile Photo</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Profile Photo</h2>
         <Field
           label="Image alt text"
           name="imageAlt"
@@ -76,7 +76,7 @@ export function ProfileForm({ agent }: { agent: Agent }) {
 
       {/* SEO */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">SEO Metadata</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">SEO Metadata</h2>
         <div className="space-y-4">
           <Field
             label="Meta title"

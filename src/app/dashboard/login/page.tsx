@@ -84,12 +84,12 @@ export default function LoginPage() {
         {/* ── Options screen ─── */}
         {mode === "options" && (
           <div>
-            <p className="font-display italic text-primary text-sm mb-2 leading-none">
+            <p className="font-display text-primary text-sm mb-2 leading-none">
               Partners only
             </p>
-            <h1 className="font-display text-3xl sm:text-4xl text-ink leading-[1.02] tracking-tight mb-3 font-medium">
+            <h1 className="font-display text-3xl sm:text-4xl text-ink leading-[1.02] tracking-tight mb-3 font-bold">
               Agent &amp; partner{" "}
-              <span className="italic font-light text-primary">login</span>.
+              <span>login</span>
             </h1>
             <p className="text-sm text-ink-muted mb-6 leading-relaxed">
               By logging in, you agree to the{" "}

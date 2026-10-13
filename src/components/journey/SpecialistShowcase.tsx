@@ -51,7 +51,7 @@ export async function SpecialistShowcase({
     if (!hasVariedRoster) {
       return (
         <div className="mt-6 pt-6 border-t border-line">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle mb-3">
+          <p className="text-[13px] text-ink-subtle mb-3">
             How we pick your specialist
           </p>
           <ul className="space-y-2 text-sm text-ink-muted leading-snug">
@@ -64,7 +64,7 @@ export async function SpecialistShowcase({
     }
     return (
       <div className="mt-6 pt-6 border-t border-line">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-ink-subtle mb-3">
+        <p className="text-[13px] text-ink-subtle mb-3">
           You might be matched with
         </p>
         <div className="flex items-center gap-3">
@@ -100,11 +100,11 @@ export async function SpecialistShowcase({
       <section className="py-16 bg-surface-raised border-y border-line">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 max-w-2xl">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">
               How we vet your specialist
             </p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-3">
-              We pick one person for your situation. Not a directory of strangers.
+              We pick one person for your situation. Not a directory of strangers
             </h2>
             <p className="font-sans text-base text-ink-muted leading-relaxed">
               Every specialist we recommend is checked against the same standard
@@ -153,7 +153,7 @@ export async function SpecialistShowcase({
     <section className="py-16 bg-surface-raised border-y border-line">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 max-w-2xl">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+          <p className="text-[13px] font-sans text-ink-subtle mb-3">
             Who you&rsquo;re matched with
           </p>
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-3">

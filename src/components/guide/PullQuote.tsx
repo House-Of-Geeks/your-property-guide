@@ -17,11 +17,11 @@ export function PullQuote({ children, attribution }: PullQuoteProps) {
   return (
     <figure className="not-prose my-12 sm:my-14">
       <div className="relative pl-6 sm:pl-10 border-l-2 border-primary/40">
-        <blockquote className="font-display italic font-light text-primary text-2xl sm:text-3xl lg:text-4xl leading-[1.2] tracking-tight">
+        <blockquote className="font-display text-primary text-2xl sm:text-3xl lg:text-4xl leading-[1.2] tracking-tight">
           &ldquo;{children}&rdquo;
         </blockquote>
         {attribution && (
-          <figcaption className="mt-4 text-xs font-sans uppercase tracking-[0.22em] text-ink-subtle font-medium">
+          <figcaption className="mt-4 text-[13px] font-sans text-ink-subtle font-medium">
             {attribution}
           </figcaption>
         )}

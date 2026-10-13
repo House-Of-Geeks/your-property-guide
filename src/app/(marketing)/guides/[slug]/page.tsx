@@ -107,23 +107,23 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
           {/* Magazine-style masthead: italic category + hairline + dated slug */}
           <div className="flex items-center gap-4 mb-8">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               {post.category}
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               {formatDate(post.publishedAt)}
             </span>
           </div>
 
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-bold">
             {post.title}
           </h1>
           {/* Standfirst marked data-speakable-summary so voice assistants
               pick up this paragraph alongside the H1. */}
           <p
             data-speakable-summary
-            className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10"
+            className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10"
           >
             {post.excerpt}
           </p>
@@ -249,13 +249,13 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
       {relatedPosts.length > 0 && (
         <div className="mt-16 pt-10 border-t border-line max-w-4xl">
           <div className="flex items-center gap-3 mb-6">
-            <span className="font-display italic text-primary text-base leading-none">
+            <span className="font-display text-primary text-base leading-none">
               Keep reading
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-8 font-medium">
-            Related <span className="italic font-light text-primary">articles</span>.
+          <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-8 font-bold">
+            Related <span>articles</span>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {relatedPosts.map((rp) => (

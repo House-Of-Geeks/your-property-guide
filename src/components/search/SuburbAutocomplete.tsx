@@ -197,7 +197,7 @@ export function SuburbAutocomplete({
         >
           {results.locations.length > 0 && (
             <div>
-              <p className="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+              <p className="px-4 pt-3 pb-1 text-[13px] font-semibold text-gray-400">
                 Locations
               </p>
               {results.locations.map((loc, i) => {
@@ -224,7 +224,7 @@ export function SuburbAutocomplete({
 
           {showSchools && results.schools.length > 0 && (
             <div className={results.locations.length > 0 ? "border-t border-gray-100" : ""}>
-              <p className="px-4 pt-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+              <p className="px-4 pt-3 pb-1 text-[13px] font-semibold text-gray-400">
                 Schools
               </p>
               {results.schools.map((school, i) => {

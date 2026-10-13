@@ -65,7 +65,7 @@ export function ListingCreateForm({ agents, agencyId, currentAgentId }: Props) {
 
       {/* Listing type + agent */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Listing Setup</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Listing Setup</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Listing type</label>
@@ -88,7 +88,7 @@ export function ListingCreateForm({ agents, agencyId, currentAgentId }: Props) {
 
       {/* Address */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Address</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Address</h2>
         <div className="space-y-4">
           <div>
             <label className={labelClass}>Street address</label>
@@ -153,7 +153,7 @@ export function ListingCreateForm({ agents, agencyId, currentAgentId }: Props) {
 
       {/* Status & type */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Property Details</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Property Details</h2>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelClass}>Status</label>
@@ -176,7 +176,7 @@ export function ListingCreateForm({ agents, agencyId, currentAgentId }: Props) {
 
       {/* Title & price */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Price & Title</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Price & Title</h2>
         <div className="space-y-4">
           <div>
             <label className={labelClass}>Listing title</label>
@@ -197,7 +197,7 @@ export function ListingCreateForm({ agents, agencyId, currentAgentId }: Props) {
 
       {/* Features */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Features</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Features</h2>
         <div className="grid grid-cols-3 gap-4">
           <div>
             <label className={labelClass}>Bedrooms</label>
@@ -226,13 +226,13 @@ export function ListingCreateForm({ agents, agencyId, currentAgentId }: Props) {
 
       {/* Description */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Description</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Description</h2>
         <textarea name="description" rows={8} className={`${inputClass} resize-y`} />
       </section>
 
       {/* Inspection times */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Inspection Times</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Inspection Times</h2>
         <textarea
           name="inspectionTimes"
           rows={4}
@@ -244,7 +244,7 @@ export function ListingCreateForm({ agents, agencyId, currentAgentId }: Props) {
 
       {/* Co-agent & featured */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Agent Settings</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Agent Settings</h2>
         <div className="grid grid-cols-2 gap-4 items-end">
           <div>
             <label className={labelClass}>Co-agent <span className="text-gray-400 font-normal">optional</span></label>

@@ -130,24 +130,24 @@ export function GuideArticleLayout({
             {persona ? (
               <Link
                 href={persona.hubPath}
-                className="font-display italic text-primary hover:text-cta-hover text-base sm:text-lg leading-none transition-colors"
+                className="font-display text-primary hover:text-cta-hover text-base sm:text-lg leading-none transition-colors"
               >
                 For {persona.cardLabel.toLowerCase()}
               </Link>
             ) : (
-              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              <span className="text-sm font-semibold text-ink-muted leading-none">
                 The reading list
               </span>
             )}
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
               <ShieldCheck className="w-3 h-3 text-emerald-700" aria-hidden="true" />
               Reviewed <FormattedDate iso={updatedAt} />
             </span>
           </div>
 
           {/* Display-scale H1. text-7xl/lg:8xl for editorial weight */}
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-bold">
             {heading}
           </h1>
 
@@ -157,7 +157,7 @@ export function GuideArticleLayout({
               spoken summary alongside the H1. */}
           <p
             data-speakable-summary
-            className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10"
+            className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-10"
           >
             {frontmatter.description}
           </p>
@@ -216,7 +216,7 @@ export function GuideArticleLayout({
                 <GuideTOC entries={toc} variant="sidebar" />
 
                 <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2 inline-flex items-center gap-1.5">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-2 inline-flex items-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" aria-hidden="true" />
                     Last reviewed
                   </p>
@@ -234,7 +234,7 @@ export function GuideArticleLayout({
                 </div>
 
                 <div>
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
                     Editorial integrity
                   </p>
                   <p className="font-sans text-sm text-ink-muted leading-relaxed">

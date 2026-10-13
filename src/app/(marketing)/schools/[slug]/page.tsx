@@ -207,7 +207,7 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
               {/* Tags */}
               <div className="flex flex-wrap gap-1.5 mt-3">
                 {tags.map((tag) => (
-                  <span key={tag} className="text-xs font-medium px-2.5 py-0.5 rounded-full border border-gray-300 text-gray-600 bg-white">
+                  <span key={tag} className="text-xs font-medium px-2.5 py-0.5 rounded-md border border-gray-300 text-gray-600 bg-white">
                     {tag}
                   </span>
                 ))}

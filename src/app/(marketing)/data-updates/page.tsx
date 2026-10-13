@@ -103,19 +103,19 @@ export default function DataUpdatesPage() {
           </div>
 
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               {DATA_UPDATES.length} events
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               Editorial log
             </span>
           </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
             What we changed,{" "}
-            <span className="italic font-light text-primary">and when</span>.
+            <span>and when</span>
           </h1>
-          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
+          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
             Every significant data refresh, guide release, tool launch and
             correction since 2026. Dated, sourced, transparent.
           </p>
@@ -128,14 +128,14 @@ export default function DataUpdatesPage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {(Object.keys(counts) as UpdateKind[]).map((k) => (
               <div key={k} className="rounded-2xl border border-line bg-surface-warm p-5">
-                <div className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-sans font-medium ${KIND_META[k].tone}`}>
+                <div className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-sans font-medium ${KIND_META[k].tone}`}>
                   {KIND_META[k].icon}
                   {KIND_META[k].label}
                 </div>
                 <p className="mt-3 font-display text-3xl text-ink leading-none">
                   {counts[k]}
                 </p>
-                <p className="mt-2 text-xs font-sans uppercase tracking-wider text-ink-subtle">
+                <p className="mt-2 text-[13px] font-sans text-ink-subtle">
                   {k === "data" && "Refreshes logged"}
                   {k === "guide" && "Releases & rewrites"}
                   {k === "tool" && "New tools shipped"}
@@ -161,12 +161,12 @@ export default function DataUpdatesPage() {
                   <>
                     <div className="flex items-baseline justify-between gap-4 mb-2">
                       <span
-                        className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-sans font-medium ${meta.tone}`}
+                        className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-sans font-medium ${meta.tone}`}
                       >
                         {meta.icon}
                         {meta.label}
                       </span>
-                      <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle">
+                      <p className="text-[13px] font-sans text-ink-subtle">
                         {formatDate(u.date)}
                       </p>
                     </div>
@@ -177,7 +177,7 @@ export default function DataUpdatesPage() {
                       {u.description}
                     </p>
                     {u.href && (
-                      <p className="mt-3 inline-flex items-center gap-1 text-xs font-sans uppercase tracking-wider text-ink group-hover:text-primary transition-colors">
+                      <p className="mt-3 inline-flex items-center gap-1 text-[13px] font-sans text-ink group-hover:text-primary transition-colors">
                         See more <ArrowRight className="w-3.5 h-3.5" />
                       </p>
                     )}
@@ -209,11 +209,11 @@ export default function DataUpdatesPage() {
         <section className="rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
           <div className="grid lg:grid-cols-12 gap-6">
             <div className="lg:col-span-7">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 Spotted something off?
               </p>
               <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-3">
-                Tell us, and we&rsquo;ll log the correction here.
+                Tell us, and we&rsquo;ll log the correction here
               </h2>
               <p className="font-sans text-base text-ink-muted leading-relaxed">
                 We log every reader-flagged correction in this changelog with

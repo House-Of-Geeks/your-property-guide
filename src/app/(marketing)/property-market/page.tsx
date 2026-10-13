@@ -54,11 +54,11 @@ export default async function PropertyMarketHubPage() {
           <div className="mb-8">
             <Breadcrumbs items={[{ label: "Property Market" }]} />
           </div>
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             Updated July 2026
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            The Australian property market, <span className="italic text-primary">city by city</span>.
+            The Australian property market, <span>city by city</span>
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             Median house prices, 12-month growth and the fastest-moving suburbs in every capital,
@@ -75,7 +75,7 @@ export default async function PropertyMarketHubPage() {
               href={`/property-market/${city.slug}`}
               className="group rounded-2xl border border-line bg-surface-raised p-6 hover:border-primary/40 hover:shadow-card transition-all"
             >
-              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+              <p className="text-[13px] font-sans text-ink-subtle mb-2">
                 {city.state}
               </p>
               <h2 className="font-display text-2xl text-ink leading-tight group-hover:text-primary transition-colors">

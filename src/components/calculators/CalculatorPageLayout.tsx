@@ -87,29 +87,29 @@ export function CalculatorPageLayout({
             {persona ? (
               <Link
                 href={persona.hubPath}
-                className="font-display italic text-primary hover:text-cta-hover text-base sm:text-lg leading-none transition-colors"
+                className="font-display text-primary hover:text-cta-hover text-base sm:text-lg leading-none transition-colors"
               >
                 For {persona.cardLabel.toLowerCase()}
               </Link>
             ) : (
-              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              <span className="text-sm font-semibold text-ink-muted leading-none">
                 Free tool
               </span>
             )}
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
               <CalculatorIcon className="w-3 h-3" aria-hidden="true" />
               Free calculator
             </span>
           </div>
 
           {/* Display-scale H1 */}
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-8 max-w-[22ch] font-bold">
             {frontmatter.h1 ?? frontmatter.title}
           </h1>
 
           {/* Standfirst */}
-          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-8">
+          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.3] max-w-3xl mb-8">
             {frontmatter.description}
           </p>
 
@@ -144,7 +144,7 @@ export function CalculatorPageLayout({
             <aside className="hidden lg:block lg:col-span-3 lg:order-2">
               <div className="sticky top-28 space-y-8">
                 <div>
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
                     Estimate, not a quote
                   </p>
                   <p className="font-sans text-sm text-ink-muted leading-relaxed">
@@ -152,7 +152,7 @@ export function CalculatorPageLayout({
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-2">
                     Editorial integrity
                   </p>
                   <p className="font-sans text-sm text-ink-muted leading-relaxed">
@@ -290,7 +290,7 @@ function NextStepRail({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex items-end justify-between gap-4 mb-6">
           <div>
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+            <p className="text-[13px] font-sans text-ink-subtle mb-2">
               What to do next
             </p>
             <h2 className="font-display text-2xl text-ink leading-tight">

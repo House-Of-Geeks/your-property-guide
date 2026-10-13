@@ -134,7 +134,7 @@ export function EnquiryForm({
         <div className="w-12 h-12 rounded-full bg-cta text-white grid place-items-center mx-auto mb-4">
           <CheckCircle className="w-6 h-6" />
         </div>
-        <h3 className="font-display text-xl text-ink leading-tight">Enquiry sent.</h3>
+        <h3 className="font-display text-xl text-ink leading-tight">Enquiry sent</h3>
         <p className="text-sm text-ink-muted mt-2 leading-relaxed max-w-sm mx-auto">
           Look for a confirmation in your inbox.{" "}
           {staysWithUs ? (

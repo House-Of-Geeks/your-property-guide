@@ -181,7 +181,7 @@ function CompareRow({
         {rowDot("a", winner)}
         {valA}
       </div>
-      <div className="col-span-4 sm:col-span-4 text-center text-xs uppercase tracking-[0.2em] text-ink-subtle">
+      <div className="col-span-4 sm:col-span-4 text-center text-[13px] text-ink-subtle">
         {label}
       </div>
       <div className={`col-span-4 sm:col-span-4 text-left tabular-nums ${rowSideClass("b", winner)}`}>
@@ -326,20 +326,20 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
           </div>
 
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               Side by side
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               Suburb comparison
             </span>
           </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[20ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[20ch] font-bold">
             {suburbAName}{" "}
-            <span className="italic font-light text-primary">vs</span>{" "}
-            {suburbBName}.
+            <span>vs</span>{" "}
+            {suburbBName}
           </h1>
-          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
+          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
             {a.medianHousePrice > 0 && b.medianHousePrice > 0 ? (
               <>
                 Comparing two suburbs with median house prices of{" "}
@@ -382,7 +382,7 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
                 href={`/suburbs/${s}`}
                 className="rounded-2xl border border-line bg-surface-raised p-5 hover:border-primary/40 hover:shadow-md transition-all group"
               >
-                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-1">
+                <p className="text-[13px] font-sans text-ink-subtle mb-1">
                   {suburb.state} &middot; {suburb.postcode}
                 </p>
                 <h2 className="font-display text-2xl text-ink group-hover:text-primary transition-colors leading-tight">
@@ -422,17 +422,17 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
             tables. Education first, data as supporting evidence. */}
         <section>
           <div className="flex items-center gap-4 mb-6">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               The take
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               Which suburb suits which buyer
             </span>
           </div>
           <div className="grid sm:grid-cols-3 gap-4">
             <div className="rounded-2xl border border-line bg-surface-raised p-6">
-              <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-3">
+              <p className="text-[13px] font-sans text-cta mb-3">
                 For buyers
               </p>
               <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
@@ -440,7 +440,7 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
               </p>
             </div>
             <div className="rounded-2xl border border-line bg-surface-raised p-6">
-              <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-3">
+              <p className="text-[13px] font-sans text-cta mb-3">
                 For investors
               </p>
               <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
@@ -448,7 +448,7 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
               </p>
             </div>
             <div className="rounded-2xl border border-line bg-surface-raised p-6">
-              <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-3">
+              <p className="text-[13px] font-sans text-cta mb-3">
                 For families
               </p>
               <p className="font-sans text-sm sm:text-base text-ink leading-relaxed">
@@ -464,11 +464,11 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
         {narrative.faqs.length > 0 && (
           <section>
             <div className="flex items-center gap-4 mb-6">
-              <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+              <span className="text-sm font-semibold text-ink-muted leading-none">
                 Common questions
               </span>
               <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-              <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+              <span className="text-[13px] text-ink-subtle font-sans font-medium">
                 {suburbAName} vs {suburbBName}
               </span>
             </div>
@@ -481,7 +481,7 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
         {/* Stat tables. Now framed as supporting evidence for the
             verdict above, not the headline. Eyebrow makes that clear. */}
         <div className="pt-4 border-t border-line">
-          <p className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium mb-3">
+          <p className="text-[13px] text-ink-subtle font-sans font-medium mb-3">
             The numbers behind the take
           </p>
         </div>
@@ -491,7 +491,7 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
           <div className="col-span-4 text-right font-display text-base text-ink truncate">
             {suburbAName}
           </div>
-          <div className="col-span-4 text-xs text-ink-subtle uppercase tracking-[0.2em] self-center">
+          <div className="col-span-4 text-[13px] text-ink-subtle self-center">
             Metric
           </div>
           <div className="col-span-4 text-left font-display text-base text-ink truncate">
@@ -678,7 +678,7 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
         {/* Compare with more */}
         {suburbA.nearbySuburbs.length > 0 && (
           <div className="rounded-2xl border border-line bg-surface-warm p-6">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-4">
+            <p className="text-[13px] font-sans text-ink-subtle mb-4">
               Compare {suburbAName} against another suburb
             </p>
             <div className="flex flex-wrap gap-2">

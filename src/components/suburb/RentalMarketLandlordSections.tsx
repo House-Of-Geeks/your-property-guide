@@ -26,7 +26,7 @@ export function RentalMarketLandlordSections({ suburb, landlord }: { suburb: Sub
           weighing up a sale, the most common reason sellers come to us. */}
       <section id="selling-an-investment" className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
         <div className="lg:col-span-2">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">Owners</p>
+          <p className="text-[13px] font-sans text-ink-subtle mb-3">Owners</p>
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
             Thinking of selling your investment?
           </h2>
@@ -50,9 +50,9 @@ export function RentalMarketLandlordSections({ suburb, landlord }: { suburb: Sub
       </section>
 
       <section id="property-manager-fees">
-        <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">Management fees</p>
+        <p className="text-[13px] font-sans text-ink-subtle mb-3">Management fees</p>
         <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-4">
-          What property managers charge in {suburb.name}.
+          What property managers charge in {suburb.name}
         </h2>
         <p className="font-sans text-base text-ink-muted leading-relaxed max-w-3xl">
           {"No state fixes property management fees. The "}
@@ -69,11 +69,11 @@ export function RentalMarketLandlordSections({ suburb, landlord }: { suburb: Sub
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-surface-warm border-b border-line-warm">
-                  <th scope="col" className="py-4 px-5 text-left text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">State</th>
-                  <th scope="col" className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">Management fee, typical</th>
-                  <th scope="col" className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider hidden sm:table-cell">Metro range</th>
-                  <th scope="col" className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider hidden sm:table-cell">Regional range</th>
-                  <th scope="col" className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">Letting fee</th>
+                  <th scope="col" className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">State</th>
+                  <th scope="col" className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">Management fee, typical</th>
+                  <th scope="col" className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden sm:table-cell">Metro range</th>
+                  <th scope="col" className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden sm:table-cell">Regional range</th>
+                  <th scope="col" className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">Letting fee</th>
                 </tr>
               </thead>
               <tbody>
@@ -83,7 +83,7 @@ export function RentalMarketLandlordSections({ suburb, landlord }: { suburb: Sub
                     <tr key={row.state} className={`border-b border-line last:border-0 ${here ? "bg-surface-warm" : ""}`}>
                       <th scope="row" className="py-4 px-5 text-left font-medium text-ink">
                         {row.name}
-                        {here && <span className="ml-2 text-[11px] font-sans font-normal uppercase tracking-wider text-ink-subtle">{suburb.name}</span>}
+                        {here && <span className="ml-2 text-[13px] font-sans font-normal text-ink-subtle">{suburb.name}</span>}
                       </th>
                       <td className="py-4 px-5 text-right tabular-nums text-ink-muted">{formatPct(row.managementPct)}</td>
                       <td className="py-4 px-5 text-right tabular-nums text-ink-muted hidden sm:table-cell">{formatPctRange(row.metro)}</td>
@@ -102,7 +102,7 @@ export function RentalMarketLandlordSections({ suburb, landlord }: { suburb: Sub
 
         {workedLine && (
           <div className="mt-6 rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
-            <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">Worked on the {suburb.name} median</p>
+            <p className="text-[13px] font-sans text-ink-subtle mb-2">Worked on the {suburb.name} median</p>
             <p className="font-sans text-base text-ink leading-relaxed">{workedLine}</p>
             <p className="font-sans text-xs text-ink-subtle mt-3">
               {"Before the other fees below, and before tax: management and letting fees are deductible against the rent. The "}

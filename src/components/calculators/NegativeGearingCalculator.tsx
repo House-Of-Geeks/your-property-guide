@@ -119,7 +119,7 @@ export function NegativeGearingCalculator() {
       </div>
 
       <div className="rounded-xl border border-line bg-surface-warm p-6 sm:p-7">
-        <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-2">From 1 July 2027</p>
+        <p className="text-[13px] text-cta font-medium mb-2">From 1 July 2027</p>
         {!loss ? (
           <p className="text-sm text-ink leading-relaxed">
             On these figures the property makes no rental loss, so the change to negative gearing from 1 July 2027 does not

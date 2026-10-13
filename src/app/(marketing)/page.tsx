@@ -90,7 +90,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
             <div className="lg:col-span-6 lg:pt-6">
               <h1 className="text-ink text-[40px] leading-[1.04] sm:text-6xl lg:text-[64px] tracking-[-0.035em] font-bold">
-                Selling your home? Start with the free guide.
+                Selling your home? Start with the free guide
               </h1>
               <p className="mt-5 text-lg sm:text-xl text-ink-muted leading-relaxed max-w-xl">
                 Pricing, agent fees, choosing an agent and settlement, explained
@@ -231,7 +231,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-8">
-              <h2 className="text-3xl sm:text-4xl text-white max-w-2xl">Buying? There&rsquo;s a free guide for that too.</h2>
+              <h2 className="text-3xl sm:text-4xl text-white max-w-2xl">Buying? There&rsquo;s a free guide for that too</h2>
               <p className="mt-4 text-lg text-white/75 leading-relaxed max-w-2xl">
                 Grants and schemes by state, deposits, pre-approval, inspections
                 and making an offer. We never pass buyers&rsquo; details to selling agents.

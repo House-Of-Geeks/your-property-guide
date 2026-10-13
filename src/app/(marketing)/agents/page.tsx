@@ -49,19 +49,19 @@ export default function AgentsPage({ searchParams }: AgentsPageProps) {
           <div className="grid lg:grid-cols-[1fr_auto] gap-8 items-end">
             <div>
               <div className="flex items-center gap-4 mb-10">
-                <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                <span className="text-sm font-semibold text-ink-muted leading-none">
                   Local agent network
                 </span>
                 <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-                <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+                <span className="text-[13px] text-ink-subtle font-sans font-medium">
                   Vetted directory
                 </span>
               </div>
-              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 max-w-[20ch] font-medium">
+              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 max-w-[20ch] font-bold">
                 Find your{" "}
-                <span className="italic font-light text-primary">local agent</span>.
+                <span>local agent</span>
               </h1>
-              <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl mb-8">
+              <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl mb-8">
                 Browse trusted local real estate agents across Australia.
                 Search by suburb to see who knows your area.
               </p>

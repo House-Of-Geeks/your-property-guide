@@ -90,19 +90,19 @@ export default function AppraisalPage() {
           <div className="grid lg:grid-cols-12 gap-10 items-start">
             <div className="lg:col-span-6">
               <div className="flex items-center gap-4 mb-8">
-                <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                <span className="text-sm font-semibold text-ink-muted leading-none">
                   Free, no obligation
                 </span>
                 <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-                <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+                <span className="text-[13px] text-ink-subtle font-sans font-medium">
                   Property appraisal
                 </span>
               </div>
-              <h1 className="font-display text-ink leading-[1.02] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 font-medium">
+              <h1 className="font-display text-ink leading-[1.02] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 font-bold">
                 Free property appraisal{" "}
-                <span className="italic font-light text-primary">from a local agent</span>
+                <span>from a local agent</span>
               </h1>
-              <p className="font-display font-light text-lg sm:text-xl text-ink leading-[1.3] max-w-xl mb-8">
+              <p className="font-display font-normal text-lg sm:text-xl text-ink leading-[1.3] max-w-xl mb-8">
                 An honest appraisal from a vetted local agent. No call centre,
                 no auto-routing, no commitment to list with them.
               </p>
@@ -130,11 +130,11 @@ export default function AppraisalPage() {
 
             <div className="lg:col-span-6">
               <div id="appraisal-form" className="scroll-mt-24 rounded-2xl border border-line bg-surface-raised shadow-card p-6 sm:p-8">
-                <p className="text-xs font-sans uppercase tracking-[0.22em] text-ink-subtle mb-2">
+                <p className="text-[13px] font-sans text-ink-subtle mb-2">
                   Tell us about the property
                 </p>
                 <h2 className="font-display text-ink leading-tight tracking-tight text-xl sm:text-2xl mb-5">
-                  Two minutes, then we take it from there.
+                  Two minutes, then we take it from there
                 </h2>
                 <Suspense fallback={<div className="h-96" aria-busy="true" />}>
                   <AppraisalForm />
@@ -153,9 +153,9 @@ export default function AppraisalPage() {
           <div className="grid lg:grid-cols-12 gap-10">
             <div className="lg:col-span-7 space-y-10">
               <div>
-                <p className="font-display italic text-primary text-base mb-3 leading-none">In plain English</p>
+                <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">In plain English</p>
                 <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
-                  What a property appraisal actually is.
+                  What a property appraisal actually is
                 </h2>
                 <div className="space-y-4 font-sans text-base sm:text-lg text-ink-muted leading-[1.7]">
                   <p>
@@ -173,7 +173,7 @@ export default function AppraisalPage() {
 
               <div>
                 <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-4">
-                  What to have ready.
+                  What to have ready
                 </h2>
                 <ul className="space-y-2.5 font-sans text-base text-ink-muted leading-relaxed">
                   {[
@@ -193,7 +193,7 @@ export default function AppraisalPage() {
 
               <div>
                 <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-4">
-                  What happens after you ask.
+                  What happens after you ask
                 </h2>
                 <ol className="space-y-3 font-sans text-base text-ink-muted leading-relaxed list-decimal pl-5">
                   <li>Our team calls you within one business day and introduces you to one local agent who sells in your area. If we don&rsquo;t have one yet, we&rsquo;ll tell you.</li>
@@ -206,8 +206,8 @@ export default function AppraisalPage() {
 
             <aside className="lg:col-span-5 space-y-6">
               <div className="rounded-2xl border border-line bg-surface-warm p-6">
-                <p className="text-xs font-sans uppercase tracking-[0.22em] text-ink-subtle mb-3">Where we can help</p>
-                <h2 className="font-display text-xl text-ink leading-tight mb-4">Appraisals across Australia.</h2>
+                <p className="text-[13px] font-sans text-ink-subtle mb-3">Where we can help</p>
+                <h2 className="font-display text-xl text-ink leading-tight mb-4">Appraisals across Australia</h2>
                 <dl className="space-y-3">
                   {STATES.map((st) => (
                     <div key={st.name}>
@@ -221,7 +221,7 @@ export default function AppraisalPage() {
                 </p>
               </div>
               <div className="rounded-2xl border border-line bg-surface-warm p-6">
-                <p className="text-xs font-sans uppercase tracking-[0.22em] text-ink-subtle mb-3">Before you ask</p>
+                <p className="text-[13px] font-sans text-ink-subtle mb-3">Before you ask</p>
                 <ul className="space-y-2 font-sans text-sm text-ink-muted">
                   <li><Link href="/guides/how-much-is-my-house-worth-australia" className="text-ink hover:text-primary underline underline-offset-4 decoration-line-strong">How much is my house worth?</Link></li>
                   <li><Link href="/property-valuation" className="text-ink hover:text-primary underline underline-offset-4 decoration-line-strong">Appraisal vs valuation vs online estimate</Link></li>
@@ -238,7 +238,7 @@ export default function AppraisalPage() {
           {/* Visible FAQ backing the FAQPage schema */}
           <div className="mt-14">
             <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
-              Property appraisal questions.
+              Property appraisal questions
             </h2>
             <dl className="divide-y divide-line border-y border-line">
               {APPRAISAL_FAQS.map((faq) => (
@@ -254,7 +254,7 @@ export default function AppraisalPage() {
 
       <section className="bg-surface-warm border-t border-line-warm">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 text-center">
-          <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">
+          <p className="text-[13px] font-sans text-ink-subtle mb-3">
             How matching works
           </p>
           <p className="font-sans text-base text-ink-muted leading-relaxed">

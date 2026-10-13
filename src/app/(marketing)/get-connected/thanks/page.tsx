@@ -92,10 +92,10 @@ export default async function GetConnectedThanksPage({ searchParams }: PageProps
           <div className="w-16 h-16 rounded-full bg-cta text-white grid place-items-center mx-auto mb-6">
             <CheckCircle className="w-8 h-8" />
           </div>
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-4">
+          <p className="text-[13px] font-sans text-ink-subtle mb-4">
             Request received
           </p>
-          <h1 className="font-display text-ink leading-[1.02] tracking-tight text-4xl sm:text-5xl mb-6 font-medium">
+          <h1 className="font-display text-ink leading-[1.02] tracking-tight text-4xl sm:text-5xl mb-6 font-bold">
             {copy.headline}
           </h1>
           <p className="font-sans text-lg sm:text-xl text-ink-muted leading-relaxed max-w-xl mx-auto">
@@ -107,7 +107,7 @@ export default async function GetConnectedThanksPage({ searchParams }: PageProps
 
       <section className="py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <p className="text-xs font-sans uppercase tracking-[0.22em] text-ink-subtle mb-4">
+          <p className="text-[13px] font-sans text-ink-subtle mb-4">
             What happens next
           </p>
           <ol className="space-y-5 mb-12">
@@ -140,7 +140,7 @@ export default async function GetConnectedThanksPage({ searchParams }: PageProps
             </li>
           </ol>
 
-          <p className="text-xs font-sans uppercase tracking-[0.22em] text-ink-subtle mb-4">
+          <p className="text-[13px] font-sans text-ink-subtle mb-4">
             While you wait
           </p>
           <div className={`grid grid-cols-1 gap-4 ${crossSells.length === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"}`}>

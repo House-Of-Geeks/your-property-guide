@@ -47,7 +47,7 @@ export async function BestDealsRail({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-12 gap-8 mb-8 items-end">
           <div className="lg:col-span-7">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-cta mb-3">{eyebrow}</p>
+            <p className="text-[13px] font-sans text-cta mb-3">{eyebrow}</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
               {heading}
             </h2>

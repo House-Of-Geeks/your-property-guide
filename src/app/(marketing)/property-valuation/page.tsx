@@ -135,13 +135,13 @@ export default function PropertyValuationPage() {
           <div className="grid lg:grid-cols-12 gap-10 items-start">
             <div className="lg:col-span-7">
               <div className="flex items-center gap-4 mb-6">
-                <span className="font-display italic text-primary text-base sm:text-lg leading-none">Three numbers, one house</span>
+                <span className="text-sm font-semibold text-ink-muted leading-none">Three numbers, one house</span>
                 <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-                <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">Property valuation</span>
+                <span className="text-[13px] text-ink-subtle font-sans font-medium">Property valuation</span>
               </div>
-              <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl mb-6 font-medium">
+              <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl mb-6 font-bold">
                 Property valuation in Australia:{" "}
-                <span className="italic font-light text-primary">appraisal vs valuation vs online estimate</span> (2026)
+                <span>appraisal vs valuation vs online estimate</span> (2026)
               </h1>
               <div className="space-y-4 font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-2xl">
                 <p>
@@ -181,7 +181,7 @@ export default function PropertyValuationPage() {
       <section className="bg-surface-raised border-t border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16 space-y-14">
           <div>
-            <p className="font-display italic text-primary text-base mb-3 leading-none">Side by side</p>
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">Side by side</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
               The three numbers and why they differ
             </h2>
@@ -194,7 +194,7 @@ export default function PropertyValuationPage() {
               <table className="w-full min-w-[640px] font-sans text-sm text-left border-collapse">
                 <thead className="bg-surface-warm">
                   <tr>
-                    <th scope="col" className="px-4 py-3 font-medium text-ink-subtle uppercase tracking-wider text-[11px]"><span className="sr-only">Aspect</span></th>
+                    <th scope="col" className="px-4 py-3 font-medium text-ink-subtle text-[13px]"><span className="sr-only">Aspect</span></th>
                     <th scope="col" className="px-4 py-3 font-display text-base text-ink">Agent appraisal</th>
                     <th scope="col" className="px-4 py-3 font-display text-base text-ink">Licensed valuation</th>
                     <th scope="col" className="px-4 py-3 font-display text-base text-ink">Online estimate</th>
@@ -230,7 +230,7 @@ export default function PropertyValuationPage() {
           </div>
 
           <div id="valuation-cost" className="scroll-mt-24">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">The paid one</p>
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">The paid one</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
               What a formal valuation costs, and when a lender needs one
             </h2>
@@ -271,7 +271,7 @@ export default function PropertyValuationPage() {
               </div>
               <aside className="lg:col-span-5">
                 <div className="rounded-2xl border border-line bg-surface-warm p-6">
-                  <p className="text-xs font-sans uppercase tracking-[0.22em] text-ink-subtle mb-3">At a glance</p>
+                  <p className="text-[13px] font-sans text-ink-subtle mb-3">At a glance</p>
                   <dl className="space-y-4 font-sans text-sm">
                     <div>
                       <dt className="font-medium text-ink">Cost of a licensed valuation</dt>
@@ -300,7 +300,7 @@ export default function PropertyValuationPage() {
           </div>
 
           <div id="online-estimates" className="scroll-mt-24">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">The instant one</p>
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">The instant one</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
               How automated estimates work, and where they miss
             </h2>
@@ -342,7 +342,7 @@ export default function PropertyValuationPage() {
           </div>
 
           <div id="how-to-check" className="scroll-mt-24">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">In order</p>
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">In order</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
               How to check what your property is worth
             </h2>
@@ -361,7 +361,7 @@ export default function PropertyValuationPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
           <div className="grid lg:grid-cols-12 gap-10 items-start">
             <div className="lg:col-span-6">
-              <p className="font-display italic text-primary text-base mb-3 leading-none">The free one</p>
+              <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">The free one</p>
               <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-5">
                 Get a free appraisal from a local agent
               </h2>
@@ -383,9 +383,9 @@ export default function PropertyValuationPage() {
             </div>
             <div className="lg:col-span-6">
               <div className="rounded-2xl border border-line bg-surface-raised shadow-card p-6 sm:p-8">
-                <p className="text-xs font-sans uppercase tracking-[0.22em] text-ink-subtle mb-2">Tell us about the property</p>
+                <p className="text-[13px] font-sans text-ink-subtle mb-2">Tell us about the property</p>
                 <h3 className="font-display text-ink leading-tight tracking-tight text-xl sm:text-2xl mb-5">
-                  Two minutes, then we take it from there.
+                  Two minutes, then we take it from there
                 </h3>
                 <Suspense fallback={<div className="h-96" aria-busy="true" />}>
                   <AppraisalForm />

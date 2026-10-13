@@ -22,7 +22,7 @@ export function StatCard({
     <div className="rounded-2xl border border-line bg-surface-raised p-6">
       <div className="flex items-center gap-2 mb-3 text-ink-subtle">
         {icon}
-        <p className="text-xs font-sans uppercase tracking-[0.2em]">{label}</p>
+        <p className="text-[13px] font-sans">{label}</p>
       </div>
       <p className="font-display text-3xl text-ink leading-none">{value}</p>
       {sub && <p className="mt-2 text-xs font-sans text-ink-subtle">{sub}</p>}
@@ -52,16 +52,16 @@ export function SuburbTable({
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-surface-warm border-b border-line">
-              <th className="px-4 py-3 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide w-10">#</th>
-              <th className="px-4 py-3 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide">Suburb</th>
-              <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Median price</th>
+              <th className="px-4 py-3 text-left text-[13px] font-sans font-medium text-ink w-10">#</th>
+              <th className="px-4 py-3 text-left text-[13px] font-sans font-medium text-ink">Suburb</th>
+              <th className="px-4 py-3 text-right text-[13px] font-sans font-medium text-ink">Median price</th>
               {showGrowth && (
-                <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">12-month change</th>
+                <th className="px-4 py-3 text-right text-[13px] font-sans font-medium text-ink">12-month change</th>
               )}
               {showSales && (
-                <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">House sales</th>
+                <th className="px-4 py-3 text-right text-[13px] font-sans font-medium text-ink">House sales</th>
               )}
-              <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Prices</th>
+              <th className="px-4 py-3 text-right text-[13px] font-sans font-medium text-ink">Prices</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-line">

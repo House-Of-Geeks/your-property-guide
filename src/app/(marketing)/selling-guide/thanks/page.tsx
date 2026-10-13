@@ -138,7 +138,7 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
             </div>
           </div>
 
-          <h1 className="rise rise-d1 font-display text-ink tracking-tight text-3xl sm:text-4xl lg:text-5xl leading-[1.05] font-medium mb-3">
+          <h1 className="rise rise-d1 font-display text-ink tracking-tight text-3xl sm:text-4xl lg:text-5xl leading-[1.05] font-bold mb-3">
             {copy.headline}
           </h1>
           <p className="rise rise-d2 font-sans text-base text-ink-muted leading-relaxed max-w-xl mx-auto mb-8 max-lg:order-last max-lg:mt-8 max-lg:mb-0">
@@ -183,7 +183,7 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
 
       <section className="bg-surface-raised">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-          <h2 className="font-display text-ink tracking-tight text-2xl sm:text-3xl font-medium mb-8 text-center">
+          <h2 className="font-display text-ink tracking-tight text-2xl sm:text-3xl font-bold mb-8 text-center">
             While you&rsquo;re here
           </h2>
           <div

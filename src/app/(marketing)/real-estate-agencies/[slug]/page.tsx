@@ -113,7 +113,7 @@ function AgencyTeamCard({ agent, agency }: { agent: Agent; agency: Agency }) {
             <Link href={`/agents/${agent.slug}`} className="font-bold text-gray-900 hover:text-primary transition-colors text-sm">
               {agent.fullName}
             </Link>
-            <p className="text-xs text-gray-500 uppercase tracking-wide mt-0.5">{agent.title}</p>
+            <p className="text-[13px] text-gray-500 mt-0.5">{agent.title}</p>
           </div>
         </div>
         <div className="relative h-7 w-20 flex-shrink-0">
@@ -124,10 +124,10 @@ function AgencyTeamCard({ agent, agency }: { agent: Agent; agency: Agency }) {
       {agent.propertiesSold > 0 ? (
         <div className="text-sm">
           <span className="font-semibold text-gray-900 text-lg">{agent.propertiesSold}</span>{" "}
-          <span className="text-gray-500 text-xs uppercase tracking-wide">Sold</span>
+          <span className="text-gray-500 text-[13px]">Sold</span>
         </div>
       ) : (
-        <p className="text-xs text-gray-400 italic">* Sales statistics unavailable</p>
+        <p className="text-xs text-gray-400">* Sales statistics unavailable</p>
       )}
 
       <div className="flex gap-2 mt-auto">
@@ -277,10 +277,10 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
         ) : null}
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4 gap-3">
-          <p className="font-display italic text-white/80 text-sm sm:text-base leading-none mb-1">
+          <p className="font-display text-white/80 text-sm sm:text-base leading-none mb-1">
             Local agency
           </p>
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl drop-shadow-lg leading-[1.02] tracking-tight font-medium">
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl drop-shadow-lg leading-[1.02] tracking-tight font-bold">
             {agency.name}
           </h1>
           <p className="flex items-center gap-1.5 text-white/80 text-sm">
@@ -341,7 +341,7 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
             <p className="text-sm text-gray-500 mt-0.5">12 month period to {today}</p>
             <div className="mt-4">
               <p className="text-5xl font-bold text-gray-900 leading-none">{totalSold}</p>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mt-1">Sold</p>
+              <p className="text-[13px] font-semibold text-gray-500 mt-1">Sold</p>
             </div>
             <hr className="mt-8 border-gray-200" />
           </div>

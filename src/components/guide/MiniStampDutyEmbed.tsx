@@ -39,7 +39,7 @@ export function MiniStampDutyEmbed({
 
   return (
     <div className="not-prose my-10 rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
-      <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+      <p className="text-[13px] font-sans text-ink-subtle mb-2">
         Quick estimate
       </p>
       <h3 className="font-display text-2xl text-ink leading-tight mb-5">
@@ -50,7 +50,7 @@ export function MiniStampDutyEmbed({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {/* State */}
         <div>
-          <label className="block text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+          <label className="block text-[13px] font-sans text-ink-subtle mb-2">
             State
           </label>
           <div className="flex flex-wrap gap-1.5">
@@ -73,7 +73,7 @@ export function MiniStampDutyEmbed({
 
         {/* Price */}
         <div>
-          <label className="block text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+          <label className="block text-[13px] font-sans text-ink-subtle mb-2">
             Purchase price
           </label>
           <input
@@ -119,7 +119,7 @@ export function MiniStampDutyEmbed({
       {/* Result */}
       <div className="mt-7 rounded-xl border border-line bg-surface-raised p-5">
         <div className="flex items-baseline justify-between gap-4 mb-2">
-          <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle">
+          <p className="text-[13px] font-sans text-ink-subtle">
             Estimated stamp duty
           </p>
           {result.concessionApplied && (

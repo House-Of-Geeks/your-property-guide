@@ -49,11 +49,11 @@ export default function SuburbsPage({ searchParams }: PageProps) {
 
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-7">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+              <p className="text-[13px] font-sans text-ink-subtle mb-5">
                 Every Australian suburb
               </p>
               <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6">
-                Australian suburbs, <span className="italic text-primary">data and all</span>.
+                Australian suburbs, <span>data and all</span>
               </h1>
               <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-xl">
                 Median prices, growth, schools, walk score, climate, hazard and
@@ -81,42 +81,42 @@ export default function SuburbsPage({ searchParams }: PageProps) {
               <img src="/images/icons/median.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">Median</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">house &amp; unit prices</p>
+                <p className="font-sans text-[13px] text-ink-subtle">house &amp; unit prices</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <img src="/images/icons/growth.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">12mo</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">growth &amp; trend</p>
+                <p className="font-sans text-[13px] text-ink-subtle">growth &amp; trend</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <img src="/images/icons/schools.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">Schools</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">primary &amp; secondary</p>
+                <p className="font-sans text-[13px] text-ink-subtle">primary &amp; secondary</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <img src="/images/icons/walkability.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">Walk</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">score &amp; transit</p>
+                <p className="font-sans text-[13px] text-ink-subtle">score &amp; transit</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <img src="/images/icons/hazard.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">Risk</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">flood, bushfire, crime</p>
+                <p className="font-sans text-[13px] text-ink-subtle">flood, bushfire, crime</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <img src="/images/icons/climate.svg" alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
               <div>
                 <p className="font-display text-2xl text-ink leading-none mb-1">Climate</p>
-                <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle">temp, rain, sun</p>
+                <p className="font-sans text-[13px] text-ink-subtle">temp, rain, sun</p>
               </div>
             </div>
           </div>

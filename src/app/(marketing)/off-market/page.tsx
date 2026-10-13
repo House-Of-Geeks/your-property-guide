@@ -47,11 +47,11 @@ export default async function OffMarketPage() {
             <Breadcrumbs items={[{ label: "Off-Market" }]} />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             {offMarketProperties.length} current {offMarketProperties.length === 1 ? "listing" : "listings"}
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Properties <span className="italic text-primary">before they hit the market</span>.
+            Properties <span>before they hit the market</span>
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             Off-market opportunities not listed on realestate.com.au or Domain.
@@ -65,19 +65,19 @@ export default async function OffMarketPage() {
               <p className="font-display text-2xl text-ink leading-none">
                 {offMarketProperties.length}
               </p>
-              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mt-1.5">
+              <p className="text-[13px] font-sans text-ink-subtle mt-1.5">
                 live listings
               </p>
             </div>
             <div>
               <p className="font-display text-2xl text-ink leading-none">Instant</p>
-              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mt-1.5">
+              <p className="text-[13px] font-sans text-ink-subtle mt-1.5">
                 email alerts
               </p>
             </div>
             <div>
               <p className="font-display text-2xl text-ink leading-none">Free</p>
-              <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mt-1.5">
+              <p className="text-[13px] font-sans text-ink-subtle mt-1.5">
                 no obligation
               </p>
             </div>
@@ -102,7 +102,7 @@ export default async function OffMarketPage() {
           {/* Register form */}
           <div>
             <div className="rounded-2xl bg-surface-raised border border-line p-6 sticky top-24">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+              <p className="text-[13px] font-sans text-ink-subtle mb-2">
                 Private brief
               </p>
               <h3 className="font-display text-xl text-ink mb-2 leading-tight">

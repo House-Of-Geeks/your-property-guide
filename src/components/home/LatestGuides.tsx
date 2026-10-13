@@ -27,18 +27,18 @@ export async function LatestGuides() {
     <section className="pt-20 pb-14 sm:pt-24 sm:pb-16 bg-surface-warm border-y border-line-warm">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4 mb-6">
-          <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+          <span className="text-sm font-semibold text-ink-muted leading-none">
             No. 03
           </span>
           <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-          <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+          <span className="text-[13px] text-ink-subtle font-sans font-medium">
             Fresh off the desk
           </span>
         </div>
         <div className="grid lg:grid-cols-12 gap-8 mb-10">
           <div className="lg:col-span-7">
-            <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-medium">
-              Plain-English <span className="italic text-primary">guides</span>.
+            <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-bold">
+              Plain-English <span>guides</span>
             </h2>
           </div>
           <div className="lg:col-span-4 lg:col-start-9 flex items-end justify-end">
@@ -73,7 +73,7 @@ export async function LatestGuides() {
             </div>
             <div className="p-6 sm:p-7 flex-1 flex flex-col">
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-xs font-sans font-medium uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary">
+                <span className="text-[13px] font-sans font-medium px-2.5 py-1 rounded-md bg-primary/10 text-primary">
                   {featured.category}
                 </span>
                 {featured.readingTime && (
@@ -116,7 +116,7 @@ export async function LatestGuides() {
                 </div>
                 <div className="p-5 flex flex-col flex-1">
                   <div className="flex items-center gap-3 mb-2">
-                    <span className="text-xs font-sans font-medium uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary">
+                    <span className="text-[13px] font-sans font-medium px-2.5 py-1 rounded-md bg-primary/10 text-primary">
                       {post.category}
                     </span>
                     {post.readingTime && (
@@ -142,10 +142,10 @@ export async function LatestGuides() {
         <div className="mt-14 pt-10 border-t border-line-warm">
           <div className="flex items-end justify-between gap-4 mb-8">
             <div>
-              <p className="font-display italic text-primary text-lg leading-none mb-2">
+              <p className="font-display text-primary text-lg leading-none mb-2">
                 Editor&rsquo;s reading list
               </p>
-              <p className="text-[11px] uppercase tracking-[0.24em] text-ink-subtle font-sans font-medium">
+              <p className="text-[13px] text-ink-subtle font-sans font-medium">
                 Six guides our readers open first
               </p>
             </div>
@@ -167,7 +167,7 @@ export async function LatestGuides() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px] sm:text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-2 font-medium">
+                  <p className="text-[13px] sm:text-[13px] font-sans text-cta mb-2 font-medium">
                     {g.audience}
                   </p>
                   <p className="font-display text-lg sm:text-xl text-ink leading-[1.2] group-hover:text-primary transition-colors">

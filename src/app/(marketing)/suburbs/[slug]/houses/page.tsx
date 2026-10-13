@@ -89,7 +89,7 @@ export default async function SuburbHousesPage({ params }: Props) {
       <SuburbSubrouteHeader
         suburb={suburb}
         eyebrow="Listings in"
-        title={<><span className="italic text-primary">Houses</span> for sale</>}
+        title={<><span>Houses</span> for sale</>}
         subtitle={`${count} ${count === 1 ? "house" : "houses"} on the market in ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
         breadcrumbLeaf="Houses"
         tabs={getSuburbListingTabs(slug, "houses", availability)}

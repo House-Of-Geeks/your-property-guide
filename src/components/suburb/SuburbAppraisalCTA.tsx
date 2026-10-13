@@ -127,7 +127,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
           <div className="flex-shrink-0 w-9 h-9 rounded-full bg-cta text-ink grid place-items-center">
             <Home className="w-4.5 h-4.5" />
           </div>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-white/78 font-medium">
+          <p className="text-[13px] text-white/78 font-medium">
             Free property appraisal in {suburbName}
           </p>
         </div>
@@ -233,7 +233,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source, formName = 
                   type="button"
                   aria-pressed={active}
                   onClick={() => setTimeframe(active ? null : t.id)}
-                  className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                  className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
                     active
                       ? "bg-ink text-white border-ink"
                       : "bg-surface-raised text-ink border-line hover:border-line-strong"

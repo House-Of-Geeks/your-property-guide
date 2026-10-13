@@ -74,11 +74,11 @@ export default function GuidesHubPage() {
 
           <div className="grid lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+              <p className="text-[13px] font-sans text-ink-subtle mb-5">
                 {TOTAL_GUIDES} guides and articles, all free
               </p>
               <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-                Property guides for <span className="italic text-primary">every stage</span>.
+                Property guides for <span>every stage</span>
               </h1>
               <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
                 Plain-English guides covering buying, selling, moving, investing,
@@ -108,7 +108,7 @@ export default function GuidesHubPage() {
                 <Image src={section.icon} alt="" width={28} height={28} className="w-7 h-7 mt-0.5" aria-hidden="true" />
                 <div>
                   <p className="font-display text-2xl text-ink leading-none mb-1">{guides.length}</p>
-                  <p className="font-sans text-xs uppercase tracking-wider text-ink-subtle group-hover:text-primary transition-colors">
+                  <p className="font-sans text-[13px] text-ink-subtle group-hover:text-primary transition-colors">
                     {section.label.toLowerCase()}
                   </p>
                 </div>
@@ -122,14 +122,14 @@ export default function GuidesHubPage() {
       <section className="border-b border-line bg-surface-raised">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-xs font-sans uppercase tracking-wider text-ink-subtle mr-2">
+            <span className="text-[13px] font-sans text-ink-subtle mr-2">
               Or jump to a hub:
             </span>
             {PERSONA_LINKS.map((p) => (
               <Link
                 key={p.id}
                 href={p.href}
-                className="inline-flex items-center gap-1.5 rounded-full border border-line-strong px-4 py-1.5 text-sm font-medium text-ink hover:bg-surface-warm hover:border-ink transition-colors"
+                className="inline-flex items-center gap-1.5 rounded-md border border-line-strong px-4 py-1.5 text-sm font-medium text-ink hover:bg-surface-warm hover:border-ink transition-colors"
               >
                 {p.label}
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -150,7 +150,7 @@ export default function GuidesHubPage() {
                     <div className="w-10 h-10 rounded-lg bg-surface-warm border border-line-warm flex items-center justify-center shrink-0">
                       <Image src={section.icon} alt="" width={24} height={24} className="w-6 h-6" aria-hidden="true" />
                     </div>
-                    <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle">
+                    <p className="text-[13px] font-sans text-ink-subtle">
                       {guides.length === 1 ? "1 guide" : `${guides.length} guides`}
                     </p>
                   </div>
@@ -176,7 +176,7 @@ export default function GuidesHubPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
           <div className="grid lg:grid-cols-12 gap-8 mb-8">
             <div className="lg:col-span-5">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 Run the numbers
               </p>
               <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">

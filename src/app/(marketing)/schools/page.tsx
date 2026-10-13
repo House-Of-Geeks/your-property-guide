@@ -49,19 +49,19 @@ export default function SchoolsPage({ searchParams }: SchoolsPageProps) {
           </div>
 
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               9,600+ schools
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               National coverage
             </span>
           </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
             Find your{" "}
-            <span className="italic font-light text-primary">school</span>.
+            <span>school</span>
           </h1>
-          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
+          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
             Search every public, Catholic and independent school in Australia,
             with catchments, ICSEA, and nearby suburbs all in one view.
           </p>

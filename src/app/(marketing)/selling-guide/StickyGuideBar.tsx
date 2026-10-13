@@ -60,7 +60,7 @@ export function StickyGuideBar() {
     >
       <a
         href="#get-the-guide"
-        className="pointer-events-auto flex items-center justify-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-sm shadow-2xl border border-white/20 transition-colors"
+        className="pointer-events-auto flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-sm shadow-2xl border border-white/20 transition-colors"
       >
         Get the free guide
         <ArrowUp className="w-4 h-4" aria-hidden="true" />

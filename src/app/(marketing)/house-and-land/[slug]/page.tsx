@@ -124,7 +124,7 @@ export default async function HouseAndLandDetailPage({ params }: HouseAndLandDet
         <div className="space-y-6">
           {agent && (
             <div className="rounded-xl bg-white shadow-card border border-gray-100 p-4">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Sales Agent</h3>
+              <h3 className="text-sm font-semibold text-gray-500 mb-3">Sales Agent</h3>
               <AgentCardCompact agent={agent} />
             </div>
           )}

@@ -42,7 +42,7 @@ export default function SoldPage({ searchParams }: SoldPageProps) {
             <Breadcrumbs items={[{ label: "Sold" }]} />
           </div>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            What homes <span className="italic text-primary">actually sold for</span>.
+            What homes <span>actually sold for</span>
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             The actual sale prices, not asking prices. Research suburb-level

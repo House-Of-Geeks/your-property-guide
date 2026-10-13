@@ -24,7 +24,7 @@ export function GuideLinkList({ groups, showDescriptions = false, columns = 3 }:
       {visible.map((group, i) => (
         <div key={group.label ?? `group-${i}`}>
           {group.label && (
-            <h3 className="font-sans text-xs uppercase tracking-[0.2em] text-ink-subtle mb-3">
+            <h3 className="font-sans text-[13px] text-ink-subtle mb-3">
               {group.href ? (
                 <Link href={group.href} className="text-ink hover:text-primary transition-colors">
                   {group.label}
@@ -78,10 +78,10 @@ export function RelatedGuidesSection({ heading, intro, groups, tone = "raised", 
   return (
     <section id={id} className={`${bg} border-t border-line`}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
-        <p className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium mb-4">
+        <p className="text-[13px] text-ink-subtle font-sans font-medium mb-4">
           Related guides
         </p>
-        <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl font-medium mb-4 max-w-3xl">
+        <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl font-bold mb-4 max-w-3xl">
           {heading}
         </h2>
         {intro && (

@@ -97,10 +97,10 @@ export default async function AgentProfilePage({ params }: AgentProfilePageProps
             <div className="flex-1 min-w-0 pt-14">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <p className="font-display italic text-primary text-sm sm:text-base mb-1.5 leading-none">
+                  <p className="font-display text-primary text-sm sm:text-base mb-1.5 leading-none">
                     {agent.title}
                   </p>
-                  <h1 className="font-display text-ink text-3xl sm:text-4xl lg:text-5xl leading-[1.02] tracking-tight font-medium">
+                  <h1 className="font-display text-ink text-3xl sm:text-4xl lg:text-5xl leading-[1.02] tracking-tight font-bold">
                     {agent.fullName}
                   </h1>
 
@@ -108,13 +108,13 @@ export default async function AgentProfilePage({ params }: AgentProfilePageProps
                   <div className="flex flex-wrap items-center gap-3 mt-4">
                     <a
                       href={`tel:${agent.phone}`}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line-strong text-sm font-medium text-ink hover:border-ink hover:text-primary transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-line-strong text-sm font-medium text-ink hover:border-ink hover:text-primary transition-colors"
                     >
                       <Phone className="w-4 h-4" /> Call
                     </a>
                     <a
                       href={`mailto:${agent.email}`}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-line-strong text-sm font-medium text-ink hover:border-ink hover:text-primary transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-line-strong text-sm font-medium text-ink hover:border-ink hover:text-primary transition-colors"
                     >
                       <Mail className="w-4 h-4" /> Email
                     </a>
@@ -163,10 +163,10 @@ export default async function AgentProfilePage({ params }: AgentProfilePageProps
         {/* ── Properties count ──────────────────────────────────────── */}
         {activeListings.length > 0 && (
           <div className="border border-gray-200 rounded-xl p-5">
-            <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Properties</p>
+            <p className="text-[13px] text-gray-500 mb-2">Properties</p>
             <div className="flex items-baseline gap-3">
               <span className="text-4xl font-bold text-gray-900">{activeListings.length}</span>
-              <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">For Sale</span>
+              <span className="text-sm font-semibold text-gray-500">For Sale</span>
             </div>
           </div>
         )}

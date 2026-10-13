@@ -96,11 +96,11 @@ export default function MarketReportsHubPage() {
             <Breadcrumbs items={[{ label: "Market Reports" }]} />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             Updated quarterly
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Property markets, <span className="italic text-primary">state by state</span>.
+            Property markets, <span>state by state</span>
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             Median prices, annual growth, top performing suburbs, and affordability rankings,
@@ -117,7 +117,7 @@ export default function MarketReportsHubPage() {
               href={`/market-reports/${state.slug}`}
               className="group flex flex-col gap-3 rounded-2xl bg-surface-raised border border-line p-6 hover:border-primary/40 hover:shadow-md transition-all"
             >
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle">
+              <p className="text-[13px] font-sans text-ink-subtle">
                 {state.abbr}
               </p>
               <h2 className="font-display text-xl text-ink group-hover:text-primary transition-colors leading-tight">

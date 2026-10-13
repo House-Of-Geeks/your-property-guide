@@ -59,14 +59,14 @@ export async function SpotlightSuburbCard() {
         />
         <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 flex items-end justify-between gap-3">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.32em] text-white/70 font-sans font-medium mb-1">
+            <p className="text-[13px] text-white/70 font-sans font-medium mb-1">
               This week&rsquo;s read
             </p>
-            <p className="font-display italic text-cta text-sm leading-none">
+            <p className="font-display text-cta text-sm leading-none">
               Spotlight
             </p>
           </div>
-          <span className="font-display italic text-white/75 text-sm tabular-nums">
+          <span className="font-display text-white/75 text-sm tabular-nums">
             {suburb.state} {suburb.postcode}
           </span>
         </div>
@@ -85,7 +85,7 @@ export async function SpotlightSuburbCard() {
         <dl data-reveal-group className="border-t border-line">
           {showPrice && s.medianHousePrice > 0 && (
             <div className="flex items-baseline justify-between py-3 border-b border-line">
-              <dt className="text-[11px] uppercase tracking-[0.2em] text-ink-subtle font-sans font-medium">
+              <dt className="text-[13px] text-ink-subtle font-sans font-medium">
                 Median house
               </dt>
               <dd className="font-display text-base sm:text-lg text-ink tabular-nums">
@@ -95,7 +95,7 @@ export async function SpotlightSuburbCard() {
           )}
           {showPrice && s.annualGrowthHouse !== null && s.annualGrowthHouse !== 0 && (
             <div className="flex items-baseline justify-between py-3 border-b border-line">
-              <dt className="text-[11px] uppercase tracking-[0.2em] text-ink-subtle font-sans font-medium">
+              <dt className="text-[13px] text-ink-subtle font-sans font-medium">
                 12-month growth
               </dt>
               <dd className={`font-display text-base sm:text-lg tabular-nums ${growthClass}`}>
@@ -105,7 +105,7 @@ export async function SpotlightSuburbCard() {
           )}
           {s.medianRentHouse > 0 && (
             <div className="flex items-baseline justify-between py-3 border-b border-line">
-              <dt className="text-[11px] uppercase tracking-[0.2em] text-ink-subtle font-sans font-medium">
+              <dt className="text-[13px] text-ink-subtle font-sans font-medium">
                 Median rent (house)
               </dt>
               <dd className="font-display text-base sm:text-lg text-ink tabular-nums">
@@ -115,7 +115,7 @@ export async function SpotlightSuburbCard() {
           )}
           {s.walkScore !== null && s.walkScore !== undefined && (
             <div className="flex items-baseline justify-between py-3 border-b border-line">
-              <dt className="text-[11px] uppercase tracking-[0.2em] text-ink-subtle font-sans font-medium">
+              <dt className="text-[13px] text-ink-subtle font-sans font-medium">
                 Walk score
               </dt>
               <dd className="font-display text-base sm:text-lg text-ink tabular-nums">
@@ -125,7 +125,7 @@ export async function SpotlightSuburbCard() {
           )}
           {s.population > 0 && (
             <div className="flex items-baseline justify-between py-3">
-              <dt className="text-[11px] uppercase tracking-[0.2em] text-ink-subtle font-sans font-medium">
+              <dt className="text-[13px] text-ink-subtle font-sans font-medium">
                 Population
               </dt>
               <dd className="font-display text-base sm:text-lg text-ink tabular-nums">

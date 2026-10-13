@@ -80,11 +80,11 @@ export default async function BestDealsPage({ searchParams }: PageProps) {
       <section className="relative bg-surface-warm border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16">
           <Breadcrumbs items={[{ label: "Best Deals" }]} />
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-cta mt-6 mb-3">
+          <p className="text-[13px] font-sans text-cta mt-6 mb-3">
             From our partners
           </p>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-ink leading-[1.05] tracking-tight max-w-3xl mb-5">
-            Featured opportunities, reviewed first.
+            Featured opportunities, reviewed first
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             A small, deliberately limited set of partner-agent properties we think are worth a closer
@@ -146,7 +146,7 @@ function FilterRow({
 }) {
   return (
     <div>
-      <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-ink-subtle mb-2">{label}</p>
+      <p className="text-[13px] font-sans text-ink-subtle mb-2">{label}</p>
       <div className="flex flex-wrap gap-1.5">
         {options.map((opt) => {
           const active = current?.toLowerCase() === opt.id.toLowerCase();
@@ -154,7 +154,7 @@ function FilterRow({
             <Link
               key={opt.id}
               href={`?${paramName}=${opt.id}`}
-              className={`inline-flex items-center text-xs font-medium rounded-full px-3 py-1.5 border transition-colors ${
+              className={`inline-flex items-center text-xs font-medium rounded-md px-3 py-1.5 border transition-colors ${
                 active
                   ? "border-ink bg-ink text-surface-raised"
                   : "border-line-strong text-ink-muted hover:border-ink hover:text-ink"
@@ -172,7 +172,7 @@ function FilterRow({
 function EmptyState({ hasFilters }: { hasFilters: boolean }) {
   return (
     <div className="rounded-2xl border border-line bg-surface-warm p-10 sm:p-14 text-center">
-      <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">No live deals right now</p>
+      <p className="text-[13px] font-sans text-ink-subtle mb-3">No live deals right now</p>
       <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-3 max-w-xl mx-auto">
         {hasFilters
           ? "Nothing matches those filters at the moment."

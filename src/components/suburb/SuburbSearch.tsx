@@ -110,7 +110,7 @@ export function SuburbSearch() {
           className="absolute top-full left-0 right-0 mt-1 bg-surface-raised border border-line rounded-xl shadow-card-hover z-50 overflow-hidden"
         >
           {noResults ? (
-            <li className="px-4 py-3 text-sm font-sans text-ink-subtle italic">No suburbs found</li>
+            <li className="px-4 py-3 text-sm font-sans text-ink-subtle">No suburbs found</li>
           ) : (
             suggestions.map((s, i) => (
               <li

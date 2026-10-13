@@ -239,7 +239,7 @@ export function HeroSearch() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition-colors"
+                className="text-sm text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-md transition-colors"
               >
                 {link.label}
               </a>
@@ -256,7 +256,7 @@ export function HeroSearch() {
               <a
                 key={s.slug}
                 href={`/suburbs/${s.slug}`}
-                className="text-sm text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition-colors"
+                className="text-sm text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-md transition-colors"
               >
                 {s.name}
               </a>

@@ -82,19 +82,19 @@ export default async function PostcodesPage() {
           </div>
 
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               {postcodes.length.toLocaleString()} postcodes
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               Browse by state
             </span>
           </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
             Browse by{" "}
-            <span className="italic font-light text-primary">postcode</span>.
+            <span>postcode</span>
           </h1>
-          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
+          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
             Property data, suburb profiles, and market statistics for every
             Australian postcode, grouped by state.
           </p>

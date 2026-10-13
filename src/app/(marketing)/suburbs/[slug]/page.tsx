@@ -208,7 +208,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             <div className="grid sm:grid-cols-2 gap-4 mb-10">
               {buyerView && (
                 <div className="rounded-xl border border-line bg-surface-raised p-5">
-                  <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-2">For buyers</p>
+                  <p className="text-[13px] font-sans text-cta mb-2">For buyers</p>
                   <p className="font-sans text-sm text-ink leading-relaxed">{buyerView}</p>
                   <p className="font-sans text-sm mt-3">
                     <Link
@@ -222,7 +222,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
               )}
               {sellerView && (
                 <div className="rounded-xl border border-line bg-surface-raised p-5">
-                  <p className="text-[11px] font-sans uppercase tracking-[0.22em] text-cta mb-2">For sellers</p>
+                  <p className="text-[13px] font-sans text-cta mb-2">For sellers</p>
                   <p className="font-sans text-sm text-ink leading-relaxed">{sellerView}</p>
                   <p className="font-sans text-sm mt-3">
                     <Link
@@ -239,16 +239,16 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           <div className="grid lg:grid-cols-12 gap-8">
             {/* Lead stat */}
             <div className="lg:col-span-5">
-              <p className="font-display italic text-primary text-base mb-3 leading-none">
+              <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">
                 Market
               </p>
               <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-                House prices in {suburb.name}.
+                House prices in {suburb.name}
               </h2>
               <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
                 {priceTrusted ? (
                   <>
-                    <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3 inline-flex items-center gap-2">
+                    <p className="text-[13px] font-sans text-ink-subtle mb-3 inline-flex items-center gap-2">
                       <TrendingUp className="w-3.5 h-3.5 text-cta" /> Median house price
                     </p>
                     <p className="font-display text-5xl sm:text-6xl text-ink leading-none tracking-tight">
@@ -261,7 +261,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                   // as a "median". Show an honest pending state with a
                   // link to the methodology page.
                   <>
-                    <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3 inline-flex items-center gap-2">
+                    <p className="text-[13px] font-sans text-ink-subtle mb-3 inline-flex items-center gap-2">
                       <TrendingUp className="w-3.5 h-3.5 text-cta" /> Median house price
                     </p>
                     <p className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
@@ -316,7 +316,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
             {/* Supporting grid */}
             <div className="lg:col-span-7">
-              <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-4">
+              <p className="text-[13px] font-sans text-ink-subtle mb-4">
                 Rental and ownership
               </p>
               <div className="grid grid-cols-2 gap-4 mb-6">
@@ -336,7 +336,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 <MetricCard label="Renter occupied"     value={suburb.stats.renterOccupied  ? `${suburb.stats.renterOccupied}%`    : "–"} />
               </div>
               <div className="rounded-2xl border border-line bg-surface-raised p-5 sm:p-6">
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">
+                <p className="text-[13px] font-sans text-ink-subtle mb-3">
                   At a deeper level
                 </p>
                 <SuburbStatsComponent suburb={suburb} />
@@ -408,11 +408,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           </div>
           <div className="grid lg:grid-cols-12 gap-8 items-start">
             <div className="lg:col-span-3">
-              <p className="font-display italic text-primary text-base mb-3 leading-none">
+              <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">
                 The brief
               </p>
               <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
-                What to know about <span className="italic text-primary">{suburb.name}</span>.
+                What to know about <span>{suburb.name}</span>
               </h2>
             </div>
             <div className="lg:col-span-8 lg:col-start-5 space-y-5">
@@ -468,18 +468,18 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           <section className="rounded-2xl border border-line bg-surface-raised shadow-card overflow-hidden">
             <div className="grid lg:grid-cols-12 gap-0 items-stretch">
               <div className="lg:col-span-4 bg-surface-warm border-b lg:border-b-0 lg:border-r border-line-warm p-6 sm:p-8 flex flex-col justify-center">
-                <p className="text-xs font-sans uppercase tracking-[0.2em] text-cta mb-2">
+                <p className="text-[13px] font-sans text-cta mb-2">
                   Side by side
                 </p>
                 <h3 className="font-display text-2xl text-ink leading-tight">
-                  Compare {suburb.name} with a nearby suburb.
+                  Compare {suburb.name} with a nearby suburb
                 </h3>
                 <p className="font-sans text-sm text-ink-muted leading-relaxed mt-3">
                   Median, growth, schools, walkability, all in one view.
                 </p>
               </div>
               <div className="lg:col-span-8 p-6 sm:p-8">
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-4">
+                <p className="text-[13px] font-sans text-ink-subtle mb-4">
                   Nearby suburbs
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -493,7 +493,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                       <Link
                         key={s}
                         href={`/suburbs/${suburb.slug}/vs/${s}`}
-                        className="group inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-surface-raised px-4 py-2 text-sm font-medium text-ink hover:bg-surface-warm hover:border-ink transition-colors"
+                        className="group inline-flex items-center gap-1.5 rounded-md border border-line-strong bg-surface-raised px-4 py-2 text-sm font-medium text-ink hover:bg-surface-warm hover:border-ink transition-colors"
                       >
                         {label}
                         <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
@@ -514,11 +514,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             have at least one supporting data point. */}
         {lifestyleSummary.length > 0 && (
           <section id="lifestyle" className="scroll-mt-16">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">
               Day to day
             </p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-              What it&rsquo;s like to live here.
+              What it&rsquo;s like to live here
             </h2>
             <div className="space-y-5 max-w-3xl">
               {lifestyleSummary.map((para, i) => (
@@ -534,11 +534,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             before the market section gets into price. Census data is
             independent of the sales feed, so always reliable. */}
         <section id="demographics" className="scroll-mt-16">
-          <p className="font-display italic text-primary text-base mb-3 leading-none">
+          <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">
             Who lives here
           </p>
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-            Demographics.
+            Demographics
           </h2>
           {demographicsSummary && (
             <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-3xl mb-8">
@@ -576,11 +576,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         {/* Investment Overview */}
         {(suburb.stats.medianHousePrice > 0 || suburb.stats.medianUnitPrice > 0) && (
           <section id="investment" className="scroll-mt-16">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">
               For investors
             </p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-              Investment overview.
+              Investment overview
             </h2>
             {investorView && (
               <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-3xl mb-8">
@@ -598,11 +598,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             available". */}
         {crimeStat && (
           <section id="crime" className="scroll-mt-16">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">
               Safety
             </p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-              Crime and safety.
+              Crime and safety
             </h2>
             <SuburbCrime
               crimeStat={{
@@ -627,11 +627,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         {/* Walkability */}
         {suburb.stats.walkScore !== null && (
           <section id="walkability" className="scroll-mt-16">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">
               Getting around
             </p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-              Walkability.
+              Walkability
             </h2>
             <SuburbWalkability
               walkScore={suburb.stats.walkScore}
@@ -649,11 +649,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         {/* Hazard */}
         {suburb.hazard && (
           <section id="hazard" className="scroll-mt-16">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">
               Risk
             </p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-              Flood and bushfire risk.
+              Flood and bushfire risk
             </h2>
             <SuburbHazard
               floodClass={suburb.hazard.floodClass}
@@ -673,11 +673,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
         {/* Location */}
         <section id="location" className="scroll-mt-16">
-          <p className="font-display italic text-primary text-base mb-3 leading-none">
+          <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">
             Place
           </p>
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-            Location.
+            Location
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
             <div className="rounded-2xl border border-line bg-surface-raised p-6">
@@ -720,11 +720,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
         {/* Schools */}
         <section id="schools" className="scroll-mt-16">
-          <p className="font-display italic text-primary text-base mb-3 leading-none">
+          <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">
             Education
           </p>
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-            Schools in {suburb.name}.
+            Schools in {suburb.name}
           </h2>
           <SuburbSchools suburbName={suburb.name} schools={suburb.schools} />
           {suburb.schools.length > 0 && (
@@ -743,11 +743,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         {/* Climate — only renders when BoM data is attached to the suburb. */}
         {suburb.climate && (
           <section id="climate" className="scroll-mt-16">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">
               Climate
             </p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-              Weather year-round.
+              Weather year-round
             </h2>
             <SuburbClimate climate={suburb.climate} />
             <DataFreshnessNote
@@ -763,11 +763,11 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           <section className="scroll-mt-16">
             <div className="grid lg:grid-cols-12 gap-6 mb-8 items-end">
               <div className="lg:col-span-7">
-                <p className="font-display italic text-primary text-base mb-3 leading-none">
+                <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">
                   Listings
                 </p>
                 <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight">
-                  Properties in {suburb.name}.
+                  Properties in {suburb.name}
                 </h2>
               </div>
               <div className="lg:col-span-5 flex flex-wrap gap-2 lg:justify-end">
@@ -895,7 +895,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 function MetricCard({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-line bg-surface-raised p-4 shadow-card">
-      <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1">{label}</p>
+      <p className="text-[13px] font-sans text-ink-subtle mb-1">{label}</p>
       <p className="font-display text-2xl text-ink leading-none">{value}</p>
     </div>
   );

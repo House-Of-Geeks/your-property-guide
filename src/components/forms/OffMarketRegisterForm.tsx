@@ -91,7 +91,7 @@ export function OffMarketRegisterForm() {
         <div className="w-14 h-14 rounded-full bg-cta text-white grid place-items-center mx-auto mb-4">
           <CheckCircle className="w-7 h-7" />
         </div>
-        <h3 className="font-display text-2xl text-ink leading-tight">You&rsquo;re registered.</h3>
+        <h3 className="font-display text-2xl text-ink leading-tight">You&rsquo;re registered</h3>
         <p className="text-ink-muted mt-3 max-w-md mx-auto leading-relaxed">
           We&rsquo;ll email you off-market properties matching your criteria as they come in.
           One email per match, no roundup spam. Unsubscribe anytime.
@@ -155,7 +155,7 @@ export function OffMarketRegisterForm() {
       />
 
       <div className="pt-2 border-t border-line">
-        <p className="text-xs uppercase tracking-wider text-ink-subtle mb-3 mt-4">What are you looking for?</p>
+        <p className="text-[13px] text-ink-subtle mb-3 mt-4">What are you looking for?</p>
         {/* Live autocomplete over every suburb (the old <Select> listed the
             six prototype seed suburbs). Slug lands in the registered hidden
             field so validation and the payload are unchanged. */}

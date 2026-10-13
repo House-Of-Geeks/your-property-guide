@@ -75,7 +75,7 @@ export function MatchDrawer({
         </button>
 
         <div className="px-6 sm:px-8 py-8 sm:py-10">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-primary mb-3">
+          <p className="text-[13px] text-primary mb-3">
             Free, no commitment
           </p>
           <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-2">

@@ -72,7 +72,7 @@ export async function generateMetadata({ params }: RentalMarketPageProps): Promi
 function MetricCard({ label, value }: { label: string; value: string | null }) {
   return (
     <div className="rounded-xl border border-line bg-surface-raised p-4 shadow-card">
-      <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1">{label}</p>
+      <p className="text-[13px] font-sans text-ink-subtle mb-1">{label}</p>
       <p className="font-display text-2xl text-ink leading-none">{value ?? "–"}</p>
     </div>
   );
@@ -139,7 +139,7 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
       <SuburbSubrouteHeader
         suburb={suburb}
         eyebrow="Rental market in"
-        title={<>The <span className="italic text-primary">rental market</span></>}
+        title={<>The <span>rental market</span></>}
         subtitle={model?.current ? `Median rent, yield and what is listed now in ${suburb.name}, ${suburb.state} ${suburb.postcode}, from ${model.provenance}.` : all ? all.subtitle : `Median rent, history and gross-yield calculations for ${suburb.name}, ${suburb.state} ${suburb.postcode}.`}
         breadcrumbLeaf="Rental Market"
         tabs={getSuburbListingTabs(slug, "rental-market", availability)}
@@ -172,11 +172,11 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
           <>
             {/* Current rent summary */}
             <section>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 Current rent
               </p>
               <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-                What it costs to rent here right now.
+                What it costs to rent here right now
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
                 <MetricCard label="House (median)" value={latest?.medianRentHouse != null ? `$${latest.medianRentHouse}/wk` : null} />
@@ -195,11 +195,11 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
             {/* Yield vs price */}
             {grossYield && suburb.stats.medianHousePrice > 0 && (
               <section className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
-                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+                <p className="text-[13px] font-sans text-ink-subtle mb-3">
                   Investor view
                 </p>
                 <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
-                  Rental yield versus purchase price.
+                  Rental yield versus purchase price
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   <div>
@@ -243,23 +243,23 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
 
             {/* Rental history table */}
             <section>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 History
               </p>
               <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-                How rents have moved.
+                How rents have moved
               </h2>
               <div className="rounded-2xl border border-line bg-surface-raised overflow-hidden shadow-card">
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="bg-surface-warm border-b border-line-warm">
-                        <th className="py-4 px-5 text-left text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">Period</th>
-                        <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">House median</th>
-                        <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider">Unit median</th>
-                        <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider hidden sm:table-cell">3 bed</th>
-                        <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider hidden sm:table-cell">2 bed</th>
-                        <th className="py-4 px-5 text-right text-xs font-sans font-semibold text-ink-subtle uppercase tracking-wider hidden md:table-cell">Bond lodgements</th>
+                        <th className="py-4 px-5 text-left text-[13px] font-sans font-semibold text-ink-subtle">Period</th>
+                        <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">House median</th>
+                        <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle">Unit median</th>
+                        <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden sm:table-cell">3 bed</th>
+                        <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden sm:table-cell">2 bed</th>
+                        <th className="py-4 px-5 text-right text-[13px] font-sans font-semibold text-ink-subtle hidden md:table-cell">Bond lodgements</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -293,11 +293,11 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
             {availability.rent && (
             <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
               <div>
-                <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                <p className="text-[13px] font-sans text-ink-subtle mb-2">
                   Active listings
                 </p>
                 <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight">
-                  Properties for rent in {suburb.name}.
+                  Properties for rent in {suburb.name}
                 </h3>
                 <p className="font-sans text-sm text-ink-muted mt-2">
                   Browse current rental listings.

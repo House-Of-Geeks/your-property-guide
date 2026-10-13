@@ -206,7 +206,7 @@ export function buildAdminEmailHtml(
 
   const attributionHtml = attributionRows.length
     ? `
-    <p style="margin:24px 24px 8px;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:${C.inkMuted};">How they found us</p>
+    <p style="margin:24px 24px 8px;font-size:13px;color:${C.inkMuted};">How they found us</p>
     <table style="width:100%;border-collapse:collapse;font-size:13px;">
       ${attributionRows
         .map(
@@ -358,7 +358,7 @@ function guideHighlightsHtml(): string {
     .map(
       ([n, headline, t]) =>
         `<tr>
-          <td style="padding:10px 12px 10px 16px;white-space:nowrap;vertical-align:top;font-family:Georgia,serif;font-style:italic;color:${C.terracotta};font-size:15px;">${n}</td>
+          <td style="padding:10px 12px 10px 16px;white-space:nowrap;vertical-align:top;color:${C.terracotta};font-size:15px;">${n}</td>
           <td style="padding:10px 16px 10px 0;border-bottom:1px solid ${C.line};">
             <p style="margin:0;font-size:13.5px;font-weight:600;color:${C.ink};">${headline}</p>
             <p style="margin:2px 0 0;font-size:12.5px;line-height:1.5;color:${C.inkMuted};">${t}</p>
@@ -368,7 +368,7 @@ function guideHighlightsHtml(): string {
     .join("");
   return `
       <div style="margin:0 0 18px;background:${C.cream};border:1px solid ${C.line};border-radius:10px;overflow:hidden;">
-        <p style="margin:0;padding:12px 16px 2px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:${C.terracottaDark};">Where the money is</p>
+        <p style="margin:0;padding:12px 16px 2px;font-size:13px;font-weight:700;color:${C.terracottaDark};">Where the money is</p>
         <table style="width:100%;border-collapse:collapse;margin-bottom:8px;">${items}</table>
       </div>`;
 }
@@ -384,7 +384,7 @@ function buyingHighlightsHtml(): string {
     .map(
       ([n, headline, t]) =>
         `<tr>
-          <td style="padding:10px 12px 10px 16px;white-space:nowrap;vertical-align:top;font-family:Georgia,serif;font-style:italic;color:${C.terracotta};font-size:15px;">${n}</td>
+          <td style="padding:10px 12px 10px 16px;white-space:nowrap;vertical-align:top;color:${C.terracotta};font-size:15px;">${n}</td>
           <td style="padding:10px 16px 10px 0;border-bottom:1px solid ${C.line};">
             <p style="margin:0;font-size:13.5px;font-weight:600;color:${C.ink};">${headline}</p>
             <p style="margin:2px 0 0;font-size:12.5px;line-height:1.5;color:${C.inkMuted};">${t}</p>
@@ -394,7 +394,7 @@ function buyingHighlightsHtml(): string {
     .join("");
   return `
       <div style="margin:0 0 18px;background:${C.cream};border:1px solid ${C.line};border-radius:10px;overflow:hidden;">
-        <p style="margin:0;padding:12px 16px 2px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:${C.terracottaDark};">Where the money is</p>
+        <p style="margin:0;padding:12px 16px 2px;font-size:13px;font-weight:700;color:${C.terracottaDark};">Where the money is</p>
         <table style="width:100%;border-collapse:collapse;margin-bottom:8px;">${items}</table>
       </div>`;
 }
@@ -416,7 +416,7 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
     const panel = (eyebrow: string, text: string, button: string) => `
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:${C.ink};border-radius:10px;">
         <tr><td style="padding:20px 22px;">
-          <p style="margin:0 0 4px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:${C.apricot};">${eyebrow}</p>
+          <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:${C.apricot};">${eyebrow}</p>
           ${text}
           ${button}
         </td></tr>
@@ -455,7 +455,7 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
           <p style="margin:0;font-size:14px;line-height:1.65;color:${C.ink};">${next}</p>
           ${appraisalPanel}
           ${psLine}
-          <p style="margin:22px 0 0;font-size:14px;line-height:1.5;color:${C.inkMuted};">Happy reading,<br/><span style="font-family:Georgia,serif;font-style:italic;font-size:15px;color:${C.ink};">The team at Your Property Guide</span></p>
+          <p style="margin:22px 0 0;font-size:14px;line-height:1.5;color:${C.inkMuted};">Happy reading,<br/><span style="font-size:15px;color:${C.ink};">The team at Your Property Guide</span></p>
           <p style="margin:18px 0 0;font-size:12px;color:${C.inkSubtle};line-height:1.55;">If you didn't request this guide, you can ignore this email.</p>
         </td></tr>
       </table>`,

@@ -115,7 +115,7 @@ export default async function RentDetailPage({ params }: RentDetailPageProps) {
         <div className="space-y-5">
           {agent && (
             <div className="rounded-2xl bg-surface-raised border border-line p-5">
-              <h3 className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">Property manager</h3>
+              <h3 className="text-[13px] font-sans text-ink-subtle mb-3">Property manager</h3>
               <AgentCardCompact agent={agent} />
             </div>
           )}

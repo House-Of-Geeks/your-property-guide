@@ -94,20 +94,20 @@ export default async function InsightsPage() {
           </div>
 
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               Insights
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium inline-flex items-center gap-1.5">
               <TrendingUp className="w-3 h-3" aria-hidden="true" />
               Updated {formatDate(new Date().toISOString())}
             </span>
           </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
             Australian property,{" "}
-            <span className="italic font-light text-primary">explained</span>.
+            <span>explained</span>
           </h1>
-          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
+          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
             Capital city market reads, RBA decisions, suburb data refreshes,
             and the guides our readers are turning to right now. Sourced and
             dated.
@@ -121,11 +121,11 @@ export default async function InsightsPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
             <div className="flex items-end justify-between gap-4 mb-8">
               <div>
-                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+                <p className="text-[13px] font-sans text-ink-subtle mb-3">
                   Capital cities
                 </p>
                 <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-                  2026 market outlooks.
+                  2026 market outlooks
                 </h2>
               </div>
               <Link
@@ -156,7 +156,7 @@ export default async function InsightsPage() {
                     </div>
                   )}
                   <div className="p-5 flex-1 flex flex-col">
-                    <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                    <p className="text-[13px] font-sans text-ink-subtle mb-2">
                       {formatDate(p.publishedAt)}
                     </p>
                     <h3 className="font-display text-lg text-ink group-hover:text-primary transition-colors leading-tight">
@@ -175,11 +175,11 @@ export default async function InsightsPage() {
           {/* Recent posts main column */}
           <div className="lg:col-span-2">
             <div className="mb-6">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 Latest
               </p>
               <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-                Recent articles.
+                Recent articles
               </h2>
             </div>
             <ul className="space-y-5">
@@ -203,7 +203,7 @@ export default async function InsightsPage() {
                       <div className="aspect-square sm:aspect-[5/4] rounded-xl bg-surface-warm-sunken" />
                     )}
                     <div className="min-w-0 flex flex-col">
-                      <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-1.5">
+                      <p className="text-[13px] font-sans text-ink-subtle mb-1.5">
                         {formatDate(p.publishedAt)}
                         {p.category && (
                           <>
@@ -239,11 +239,11 @@ export default async function InsightsPage() {
           <aside className="space-y-10">
             {/* RBA + market reports */}
             <div>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 Live market data
               </p>
               <h2 className="font-display text-xl text-ink leading-tight mb-4">
-                Track the numbers.
+                Track the numbers
               </h2>
               <ul className="space-y-3">
                 <li>
@@ -251,7 +251,7 @@ export default async function InsightsPage() {
                     href="/rba-cash-rate"
                     className="block rounded-xl border border-line bg-surface-warm p-4 hover:border-primary/40 transition-colors group"
                   >
-                    <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1">
+                    <p className="text-[13px] font-sans text-ink-subtle mb-1">
                       RBA
                     </p>
                     <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
@@ -264,7 +264,7 @@ export default async function InsightsPage() {
                     href="/market-reports"
                     className="block rounded-xl border border-line bg-surface-warm p-4 hover:border-primary/40 transition-colors group"
                   >
-                    <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1">
+                    <p className="text-[13px] font-sans text-ink-subtle mb-1">
                       Market reports
                     </p>
                     <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
@@ -277,7 +277,7 @@ export default async function InsightsPage() {
                     href="/best-suburbs/highest-growth"
                     className="block rounded-xl border border-line bg-surface-warm p-4 hover:border-primary/40 transition-colors group"
                   >
-                    <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-1">
+                    <p className="text-[13px] font-sans text-ink-subtle mb-1">
                       Live ranking
                     </p>
                     <p className="font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">
@@ -290,11 +290,11 @@ export default async function InsightsPage() {
 
             {/* Most-read guides */}
             <div>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 Most-read guides
               </p>
               <h2 className="font-display text-xl text-ink leading-tight mb-4">
-                What others are reading.
+                What others are reading
               </h2>
               <ul className="space-y-1.5">
                 {TOP_GUIDES.map((g) => (
@@ -303,7 +303,7 @@ export default async function InsightsPage() {
                       href={g.href}
                       className="block py-2 group"
                     >
-                      <p className="text-[10px] font-sans uppercase tracking-[0.2em] text-ink-subtle mb-0.5">
+                      <p className="text-[13px] font-sans text-ink-subtle mb-0.5">
                         {g.eyebrow}
                       </p>
                       <p className="font-sans text-sm text-ink group-hover:text-primary transition-colors leading-snug">
@@ -317,11 +317,11 @@ export default async function InsightsPage() {
 
             {/* Recent data updates */}
             <div>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 Data updates
               </p>
               <h2 className="font-display text-xl text-ink leading-tight mb-4">
-                Recent refreshes.
+                Recent refreshes
               </h2>
               <ol className="space-y-3">
                 {DATA_UPDATES.map((u) => (
@@ -331,7 +331,7 @@ export default async function InsightsPage() {
                   >
                     <Clock className="w-3.5 h-3.5 text-ink-subtle mt-1 shrink-0" aria-hidden="true" />
                     <div className="min-w-0">
-                      <p className="text-xs text-ink-subtle uppercase tracking-wider mb-0.5">
+                      <p className="text-[13px] text-ink-subtle mb-0.5">
                         {formatDate(u.date)} · {u.type}
                       </p>
                       <Link
@@ -347,13 +347,13 @@ export default async function InsightsPage() {
               <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
                 <Link
                   href="/data-updates"
-                  className="inline-flex items-center gap-1 text-xs font-sans uppercase tracking-wider text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                  className="inline-flex items-center gap-1 text-[13px] font-sans text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
                 >
                   Full changelog →
                 </Link>
                 <Link
                   href="/methodology"
-                  className="inline-flex items-center gap-1 text-xs font-sans uppercase tracking-wider text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
+                  className="inline-flex items-center gap-1 text-[13px] font-sans text-ink border-b border-line-strong hover:border-primary hover:text-primary pb-0.5 transition-colors"
                 >
                   Methodology →
                 </Link>

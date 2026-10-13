@@ -138,7 +138,7 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
       </div>
       {/* Contact details */}
       <div>
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Contact Details</p>
+        <p className="text-[13px] font-semibold text-gray-400 mb-4">Contact Details</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -207,7 +207,7 @@ export function AgencyContactForm({ agencyId, agencyName }: AgencyContactFormPro
 
       {/* Enquiry type */}
       <div>
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Your Enquiry</p>
+        <p className="text-[13px] font-semibold text-gray-400 mb-4">Your Enquiry</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {AGENT_ENQUIRY_TYPES.map((t) => (
             <label key={t.value} className="flex items-center gap-2 cursor-pointer">

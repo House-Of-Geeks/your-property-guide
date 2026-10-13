@@ -172,7 +172,7 @@ export function PropertyEnquireDialog({
               {/* Left: enquiry types + message */}
               <div className="space-y-4">
                 <div>
-                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
+                  <p className="text-[13px] font-bold text-gray-500 mb-3">
                     My Enquiries
                   </p>
                   <div className="space-y-2.5">
@@ -202,7 +202,7 @@ export function PropertyEnquireDialog({
                 </div>
 
                 <div>
-                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                  <p className="text-[13px] font-bold text-gray-500 mb-2">
                     Message
                   </p>
                   <div className="relative">
@@ -220,7 +220,7 @@ export function PropertyEnquireDialog({
 
               {/* Right: contact details */}
               <div className="space-y-3">
-                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">
+                <p className="text-[13px] font-bold text-gray-500 mb-1">
                   My Contact Details
                 </p>
                 {([

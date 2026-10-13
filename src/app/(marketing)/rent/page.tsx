@@ -42,7 +42,7 @@ export default function RentPage({ searchParams }: RentPageProps) {
             <Breadcrumbs items={[{ label: "Rent" }]} />
           </div>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Properties for rent, <span className="italic text-primary">around Australia</span>.
+            Properties for rent, <span>around Australia</span>
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             Houses, units and apartments. Filter by suburb, price, bedrooms.

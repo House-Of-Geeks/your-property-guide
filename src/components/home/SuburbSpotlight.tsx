@@ -22,12 +22,12 @@ export async function SuburbSpotlight() {
               <div className="w-10 h-10 rounded-lg bg-surface-warm border border-line-warm flex items-center justify-center shrink-0">
                 <img src="/images/icons/map.svg" alt="" width={24} height={24} className="w-6 h-6" aria-hidden="true" />
               </div>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle">
+              <p className="text-[13px] font-sans text-ink-subtle">
                 Explore suburb data
               </p>
             </div>
             <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
-              Six suburbs <span className="italic text-primary">worth a look</span>.
+              Six suburbs <span>worth a look</span>
             </h2>
           </div>
           <div className="lg:col-span-4 lg:col-start-9 flex items-end justify-end">
@@ -75,7 +75,7 @@ export async function SuburbSpotlight() {
                   {/* Top-right badges */}
                   <div className="absolute top-3 right-3 flex flex-col items-end gap-1 pointer-events-none">
                     {suburb.stats.walkScore != null && (
-                      <span className="rounded-full bg-black/50 backdrop-blur-sm border border-white/20 px-2 py-0.5 text-xs font-semibold text-white">
+                      <span className="rounded-md bg-black/50 backdrop-blur-sm border border-white/20 px-2 py-0.5 text-xs font-semibold text-white">
                         Walk {suburb.stats.walkScore}
                       </span>
                     )}
@@ -86,7 +86,7 @@ export async function SuburbSpotlight() {
                       const medium = h.floodClass === "medium" || h.bushfireRisk === "medium";
                       if (!risk && !medium) return null;
                       return (
-                        <span className="rounded-full px-2 py-0.5 text-xs font-semibold text-white border border-white/20 bg-black/50 backdrop-blur-sm">
+                        <span className="rounded-md px-2 py-0.5 text-xs font-semibold text-white border border-white/20 bg-black/50 backdrop-blur-sm">
                           {risk ? "High risk" : "Med risk"}
                         </span>
                       );

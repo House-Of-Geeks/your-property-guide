@@ -88,14 +88,14 @@ export default async function HouseAndLandPage({ searchParams }: PageProps) {
           </div>
 
           {/* A count only when there is one to print: never "0 new packages". */}
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             {listed ? `${packages.length} new ${packages.length !== 1 ? "packages" : "package"}` : "House & land"}
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
             {suburbName ? (
-              <>House &amp; land in <span className="italic text-primary">{suburbName}</span>.</>
+              <>House &amp; land in <span>{suburbName}</span>.</>
             ) : listed ? (
-              <>House &amp; land, <span className="italic text-primary">brand new</span>.</>
+              <>House &amp; land, <span>brand new</span>.</>
             ) : (
               <>House &amp; land packages</>
             )}

@@ -19,7 +19,7 @@ export async function LatestNews() {
         <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
           <div>
             <div className="flex items-center gap-3 mb-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 text-primary text-[11px] font-sans font-medium uppercase tracking-[0.2em] px-2.5 py-1">
+              <span className="inline-flex items-center gap-1.5 rounded-md bg-primary/10 text-primary text-[13px] font-sans font-medium px-2.5 py-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" aria-hidden="true" />
                 Latest news
               </span>
@@ -28,7 +28,7 @@ export async function LatestNews() {
               </span>
             </div>
             <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
-              The property <span className="italic text-primary">news desk</span>.
+              The property <span>news desk</span>
             </h2>
             <p className="font-sans text-base text-ink-muted leading-relaxed mt-3 max-w-xl">
               Fresh, sourced reporting on the policy changes, budget moves and
@@ -60,7 +60,7 @@ export async function LatestNews() {
               />
             </div>
             <div className="p-6 sm:p-8 flex-1 flex flex-col">
-              <div className="flex items-center gap-3 mb-3 text-xs font-sans uppercase tracking-[0.18em] text-ink-subtle">
+              <div className="flex items-center gap-3 mb-3 text-[13px] font-sans text-ink-subtle">
                 <span className="font-semibold text-primary">News</span>
                 <span aria-hidden="true">·</span>
                 <time dateTime={lead.publishedAt}>{formatDate(lead.publishedAt)}</time>
@@ -110,7 +110,7 @@ export async function LatestNews() {
                   />
                 </div>
                 <div className="p-4 sm:p-5 flex flex-col flex-1 min-w-0">
-                  <div className="flex items-center gap-2 text-[11px] font-sans uppercase tracking-[0.18em] text-ink-subtle mb-2">
+                  <div className="flex items-center gap-2 text-[13px] font-sans text-ink-subtle mb-2">
                     <span className="font-semibold text-primary">News</span>
                     <span aria-hidden="true">·</span>
                     <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>

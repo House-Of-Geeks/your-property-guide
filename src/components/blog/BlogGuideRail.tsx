@@ -144,12 +144,12 @@ export function BlogGuideRail({ blogSlug }: BlogGuideRailProps) {
   const guides = RAIL_BY_BLOG_SLUG[blogSlug] ?? DEFAULT_RAIL;
   return (
     <section className="mt-12 rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
-      <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2 inline-flex items-center gap-2">
+      <p className="text-[13px] font-sans text-ink-subtle mb-2 inline-flex items-center gap-2">
         <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />
         Read next
       </p>
       <h2 className="font-display text-2xl text-ink leading-tight mb-5">
-        Go deeper with our <span className="italic text-primary">guides</span>
+        Go deeper with our <span>guides</span>
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {guides.map((g) => (
@@ -165,7 +165,7 @@ export function BlogGuideRail({ blogSlug }: BlogGuideRailProps) {
               className="font-sans text-sm text-ink-muted leading-relaxed flex-1"
               dangerouslySetInnerHTML={{ __html: g.description }}
             />
-            <span className="mt-4 inline-flex items-center gap-1 text-xs font-sans uppercase tracking-wider text-ink group-hover:text-primary transition-colors">
+            <span className="mt-4 inline-flex items-center gap-1 text-[13px] font-sans text-ink group-hover:text-primary transition-colors">
               Read the guide <ArrowRight className="w-3.5 h-3.5" />
             </span>
           </Link>

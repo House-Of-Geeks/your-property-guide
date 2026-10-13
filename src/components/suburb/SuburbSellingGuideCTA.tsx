@@ -29,7 +29,7 @@ export function SuburbSellingGuideCTA({ suburbName, suburbSlug }: Props) {
 
       <div className="relative px-6 sm:px-8 py-6 sm:py-7 flex flex-col sm:flex-row sm:items-center gap-5">
         <div className="flex-1 sm:max-w-[58%]">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-2 flex items-center gap-1.5">
+          <p className="text-[13px] text-cta font-medium mb-2 flex items-center gap-1.5">
             <BookOpen className="w-3.5 h-3.5" aria-hidden="true" />
             Free guide · 2026 edition
           </p>

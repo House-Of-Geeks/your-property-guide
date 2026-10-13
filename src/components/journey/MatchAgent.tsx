@@ -215,20 +215,20 @@ export function MatchAgent({
           <div className="lg:col-span-5">
             {/* Magazine masthead in dark mode */}
             <div className="flex items-center gap-4 mb-10">
-              <span className="font-display italic text-cta text-base sm:text-lg leading-none">
+              <span className="text-sm font-semibold text-ink-muted leading-none">
                 When you&rsquo;re ready
               </span>
               <span className="w-12 h-px bg-white/20" aria-hidden="true" />
-              <span className="text-[11px] uppercase tracking-[0.32em] text-white/75 font-sans font-medium">
+              <span className="text-[13px] text-white/75 font-sans font-medium">
                 The match
               </span>
             </div>
-            <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
+            <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-bold">
               Tell us your situation.{" "}
-              <span className="italic font-light text-cta">We&rsquo;ll find</span>{" "}
-              the right person.
+              <span>We&rsquo;ll find</span>{" "}
+              the right person
             </h2>
-            <p className="font-display font-light text-xl sm:text-2xl text-white/80 leading-snug max-w-md mb-12">
+            <p className="font-display font-normal text-xl sm:text-2xl text-white/80 leading-snug max-w-md mb-12">
               Three questions. Selling? One local agent who sells in your
               area. Anything else, we&rsquo;ll point you to the right next
               step. Free for buyers and sellers, no commitment.
@@ -241,7 +241,7 @@ export function MatchAgent({
                 ["04", "You decide. No commitment to anything."],
               ].map(([n, t]) => (
                 <div key={n} className="border-t border-white/15 pt-4">
-                  <p className="font-display italic text-cta text-base mb-1.5 tabular-nums">{n}</p>
+                  <p className="font-display text-cta text-base mb-1.5 tabular-nums">{n}</p>
                   <p className="text-sm text-white/85 leading-snug">{t}</p>
                 </div>
               ))}
@@ -263,7 +263,7 @@ export function MatchAgent({
                     }}
                   />
                 ))}
-                <p className="ml-2 text-[11px] font-medium uppercase tracking-wider text-ink-subtle whitespace-nowrap">
+                <p className="ml-2 text-[13px] font-medium text-ink-subtle whitespace-nowrap">
                   {Math.min(step + 1, stepTotal)} / {stepTotal}
                 </p>
               </div>
@@ -391,11 +391,11 @@ export function MatchAgent({
               {/* Step 3, Contact */}
               {step === 3 && (
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-3">
+                  <p className="text-[13px] text-cta font-medium mb-3">
                     Last step
                   </p>
                   <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-3">
-                    Pop your details in and we&rsquo;ll take it from here.
+                    Pop your details in and we&rsquo;ll take it from here
                   </h3>
                   <p className="text-sm text-ink-muted leading-relaxed mb-5">
                     You&rsquo;ll get an email confirmation now, and our team will be in touch
@@ -461,7 +461,7 @@ export function MatchAgent({
                       className="w-full rounded-lg border border-line bg-surface-raised px-4 py-3 text-sm text-ink placeholder:text-ink-subtle focus:border-cta focus:ring-2 focus:ring-cta/20 outline-none transition-colors"
                     />
                     <div className="flex items-center gap-2 pt-1">
-                      <span className="text-[11px] uppercase tracking-wider text-ink-subtle font-medium whitespace-nowrap">
+                      <span className="text-[13px] text-ink-subtle font-medium whitespace-nowrap">
                         Reach me by
                       </span>
                       <div className="flex gap-1.5">
@@ -473,7 +473,7 @@ export function MatchAgent({
                               type="button"
                               onClick={() => setContactPref(p.id)}
                               aria-pressed={active}
-                              className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
+                              className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                                 active
                                   ? "bg-ink text-white border-ink"
                                   : "bg-surface-raised text-ink-muted border-line hover:border-line-strong"

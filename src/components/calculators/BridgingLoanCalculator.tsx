@@ -239,7 +239,7 @@ export function BridgingLoanCalculator() {
                 <dd className="text-sm font-semibold text-right">
                   <span className={r.withinCap ? "text-gray-900" : "text-red-700"}>{r.peakLvr}%</span>{" "}
                   <span
-                    className={`ml-1 inline-block rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                    className={`ml-1 inline-block rounded-md px-2 py-0.5 text-[11px] font-medium ${
                       r.withinCap ? "bg-green-50 text-green-800" : "bg-red-50 text-red-700"
                     }`}
                   >
@@ -310,7 +310,7 @@ export function BridgingLoanCalculator() {
         </div>
       ) : (
         <div id="appraisal-form" className="scroll-mt-24 rounded-xl border border-line bg-surface-warm p-6 sm:p-7">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-2">The number that moves everything</p>
+          <p className="text-[13px] text-cta font-medium mb-2">The number that moves everything</p>
           <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight tracking-tight mb-2">
             Firm up your sale price before you talk to a lender
           </h3>

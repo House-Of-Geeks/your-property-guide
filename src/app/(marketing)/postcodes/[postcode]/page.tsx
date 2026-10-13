@@ -239,7 +239,7 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
                   </div>
                   {suburb.annualGrowthHouse != null && (
                     <span
-                      className={`text-xs font-medium px-2 py-1 rounded-full ${
+                      className={`text-xs font-medium px-2 py-1 rounded-md ${
                         suburb.annualGrowthHouse >= 0
                           ? "bg-green-50 text-green-700"
                           : "bg-red-50 text-red-700"
@@ -406,7 +406,7 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
             readers into the transactional guides and calculators rather than
             leaving them on a reference page. */}
         <section className="rounded-2xl border border-gray-100 bg-gray-50 p-6 sm:p-8">
-          <p className="text-[11px] uppercase tracking-[0.22em] text-gray-400 font-medium mb-1">
+          <p className="text-[13px] text-gray-400 font-medium mb-1">
             Thinking of a move in {state}?
           </p>
           <h2 className="text-2xl font-bold text-gray-900 mb-6">

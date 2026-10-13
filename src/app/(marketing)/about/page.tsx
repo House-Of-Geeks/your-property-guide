@@ -71,20 +71,20 @@ export default function AboutPage() {
 
           {/* Magazine masthead */}
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               About
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               Plain-English Australian property
             </span>
           </div>
 
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[20ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[20ch] font-bold">
             Once you know what&rsquo;s actually happening, you make{" "}
-            <span className="italic font-light text-primary">better choices</span>.
+            <span>better choices</span>
           </h1>
-          <p className="font-display font-light text-xl sm:text-2xl lg:text-3xl text-ink leading-[1.25] max-w-3xl">
+          <p className="font-display font-normal text-xl sm:text-2xl lg:text-3xl text-ink leading-[1.25] max-w-3xl">
             Property is the biggest financial decision most Australians ever
             make. Most of the people explaining it have something to sell. We
             wrote this site because that&rsquo;s a problem. Sixty plain-English
@@ -98,11 +98,11 @@ export default function AboutPage() {
       {/* Why we exist */}
       <section className="bg-surface-raised">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             Why we exist
           </p>
           <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl mb-6">
-            Australian property research is mostly written for the seller, not the buyer.
+            Australian property research is mostly written for the seller, not the buyer
           </h2>
           <div className="prose-ypg">
             <p>
@@ -131,11 +131,11 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid lg:grid-cols-12 gap-8 mb-10">
             <div className="lg:col-span-5">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 Our charter
               </p>
               <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
-                Four principles. <span className="italic text-primary">Non-negotiable.</span>
+                Four principles. <span>Non-negotiable.</span>
               </h2>
             </div>
             <div className="lg:col-span-6 lg:col-start-7 flex items-end">
@@ -166,11 +166,11 @@ export default function AboutPage() {
       {/* How we make money */}
       <section className="bg-surface-raised">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             How we make money
           </p>
           <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl mb-6">
-            Buyers and sellers pay nothing. <span className="italic text-primary">Ever.</span>
+            Buyers and sellers pay nothing. <span>Ever.</span>
           </h2>
           <div className="prose-ypg">
             <p>
@@ -194,7 +194,7 @@ export default function AboutPage() {
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
               href="/find-an-expert"
-              className="inline-flex items-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
+              className="inline-flex items-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
             >
               Get connected <ArrowRight className="w-4 h-4" />
             </Link>
@@ -210,11 +210,11 @@ export default function AboutPage() {
               ownershipFundingInfo policy URL. Plain-English ownership
               statement for E-E-A-T trust signals. */}
           <div id="ownership-funding" className="mt-12 pt-10 border-t border-line scroll-mt-24">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">
               Ownership &amp; funding
             </p>
             <h3 className="font-display text-2xl text-ink leading-tight mb-4">
-              Who owns Your Property Guide, and where the money comes from.
+              Who owns Your Property Guide, and where the money comes from
             </h3>
             <div className="prose-ypg">
               <p>
@@ -243,11 +243,11 @@ export default function AboutPage() {
               missionCoveragePrioritiesPolicy. Plain statement of who we
               cover and how we decide what to publish. */}
           <div id="coverage" className="mt-10 pt-10 border-t border-line scroll-mt-24">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">
               Coverage &amp; inclusivity
             </p>
             <h3 className="font-display text-2xl text-ink leading-tight mb-4">
-              Who we write for, and how we decide what to publish.
+              Who we write for, and how we decide what to publish
             </h3>
             <div className="prose-ypg">
               <p>
@@ -276,11 +276,11 @@ export default function AboutPage() {
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid lg:grid-cols-12 gap-8 mb-10">
             <div className="lg:col-span-5">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 The people
               </p>
               <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
-                Real names, <span className="italic text-primary">real bylines</span>.
+                Real names, <span>real bylines</span>
               </h2>
             </div>
             <div className="lg:col-span-6 lg:col-start-7 flex items-end">
@@ -301,7 +301,7 @@ export default function AboutPage() {
               itemType="https://schema.org/Person"
             >
               <div className="sm:col-span-4">
-                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+                <p className="text-[13px] font-sans text-ink-subtle mb-2">
                   Editor &amp; co-founder
                 </p>
                 <h3 className="font-display text-2xl text-ink leading-tight" itemProp="name">
@@ -310,7 +310,7 @@ export default function AboutPage() {
                 <p className="text-sm font-sans text-ink-muted mt-1" itemProp="jobTitle">
                   Editor &amp; co-founder
                 </p>
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mt-4">
+                <p className="text-[13px] font-sans text-ink-subtle mt-4">
                   Writes about
                 </p>
                 <p className="font-sans text-sm text-ink leading-relaxed mt-1">
@@ -345,7 +345,7 @@ export default function AboutPage() {
               itemType="https://schema.org/Person"
             >
               <div className="sm:col-span-4">
-                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+                <p className="text-[13px] font-sans text-ink-subtle mb-2">
                   Senior writer
                 </p>
                 <h3 className="font-display text-2xl text-ink leading-tight" itemProp="name">
@@ -354,7 +354,7 @@ export default function AboutPage() {
                 <p className="text-sm font-sans text-ink-muted mt-1" itemProp="jobTitle">
                   Property &amp; finance writer
                 </p>
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mt-4">
+                <p className="text-[13px] font-sans text-ink-subtle mt-4">
                   Writes about
                 </p>
                 <p className="font-sans text-sm text-ink leading-relaxed mt-1">
@@ -395,7 +395,7 @@ export default function AboutPage() {
               itemType="https://schema.org/Person"
             >
               <div className="sm:col-span-4">
-                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+                <p className="text-[13px] font-sans text-ink-subtle mb-2">
                   Senior writer
                 </p>
                 <h3 className="font-display text-2xl text-ink leading-tight" itemProp="name">
@@ -404,7 +404,7 @@ export default function AboutPage() {
                 <p className="text-sm font-sans text-ink-muted mt-1" itemProp="jobTitle">
                   Market &amp; suburb research
                 </p>
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mt-4">
+                <p className="text-[13px] font-sans text-ink-subtle mt-4">
                   Writes about
                 </p>
                 <p className="font-sans text-sm text-ink leading-relaxed mt-1">
@@ -442,11 +442,11 @@ export default function AboutPage() {
           publishingPrinciples + ethicsPolicy URLs. */}
       <section id="methodology" className="bg-surface-raised scroll-mt-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             Editorial methodology
           </p>
           <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl mb-6">
-            How we write, source, and update.
+            How we write, source, and update
           </h2>
           <div className="prose-ypg">
             <p>
@@ -489,11 +489,11 @@ export default function AboutPage() {
           its own findable section. */}
       <section id="corrections" className="bg-surface-warm border-t border-line-warm scroll-mt-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             Corrections &amp; feedback
           </p>
           <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl mb-6">
-            If something&rsquo;s wrong, we want to know.
+            If something&rsquo;s wrong, we want to know
           </h2>
           <div className="prose-ypg">
             <p>
@@ -522,11 +522,11 @@ export default function AboutPage() {
       <section className="bg-surface-warm border-t border-line-warm">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center mb-10">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-4">
+            <p className="text-[13px] font-sans text-ink-subtle mb-4">
               The shorthand version
             </p>
             <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
-              What you can <span className="italic text-primary">count on</span>.
+              What you can <span>count on</span>
             </h2>
           </div>
           <TrustStrip

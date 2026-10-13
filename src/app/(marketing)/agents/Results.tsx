@@ -37,7 +37,7 @@ export async function AgentsResults({ searchParams }: AgentsResultsProps) {
               className="shrink-0 opacity-90"
             />
             <div>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-1">
+              <p className="text-[13px] font-sans text-ink-subtle mb-1">
                 Looking to sell?
               </p>
               <p className="font-display text-lg text-ink group-hover:text-primary transition-colors leading-tight">
@@ -58,7 +58,7 @@ export async function AgentsResults({ searchParams }: AgentsResultsProps) {
               className="shrink-0 opacity-90"
             />
             <div>
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-1">
+              <p className="text-[13px] font-sans text-ink-subtle mb-1">
                 Market activity
               </p>
               <p className="font-display text-lg text-ink group-hover:text-primary transition-colors leading-tight">

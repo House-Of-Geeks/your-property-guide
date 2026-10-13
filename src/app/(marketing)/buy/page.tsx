@@ -43,7 +43,7 @@ export default function BuyPage({ searchParams }: BuyPageProps) {
             <Breadcrumbs items={[{ label: "Buy" }]} />
           </div>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Properties for sale, <span className="italic text-primary">across Australia</span>.
+            Properties for sale, <span>across Australia</span>
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             Houses, units, townhouses and land. Filter by suburb, price, bedrooms.

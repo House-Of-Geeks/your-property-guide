@@ -22,7 +22,7 @@ export function AgencyForm({ agency }: { agency: Agency }) {
 
       {/* Details */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Agency Details</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Agency Details</h2>
         <Field label="Agency name" name="name" defaultValue={agency.name} required />
         <div className="grid grid-cols-2 gap-4 mt-4">
           <Field label="Phone" name="phone" defaultValue={agency.phone} required type="tel" />
@@ -44,7 +44,7 @@ export function AgencyForm({ agency }: { agency: Agency }) {
 
       {/* Social links */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Social Media</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">Social Media</h2>
         <div className="space-y-4">
           <Field label="Facebook URL"  name="facebookUrl"  defaultValue={agency.facebookUrl  ?? ""} type="url" placeholder="https://facebook.com/..." />
           <Field label="Instagram URL" name="instagramUrl" defaultValue={agency.instagramUrl ?? ""} type="url" placeholder="https://instagram.com/..." />
@@ -55,7 +55,7 @@ export function AgencyForm({ agency }: { agency: Agency }) {
 
       {/* SEO */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">SEO Metadata</h2>
+        <h2 className="text-sm font-semibold text-gray-400 mb-4">SEO Metadata</h2>
         <div className="space-y-4">
           <Field
             label="Meta title"

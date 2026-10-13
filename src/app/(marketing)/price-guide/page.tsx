@@ -133,19 +133,19 @@ export default async function PriceGuidePage({
           </div>
 
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               {total.toLocaleString()} suburbs
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               Updated quarterly
             </span>
           </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
             Median prices,{" "}
-            <span className="italic font-light text-primary">side by side</span>.
+            <span>side by side</span>
           </h1>
-          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
+          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
             Filter and compare the median house and unit prices we publish,
             suburb by suburb, with the 12-month change where it is measured.
           </p>
@@ -211,22 +211,22 @@ export default async function PriceGuidePage({
         <table className="min-w-full divide-y divide-line text-sm">
           <thead className="bg-surface-warm">
             <tr>
-              <th className="px-4 py-3 text-left font-sans font-medium text-ink uppercase tracking-wider text-xs">
+              <th className="px-4 py-3 text-left font-sans font-medium text-ink text-[13px]">
                 Suburb
               </th>
-              <th className="px-4 py-3 text-left font-sans font-medium text-ink uppercase tracking-wider text-xs">
+              <th className="px-4 py-3 text-left font-sans font-medium text-ink text-[13px]">
                 State
               </th>
-              <th className="px-4 py-3 text-left font-sans font-medium text-ink uppercase tracking-wider text-xs">
+              <th className="px-4 py-3 text-left font-sans font-medium text-ink text-[13px]">
                 Postcode
               </th>
-              <th className="px-4 py-3 text-right font-sans font-medium text-ink uppercase tracking-wider text-xs">
+              <th className="px-4 py-3 text-right font-sans font-medium text-ink text-[13px]">
                 Median House
               </th>
-              <th className="px-4 py-3 text-right font-sans font-medium text-ink uppercase tracking-wider text-xs">
+              <th className="px-4 py-3 text-right font-sans font-medium text-ink text-[13px]">
                 Median Unit
               </th>
-              <th className="px-4 py-3 text-right font-sans font-medium text-ink uppercase tracking-wider text-xs">
+              <th className="px-4 py-3 text-right font-sans font-medium text-ink text-[13px]">
                 Annual Growth
               </th>
             </tr>
@@ -295,7 +295,7 @@ export default async function PriceGuidePage({
               </div>
               {suburb.annualGrowthHouse !== 0 && (
                 <span
-                  className={`text-xs font-medium px-2 py-0.5 rounded-full font-sans ${
+                  className={`text-xs font-medium px-2 py-0.5 rounded-md font-sans ${
                     suburb.annualGrowthHouse >= 0
                       ? "bg-emerald-50 text-emerald-700"
                       : "bg-red-50 text-red-700"
@@ -367,7 +367,7 @@ export default async function PriceGuidePage({
 
       {/* Data source note */}
       <div className="mt-8 rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
-        <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-1.5">Data source</p>
+        <p className="text-[13px] text-ink-subtle mb-1.5">Data source</p>
         <p>
           {priceSourceLine(state ?? null)} A suburb is listed only when its own
           page publishes the median.

@@ -148,7 +148,7 @@ function GuideCallForm({ ctx }: { ctx: GuideThanksContext }) {
         </p>
       ) : (
         <>
-          <p className="text-[11px] uppercase tracking-[0.18em] text-cta font-medium mb-2">{copy.kicker}</p>
+          <p className="text-[13px] text-cta font-medium mb-2">{copy.kicker}</p>
           <h2 className="font-display text-xl sm:text-2xl text-ink leading-tight tracking-tight mb-2">{copy.heading}</h2>
           <p className="text-sm text-ink-muted leading-relaxed mb-4">{copy.body}</p>
           <form onSubmit={onSubmit} className="space-y-3">

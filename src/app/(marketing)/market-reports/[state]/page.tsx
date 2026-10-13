@@ -71,7 +71,7 @@ function StatCard({ icon, label, value, sub }: StatCardProps) {
     <div className="rounded-2xl border border-line bg-surface-raised p-6">
       <div className="flex items-center gap-2 mb-3 text-ink-subtle">
         {icon}
-        <p className="text-xs font-sans uppercase tracking-[0.2em]">{label}</p>
+        <p className="text-[13px] font-sans">{label}</p>
       </div>
       <p className="font-display text-3xl text-ink leading-none">{value}</p>
       {sub && (
@@ -100,13 +100,13 @@ function SuburbTable({
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-surface-warm border-b border-line">
-              <th className="px-4 py-3 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide w-10">#</th>
-              <th className="px-4 py-3 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide">Suburb</th>
-              <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Median price</th>
+              <th className="px-4 py-3 text-left text-[13px] font-sans font-medium text-ink w-10">#</th>
+              <th className="px-4 py-3 text-left text-[13px] font-sans font-medium text-ink">Suburb</th>
+              <th className="px-4 py-3 text-right text-[13px] font-sans font-medium text-ink">Median price</th>
               {showGrowth && (
-                <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Annual growth</th>
+                <th className="px-4 py-3 text-right text-[13px] font-sans font-medium text-ink">Annual growth</th>
               )}
-              <th className="px-4 py-3 text-right text-xs font-sans font-medium text-ink uppercase tracking-wide">Profile</th>
+              <th className="px-4 py-3 text-right text-[13px] font-sans font-medium text-ink">Profile</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-line">
@@ -225,11 +225,11 @@ export default async function StateMarketReportPage({
             />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             {CURRENT_YEAR} &middot; {priced} suburbs with a published median
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            {data.stateName} property market, <span className="italic text-primary">{CURRENT_YEAR}</span>.
+            {data.stateName} property market, <span>{CURRENT_YEAR}</span>
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             Median prices and the state&rsquo;s most affordable and
@@ -275,11 +275,11 @@ export default async function StateMarketReportPage({
         {commentary && (
           <section className="grid lg:grid-cols-12 gap-8">
             <div className="lg:col-span-7">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 State of the market
               </p>
               <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-4">
-                {data.stateName} in {CURRENT_YEAR}.
+                {data.stateName} in {CURRENT_YEAR}
               </h2>
               <div className="prose-ypg prose-ypg-tight">
                 <p>{commentary.marketContext}</p>
@@ -287,7 +287,7 @@ export default async function StateMarketReportPage({
             </div>
             <aside className="lg:col-span-5 space-y-4">
               <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                <p className="text-[13px] font-sans text-ink-subtle mb-2">
                   Buyer tip, {upperState}
                 </p>
                 <p className="font-sans text-sm text-ink leading-relaxed">
@@ -295,7 +295,7 @@ export default async function StateMarketReportPage({
                 </p>
               </div>
               <div className="rounded-2xl border border-line bg-surface-warm p-5">
-                <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-2">
+                <p className="text-[13px] font-sans text-ink-subtle mb-2">
                   Watch out, {upperState}
                 </p>
                 <p className="font-sans text-sm text-ink leading-relaxed">
@@ -324,7 +324,7 @@ export default async function StateMarketReportPage({
 
         {/* Cross-link to other state reports */}
         <section className="rounded-2xl border border-line bg-surface-warm p-6">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+          <p className="text-[13px] font-sans text-ink-subtle mb-3">
             Other state reports
           </p>
           <div className="flex flex-wrap gap-2">
@@ -342,7 +342,7 @@ export default async function StateMarketReportPage({
 
         {/* Source note */}
         <section className="rounded-2xl border border-line bg-surface-warm p-5 text-sm font-sans text-ink-muted">
-          <p className="text-xs uppercase tracking-[0.25em] text-ink-subtle mb-2">
+          <p className="text-[13px] text-ink-subtle mb-2">
             Data source
           </p>
           <p className="leading-relaxed">
@@ -361,11 +361,11 @@ export default async function StateMarketReportPage({
         {/* CTA strip */}
         <section className="rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:p-8 grid lg:grid-cols-12 gap-6 items-center">
           <div className="lg:col-span-7">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+            <p className="text-[13px] font-sans text-ink-subtle mb-2">
               Ready to act on the data?
             </p>
             <h3 className="font-display text-2xl text-ink leading-tight">
-              Search {data.stateName} properties for sale.
+              Search {data.stateName} properties for sale
             </h3>
             <p className="mt-2 font-sans text-sm text-ink-muted">
               Browse listings across all suburbs in {data.stateName}.

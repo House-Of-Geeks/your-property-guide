@@ -27,7 +27,7 @@ export function AgentListingsTabs({ forSale, sold }: AgentListingsTabsProps) {
         >
           FOR SALE
           {forSale.length > 0 && (
-            <span className="ml-2 text-xs bg-gray-100 text-gray-600 rounded-full px-2 py-0.5">
+            <span className="ml-2 text-xs bg-gray-100 text-gray-600 rounded-md px-2 py-0.5">
               {forSale.length}
             </span>
           )}
@@ -42,7 +42,7 @@ export function AgentListingsTabs({ forSale, sold }: AgentListingsTabsProps) {
         >
           SOLD
           {sold.length > 0 && (
-            <span className="ml-2 text-xs bg-gray-100 text-gray-600 rounded-full px-2 py-0.5">
+            <span className="ml-2 text-xs bg-gray-100 text-gray-600 rounded-md px-2 py-0.5">
               {sold.length}
             </span>
           )}

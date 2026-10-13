@@ -193,19 +193,19 @@ export default async function DataPage() {
           </div>
 
           <div className="flex items-center gap-4 mb-10">
-            <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+            <span className="text-sm font-semibold text-ink-muted leading-none">
               Live counts
             </span>
             <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-            <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+            <span className="text-[13px] text-ink-subtle font-sans font-medium">
               Refreshed hourly
             </span>
           </div>
-          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-medium">
+          <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl xl:text-8xl mb-10 max-w-[18ch] font-bold">
             Every number,{" "}
-            <span className="italic font-light text-primary">sourced and live</span>.
+            <span>sourced and live</span>
           </h1>
-          <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
+          <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-3xl">
             Here&rsquo;s the data behind every page on Your Property Guide,
             counted live from our database. Each row names the body that
             publishes it.
@@ -223,7 +223,7 @@ export default async function DataPage() {
                   <p className="font-display text-5xl text-ink leading-none mb-3">
                     {s.value}
                   </p>
-                  <p className="text-xs font-sans uppercase tracking-[0.2em] text-ink-subtle mb-3">
+                  <p className="text-[13px] font-sans text-ink-subtle mb-3">
                     {s.label}
                   </p>
                   <p className="font-sans text-sm text-ink-muted leading-relaxed mb-3">
@@ -260,7 +260,7 @@ export default async function DataPage() {
         {datasets.map((d) => (
           <section key={d.heading}>
             <div className="mb-5 pb-3 border-b border-line">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+              <p className="text-[13px] font-sans text-ink-subtle mb-2">
                 Dataset
               </p>
               <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
@@ -271,10 +271,10 @@ export default async function DataPage() {
               <table className="w-full text-sm">
                 <thead className="bg-surface-warm border-b border-line">
                   <tr>
-                    <th className="py-3 px-4 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide w-32">Count</th>
-                    <th className="py-3 px-4 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide w-48">Dataset</th>
-                    <th className="py-3 px-4 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide">What it covers</th>
-                    <th className="py-3 px-4 text-left text-xs font-sans font-medium text-ink uppercase tracking-wide w-72">Source</th>
+                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink w-32">Count</th>
+                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink w-48">Dataset</th>
+                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink">What it covers</th>
+                    <th className="py-3 px-4 text-left text-[13px] font-sans font-medium text-ink w-72">Source</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-line">
@@ -307,11 +307,11 @@ export default async function DataPage() {
         <section className="rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
           <div className="grid lg:grid-cols-12 gap-8">
             <div className="lg:col-span-4">
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+              <p className="text-[13px] font-sans text-ink-subtle mb-3">
                 Editorial commitments
               </p>
               <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-                Sourced. Dated. Free.
+                Sourced. Dated. Free
               </h2>
             </div>
             <div className="lg:col-span-8">

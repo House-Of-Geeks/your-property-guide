@@ -109,7 +109,7 @@ export default async function BlogCategoryPage({ params }: Props) {
 
       {/* Hero */}
       <div className="rounded-2xl bg-black px-8 py-10 mb-10 mt-4">
-        <span className="inline-block rounded-full bg-white/10 border border-white/20 px-3 py-1 text-xs font-semibold text-white/80 mb-3">
+        <span className="inline-block rounded-md bg-white/10 border border-white/20 px-3 py-1 text-xs font-semibold text-white/80 mb-3">
           {label}
         </span>
         <h1 className="text-3xl sm:text-4xl font-bold text-white">{label} Articles</h1>

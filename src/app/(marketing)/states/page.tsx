@@ -60,11 +60,11 @@ export default async function StatesPage() {
             <Breadcrumbs items={[{ label: "States" }]} />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             All 8 states &amp; territories
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Australia, <span className="italic text-primary">one state at a time</span>.
+            Australia, <span>one state at a time</span>
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl">
             Suburb profiles, median prices, growth trends, and local market data for
@@ -82,7 +82,7 @@ export default async function StatesPage() {
               href={`/states/${state.state.toLowerCase()}`}
               className="group rounded-2xl border border-line bg-surface-raised p-6 hover:border-primary/40 hover:shadow-md transition-all"
             >
-              <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+              <p className="text-[13px] font-sans text-ink-subtle mb-2">
                 {state.state}
               </p>
               <h2 className="font-display text-xl text-ink group-hover:text-primary transition-colors mb-5 leading-tight">

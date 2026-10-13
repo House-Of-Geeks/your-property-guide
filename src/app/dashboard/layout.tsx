@@ -42,7 +42,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             <span className="font-display text-ink text-base tracking-tight leading-none">Your Property Guide</span>
           </Link>
           <p className="text-xs text-ink-subtle mt-2 truncate">{session.user?.email}</p>
-          <span className={`inline-block mt-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${roleBadgeClass}`}>
+          <span className={`inline-block mt-1.5 text-xs font-medium px-2 py-0.5 rounded-md ${roleBadgeClass}`}>
             {roleBadgeLabel}
           </span>
         </div>
@@ -61,7 +61,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           )}
           {isSuperAdmin && (
             <div className="pt-2 mt-2 border-t border-line">
-              <p className="px-3 pb-1 text-xs font-semibold text-ink-subtle uppercase tracking-wider">Admin</p>
+              <p className="px-3 pb-1 text-[13px] font-semibold text-ink-subtle">Admin</p>
               <NavLink href="/dashboard/admin" icon={<ShieldCheck className="w-4 h-4" />} label="Site Overview" />
               <NavLink href="/dashboard/admin/agencies" icon={<Building2 className="w-4 h-4" />} label="All Agencies" />
               <NavLink href="/dashboard/admin/users" icon={<Users className="w-4 h-4" />} label="Users & Roles" />

@@ -132,20 +132,20 @@ export default function FindAnExpertPage() {
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-7">
               <div className="flex items-center gap-4 mb-10">
-                <span className="font-display italic text-primary text-base sm:text-lg leading-none">
+                <span className="text-sm font-semibold text-ink-muted leading-none">
                   How matching works
                 </span>
                 <span className="w-12 h-px bg-line-strong" aria-hidden="true" />
-                <span className="text-[11px] uppercase tracking-[0.32em] text-ink-subtle font-sans font-medium">
+                <span className="text-[13px] text-ink-subtle font-sans font-medium">
                   The match
                 </span>
               </div>
-              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-medium">
+              <h1 className="font-display text-ink leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-bold">
                 Tell us your situation.{" "}
-                <span className="italic font-light text-primary">We&rsquo;ll find</span>{" "}
-                the right next step.
+                <span>We&rsquo;ll find</span>{" "}
+                the right next step
               </h1>
-              <p className="font-display font-light text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl mb-10">
+              <p className="font-display font-normal text-xl sm:text-2xl text-ink leading-[1.25] max-w-2xl mb-10">
                 Selling? We introduce you to one local agent who sells in your
                 area. Buying, or something messier? We&rsquo;ll point you to the
                 right next step. Free for buyers and sellers, no commitment, no
@@ -154,13 +154,13 @@ export default function FindAnExpertPage() {
               <div className="flex flex-wrap gap-3 mb-10">
                 <Link
                   href="#match"
-                  className="inline-flex items-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
+                  className="inline-flex items-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
                 >
                   Get connected <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/about"
-                  className="inline-flex items-center gap-2 rounded-full border border-line-strong text-ink hover:border-ink font-medium px-6 py-3 transition-colors"
+                  className="inline-flex items-center gap-2 rounded-md border border-line-strong text-ink hover:border-ink font-medium px-6 py-3 transition-colors"
                 >
                   Read our charter
                 </Link>
@@ -197,11 +197,11 @@ export default function FindAnExpertPage() {
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 max-w-2xl">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">
               Four situations, one engine
             </p>
             <h2 className="font-display text-ink leading-tight tracking-tight text-3xl sm:text-4xl">
-              Whichever bucket you&rsquo;re in, we&rsquo;ll point you to the right next step.
+              Whichever bucket you&rsquo;re in, we&rsquo;ll point you to the right next step
             </h2>
           </div>
 
@@ -211,14 +211,14 @@ export default function FindAnExpertPage() {
                 key={lane.intent}
                 className="rounded-2xl border border-line bg-surface-raised p-8 flex flex-col"
               >
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-2">
+                <p className="text-[13px] font-sans text-ink-subtle mb-2">
                   {lane.eyebrow}
                 </p>
                 <h3 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-4">
                   {lane.headline}
                 </h3>
                 <p className="font-sans text-base text-ink-muted leading-relaxed mb-6">{lane.body}</p>
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">
+                <p className="text-[13px] font-sans text-ink-subtle mb-3">
                   Good fit if:
                 </p>
                 <ul className="space-y-2 mb-8 flex-1">
@@ -241,7 +241,7 @@ export default function FindAnExpertPage() {
           </div>
 
           <div className="mt-12 rounded-2xl border border-line-warm bg-surface-warm p-8 max-w-3xl mx-auto text-center">
-            <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-2">How matching works</p>
+            <p className="text-[13px] font-sans text-ink-subtle mb-2">How matching works</p>
             <p className="font-sans text-base text-ink-muted leading-relaxed">
               Every enquiry is read personally by our team, no call centre, no
               auto-routing, no comparison spam. Sellers get one local agent who
@@ -267,12 +267,12 @@ export default function FindAnExpertPage() {
       <section className="py-16 bg-surface-sunken">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-12 max-w-2xl">
-            How matching works.
+            How matching works
           </h2>
           <div className="grid sm:grid-cols-3 gap-8">
             {HOW_IT_WORKS.map((s) => (
               <div key={s.step}>
-                <p className="text-xs font-sans uppercase tracking-[0.2em] text-cta mb-3">{s.step}</p>
+                <p className="text-[13px] font-sans text-cta mb-3">{s.step}</p>
                 <h3 className="font-display text-2xl text-ink leading-tight mb-3">{s.title}</h3>
                 <p className="font-sans text-base text-ink-muted leading-relaxed">{s.body}</p>
               </div>
@@ -281,7 +281,7 @@ export default function FindAnExpertPage() {
           <div className="mt-12">
             <Link
               href="#match"
-              className="inline-flex items-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
+              className="inline-flex items-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors"
             >
               Get connected <ArrowRight className="w-4 h-4" />
             </Link>
@@ -292,9 +292,9 @@ export default function FindAnExpertPage() {
       {/* Why we're free */}
       <section className="py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-3">Why we&rsquo;re free</p>
+          <p className="text-[13px] font-sans text-ink-subtle mb-3">Why we&rsquo;re free</p>
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight mb-6">
-            Buyers and sellers pay nothing. Agents pay us a fee for each introduction.
+            Buyers and sellers pay nothing. Agents pay us a fee for each introduction
           </h2>
           <p className="font-sans text-lg text-ink-muted leading-relaxed mb-8">
             We disclose this on every introduction. The fee comes out of the

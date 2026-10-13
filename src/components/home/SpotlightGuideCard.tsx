@@ -50,15 +50,15 @@ export async function SpotlightGuideCard() {
         />
         <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 flex items-end justify-between gap-3">
           <div>
-            <p className="text-[11px] uppercase tracking-[0.32em] text-white/70 font-sans font-medium mb-1">
+            <p className="text-[13px] text-white/70 font-sans font-medium mb-1">
               Today&rsquo;s read
             </p>
-            <p className="font-display italic text-cta text-sm leading-none">
+            <p className="font-display text-cta text-sm leading-none">
               Featured guide
             </p>
           </div>
           {readingTime && (
-            <span className="font-sans text-white/75 text-xs uppercase tracking-[0.22em] inline-flex items-center gap-1.5">
+            <span className="font-sans text-white/75 text-[13px] inline-flex items-center gap-1.5">
               <Clock className="w-3 h-3" aria-hidden="true" />
               {readingTime}
             </span>
@@ -70,7 +70,7 @@ export async function SpotlightGuideCard() {
           uppercase tag above the title. */}
       <div className="p-5 sm:p-6">
         {post.category && (
-          <p className="text-[11px] uppercase tracking-[0.25em] text-cta font-sans font-medium mb-3">
+          <p className="text-[13px] text-cta font-sans font-medium mb-3">
             {post.category}
           </p>
         )}

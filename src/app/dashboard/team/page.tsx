@@ -39,10 +39,10 @@ export default async function TeamPage() {
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Title</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">Email</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">Featured</th>
+                <th className="text-left px-4 py-3 text-[13px] font-medium text-gray-500">Name</th>
+                <th className="text-left px-4 py-3 text-[13px] font-medium text-gray-500 hidden sm:table-cell">Title</th>
+                <th className="text-left px-4 py-3 text-[13px] font-medium text-gray-500 hidden md:table-cell">Email</th>
+                <th className="text-left px-4 py-3 text-[13px] font-medium text-gray-500 hidden lg:table-cell">Featured</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
@@ -54,7 +54,7 @@ export default async function TeamPage() {
                   <td className="px-4 py-3 text-gray-400 hidden md:table-cell">{agent.email}</td>
                   <td className="px-4 py-3 hidden lg:table-cell">
                     {agent.isFeatured && (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-amber-100 text-amber-700">
                         <Star className="w-3 h-3" /> Featured
                       </span>
                     )}

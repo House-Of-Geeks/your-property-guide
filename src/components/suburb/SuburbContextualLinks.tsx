@@ -97,7 +97,7 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
         {/* For Sale: the listing pages that have stock */}
         {forSaleLinks.length > 0 && (
           <div>
-            <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">For Sale</h3>
+            <h3 className="text-[13px] font-sans font-medium text-ink mb-3">For Sale</h3>
             <ul className="space-y-2">
               {forSaleLinks.map((l) => (
                 <li key={l.href}>
@@ -113,7 +113,7 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
         {/* For Rent: only when rentals are listed */}
         {availability.rent && (
           <div>
-            <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">For Rent</h3>
+            <h3 className="text-[13px] font-sans font-medium text-ink mb-3">For Rent</h3>
             <ul className="space-y-2">
               {[
                 { label: `Houses for rent in ${name}`,    href: `/rent?suburb=${slug}&propertyType=house` },
@@ -132,7 +132,7 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
 
         {/* Suburb */}
         <div>
-          <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">{name}</h3>
+          <h3 className="text-[13px] font-sans font-medium text-ink mb-3">{name}</h3>
           <ul className="space-y-2">
             {[
               { label: `${name} suburb profile`,  href: `/suburbs/${slug}` },
@@ -162,7 +162,7 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
 
         {/* Buying */}
         <div>
-          <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">Buying</h3>
+          <h3 className="text-[13px] font-sans font-medium text-ink mb-3">Buying</h3>
           <ul className="space-y-2">
             {buyingLinks.map((l) => (
               <li key={l.href}>
@@ -176,7 +176,7 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
 
         {/* Selling */}
         <div>
-          <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">Selling</h3>
+          <h3 className="text-[13px] font-sans font-medium text-ink mb-3">Selling</h3>
           <ul className="space-y-2">
             {sellingLinks.map((l) => (
               <li key={l.href}>
@@ -191,7 +191,7 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
         {/* Surrounding Suburbs */}
         {nearby.length > 0 && (
           <div>
-            <h3 className="text-xs font-sans font-medium text-ink uppercase tracking-[0.2em] mb-3">Surrounding Suburbs</h3>
+            <h3 className="text-[13px] font-sans font-medium text-ink mb-3">Surrounding Suburbs</h3>
             <ul className="space-y-2">
               {nearby.map((nearSlug) => (
                 <li key={nearSlug}>
@@ -208,11 +208,11 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
       {/* Compare prompt: drives users into the high-SEO-value compare page. */}
       {nearby.length > 0 && (
         <div className="mt-12 rounded-2xl border border-line bg-surface-warm p-6 sm:p-8">
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-2">
+          <p className="text-[13px] font-sans text-ink-subtle mb-2">
             Side by side
           </p>
           <h3 className="font-display text-2xl text-ink mb-3 leading-tight">
-            Compare {name} <span className="italic text-primary">vs</span> a nearby suburb
+            Compare {name} <span>vs</span> a nearby suburb
           </h3>
           <p className="font-sans text-sm text-ink-muted leading-relaxed mb-5 max-w-2xl">
             See median prices, growth, schools, walkability and risk side by side

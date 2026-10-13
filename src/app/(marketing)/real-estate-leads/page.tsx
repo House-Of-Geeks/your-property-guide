@@ -360,7 +360,7 @@ export default function RealEstateLeadsPage() {
       {/* ── Ticker ───────────────────────────────────────────────────── */}
       <div className={s.ticker} aria-hidden="true">
         <div className={s.tickerTrack}>
-          {[...tickerItems, ...tickerItems].map((t, i) => (
+          {tickerItems.map((t, i) => (
             <span key={i} className={s.tickerItem}>{t}</span>
           ))}
         </div>
@@ -568,7 +568,7 @@ export default function RealEstateLeadsPage() {
             <div data-reveal>
               <div className={`${s.eyebrow} ${s.eyebrowOnDark}`}>V. The part other pages leave out</div>
               <h2 className={s.darkTitle}>
-                Four things we will <em>not</em> promise you.
+                Four things we will <em>not</em> promise you
               </h2>
               <p className={s.darkIntro}>
                 Readers trust this site because it names the trade-offs. Agents
@@ -775,7 +775,7 @@ export default function RealEstateLeadsPage() {
             Exclusive · Pay per lead · No lock-in
           </div>
           <h2 className={s.closeTitle}>
-            Homeowners who did the reading, delivered to <em>one</em> agent.
+            Homeowners who did the reading, delivered to <em>one</em> agent
           </h2>
           <p className={s.closeText}>
             Register your suburbs and lead types. Within one business day you

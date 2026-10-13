@@ -100,11 +100,11 @@ export default async function ComparePage() {
             <Breadcrumbs items={[{ label: "Compare suburbs" }]} />
           </div>
 
-          <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-5">
+          <p className="text-[13px] font-sans text-ink-subtle mb-5">
             Compare suburbs head to head
           </p>
           <h1 className="font-display text-ink leading-[1.05] tracking-tight text-4xl sm:text-5xl lg:text-6xl mb-6 max-w-3xl">
-            Two suburbs, <span className="italic text-primary">one verdict</span>.
+            Two suburbs, <span>one verdict</span>
           </h1>
           <p className="font-sans text-lg text-ink-muted leading-relaxed max-w-2xl mb-3">
             Pick any two Australian suburbs and we&rsquo;ll line them up
@@ -132,11 +132,11 @@ export default async function ComparePage() {
       <section className="bg-surface-raised border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
           <div className="mb-8">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">
               Popular comparisons
             </p>
             <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-              Suburb pairings people search the most.
+              Suburb pairings people search the most
             </h2>
           </div>
 
@@ -147,13 +147,13 @@ export default async function ComparePage() {
                 href={`/suburbs/${aSlug}/vs/${bSlug}`}
                 className="group rounded-2xl border border-line bg-surface-warm p-6 hover:border-primary/40 hover:shadow-md transition-all"
               >
-                <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+                <p className="text-[13px] font-sans text-ink-subtle mb-3">
                   {subtitle}
                 </p>
                 <p className="font-display text-xl text-ink group-hover:text-primary transition-colors leading-tight">
-                  {aName} <span className="italic text-primary">vs</span> {bName}
+                  {aName} <span>vs</span> {bName}
                 </p>
-                <p className="mt-3 font-sans text-xs text-ink-subtle uppercase tracking-wider">
+                <p className="mt-3 font-sans text-[13px] text-ink-subtle">
                   Compare →
                 </p>
               </Link>
@@ -169,11 +169,11 @@ export default async function ComparePage() {
       <section className="bg-surface-warm border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
           <div className="mb-8">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">
               By state
             </p>
             <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-              Top comparisons in every state.
+              Top comparisons in every state
             </h2>
             <p className="mt-2 font-sans text-sm text-ink-muted max-w-2xl">
               Sourced from the most populous suburbs in each state and the
@@ -196,7 +196,7 @@ export default async function ComparePage() {
                         className="group inline-flex items-center gap-2 text-sm font-sans text-ink-muted hover:text-primary transition-colors"
                       >
                         <span className="text-ink font-medium">{p.aName}</span>
-                        <span className="italic text-ink-subtle">vs</span>
+                        <span className="text-ink-subtle">vs</span>
                         <span className="text-ink font-medium">{p.bName}</span>
                         <span className="text-ink-subtle text-xs">→</span>
                       </Link>
@@ -213,11 +213,11 @@ export default async function ComparePage() {
       <section className="bg-surface-warm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
           <div className="mb-8">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">
               Or start from a popular suburb
             </p>
             <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-              Top suburbs by state.
+              Top suburbs by state
             </h2>
             <p className="mt-2 font-sans text-sm text-ink-muted">
               Click any suburb to view its profile, then pick a comparison from
@@ -260,11 +260,11 @@ export default async function ComparePage() {
       <section className="bg-surface-raised border-t border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
           <div className="mb-8">
-            <p className="text-xs font-sans uppercase tracking-[0.25em] text-ink-subtle mb-3">
+            <p className="text-[13px] font-sans text-ink-subtle mb-3">
               What we compare
             </p>
             <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight">
-              Six dimensions, one verdict.
+              Six dimensions, one verdict
             </h2>
           </div>
 

@@ -74,7 +74,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
         suburb={suburb}
         eyebrow="Real estate agents in"
         breadcrumbLeaf="Real Estate Agents"
-        title={<>Real estate agents in <span className="italic text-primary">{sn}</span>.</>}
+        title={<>Real estate agents in <span>{sn}</span>.</>}
         subtitle={
           model.commission && model.medianHousePrice
             ? `What agents charge on ${sn}'s ${formatPriceFull(model.medianHousePrice)} median, how to choose an agent, and a free introduction to one local agent.`
@@ -87,9 +87,9 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
             with intent and suburb pre-set so the visitor lands on timeframe. */}
         <section id="match" className="scroll-mt-16 grid lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-5">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">Get matched</p>
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">Get matched</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-4">
-              One local agent, not a panel.
+              One local agent, not a panel
             </h2>
             <p className="font-sans text-base sm:text-lg text-ink-muted leading-[1.7] max-w-md">
               Tell us your timeframe and we&rsquo;ll introduce you to one local agent who sells in your area. If we don&rsquo;t have one yet, we&rsquo;ll tell you. Free, and no obligation to list.
@@ -114,9 +114,9 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
         {/* 2. What agents charge, worked on the suburb's own median. */}
         <section id="fees" className="scroll-mt-16 grid lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-5">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">Fees</p>
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">Fees</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-4">
-              What agents charge in {sn}.
+              What agents charge in {sn}
             </h2>
             <p className="font-sans text-base text-ink-muted leading-[1.7] max-w-md">
               Commission in {stateName} is set by agreement, not regulation. Agents typically charge{" "}
@@ -135,7 +135,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
           <div className="lg:col-span-7">
             {model.commission && model.medianHousePrice ? (
               <div className="rounded-2xl border border-line-warm bg-surface-warm p-6 sm:p-8">
-                <p className="text-xs font-sans uppercase tracking-wider text-ink-subtle mb-4">
+                <p className="text-[13px] font-sans text-ink-subtle mb-4">
                   On {sn}&rsquo;s median house price of {formatPriceFull(model.medianHousePrice)}
                 </p>
                 <div className="grid grid-cols-3 gap-4">
@@ -166,9 +166,9 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
 
         {/* 3. Choosing an agent here. */}
         <section id="choosing" className="scroll-mt-16">
-          <p className="font-display italic text-primary text-base mb-3 leading-none">Choosing</p>
+          <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">Choosing</p>
           <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-6">
-            Five things to ask an agent in {sn}.
+            Five things to ask an agent in {sn}
           </h2>
           <ol className="grid md:grid-cols-2 gap-4">
             {CHOOSING_POINTS.map((p, i) => (
@@ -191,9 +191,9 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
         {/* 4. Selling here right now: the price context and the appraisal. */}
         <section id="selling" className="scroll-mt-16 grid lg:grid-cols-12 gap-8 items-start">
           <div className="lg:col-span-5">
-            <p className="font-display italic text-primary text-base mb-3 leading-none">Selling in {sn}</p>
+            <p className="text-sm font-semibold text-ink-muted mb-3 leading-none">Selling in {sn}</p>
             <h2 className="font-display text-3xl sm:text-4xl text-ink leading-tight tracking-tight mb-4">
-              Where prices sit right now.
+              Where prices sit right now
             </h2>
             {model.medianHousePrice ? (
               <p className="font-sans text-base text-ink-muted leading-[1.7] max-w-md">
@@ -216,7 +216,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
         {/* Visible FAQ backing the FAQPage schema */}
         <section id="faq" className="scroll-mt-16">
           <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight tracking-tight mb-6">
-            Agents in {sn}: common questions.
+            Agents in {sn}: common questions
           </h2>
           <dl className="divide-y divide-line border-y border-line">
             {model.faqs.map((f) => (

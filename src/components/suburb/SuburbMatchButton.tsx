@@ -20,7 +20,7 @@ export function SuburbMatchButton({ suburbSlug, suburbName }: SuburbMatchButtonP
   return (
     <Link
       href={`/selling-guide?suburb=${suburbSlug}`}
-      className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-cta text-ink shadow-lg px-5 py-2.5 text-sm font-semibold hover:bg-cta-hover transition-colors"
+      className="pointer-events-auto inline-flex items-center gap-2 rounded-md bg-cta text-ink shadow-lg px-5 py-2.5 text-sm font-semibold hover:bg-cta-hover transition-colors"
     >
       <span className="inline-flex items-center justify-center w-1.5 h-1.5 rounded-full bg-ink shrink-0" aria-hidden="true" />
       Selling in {suburbName}? Free guide
