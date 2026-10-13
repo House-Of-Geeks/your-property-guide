@@ -1,4 +1,4 @@
-import type { ComponentType, ReactNode } from "react";
+import type { ComponentType, HTMLAttributes, ReactNode } from "react";
 import Image from "next/image";
 import { Breadcrumbs } from "@/components/layout";
 
@@ -71,7 +71,9 @@ export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside
     : size === "lg" ? "pt-12 sm:pt-16 lg:pt-24" : "pt-8 sm:pt-10 lg:pt-14";
   const bottom = size === "lg" ? "pb-16 sm:pb-24 lg:pb-32" : "pb-12 sm:pb-16 lg:pb-20";
   return (
-    <section className={`tone-dark relative isolate overflow-hidden bg-surface-inverse ${className}`}>
+    // No overflow-hidden: the fill image is already held by inset-0, and a
+    // suburb autocomplete in a form near the hero's foot must drop below it.
+    <section className={`tone-dark relative isolate bg-surface-inverse ${className}`}>
       {image && (
         <>
           <Image src={image.src} alt="" fill preload unoptimized={image.unoptimized} sizes="100vw" className={`-z-20 object-cover ${image.position}`} />
@@ -108,9 +110,14 @@ export function HeroTitle({ children, size = "md" }: { children: ReactNode; size
   return <h1 className={`${cls} font-bold text-ink max-w-3xl`}>{children}</h1>;
 }
 
-/** The standfirst under the hero's H1. */
-export function HeroLead({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <p className={`mt-6 text-lg sm:text-xl text-ink-muted leading-relaxed max-w-2xl ${className}`}>{children}</p>;
+/** The standfirst under the hero's H1. Other attributes (data-speakable-summary) pass through; a max-w- class replaces the default width. */
+export function HeroLead({ children, className = "", ...rest }: HTMLAttributes<HTMLParagraphElement>) {
+  const width = /(^|\s)max-w-/.test(className) ? "" : "max-w-2xl";
+  return (
+    <p {...rest} className={`mt-6 text-lg sm:text-xl text-ink-muted leading-relaxed ${width} ${className}`}>
+      {children}
+    </p>
+  );
 }
 
 interface BandProps {

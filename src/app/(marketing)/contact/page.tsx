@@ -100,12 +100,12 @@ export default function ContactPage() {
           <div className="mb-8 rounded-xl border border-line bg-white p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4">
             <div className="flex-1">
               <p className="text-sm font-semibold text-primary mb-1.5">
-                Looking for a specialist?
+                Looking for an agent?
               </p>
               <p className="text-sm sm:text-base text-ink leading-relaxed">
-                If you want to be connected with an agent, broker, accountant or
-                conveyancer for your situation, our match flow will get you there in
-                three quick questions, faster than a free-form message.
+                If you want to be connected with a local agent for your sale, our
+                match flow will get you there in three quick questions, faster than a
+                free-form message.
               </p>
             </div>
             <Link href="/find-an-expert" className={`${BUTTON_SECONDARY} shrink-0 justify-center whitespace-nowrap`}>
