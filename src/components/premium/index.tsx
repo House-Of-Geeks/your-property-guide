@@ -38,8 +38,12 @@ interface Crumb {
 interface PhotoHeroProps {
   /** A library photo behind the hero. Without one (or `image`) the hero is a plain charcoal band. */
   photo?: PhotoKey;
-  /** A page's own photo instead of a library one, e.g. a post's cover. */
-  image?: { src: string; position?: string };
+  /**
+   * A page's own photo instead of a library one, e.g. a post's cover. Blog
+   * covers pass `unoptimized`: they skip the image optimiser to keep Vercel
+   * transformation costs down (fe8c602).
+   */
+  image?: { src: string; position?: string; unoptimized?: boolean };
   breadcrumbs?: Crumb[];
   /** The main column: HeroTitle, HeroLead, points, a byline. */
   children: ReactNode;
@@ -56,7 +60,11 @@ interface PhotoHeroProps {
  * empty and it is preloaded as the page's largest image.
  */
 export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside, size = "md", className = "" }: PhotoHeroProps) {
-  const image = ownImage ? { src: ownImage.src, position: ownImage.position ?? "object-center" } : photo ? PHOTOS[photo] : null;
+  const image = ownImage
+    ? { src: ownImage.src, position: ownImage.position ?? "object-center", unoptimized: ownImage.unoptimized ?? false }
+    : photo
+      ? { ...PHOTOS[photo], unoptimized: false }
+      : null;
   // Less room on top when breadcrumbs already sit above the heading.
   const top = breadcrumbs
     ? size === "lg" ? "pt-6 sm:pt-10 lg:pt-16" : "pt-4 sm:pt-6 lg:pt-8"
@@ -66,7 +74,7 @@ export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside
     <section className={`tone-dark relative isolate overflow-hidden bg-surface-inverse ${className}`}>
       {image && (
         <>
-          <Image src={image.src} alt="" fill preload sizes="100vw" className={`-z-20 object-cover ${image.position}`} />
+          <Image src={image.src} alt="" fill preload unoptimized={image.unoptimized} sizes="100vw" className={`-z-20 object-cover ${image.position}`} />
           <div className="absolute inset-0 -z-10 bg-surface-inverse/70" aria-hidden="true" />
         </>
       )}

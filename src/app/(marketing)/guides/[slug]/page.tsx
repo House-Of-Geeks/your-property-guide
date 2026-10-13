@@ -139,7 +139,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
       <span hidden data-guide-audience={nextStep} />
 
       <PhotoHero
-        {...(heroCover ? { image: { src: heroCover } } : { photo: CATEGORY_PHOTO[post.category] ?? "paperwork" })}
+        {...(heroCover ? { image: { src: heroCover, unoptimized: true } } : { photo: CATEGORY_PHOTO[post.category] ?? "paperwork" })}
         breadcrumbs={[{ label: "Guides", href: "/guides" }, { label: post.title }]}
         className={CRUMB_TRUNCATE}
       >
