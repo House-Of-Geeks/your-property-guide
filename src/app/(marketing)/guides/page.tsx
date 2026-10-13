@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
+import { BUTTON_PRIMARY, BUTTON_SECONDARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { GuideCover } from "@/components/brand/GuideCover";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -38,7 +38,9 @@ export const metadata: Metadata = {
 const SECTIONS = orderSections(guidesBySection());
 const TOTAL_GUIDES = ALL_GUIDES.length;
 
-const SHELL = "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8";
+// The premium bands' measure (src/components/premium), for the strips
+// between them.
+const SHELL = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8";
 
 const STATE_SUFFIX = /-(nsw|vic|qld|wa|sa|tas|act|nt|victoria)$/;
 const STATE_LABEL: Record<string, string> = {
@@ -96,23 +98,19 @@ export default function GuidesHubPage() {
       />
       <BreadcrumbJsonLd items={[{ name: "Guides", url: "/guides" }]} />
 
-      <div className={SHELL}>
-        <div className="pt-2 sm:pt-4">
-          <Breadcrumbs items={[{ label: "Guides" }]} />
-        </div>
+      {/* Hero: what the page holds, over the street photo (the guides
+          serve buyers and sellers alike). */}
+      <PhotoHero photo="street" breadcrumbs={[{ label: "Guides" }]}>
+        <HeroTitle>Property guides for buyers and sellers</HeroTitle>
+        <HeroLead>
+          Plain-English guides to selling and buying property in Australia, checked by a named editor and dated.
+          {` ${TOTAL_GUIDES} guides and articles, free to read without signing up.`}
+        </HeroLead>
+      </PhotoHero>
 
-        <header className="max-w-3xl pt-4 sm:pt-8 pb-8 sm:pb-10">
-          <h1 className="font-display font-bold text-ink text-[2rem] leading-[1.08] tracking-[-0.03em] sm:text-5xl">
-            Property guides for buyers and sellers
-          </h1>
-          <p className="mt-4 text-[1.0625rem] sm:text-xl text-ink-muted leading-relaxed">
-            Plain-English guides to selling and buying property in Australia, checked by a named editor and dated.
-            {` ${TOTAL_GUIDES} guides and articles, free to read without signing up.`}
-          </p>
-        </header>
-
-        {/* The two free guides: the one next step every guide page offers. */}
-        <section aria-labelledby="free-guides" className="pb-12 sm:pb-14">
+      {/* The two free guides: the one next step every guide page offers. */}
+      <Band spacing="compact">
+        <section aria-labelledby="free-guides">
           <h2 id="free-guides" className="sr-only">The two free guides</h2>
           <div className="grid gap-4 md:grid-cols-2">
             <FreeGuideCard
@@ -132,10 +130,10 @@ export default function GuidesHubPage() {
             />
           </div>
         </section>
-      </div>
+      </Band>
 
       {/* Topic jump links */}
-      <nav aria-label="Guide topics" className="border-y border-line bg-surface-warm">
+      <nav aria-label="Guide topics" className="border-b border-line bg-surface-warm">
         <div className={`${SHELL} py-3.5`}>
           <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
             {SECTIONS.map(({ section, guides }) => (
@@ -143,7 +141,7 @@ export default function GuidesHubPage() {
                 <a href={`#${section.id}`} className="font-medium text-ink hover:underline underline-offset-4">
                   {section.label}
                 </a>{" "}
-                <span className="text-ink-muted tabular-nums">{guides.length}</span>
+                <span className="text-ink-muted">{guides.length}</span>
               </li>
             ))}
             <li>
@@ -153,29 +151,30 @@ export default function GuidesHubPage() {
         </div>
       </nav>
 
-      {/* Every guide, by section: selling first */}
-      <div className={`${SHELL} pb-6`}>
-        {SECTIONS.map((s, i) => (
-          <GuideSection key={s.section.id} {...s} lead={i === 0} />
-        ))}
+      {/* Every guide, by section: selling first, in bands that alternate
+          white and grey. */}
+      {SECTIONS.map((s, i) => (
+        <GuideSection key={s.section.id} {...s} lead={i === 0} tone={i % 2 === 0 ? "light" : "quiet"} />
+      ))}
 
-        <section id="tools" className="scroll-mt-24 border-t border-line py-12 sm:py-14">
-          <SectionHeading title="Calculators" blurb="Run the numbers before you talk to an agent, a lender or a conveyancer." />
-          <ul className="grid md:grid-cols-2 md:gap-x-12 border-t border-line md:border-t-0">
-            {TOOLS.map((t) => (
-              <li key={t.href} className="border-b border-line md:first:border-t md:[&:nth-child(2)]:border-t">
-                <RowLink href={t.href} title={t.title} description={t.description} />
-              </li>
-            ))}
-          </ul>
-          <p className="mt-5 text-sm">
-            <Link href="/tools" className="font-medium text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
-              Every calculator
-            </Link>
-          </p>
-        </section>
+      <Band id="tools" tone="dark" spacing="compact" className="scroll-mt-24">
+        <GuideSectionHeading title="Calculators" blurb="Run the numbers before you talk to an agent, a lender or a conveyancer." />
+        <ul className="grid md:grid-cols-2 md:gap-x-12 border-t border-line md:border-t-0">
+          {TOOLS.map((t) => (
+            <li key={t.href} className="border-b border-line md:first:border-t md:[&:nth-child(2)]:border-t">
+              <RowLink href={t.href} title={t.title} description={t.description} />
+            </li>
+          ))}
+        </ul>
+        <p className="mt-5 text-sm">
+          <Link href="/tools" className="font-medium text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
+            Every calculator
+          </Link>
+        </p>
+      </Band>
 
-        <p className="border-t border-line py-8 text-sm text-ink-muted leading-relaxed max-w-3xl">
+      <div className={SHELL}>
+        <p className="py-10 text-sm text-ink-muted leading-relaxed max-w-3xl">
           Our guides are general information, not financial, legal or tax advice. Check current grants, thresholds and
           rules with the state agency or a licensed professional before you rely on them.
         </p>
@@ -216,13 +215,8 @@ function FreeGuideCard({
           <p className="mt-2 text-[15px] text-ink-muted leading-relaxed">{body}</p>
         </div>
       </div>
-      <div className="mt-4 sm:pl-[108px]">
-        <Link
-          href={href}
-          className={`flex sm:inline-flex items-center justify-center gap-2 rounded-md px-5 py-3 sm:py-2.5 text-[15px] font-semibold ${
-            primary ? "bg-cta hover:bg-cta-hover text-white" : "border border-ink text-ink hover:bg-ink hover:text-white"
-          }`}
-        >
+      <div className="mt-5 sm:pl-[108px]">
+        <Link href={href} className={`${primary ? BUTTON_PRIMARY : BUTTON_SECONDARY} w-full sm:w-auto justify-center`}>
           {label} <ArrowRight className="w-4 h-4" aria-hidden="true" />
         </Link>
       </div>
@@ -230,17 +224,15 @@ function FreeGuideCard({
   );
 }
 
-function SectionHeading({ title, blurb, hub }: { title: string; blurb?: string; hub?: { href: string; label: string } }) {
+/** A section's H2 with its blurb beside it (the premium SectionHeading), then the persona hub link. */
+function GuideSectionHeading({ title, blurb, hub }: { title: string; blurb?: string; hub?: { href: string; label: string } }) {
   return (
-    <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
-      <div className="max-w-2xl">
-        <h2 className="font-display text-[1.625rem] sm:text-[2rem] font-bold text-ink leading-tight tracking-[-0.02em]">{title}</h2>
-        {blurb && <p className="mt-2 text-[15px] sm:text-base text-ink-muted leading-relaxed">{blurb}</p>}
-      </div>
+    <div className="mb-8 sm:mb-10">
+      <SectionHeading title={title} intro={blurb} size="md" />
       {hub && (
         <Link
           href={hub.href}
-          className="shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+          className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
         >
           {hub.label} <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
         </Link>
@@ -290,7 +282,7 @@ function splitSeries(guides: GuideEntry[]): { singles: GuideEntry[]; series: Ser
   return { singles: guides.filter((g) => !inSeries.has(g.slug)), series };
 }
 
-function GuideSection({ section, guides, lead }: GuideSectionWithGuides & { lead: boolean }) {
+function GuideSection({ section, guides, lead, tone }: GuideSectionWithGuides & { lead: boolean; tone: "light" | "quiet" }) {
   const statics = guides.filter((g) => g.kind === "guide");
   const articles = guides.filter((g) => g.kind === "article");
   const split = splitSeries(statics);
@@ -333,8 +325,8 @@ function GuideSection({ section, guides, lead }: GuideSectionWithGuides & { lead
   );
 
   return (
-    <section id={section.id} className={`scroll-mt-24 py-12 sm:py-14 ${lead ? "" : "border-t border-line"}`}>
-      <SectionHeading title={section.label} blurb={section.blurb} hub={hub} />
+    <Band id={section.id} tone={tone} spacing="compact" className="scroll-mt-24">
+      <GuideSectionHeading title={section.label} blurb={section.blurb} hub={hub} />
 
       {lead && seriesRows}
       {singles.length > 0 && (
@@ -363,6 +355,6 @@ function GuideSection({ section, guides, lead }: GuideSectionWithGuides & { lead
           </ul>
         </div>
       )}
-    </section>
+    </Band>
   );
 }

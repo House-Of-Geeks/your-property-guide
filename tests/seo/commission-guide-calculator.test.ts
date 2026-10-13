@@ -86,7 +86,8 @@ describe("rollout cohort", () => {
   it("the layout renders h1 when a guide sets it and falls back to the title", () => {
     const layout = readFileSync("src/components/guide/GuideArticleLayout.tsx", "utf8");
     expect(layout).toContain("const heading = frontmatter.h1 ?? frontmatter.title;");
-    expect(layout).toMatch(/<h1[^>]*>\s*\{heading\}\s*<\/h1>/);
+    // HeroTitle (src/components/premium) renders the page's h1.
+    expect(layout).toMatch(/<HeroTitle[^>]*>\s*\{heading\}\s*<\/HeroTitle>/);
   });
 });
 

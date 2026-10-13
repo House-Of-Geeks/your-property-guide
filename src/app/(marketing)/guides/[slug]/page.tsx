@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Breadcrumbs } from "@/components/layout";
+import { HeroLead, HeroTitle, PhotoHero, type PhotoKey } from "@/components/premium";
 import { ArticleJsonLd, BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
 import { BlogShareButtons } from "@/components/blog/BlogShareButtons";
 import { BlogCover } from "@/components/blog/BlogCover";
@@ -66,8 +66,24 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
 }
 
 // Same measure as GuideArticleLayout: a 40rem reading column and a 16rem
-// rail, centred.
-const SHELL = "mx-auto w-full max-w-[64rem] px-4 sm:px-6";
+// rail, in the premium bands' shell so the column lines up with the hero.
+const SHELL = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8";
+
+// A post without its own cover photo opens on the library photo for its
+// reader (BRAND.md §11); anything not listed gets the paperwork photo.
+const CATEGORY_PHOTO: Record<string, PhotoKey> = {
+  Selling: "selling",
+  "Buying Guide": "buying",
+  Investment: "investing",
+  "Market Update": "market",
+  News: "market",
+  "Suburb Guide": "street",
+};
+
+// As in GuideArticleLayout: one line of crumbs on phones, the current page
+// dropped there and truncated from tablet up.
+const CRUMB_TRUNCATE =
+  "[&_nav_ol]:flex-nowrap [&_nav_li:last-child]:hidden sm:[&_nav_li:last-child]:flex sm:[&_nav_li:last-child]:min-w-0 [&_nav_li:last-child_span]:min-w-0 [&_nav_li:last-child_span]:truncate";
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { slug } = await params;
@@ -91,13 +107,19 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const sellingPost = audience === "selling";
   const sections = sellingPost ? splitHtmlAfterFirstSection(processedContent) : null;
 
-  // A real photograph shows at every width. The typeset cover repeats the
-  // H1, so it shows as a slim band from tablet up and not at all on phones.
+  // The post's own cover photo opens the page behind the hero (a local file;
+  // anything else falls back to the library photo for the category). With
+  // no real cover, the typeset cover repeats the H1, so it shows as a slim
+  // band from tablet up and not at all on phones.
   const realCover = resolveBlogCoverPath(post.coverImage);
+  const heroCover = realCover?.startsWith("/") ? realCover : null;
 
   // Contents list the article's sections (h2); the h3s under them would
   // make the list longer than the article's first screen.
   const contents: GuideTOCEntry[] = toc.filter((t) => t.level === 2).map((t) => ({ id: t.id, label: t.text }));
+  // The body's top margin: none when it opens the column (the cover is in
+  // the hero, and the contents box is hidden on desktop or absent).
+  const bodyTop = heroCover ? (contents.length > 1 ? "mt-8 sm:mt-10 lg:mt-0" : "") : "mt-8 sm:mt-10";
   const keepReading = dedupe([
     ...blogReadNext(post.slug, post.category),
     ...relatedPosts.map((rp) => ({ title: rp.title, href: `/guides/${rp.slug}`, description: rp.excerpt })),
@@ -116,27 +138,25 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
       {/* Tells the phone bar (MobileBottomNav) which guide this reader gets. */}
       <span hidden data-guide-audience={nextStep} />
 
-      <div className={SHELL}>
-        <div className="pt-2 sm:pt-4 [&_ol]:flex-nowrap [&_li:last-child]:hidden sm:[&_li:last-child]:flex sm:[&_li:last-child]:min-w-0 [&_li:last-child_span]:min-w-0 [&_li:last-child_span]:truncate">
-          <Breadcrumbs items={[{ label: "Guides", href: "/guides" }, { label: post.title }]} />
-        </div>
-
-        <header className="max-w-[46rem] pt-4 sm:pt-8 pb-8">
+      <PhotoHero
+        {...(heroCover ? { image: { src: heroCover } } : { photo: CATEGORY_PHOTO[post.category] ?? "paperwork" })}
+        breadcrumbs={[{ label: "Guides", href: "/guides" }, { label: post.title }]}
+        className={CRUMB_TRUNCATE}
+      >
+        <header>
           <Link
             href={`/guides/category/${categoryToSlug(post.category)}`}
-            className="inline-block text-sm font-semibold text-ink-muted hover:text-ink underline-offset-4 hover:underline mb-3"
+            className="inline-block text-sm font-semibold text-ink-muted hover:text-ink underline-offset-4 hover:underline mb-4"
           >
             {post.category}
           </Link>
-          <h1 className="font-display font-bold text-ink text-[1.875rem] leading-[1.1] tracking-[-0.03em] sm:text-[2.375rem] lg:text-[2.625rem] lg:leading-[1.08]">
-            {post.title}
-          </h1>
+          <HeroTitle>{post.title}</HeroTitle>
           {/* Standfirst marked data-speakable-summary so voice assistants
               pick up this paragraph alongside the H1. */}
-          <p data-speakable-summary className="mt-4 text-[1.0625rem] sm:text-xl text-ink-muted leading-relaxed">
-            {post.excerpt}
-          </p>
-          <div className="mt-6">
+          <div data-speakable-summary>
+            <HeroLead>{post.excerpt}</HeroLead>
+          </div>
+          <div className="mt-8 max-w-2xl border-t border-line pt-6">
             <GuideByline
               author={{ name: post.author.name, image: post.author.image }}
               updatedAt={updatedAt}
@@ -146,40 +166,43 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             />
           </div>
         </header>
-      </div>
+      </PhotoHero>
 
-      <div className={`${SHELL} pb-16`}>
-        <div className="lg:grid lg:grid-cols-[minmax(0,40rem)_16rem] lg:justify-between lg:gap-x-16">
+      <div className={`${SHELL} pt-8 sm:pt-10 pb-16`}>
+        <div className="lg:grid lg:grid-cols-[minmax(0,40rem)_16rem] lg:gap-x-16 xl:gap-x-24">
           <article className={`min-w-0 ${articleScope.scope}`}>
-            <div
-              className={`relative overflow-hidden rounded-xl border border-line ${
-                realCover ? "aspect-[16/9]" : "hidden sm:block aspect-[3/1]"
-              }`}
-            >
-              <BlogCover
-                slug={post.slug}
-                title={post.title}
-                category={post.category}
-                coverImage={post.coverImage}
-                sizes="(max-width: 768px) 100vw, 640px"
-                priority
-              />
-            </div>
+            {/* The cover photo now sits behind the hero; a remote cover, or
+                the typeset fallback when there is no real one, stays here. */}
+            {!heroCover && (
+              <div
+                className={`relative overflow-hidden rounded-xl border border-line ${
+                  realCover ? "aspect-[16/9]" : "hidden sm:block aspect-[3/1]"
+                }`}
+              >
+                <BlogCover
+                  slug={post.slug}
+                  title={post.title}
+                  category={post.category}
+                  coverImage={post.coverImage}
+                  sizes="(max-width: 768px) 100vw, 640px"
+                />
+              </div>
+            )}
 
             {contents.length > 1 && (
-              <div className="lg:hidden mt-2 sm:mt-6">
+              <div className={`lg:hidden ${heroCover ? "" : "mt-2 sm:mt-6"}`}>
                 <GuideTOC entries={contents} title="In this article" />
               </div>
             )}
 
             {sections ? (
               <>
-                <div className="mt-8 sm:mt-10 prose-ypg" dangerouslySetInnerHTML={{ __html: sections[0] }} />
+                <div className={`${bodyTop} prose-ypg`} dangerouslySetInnerHTML={{ __html: sections[0] }} />
                 <GuideStartInline from={post.slug} />
                 <div className="prose-ypg" dangerouslySetInnerHTML={{ __html: sections[1] }} />
               </>
             ) : (
-              <div className="mt-8 sm:mt-10 prose-ypg" dangerouslySetInnerHTML={{ __html: processedContent }} />
+              <div className={`${bodyTop} prose-ypg`} dangerouslySetInnerHTML={{ __html: processedContent }} />
             )}
 
             {/* The one end-of-article action, routed by the post's category. */}
