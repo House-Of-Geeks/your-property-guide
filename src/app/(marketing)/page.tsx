@@ -142,6 +142,17 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Photo band: a real-looking Australian street, full bleed. */}
+      <div className="relative h-[200px] sm:h-[300px] lg:h-[380px] border-b border-line bg-surface-sunken">
+        <Image
+          src="/images/photos/home-street.jpg"
+          alt="A street of timber Queenslander houses with a jacaranda in flower"
+          fill
+          sizes="100vw"
+          className="object-cover object-[50%_60%]"
+        />
+      </div>
+
       {/* 2. How it works: the real sequence a seller goes through. */}
       <section className="border-b border-line bg-surface-warm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
@@ -251,9 +262,15 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="lg:col-span-4 hidden lg:block">
-              <div className="ml-auto max-w-[220px] text-[22px] rotate-[2deg]">
-                <GuideCover guide="buying" className="ring-1 ring-white/15" />
+            <div className="lg:col-span-4 hidden md:block">
+              <div className="relative aspect-[3/2] rounded-xl overflow-hidden">
+                <Image
+                  src="/images/photos/open-home.jpg"
+                  alt="A couple walking through a house at an open inspection"
+                  fill
+                  sizes="(min-width: 1024px) 33vw, 100vw"
+                  className="object-cover"
+                />
               </div>
             </div>
           </div>
@@ -263,8 +280,17 @@ export default function HomePage() {
       {/* 6. How we're paid, in plain words. */}
       <section className="border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 grid lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-4 grid gap-6 content-start">
             <h2 className="text-3xl sm:text-4xl text-ink">How we&rsquo;re paid</h2>
+            <div className="relative aspect-[3/2] rounded-xl overflow-hidden hidden lg:block">
+              <Image
+                src="/images/photos/appraisal-kitchen.jpg"
+                alt="A homeowner and a local agent talking through an appraisal at the kitchen bench"
+                fill
+                sizes="33vw"
+                className="object-cover"
+              />
+            </div>
           </div>
           <div className="lg:col-span-8 grid gap-4 text-lg text-ink-muted leading-relaxed max-w-3xl">
             <p>
