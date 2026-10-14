@@ -22,11 +22,12 @@ const matches = (pathname: string, p: string) => pathname === p || pathname.star
 const barEntry = (pathname: string) =>
   `bar-${pathname.replace(/^\/+|\/+$/g, "").replace(/[^a-z0-9]+/gi, "-").toLowerCase() || "home"}`.slice(0, 100);
 
+// Education first: the free guide for the page's move, then an agent.
 const ACTIONS = {
-  buying: { plan: "Buying plan", help: "Buyer’s agent?", helpHref: "/buyers-agents" },
-  selling: { plan: "Selling plan", help: "Get an appraisal", helpHref: "/get-help?service=selling-agent" },
-  "buying-and-selling": { plan: "Moving plan", help: "Get help", helpHref: "/get-help?service=both" },
-  none: { plan: "Make a plan", help: "Get help", helpHref: "/get-help" },
+  buying: { plan: "Free buying guide", planHref: "/buying-guide", help: "Find a buyer’s agent", helpHref: "/get-help?service=buyers-agent" },
+  selling: { plan: "Free selling guide", planHref: "/selling-guide", help: "Find an agent", helpHref: "/get-help?service=selling-agent" },
+  "buying-and-selling": { plan: "Moving plan", planHref: "/plan?j=buying-and-selling", help: "Find an agent", helpHref: "/get-help?service=both" },
+  none: { plan: "Free guides", planHref: "/guides", help: "Find an agent", helpHref: "/get-help" },
 } as const;
 
 export function MobileBottomNav() {
@@ -62,7 +63,7 @@ export function MobileBottomNav() {
   const move = moveForPath(pathname) ?? pageAudience;
   const a = ACTIONS[move ?? "none"];
   const from = barEntry(pathname);
-  const planHref = move ? `/plan?j=${move}` : "/plan";
+  const planHref = a.planHref;
   const helpHref = a.helpHref.includes("?") ? `${a.helpHref}&from=${from}` : a.helpHref;
 
   return (

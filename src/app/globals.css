@@ -667,3 +667,216 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   color: var(--ink);
   font-weight: 400;
 }
+
+/* ── Interactive parts (v5, 14 Oct 2026) ────────────────────────────────
+   Things people use, not read: the 3D guide books, the live number tools
+   and the switches that drive them (src/components/interactive). Motion
+   here only answers the person's own pointer, tap or drag. */
+
+/* 3D guide book. --bw sets the width; the height follows the cover
+   (1440:2036). It turns with the pointer (--ry/--rx set inline) and opens
+   on "Look inside" (data-open). Positive rotateY brings the spine round. */
+.book3d {
+  --bt: calc(var(--bw) * 0.09);
+  width: var(--bw);
+  height: calc(var(--bw) * 1.4139);
+  position: relative;
+  flex-shrink: 0;
+  perspective: calc(var(--bw) * 7);
+}
+.book3d__body {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, -6deg)) rotateY(var(--ry, var(--turn)));
+  transition: transform 700ms var(--ease-out-quint);
+}
+.book3d[data-open="true"] .book3d__body {
+  transform: translateX(calc(var(--bw) * 0.5)) rotateX(-4deg) rotateY(0deg);
+  transition-duration: 1000ms;
+}
+.book3d__cover, .book3d__page, .book3d__back, .book3d__spine, .book3d__edge, .book3d__top {
+  position: absolute;
+  display: block;
+}
+.book3d__cover {
+  inset: 0;
+  transform-origin: left center;
+  transform: translateZ(calc(var(--bt) / 2));
+  transform-style: preserve-3d;
+  transition: transform 1000ms var(--ease-in-out-cubic);
+}
+.book3d[data-open="true"] .book3d__cover {
+  transform: translateZ(calc(var(--bt) / 2)) rotateY(-160deg);
+}
+.book3d__cover-front, .book3d__cover-inside {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.book3d__cover-front {
+  border-radius: 2px 5px 5px 2px;
+  background: var(--book);
+}
+.book3d__cover-front img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+}
+/* The hinge crease beside the spine. */
+.book3d__cover-front::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 4.5%;
+  width: 2px;
+  background: rgb(0 0 0 / 0.18);
+  box-shadow: 1px 0 0 rgb(255 255 255 / 0.14);
+}
+.book3d__cover-inside {
+  transform: rotateY(180deg);
+  border-radius: 5px 2px 2px 5px;
+  background: #efedea;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.2em;
+  padding: 10%;
+  font-size: calc(var(--bw) * 0.048);
+  color: #5f646b;
+}
+.book3d__cover-inside span:first-child { font-weight: 700; color: #16191d; }
+.book3d__page {
+  top: 3px;
+  bottom: 3px;
+  left: 0;
+  right: 4px;
+  transform: translateZ(calc(var(--bt) / 2 - 1px));
+  background: #fff;
+  border-radius: 0 3px 3px 0;
+  padding: 12% 9% 9% 11%;
+  color: #16191d;
+  text-align: left;
+  box-shadow: inset 8px 0 12px -8px rgb(0 0 0 / 0.22);
+}
+.book3d__contents-title {
+  font-size: calc(var(--bw) * 0.066);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.book3d__contents {
+  margin-top: 9%;
+  display: grid;
+  gap: calc(var(--bw) * 0.026);
+}
+.book3d__contents li {
+  display: grid;
+  grid-template-columns: 1.7em 1fr;
+  font-size: calc(var(--bw) * 0.043);
+  line-height: 1.25;
+}
+.book3d__contents li span { color: #a8401a; font-weight: 700; }
+.book3d__contents li { transition: background-color 200ms; border-radius: 2px; margin: 0 -4%; padding: 0 4%; }
+.book3d__contents li[data-on] { background: #fbebe4; }
+.book3d__back {
+  inset: 0;
+  transform: translateZ(calc(var(--bt) / -2)) rotateY(180deg);
+  background: var(--spine);
+  border-radius: 5px 2px 2px 5px;
+}
+.book3d__spine {
+  top: 0;
+  bottom: 0;
+  left: calc(var(--bt) / -2);
+  width: var(--bt);
+  transform: rotateY(-90deg);
+  background: var(--spine);
+}
+.book3d__edge {
+  top: 3px;
+  bottom: 3px;
+  width: calc(var(--bt) - 2px);
+  left: calc(var(--bw) - 4px - (var(--bt) - 2px) / 2);
+  transform: rotateY(90deg);
+  background: repeating-linear-gradient(90deg, #fbfaf8 0 2px, #e2dfda 2px 3px);
+}
+.book3d__top {
+  left: 0;
+  right: 4px;
+  height: calc(var(--bt) - 2px);
+  top: calc((var(--bt) - 2px) / -2 + 3px);
+  transform: rotateX(90deg);
+  background: repeating-linear-gradient(0deg, #fbfaf8 0 2px, #e2dfda 2px 3px);
+}
+.book3d__shadow {
+  position: absolute;
+  left: 2%;
+  right: -12%;
+  bottom: -4%;
+  height: 8%;
+  border-radius: 50%;
+  background: rgb(22 25 29 / 0.38);
+  filter: blur(calc(var(--bw) * 0.055));
+  transition: transform 900ms var(--ease-out-quint);
+}
+.book3d[data-open="true"] .book3d__shadow { transform: translateX(-22%) scaleX(1.9); }
+
+/* Range slider: a roof-tile fill to the thumb (--fill set inline). */
+.ypg-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 32px;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.ypg-range:focus-visible { outline: none; }
+.ypg-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--cta) var(--fill, 50%), var(--line-strong) var(--fill, 50%));
+}
+.ypg-range::-moz-range-track { height: 6px; border-radius: 3px; background: var(--line-strong); }
+.ypg-range::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--cta); }
+.ypg-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -10px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--cta);
+  box-shadow: 0 2px 6px rgb(22 25 29 / 0.25);
+  transition: transform 160ms var(--ease-out-quint);
+}
+.ypg-range::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--cta);
+  box-shadow: 0 2px 6px rgb(22 25 29 / 0.25);
+}
+.ypg-range:active::-webkit-slider-thumb { transform: scale(1.12); }
+.ypg-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgb(194 74 28 / 0.3); }
+.ypg-range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px rgb(194 74 28 / 0.3); }
+
+/* A result that changed: a short settle so the eye catches it. */
+@keyframes ypg-swap {
+  from { opacity: 0; transform: translateY(6px); }
+}
+.swap-in { animation: ypg-swap 320ms var(--ease-out-quint) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .book3d__body, .book3d__cover, .book3d__shadow { transition: none; }
+  .swap-in { animation: none; }
+  .ypg-range::-webkit-slider-thumb { transition: none; }
+}

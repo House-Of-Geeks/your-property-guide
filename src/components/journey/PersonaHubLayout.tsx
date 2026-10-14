@@ -11,6 +11,7 @@ import { PERSONA_HUB_CONTENT } from "@/lib/persona-hub-content";
 import { hubGuideGroups, hubGuideList } from "@/lib/guides/hub-guides";
 import { guideFunnelHref } from "@/lib/guide-funnel";
 import { HelpBand } from "@/components/journeys/ServiceSections";
+import { NumbersPanel, type NumbersTool } from "@/components/interactive/NumbersPanel";
 import {
   BUTTON_PRIMARY,
   BUTTON_SECONDARY,
@@ -106,6 +107,25 @@ const plainHeading = (heading: string) => heading.replace(/\*([^*]+)\*/g, "$1").
 // already carries those.
 const HERO_ACTION_HREFS = new Set(["/selling-guide", "/buying-guide", "/appraisal"]);
 
+// The live number tools each hub opens with (v5, 14 Oct 2026).
+const HUB_TOOLS: Record<PersonaId, readonly NumbersTool[]> = {
+  "first-home": ["duty", "borrow"],
+  selling: ["sell"],
+  upgrading: ["sell", "duty", "borrow"],
+  investing: ["duty", "borrow"],
+  renovating: ["sell"],
+};
+
+// One line under each hub's heading (14 Oct 2026): the long answer
+// paragraph now opens the briefing band instead.
+const HUB_LEDE: Record<PersonaId, string> = {
+  "first-home": "Your budget, the grants and schemes in your state, and every step to the keys.",
+  selling: "Know your costs and your price, choose the right agent, and sell with a plan.",
+  upgrading: "Selling one home and buying the next: the order, the money in between, and the timing.",
+  investing: "Yield, growth, tax and holding costs, worked out before you buy.",
+  renovating: "What renovations cost, what adds value, and what to leave alone before you sell.",
+};
+
 export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
   const persona = getPersonaById(personaId);
   if (!persona) return null;
@@ -150,29 +170,9 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
 
       {/* Hero: the answer and the one action on the left, the three first
           reads on the right, over the hub's photo. */}
-      <PhotoHero
-        photo={PERSONA_PHOTO[personaId]}
-        aside={
-          <nav aria-label="Start here">
-            <h2 className="text-sm font-semibold text-ink mb-2">Start here</h2>
-            <ul className="border-t border-line">
-              {persona.startingPoints.map((sp) => (
-                <li key={sp.href} className="border-b border-line">
-                  <Link href={sp.href} className="group flex items-start justify-between gap-3 py-4">
-                    <span className="min-w-0">
-                      <span className="block text-lg font-semibold text-ink group-hover:underline underline-offset-4">{sp.label}</span>
-                      <span className="block mt-1 text-sm text-ink-muted leading-snug">{sp.description}</span>
-                    </span>
-                    <ArrowRight className="w-4 h-4 mt-1.5 shrink-0 text-ink-subtle group-hover:text-ink" aria-hidden="true" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        }
-      >
+      <PhotoHero photo={PERSONA_PHOTO[personaId]} size="lg" book={isBuyingHub ? "buying" : "selling"} bookHref={guideHref}>
         <HeroTitle>{persona.hubHeading}</HeroTitle>
-        <HeroLead>{answer}</HeroLead>
+        <HeroLead>{HUB_LEDE[personaId]}</HeroLead>
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3">
           <Link href={`/plan?j=${isBuyingHub ? "buying" : "selling"}`} className={`${BUTTON_PRIMARY} justify-center`}>
             {isBuyingHub ? "Make a buying plan" : "Make a selling plan"}
@@ -187,15 +187,41 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
         </p>
       </PhotoHero>
 
-      {/* The rest of the briefing: plain-English depth on what the persona
-          needs to understand (the ranking body of the hub). */}
+      {/* Run your numbers: the live tools for this move, straight under the hero. */}
+      <Band tone="quiet" spacing="compact">
+        <SectionHeading size="md" title="Run your numbers" intro="Drag the sliders and the answer updates as you go. Nothing you enter leaves this page." />
+        <div className="mt-8 sm:mt-10">
+          <NumbersPanel tools={HUB_TOOLS[personaId]} from={`hub-${personaId}`} />
+        </div>
+      </Band>
+
+      {/* Start here: the three first reads, as cards. */}
+      <Band spacing="compact">
+        <h2 className="text-2xl sm:text-3xl text-ink">Start here</h2>
+        <ul className="mt-6 grid gap-4 md:grid-cols-3">
+          {persona.startingPoints.map((sp) => (
+            <li key={sp.href}>
+              <Link href={sp.href} className="group flex h-full flex-col rounded-2xl bg-surface-warm p-6 transition-colors hover:bg-surface-warm-sunken">
+                <span className="text-xl font-bold text-ink">{sp.label}</span>
+                <span className="mt-2 text-base text-ink-muted leading-relaxed">{sp.description}</span>
+                <span className="mt-auto pt-5 inline-flex items-center gap-1.5 font-semibold text-ink">
+                  Open <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Band>
+
+      {/* The rest of the briefing: depth on what the persona needs to
+          understand (the ranking body of the hub), opening with the answer. */}
       {content && (
         <Band tone={tone("briefing")}>
           <div className="max-w-3xl">
             <p className="text-sm font-semibold text-ink-muted mb-4">{content.deepDive.eyebrow}</p>
             <SectionHeading title={plainHeading(content.deepDive.heading)} />
             <div className="mt-10 space-y-5">
-              {briefing.map((para, i) => (
+              {[answer, ...briefing].map((para, i) => (
                 <p key={i} className="text-base sm:text-lg text-ink leading-[1.7]">
                   {para}
                 </p>

@@ -18,19 +18,11 @@
 // review proposals for you, or manage a sale through to settlement. If any of
 // that becomes a real, staffed service, change it here first.
 
-/** The page-one promise. */
+/** The page-one promise (Concierge homepage, 14 Oct 2026). */
 export const PROMISE = {
-  headline: "Make your next property move with confidence",
-  support:
-    "Understand the process, work out your costs and know what to do next. When you want personal help, we’ll introduce you to a suitable local agent, with your permission.",
+  headline: "Buy or sell property with confidence",
+  support: "Free guides and tools for every step. And when you’re ready, a proven local agent, checked by us.",
 } as const;
-
-/** The three reassurances that sit under the promise and beside forms. */
-export const REASSURANCES = [
-  { title: "Free guides and tools", body: "Read every guide and use every calculator without signing up." },
-  { title: "Introductions only with your permission", body: "Nobody hears about you unless you ask us to introduce you and tick the box." },
-  { title: "Clear about how we’re paid", body: "Agents we introduce pay us a fee. You pay us nothing, and it doesn’t change what you pay them." },
-] as const;
 
 /**
  * How soon someone hears back, said the same way everywhere. Participating
@@ -80,20 +72,20 @@ export const INTRODUCTION_STEPS = [
  */
 export const PARTNER_CHECKS = [
   {
-    title: "A current licence",
-    body: "We look the agent up on their state’s licence register before they join, and you can too (links below).",
+    title: "Proven local sales results",
+    body: "We review their recent sales in the suburbs they want introductions for, not just an office nearby.",
   },
   {
-    title: "Recent local results",
-    body: "We review their recent sales or purchases in the suburbs they want introductions for.",
-  },
-  {
-    title: "What past clients say",
+    title: "Strong reviews from past clients",
     body: "We read their reviews from past sellers or buyers, not just the ones they choose to show.",
   },
   {
-    title: "A conversation with our team",
-    body: "We talk to every agent about how they work before they join, and they agree to contact you promptly and tell us what happened.",
+    title: "Licensed, with a clean record",
+    body: "We look them up on their state’s licence register before they join, and you can too (links below).",
+  },
+  {
+    title: "Interviewed by our team",
+    body: "We talk to every agent about how they work before they join. They agree to contact you promptly and tell us what happened.",
   },
 ] as const;
 

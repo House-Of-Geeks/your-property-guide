@@ -7,6 +7,7 @@ import { Faq } from "@/components/guide";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { SERVICES } from "@/lib/service-model";
+import { NumbersPanel } from "@/components/interactive/NumbersPanel";
 
 // /buying: where buyers start (Oct 2026). Replaces the old /buy listings page
 // (legacy demo listings, redirected here). What to do at each stage, the
@@ -97,37 +98,39 @@ export default function BuyingHubPage() {
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Buying", url: "/buying" }]} />
-      <PhotoHero
-        photo="buying"
-        breadcrumbs={[{ label: "Buying" }]}
-        aside={
-          <nav aria-label="Start here">
-            <h2 className="text-sm font-semibold text-ink mb-2">Start here</h2>
-            <ul className="border-t border-line">
-              {START.map((s) => (
-                <li key={s.href} className="border-b border-line">
-                  <Link href={s.href} className="group flex items-start justify-between gap-3 py-4">
-                    <span className="min-w-0">
-                      <span className="block text-lg font-semibold text-ink group-hover:underline underline-offset-4">{s.label}</span>
-                      <span className="block mt-1 text-sm text-ink-muted leading-snug">{s.note}</span>
-                    </span>
-                    <ArrowRight className="w-4 h-4 mt-1.5 shrink-0 text-ink-subtle group-hover:text-ink" aria-hidden="true" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        }
-      >
+      <PhotoHero photo="buying" breadcrumbs={[{ label: "Buying" }]} size="lg" book="buying" bookHref="/buying-guide?from=buying">
         <HeroTitle>Buying property: where to start</HeroTitle>
-        <HeroLead>
-          {`Work out your budget and the help you’re eligible for, get pre-approval, inspect with a checklist, and know the contract rules in your state before you offer. Everything here is free and needs no sign-up.`}
-        </HeroLead>
+        <HeroLead>{`Your budget, the help you qualify for, and every step from pre-approval to the keys.`}</HeroLead>
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3">
           <Link href="/plan?j=buying" className={`${BUTTON_PRIMARY} justify-center`}>Make a buying plan</Link>
           <Link href="/buying-guide?from=buying" className={`${BUTTON_SECONDARY} justify-center`}>Free buying guide (PDF)</Link>
         </div>
+        <p className="mt-4 text-sm text-ink-muted">Free to read and use, no sign-up.</p>
       </PhotoHero>
+
+      <Band spacing="compact">
+        <h2 className="text-2xl sm:text-3xl text-ink">Start here</h2>
+        <ul className="mt-6 grid gap-4 md:grid-cols-3">
+          {START.map((s) => (
+            <li key={s.href}>
+              <Link href={s.href} className="group flex h-full flex-col rounded-2xl bg-surface-warm p-6 transition-colors hover:bg-surface-warm-sunken">
+                <span className="text-xl font-bold text-ink">{s.label}</span>
+                <span className="mt-2 text-base text-ink-muted leading-relaxed">{s.note}</span>
+                <span className="mt-auto pt-5 inline-flex items-center gap-1.5 font-semibold text-ink">
+                  Open <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Band>
+
+      <Band tone="quiet" spacing="compact">
+        <SectionHeading size="md" title="Run your numbers" intro="Drag the sliders and the answer updates as you go. Nothing you enter leaves this page." />
+        <div className="mt-8 sm:mt-10">
+          <NumbersPanel tools={["duty", "borrow"]} from="hub-buying" />
+        </div>
+      </Band>
 
       <Band spacing="compact">
         <SectionHeading title="Buying, stage by stage" intro="The tools and guides that matter at each point, in order." />

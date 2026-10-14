@@ -13,6 +13,7 @@ import { NextStepCard } from "@/components/journeys/NextStepCard";
 import { nextStepFor } from "@/lib/next-steps";
 import { GuideAudienceProvider } from "./GuideAudienceContext";
 import { GuideStartInline } from "./GuideStartInline";
+import { ReadingProgress } from "@/components/interactive/ReadingProgress";
 import { Sources } from "./Sources";
 import { splitAfterFirstSection } from "./split-first-section";
 import articleScope from "./article-scope.module.css";
@@ -133,6 +134,7 @@ export function GuideArticleLayout({
         author={frontmatter.author}
         reviewedBy={frontmatter.reviewedBy}
       />
+      <ReadingProgress />
       {/* Tells the phone bar (MobileBottomNav) which guide this reader gets. */}
       {nextStep && <span hidden data-guide-audience={nextStep} />}
 
@@ -143,6 +145,8 @@ export function GuideArticleLayout({
         photo={frontmatter.persona ? HERO_PHOTO[frontmatter.persona] : "paperwork"}
         breadcrumbs={breadcrumbItems}
         className={CRUMB_TRUNCATE}
+        book={nextStep ?? undefined}
+        bookHref={nextStep ? `/${nextStep}-guide?from=${from}` : undefined}
       >
         <header>
           {persona && (

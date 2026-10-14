@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 
@@ -12,6 +11,8 @@ import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } 
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { StickyGuideBar } from "./StickyGuideBar";
+import { Book3D } from "@/components/interactive/Book3D";
+import { GuideContents } from "@/components/interactive/GuideContents";
 
 const META_TITLE = "Free guide to selling your property in Australia (2026)";
 const META_DESCRIPTION =
@@ -34,18 +35,6 @@ export const metadata: Metadata = {
   },
 };
 
-const CHAPTERS = [
-  { title: "Is now the right time to sell?", sub: "Market conditions, seasonality, sell-first vs buy-first" },
-  { title: "What your property is really worth", sub: "Appraisals vs valuations, how agents price, underquoting traps" },
-  { title: "The real cost of selling", sub: "Commission by state, marketing, conveyancing, the lot" },
-  { title: "Preparing your property", sub: "The fixes that pay for themselves, and the ones that don't" },
-  { title: "Choosing your agent", sub: "The 10 interview questions, fee negotiation, agreement types" },
-  { title: "Auction vs private treaty vs off-market", sub: "Which method fits your property and state" },
-  { title: "Marketing that actually sells", sub: "Portals, photography, copy, open homes" },
-  { title: "Offers, negotiation and exchange", sub: "Cooling-off, conditions, reading buyer signals" },
-  { title: "Legals and settlement", sub: "Contracts, vendor statements, conveyancer vs solicitor" },
-  { title: "Your 12-week selling timeline", sub: "A printable week-by-week checklist" },
-];
 
 const FAQS = [
   {
@@ -81,13 +70,9 @@ function GuidePitch() {
   return (
     <>
       <div className="flex items-start gap-5 sm:gap-6">
-        <Image
-          src="/images/guide/selling-guide-cover.png"
-          alt="The Complete Guide to Selling Your Property in Australia, 2026 edition"
-          width={168}
-          height={238}
-          className="block shrink-0 w-[88px] sm:w-[132px] lg:w-[150px] h-auto rounded-md shadow-[0_12px_28px_rgb(22_25_29/0.28)]"
-        />
+        <div className="shrink-0 pl-1 pt-1">
+          <Book3D guide="selling" turn={18} className="[--bw:84px] sm:[--bw:120px] lg:[--bw:136px]" />
+        </div>
         <ul className="space-y-3">
           {[
             "The questions to ask every agent before you sign",
@@ -212,18 +197,9 @@ export default function SellingGuidePage() {
         <div className="max-w-5xl">
           <SectionHeading title="Ten chapters, no filler" />
 
-          {/* CSS columns so chapters 1 to 5 read down the left column. */}
-          <ol className="mt-10 sm:mt-12 sm:columns-2 sm:gap-x-10 border-b border-line">
-            {CHAPTERS.map((c, i) => (
-              <li key={c.title} className="flex items-start gap-4 border-t border-line py-4 break-inside-avoid">
-                <span className="w-6 shrink-0 text-base font-semibold text-ink-subtle leading-6">{i + 1}</span>
-                <div>
-                  <p className="text-base font-semibold text-ink leading-6">{c.title}</p>
-                  <p className="mt-0.5 text-sm text-ink-muted leading-snug">{c.sub}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <div className="mt-10 sm:mt-12">
+            <GuideContents guide="selling" />
+          </div>
 
           <div className="mt-10">
             <p className="text-base text-ink-muted mb-3">

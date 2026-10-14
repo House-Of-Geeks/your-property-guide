@@ -2,7 +2,7 @@
 
 The site is now organised around one question: **what should I do next, and who can help me do it well?** Education comes first and is free with no sign-up; a personal introduction is a separate, explicit choice.
 
-Promise: *Make your next property move with confidence.* Copy for every promise lives in `src/lib/service-model.ts`.
+Promise: *Buy or sell property with confidence.* Copy for every promise lives in `src/lib/service-model.ts`.
 
 ## The two paths
 
@@ -30,8 +30,9 @@ Duplicate protection: each form sends a `requestKey` (unique in the DB); a repea
 
 ## What changed for people
 
-- **Homepage**: promise, three ways in (buying, selling, both) on the first phone screen, starting questions (costs, timing, process, choosing help), tools and guides per move, the plan builder inline, how introductions work, why the content can be trusted (process, not claims), and a clear ask for personal help.
-- **Navigation**: Buying, Selling, Guides and tools, Get help, About (how we're paid, how we choose agents, for agents). The header button and phone bar offer a plan for the page's move; the phone bar hides on form pages and while typing.
+- **Homepage** (redone after review, v5): the light "Buy or sell property with confidence" first screen with the two guides as 3D books on a photo, and one switch (I'm selling, I'm buying, Both) that swaps the photo, the front book and the two next steps (free guide, then an agent). Every band below is something to use and follows the switch: run your numbers (cost to sell, stamp duty, borrowing, live), your next three steps (a plan that rewrites as you tap), look inside the guides (books that open to their contents), and find your agent (kind of agent plus suburb, straight into `/get-help`), then who writes the guides and the latest posts. See BRAND.md §13.
+- **Hubs, guide pages and articles** (v5): heroes are light with a crisp photo and the move's guide standing on it as a book; hubs open with the live number tools; the guide pages' contents open the book to the chapter you point at; articles show reading progress.
+- **Navigation**: Buying, Selling, Guides and tools, Find an agent, About (how we're paid, how we choose agents, for agents). The header button and phone bar offer the free guide for the page's move and a way to an agent; the phone bar hides on form pages and while typing.
 - **New pages**: `/plan`, `/plan/result`, `/get-help`, `/buying`, `/buying-and-selling`, `/buyers-agents`, `/tools/agent-proposal-worksheet`, `/feedback/[token]`, `/unsubscribed`.
 - **Guide funnels**: 8 and 7 steps became 4 each (where, timing or who, stage, delivery). The PDF can be downloaded straight away; email, phone and the tips series are separate optional choices. The thanks-page call card (which re-sent personal details as an agent call) is gone.
 - **Appraisal, find-an-expert, property-valuation, the suburb appraisal box, the bridging calculator, region and suburb-agent pages** all use the introduction form.
@@ -65,7 +66,7 @@ Duplicate protection: each form sends a `requestKey` (unique in the DB); a repea
 
 ## Experiments once there is a baseline (4 to 6 weeks)
 
-1. Homepage: route chooser vs plan builder as the first action on phones (plan completion, then introduction rate per visitor).
+1. Homepage: the number tools vs the live plan as the first band after the hero (tool use and plan opens, then introduction rate per visitor).
 2. Guide delivery: direct download link vs email-only on the last step (guide delivered, tips opt-in, and introductions within 30 days).
 3. Introduction form: four steps vs a two-step version that asks contact details first (completion and held/sent mix).
 4. Next-step cards on the commission guides: worksheet first vs "ask for an introduction" first (introduction rate, and feedback "useful").

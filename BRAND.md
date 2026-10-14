@@ -1,10 +1,10 @@
 # BRAND.md — Your Property Guide
 
-**Status:** v4.2 (14 Oct 2026; v4 13 Oct). Clean, sharp, human. Replaces v3 (cream, Fraunces serif, italic terracotta accents), which read as an AI-template look and positioned the site as a magazine.
+**Status:** v5 (14 Oct 2026, "something people use"; v4.2 and v4 13–14 Oct). Clean, sharp, human, and interactive. Replaces v3 (cream, Fraunces serif, italic terracotta accents), which read as an AI-template look and positioned the site as a magazine.
 
 **What we are:** a property education service that introduces people to a suitable professional when they ask. Free guides, tools and next-step plans for buying, selling or both; with permission, one participating selling agent or buyer's agent. We are not a portal or a data tool: suburb data supports the guides, it is not the headline.
 
-**Promise:** *Make your next property move with confidence.*
+**Promise:** *Buy or sell property with confidence* (the homepage headline, `PROMISE` in `src/lib/service-model.ts`).
 
 **Line:** *Property, explained by people.*
 
@@ -65,8 +65,8 @@ Rules: sentence case everywhere. No italics for emphasis. No full stop at the en
 ## 5. Shape and depth
 
 - Corners: 6px buttons and fields (`rounded-lg`), 8px cards (`rounded-xl`), 10–12px large panels. No pill buttons.
-- Lines, not shadows. A shadow only on something floating: an open menu, the guide funnel card, a book cover.
-- Motion: only to confirm an action (funnel step change, a press). No scroll reveals, no entrance choreography, no marquees.
+- Lines, not shadows. A shadow only on something floating: an open menu, the guide funnel card, a book, a tool panel, a printed plan.
+- Motion answers the person: a press, a funnel step, a switch thumb sliding, a figure gliding to its new value, a book turning towards the pointer or opening when asked. Nothing moves on its own: no scroll reveals, no entrance choreography, no marquees, no autoplay. Every motion has a `prefers-reduced-motion` fallback.
 
 ## 6. Imagery
 
@@ -129,15 +129,18 @@ Two paths, never mixed. The organising question for every page: *what should I d
 | Promises, fees, partner checks | `src/lib/service-model.ts` |
 | Introduction rules and coverage | `src/lib/introductions/rules.ts` |
 | Plans | `src/lib/plans/` |
-| Journey components (forms, route chooser, service sections) | `src/components/journeys/` |
+| Journey components (forms, service sections) | `src/components/journeys/` |
 | Guide funnels (learning path) | `src/components/journey/SellingGuideFunnel.tsx`, `BuyingGuideFunnel.tsx` |
+| The guides as books (contents, covers, colours) | `src/lib/guide-books.ts` |
+| Interactive parts (3D book, number tools, live plan, agent finder, switches) | `src/components/interactive/` |
+| Homepage | `src/components/homepage/` |
 
 
 ## 11. Premium bands (v4.1, 13 Oct 2026)
 
 Andy, after v4 shipped: "too plain, not premium". v4.1 keeps every v4 rule (one typeface, roof tile for actions, no italics, gradients, pills, letter-spaced labels or ornamental motion) and adds presence. The homepage is the reference; the parts live in `src/components/premium`.
 
-- **Open on a photo or on charcoal.** Every page opens with `PhotoHero`: a library photo, full bleed, under a flat 70% charcoal overlay (no gradient), white type. Use `size="lg"` on the homepage and conversion pages and `size="md"` elsewhere. Reference and data pages may drop the photo for a plain charcoal band. One hero per page; its photo is decorative (`alt=""`) and preloaded.
+- **Open light, with a crisp photo.** (v5, 14 Oct 2026.) Every page opens with `PhotoHero`: a white band, the heading and actions on the left, and a library photo in a rounded panel on the right, never under an overlay (or the page's form, as `aside`). Pages for a move stand that move's free guide on the photo's corner as a 3D book (`book="selling"`, `"buying"` or both); it links to the guide. Use `size="lg"` on hubs and conversion pages and `size="md"` elsewhere. One hero per page; its photo is decorative (`alt=""`) and preloaded.
 - **Pick the photo for the reader.** Selling: `selling`. Buying: `buying` or `firstHome`. Investing: `investing` or `flats`. Renovating: `renovating`. Markets and data: `market` or `street`. Auctions: `auction`. Paperwork, costs and rules: `paperwork`. See `PHOTOS`. Never caption a library photo as a real place, team member, agent or customer.
 - **Big, tight headings.** Hero H1 via `HeroTitle` (76px lg, 60px md at desktop). Section H2 via `SectionHeading`: 48px, with the intro in a right-hand column on desktop.
 - **Generous bands that alternate.** `Band` with `tone` light, quiet (grey) or dark (charcoal); `py-20 sm:py-28` (or `spacing="compact"` for dense reference pages). Don't stack two dark bands.
@@ -146,11 +149,22 @@ Andy, after v4 shipped: "too plain, not premium". v4.1 keeps every v4 rule (one 
 - **Tone scopes.** Dark surfaces carry `.tone-dark` (globals.css), which flips `text-ink`, `text-ink-muted`, `border-line` and `text-primary` to light values. Write components with those tokens, never `text-gray-*` or `text-white`, and they work on both. A white card on a dark band (a form, the funnel) carries `.tone-light`.
 - **Buttons.** `BUTTON_PRIMARY` (roof tile, the one solid button on a screen) and `BUTTON_SECONDARY` (outlined in the current ink).
 
-## 12. Journeys (v4.2, 14 Oct 2026)
+## 12. Journeys (v4.2, 14 Oct 2026; homepage v5)
 
-- **The homepage opens on the promise and the three ways in** (buying, selling, both) in `RouteChooser`, on a compact `PhotoHero` (`size="md"`), so a phone sees the choices on the first screen. Photography stays behind type; never a full-height image above the choices.
+- **The homepage opens on the promise, the two guides as books on a photo, and one switch** (I'm selling, I'm buying, Both). The switch swaps the photo, brings that move's guide forward and sets the two next steps: the free guide (roof tile) and an agent (outlined). Every band below follows the same switch.
 - **Forms** use `src/components/journeys/fields.tsx`: visible labels, native radios styled as cards (`ChoiceGroup`, arrow keys work), errors tied to fields, consent boxes with the full statement as the label, one in-flight request at a time.
 - **Next steps** after priority guides and calculators come from `src/lib/next-steps.ts` via `NextStepCard`: one learning action first, personal help as a quiet optional line.
 - **Measurement** goes through `src/lib/analytics.ts` (an allow-list; nothing personal). Outcomes after a request are database events, recorded at `/dashboard/admin/leads`.
 
-*End of BRAND.md v4.2.*
+## 13. Things people use (v5, 14 Oct 2026)
+
+Andy, after the Concierge pass: "make this something people want to use and interact with". So the site leads with things to do, not things to read. The parts live in `src/components/interactive`; each works on its own and, inside `MoveProvider`, follows the homepage switch.
+
+- **Answers before reading.** A page for a move opens its first band with `NumbersPanel`: cost to sell, stamp duty, borrowing. Sliders and chips, the answer in a charcoal panel beside them, a big figure that glides to its new value, then one honest next step (roof tile) and the full calculator. The arithmetic is the full calculators' own (`selling-costs-calc`, `stamp-duty`, `borrowing-power`), so the figures never disagree. Nothing typed leaves the page.
+- **The plan writes itself.** `PlanBuilderLive`: three taps (where, when, where you're up to) and the next three steps rewrite on a printed-plan card; "Open my full plan" lands on `/plan/result` with the same answers.
+- **The guides are objects.** `Book3D` draws a guide in CSS 3D (cover, spine, page edges). It turns a little towards the pointer and opens to its contents on "Look inside". `GuideShelf` (homepage) and `GuideContents` (the guide pages: point at a chapter and the book opens to it) use it. The contents come from `src/lib/guide-books.ts`.
+- **The way to an agent is one field.** `AgentFinder`: kind of agent, suburb, Continue, landing on `/get-help` with both filled in. Beside it, `AgentChecks` opens each partner check to say how we check it. Nothing is sent until the introduction form, with its permission box.
+- **Reading shows progress.** Articles carry `ReadingProgress`, a 3px charcoal line along the top that fills with the article.
+- **Switches.** `Segmented` (a sliding charcoal thumb, a radiogroup underneath, arrow keys work) for two to four choices; `Chips` for a question's answers. Selected is charcoal; roof tile stays for actions.
+
+*End of BRAND.md v5.*

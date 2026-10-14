@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 
@@ -15,6 +14,8 @@ import { guideOgImages } from "@/lib/og/helpers";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 import { HUB_GUIDE_LISTS, hubGuideGroups } from "@/lib/guides/hub-guides";
 import { StickyGuideBar } from "../selling-guide/StickyGuideBar";
+import { Book3D } from "@/components/interactive/Book3D";
+import { GuideContents } from "@/components/interactive/GuideContents";
 
 const META_TITLE = "Free guide to buying property in Australia (2026)";
 const META_DESCRIPTION =
@@ -37,18 +38,6 @@ export const metadata: Metadata = {
   },
 };
 
-const CHAPTERS = [
-  { title: "Which buyer are you?", sub: "First home, upgrader, investor, downsizer: the playbook for each" },
-  { title: "What you can actually spend", sub: "Borrowing power, the lender buffer, deposits, LMI, true upfront costs" },
-  { title: "Schemes, state by state", sub: "2026 settings: 5% Deposit Scheme, Help to Buy, FHOG, duty concessions" },
-  { title: "Finding the right suburb", sub: "The data that matters, school catchments, growth signals" },
-  { title: "Inspecting like a professional", sub: "The 30-minute method, building and pest, strata, when to walk" },
-  { title: "How the selling side plays you", sub: "Underquoting, price guides decoded, auction psychology" },
-  { title: "Making the offer", sub: "Negotiation, protective conditions, auction strategy" },
-  { title: "Finance to unconditional", sub: "Pre-approval realities, valuation shortfalls, investor lending" },
-  { title: "Contracts to keys", sub: "Conveyancing, cooling-off by state, settlement day" },
-  { title: "Your 12-week buying timeline", sub: "A printable week-by-week plan, persona footnotes included" },
-];
 
 const FAQS = [
   {
@@ -79,13 +68,9 @@ function GuidePitch() {
   return (
     <>
       <div className="flex items-start gap-5 sm:gap-6">
-        <Image
-          src="/images/guide/buying-guide-cover.png"
-          alt="The Complete Guide to Buying Property in Australia, 2026 edition"
-          width={168}
-          height={238}
-          className="block shrink-0 w-[88px] sm:w-[132px] lg:w-[150px] h-auto rounded-md shadow-[0_12px_28px_rgb(22_25_29/0.28)]"
-        />
+        <div className="shrink-0 pl-1 pt-1">
+          <Book3D guide="buying" turn={18} className="[--bw:84px] sm:[--bw:120px] lg:[--bw:136px]" />
+        </div>
         <ul className="space-y-3">
           {[
             "2026 schemes, grants and concessions, state by state",
@@ -206,18 +191,9 @@ export default function BuyingGuidePage() {
         <div className="max-w-5xl">
           <SectionHeading title="Ten chapters, four buyers, no filler" />
 
-          {/* CSS columns so chapters 1 to 5 read down the left column. */}
-          <ol className="mt-10 sm:mt-12 sm:columns-2 sm:gap-x-10 border-b border-line">
-            {CHAPTERS.map((c, i) => (
-              <li key={c.title} className="flex items-start gap-4 border-t border-line py-4 break-inside-avoid">
-                <span className="w-6 shrink-0 text-base font-semibold text-ink-subtle leading-6">{i + 1}</span>
-                <div>
-                  <p className="text-base font-semibold text-ink leading-6">{c.title}</p>
-                  <p className="mt-0.5 text-sm text-ink-muted leading-snug">{c.sub}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <div className="mt-10 sm:mt-12">
+            <GuideContents guide="buying" />
+          </div>
 
           <p className="mt-10 text-base text-ink-muted">
             Selling as well?{" "}

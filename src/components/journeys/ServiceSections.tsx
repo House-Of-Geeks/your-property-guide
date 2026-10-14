@@ -10,7 +10,6 @@ import {
   INTRODUCTION_STEPS,
   LICENCE_REGISTERS,
   PARTNER_CHECKS,
-  REASSURANCES,
   SERVICES,
   WHAT_WE_DONT_DO,
   type IntroService,
@@ -92,29 +91,6 @@ export function HowWeChooseAgents({ tone = "light", id = "how-we-choose" }: { to
         </div>
       </div>
     </Band>
-  );
-}
-
-/** The three reassurances as a quiet row (hero foot, form side). */
-export function ReassuranceList({ className = "" }: { className?: string }) {
-  return (
-    <ul className={`grid gap-4 sm:grid-cols-3 ${className}`}>
-      {REASSURANCES.map((r) => (
-        <li key={r.title} className="border-t border-line pt-3">
-          <p className="text-[15px] font-semibold text-ink">{r.title}</p>
-          <p className="mt-1 text-sm text-ink-muted leading-relaxed">
-            {r.title.startsWith("Clear") ? (
-              <>
-                {r.body}{" "}
-                <Link href={HOW_WE_ARE_PAID_HREF} className="underline underline-offset-4">How we’re paid</Link>
-              </>
-            ) : (
-              r.body
-            )}
-          </p>
-        </li>
-      ))}
-    </ul>
   );
 }
 

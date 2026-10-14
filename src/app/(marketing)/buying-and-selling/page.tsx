@@ -18,6 +18,7 @@ import { SITE_URL } from "@/lib/constants";
 import { availabilityNote } from "@/lib/introductions/rules";
 import { buildPlan, type PlanLink } from "@/lib/plans/engine";
 import { FEE_DISCLOSURE, HOW_WE_ARE_PAID_HREF, SERVICES, type IntroService } from "@/lib/service-model";
+import { NumbersPanel } from "@/components/interactive/NumbersPanel";
 
 // /buying-and-selling (Oct 2026): the hub for people selling one home and
 // buying the next. The steps, the coordinated checklist, the tools and guides
@@ -104,10 +105,10 @@ export default function BuyingAndSellingPage() {
         items={[...plan.tools, ...guides].map((l) => ({ name: l.label, url: l.href, description: l.note }))}
       />
 
-      <PhotoHero photo="verandah" breadcrumbs={[{ label: "Buying and selling" }]}>
+      <PhotoHero photo="verandah" breadcrumbs={[{ label: "Buying and selling" }]} size="lg" book={["selling", "buying"]}>
         <HeroTitle>Selling one home and buying the next</HeroTitle>
         <HeroLead>
-          {`${plan.intro} This page sets out the choices, the order things happen in, and the costs in between.`}
+          {`The order, the money in between, and the timing, with help for each side when you want it.`}
         </HeroLead>
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3">
           <Link href={PLAN_HREF} className={`${BUTTON_PRIMARY} justify-center`}>
@@ -121,6 +122,13 @@ export default function BuyingAndSellingPage() {
           {`The plan is free, with no sign-up, and nobody contacts you. Personal help is separate and only with your permission.`}
         </p>
       </PhotoHero>
+
+      <Band tone="quiet" spacing="compact">
+        <SectionHeading size="md" title="Run your numbers" intro="What you’d keep from the sale, and what the purchase costs on top. Nothing you enter leaves this page." />
+        <div className="mt-8 sm:mt-10">
+          <NumbersPanel tools={["sell", "duty", "borrow"]} from="hub-buying-and-selling" />
+        </div>
+      </Band>
 
       <Band id="which-first">
         <SectionHeading

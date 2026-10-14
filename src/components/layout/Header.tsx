@@ -78,7 +78,7 @@ const NAV_LINKS: NavLink[] = [
     ],
   },
   {
-    label: "Get help",
+    label: "Find an agent",
     href: "/get-help",
   },
   {
@@ -102,6 +102,10 @@ export function Header() {
   const navRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
   const move = moveForPath(pathname);
+  // Education first: the solid button is the free guide for the page's move;
+  // the agent route sits beside it as a plain link.
+  const guideHref = move === "buying" ? "/buying-guide" : move === "selling" ? "/selling-guide" : "/guides";
+  const guideLabel = move === "buying" ? "Free buying guide" : move === "selling" ? "Free selling guide" : "Free guides";
   const planHref = move ? `/plan?j=${move}` : "/plan";
   const planLabel = move === "buying" ? "Your buying plan" : move === "selling" ? "Your selling plan" : move === "buying-and-selling" ? "Your moving plan" : "Make a plan";
 
@@ -197,10 +201,10 @@ export function Header() {
             {/* Phones get the plan (and help) in the bottom bar and the menu,
                 so the header doesn't repeat the same solid button. */}
             <Link
-              href={planHref}
+              href={guideHref}
               className="hidden sm:inline-flex items-center rounded-md bg-cta hover:bg-cta-hover text-white px-4 py-2 text-sm font-semibold whitespace-nowrap transition-colors"
             >
-              {planLabel}
+              {guideLabel}
             </Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
