@@ -245,7 +245,7 @@ const faqs = [
   {
     question: "Who can register?",
     answer:
-      "Licensed or registered real estate agents and agencies in Australia who sell in the areas they ask for, buyers agents for buyer leads, and developers and builders for project enquiries. We check the licence or registration on your state's public register before the first lead is sent. Multi-office agencies are welcome; tell us how you want leads routed.",
+      "Licensed or registered real estate agents and agencies in Australia who sell in the areas they ask for and buyers agents for buyer leads. We check the licence or registration on your state's public register before the first lead is sent. Multi-office agencies are welcome; tell us how you want leads routed.",
   },
   {
     question: "Where do most agents get their leads?",
@@ -274,11 +274,11 @@ export default function RealEstateLeadsPage() {
           name: "Real estate leads for agents",
           serviceType: "Lead supply for licensed Australian real estate agents",
           description:
-            "Exclusive, opt-in real estate leads (vendor, appraisal and buyer enquiries, plus project enquiries for developers and builders) supplied to licensed Australian agents, matched by suburb, priced per lead with no commission share and no lock-in.",
+            "Exclusive, opt-in real estate leads (vendor, appraisal and buyer enquiries) supplied to licensed Australian agents, matched by suburb, priced per lead with no commission share and no lock-in.",
           url: `${SITE_URL}/real-estate-leads`,
           provider: { "@type": "Organization", name: "Your Property Guide", url: SITE_URL },
           areaServed: { "@type": "Country", name: "Australia" },
-          audience: { "@type": "BusinessAudience", audienceType: "Real estate agents, buyers agents, property developers and builders" },
+          audience: { "@type": "BusinessAudience", audienceType: "Real estate agents and buyers agents" },
           offers: {
             "@type": "Offer",
             priceCurrency: "AUD",

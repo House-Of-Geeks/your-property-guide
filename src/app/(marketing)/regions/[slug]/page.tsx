@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { TrendingUp, Home, DollarSign, Building2 } from "lucide-react";
-import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { ExpertCTA } from "@/components/journey";
 import { HomeValueAppraisal } from "@/components/journey/HomeValueAppraisal";
 import { MatchAgent } from "@/components/journey/MatchAgent";
@@ -22,7 +21,6 @@ import {
   getRegionMarket,
   getAllRegionSlugs,
 } from "@/lib/services/region-service";
-import { getProperties } from "@/lib/services/property-service";
 import { buildCityNarrative } from "@/lib/city-narrative";
 import {
   REGION_MARKET_YEAR,
@@ -130,11 +128,6 @@ export default async function RegionPage({ params }: RegionPageProps) {
   const suburbSlugs = suburbs.map((s) => s.slug);
   const mostSearched = topSuburbsAmong(suburbSlugs, 24);
 
-  const allProperties = await getProperties({
-    suburb: suburbSlugs.join(","),
-    listingType: "buy",
-  });
-  const properties = allProperties.slice(0, 6);
 
   const housePrice = market.medianHousePrice ? formatPrice(market.medianHousePrice) : "N/A";
   const unitPrice = market.medianUnitPrice ? formatPrice(market.medianUnitPrice) : "N/A";
@@ -204,7 +197,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
             </>
           ) : (
             <>
-              Suburb profiles, schools and listings across the {region.suburbCount.toLocaleString()} suburbs of
+              Suburb profiles and schools across the {region.suburbCount.toLocaleString()} suburbs of
               the {name} region, {stateName}. Verified sales data has not yet been published for these suburbs,
               so this page shows no median prices until it is.
             </>
@@ -377,15 +370,6 @@ export default async function RegionPage({ params }: RegionPageProps) {
 
       <Band tone="quiet" spacing="compact">
         <div className="space-y-14">
-          {/* Listings, where any are on file */}
-          {properties.length > 0 && (
-            <section>
-              <SectionHeading size="md" title={<>Houses for sale in {name}</>} />
-              <p className="mt-3 text-sm text-ink-muted mb-8">Active listings across the {region.region} region.</p>
-              <PropertyGrid properties={properties} />
-            </section>
-          )}
-
           <div>
             {/* Cross-links */}
             <section>

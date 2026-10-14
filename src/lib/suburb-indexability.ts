@@ -49,7 +49,7 @@ export function publishesPrices(row: Pick<SuburbIndexRow, "statsSource" | "sales
 export interface ProfileDataSignals {
   /** Walk score; 0 and null both mean none. */
   walkScore: number | null;
-  /** A climate row (nearest Bureau of Meteorology station). */
+  /** A climate row (SILO grid point, or an older nearest-BoM-station row). */
   hasClimate: boolean;
   /** A crime row for the suburb itself, not the council-area fallback. */
   hasCrime: boolean;

@@ -88,11 +88,11 @@ const SOURCES: DataSource[] = [
   {
     id: "climate",
     label: "Climate, rainfall &amp; temperature",
-    source: "Bureau of Meteorology (BoM)",
-    cadence: "Annually (BoM long-term averages)",
+    source: "SILO (Queensland Government), from Bureau of Meteorology observations",
+    cadence: "Annually (1991–2020 averages)",
     description:
-      "Mean monthly rainfall and temperature are BoM long-term station averages (a 30-year average where BoM publishes one). Each suburb takes its figures from the nearest BoM station within 100 km that records temperature; stations that record rainfall only are passed over. Where we can't find one, we show rainfall from the nearest station that records it and say temperature isn't available. Rainfall and temperature always come from the same station, and each suburb page names that station and its distance, with a note when it is more than 25 km away.",
-    link: { label: "Bureau of Meteorology", href: "http://www.bom.gov.au/" },
+      "Mean monthly rainfall and temperatures are 1991–2020 averages for each suburb's own location, from SILO: the Queensland Government's database of Bureau of Meteorology observations, interpolated to a grid about 5 km apart. Each suburb takes the grid point nearest its centre, or the nearest point on land for a coastal or island suburb. A suburb not yet updated shows the long-term average from a named Bureau station and its distance instead, and we leave the figures out when that station is more than 50 km away. SILO data is licensed CC BY 4.0, © State of Queensland.",
+    link: { label: "SILO climate data", href: "https://www.longpaddock.qld.gov.au/silo/" },
   },
   {
     id: "crime",

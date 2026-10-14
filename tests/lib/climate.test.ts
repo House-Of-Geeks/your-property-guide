@@ -170,3 +170,21 @@ describe("the climate block on the suburb page", () => {
     expect(html).not.toContain("°C");
   });
 });
+
+// Since Oct 2026 the sync writes SILO grid rows ("silo:<lat>,<lon>"): the
+// suburb's own location, credited to SILO and the Bureau as CC BY asks.
+describe("SILO grid rows", () => {
+  const grid = () => climate({ bomStationId: "silo:-26.70,153.05", bomStationName: "SILO grid point -26.70, 153.05", distanceKm: 1.2 });
+  it("credits SILO, not a station, and adds no distance caveat", () => {
+    expect(climateSourceNote(grid())).toBe(
+      "Our 1991–2020 averages of SILO data (Queensland Government, built from Bureau of Meteorology observations, CC BY 4.0) for this location.",
+    );
+    const text = buildClimateSentence(grid());
+    expect(text).toContain("our 1991–2020 averages of SILO data for this location");
+    expect(text).not.toContain("station");
+    expect(render(grid())).toContain("Our 1991–2020 averages of SILO data");
+  });
+  it("still names the station on rows not yet re-synced", () => {
+    expect(buildClimateSentence(climate())).toContain("Bureau of Meteorology's Test Station station, 11 km away");
+  });
+});

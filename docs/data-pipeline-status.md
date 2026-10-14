@@ -11,7 +11,7 @@ Per commit `16ddec9`, four cron services run on Railway production:
 | Service | Schedule | Script | Coverage |
 |---|---|---|---|
 | `sync-cron-quarterly`       | `0 2 1 1,4,7,10 *` (Jan/Apr/Jul/Oct 1) | `scripts/cron/quarterly.sh`       | rental, crime, sales, suburb metadata |
-| `sync-cron-annual-hazards`  | `0 4 1 4 *` (Apr 1)                    | `scripts/cron/annual-hazards.sh`  | hazard-flood, hazard-bushfire, walkability, bom-climate |
+| `sync-cron-annual-hazards`  | `0 4 1 4 *` (Apr 1)                    | `scripts/cron/annual-hazards.sh`  | hazard-flood, hazard-bushfire, walkability, silo-climate |
 | `sync-cron-annual-overlays` | `0 6 15 4 *` (Apr 15)                  | `scripts/cron/annual-overlays.sh` | catchments, zoning, flood/bushfire/heritage overlays |
 | `sync-cron-annual-schools`  | `0 3 15 3 *` (Mar 15)                  | `scripts/cron/annual-schools.sh`  | acara-schools, abs-census, sales-abs/qld/wa, housing-rai, crime-wa |
 
@@ -21,7 +21,7 @@ Per commit `16ddec9`, four cron services run on Railway production:
 |---|---|---|
 | `abs-census` | All 8 states populated | ~70-94% per state. ~30% gaps are suburbs missing from 2021 ABS SAL geography. |
 | `acara-schools` | National (9,693 schools) | OK |
-| `bom-climate` | partial (~40-55%) | ACT was 0% — fixed in this session. |
+| `silo-climate` | replaced `bom-climate` on 14 Oct 2026 | SILO 1991–2020 grid averages per suburb; needs `SILO_API_EMAIL`. The BoM scraper was blocked by the Bureau and only reached 20 fallback stations. |
 | `rental-vic/nsw/sa/qld` | populated | NT/TAS/WA/ACT use Census fallback (no state-specific source) |
 | `housing-rai` | populated | RAI from SGS Economics |
 | `sales-nsw` | 58% | Working. |

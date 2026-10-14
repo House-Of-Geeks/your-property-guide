@@ -30,6 +30,7 @@ const SOURCE_LABELS: Record<string, string> = {
   "housing-rai":    "SGS Economics Rental Affordability Index",
   "acara-schools":  "ACARA",
   "bom-climate":    "Bureau of Meteorology",
+  "silo-climate":   "SILO (Queensland Government), from Bureau of Meteorology observations",
   "hazard-flood":   "Geoscience Australia (AFRIP)",
   "hazard-bushfire":"State Government GIS",
   "walkability":    "OpenStreetMap / Overpass",

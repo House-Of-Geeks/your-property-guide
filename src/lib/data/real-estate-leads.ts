@@ -27,9 +27,8 @@
 //              email, mobile. Consent: one specialist. NOT the buying-guide
 //              funnel or the off-market register, whose consent copy says
 //              details are never passed on.
-//   developer  House-and-land package enquiries ("house-and-land-enquiry")
-//              on /house-and-land/[slug], routed to the package's listing
-//              agent or builder: name, email, mobile, message, package.
+//   (developer project enquiries were retired on 14 Oct 2026 with the
+//   house-and-land listings they came from; the old URL redirects here.)
 //
 // Commercial terms (pay per lead, no lock-in, 7-day replacement, exclusive)
 // are stated policy, agreed 25 Sep 2026. No conversion-rate claims.
@@ -110,7 +109,6 @@ export const LEAD_TYPE_OPTIONS = [
   { value: "vendor", label: "Vendor leads" },
   { value: "appraisal", label: "Appraisal leads" },
   { value: "buyer", label: "Buyer leads" },
-  { value: "developer", label: "Project enquiries (developers, builders)" },
 ] as const;
 
 export type LeadTypeValue = (typeof LEAD_TYPE_OPTIONS)[number]["value"];
@@ -297,7 +295,7 @@ export const leadTypePages: LeadTypePage[] = [
       { label: "Free property appraisal", href: "/appraisal", why: "The dedicated appraisal request, with property type and bedrooms." },
       { label: "Bridging loan calculator", href: "/bridging-loan-calculator", why: "Homeowners buying their next home before they sell. Every figure turns on the sale price, so the appraisal is their next step." },
       { label: "Suburb profiles", href: "/suburbs", why: "The appraisal prompt on each suburb page, under the median and recent sales. Captures a timeframe too." },
-      { label: "Find an agent by suburb", href: "/agents", why: "Homeowners looking at who sells in their suburb, one step from asking for an appraisal." },
+      { label: "Find an agent", href: "/get-help", why: "Homeowners asking for one local agent, with the suburb, timing and their permission." },
       { label: "How much is my house worth?", href: "/guides/how-much-is-my-house-worth-australia", why: "The online-estimate question. The guide explains why an agent appraisal is different." },
       { label: "How to prepare for a property appraisal", href: "/guides/how-to-prepare-for-a-property-appraisal", why: "Homeowners who have already decided to get one and want to be ready." },
       { label: "Property price guide", href: "/price-guide", why: "Readers checking what their type of property is worth in their area." },
@@ -424,7 +422,7 @@ export const leadTypePages: LeadTypePage[] = [
       "Buyer leads come from the specialist match on our suburb, region and comparison pages, where people researching where to buy ask to be matched with someone who can help. The research they did first is usually suburb-level: medians, growth, schools, rental yield.",
     sources: [
       { label: "Find an expert", href: "/find-an-expert", why: "The specialist match: intent, suburb and timeframe, then contact details." },
-      { label: "Suburb agent pages", href: "/agents", why: "Who sells in each suburb, with the match form for people who want help." },
+      { label: "Buyer's agents", href: "/buyers-agents", why: "Buyers reading what a buyer's agent does and costs, then asking for an introduction." },
       { label: "Compare two suburbs", href: "/compare", why: "Buyers weighing two suburbs side by side, a step before engaging help." },
       { label: "Best suburbs", href: "/best-suburbs", why: "Investors and families shortlisting where to buy." },
       { label: "What a buyers agent costs", href: "/guides/buyers-agent-cost-australia", why: "Readers pricing representation. They arrive knowing your fee model." },
@@ -514,129 +512,6 @@ export const leadTypePages: LeadTypePage[] = [
     cardText:
       "People buying or investing who asked to be matched with one specialist. Suits buyers agents who call fast and qualify finance early.",
     cardTags: ["Buying or investing", "Suburb", "Timeframe", "Preferred contact method"],
-  },
-  {
-    slug: "property-developer-leads",
-    n: "04",
-    formValue: "developer",
-    name: "Property developer leads",
-    shortName: "project enquiries",
-    audience: "Property developers and builders",
-    recipient: "developer or builder",
-    askers: "developers and builders",
-    title: "Property Developer Leads | House & Land and New Project Buyer Enquiries",
-    description:
-      "Buyer enquiries for Australian property developers and home builders: list your house-and-land packages on Your Property Guide and enquiries on your packages come to you, with no share of the sale. Pay per enquiry, no lock-in.",
-    h1: "Buyer enquiries for developers and builders, from people",
-    h1Em: "already reading about new homes.",
-    lede:
-      "This is a listing model, not a list of names. You put your house-and-land packages in front of buyers researching new homes, grants and stamp duty on our site. When one of them enquires about your package, the enquiry comes to you and nobody else. We will tell you what enquiry volume looks like for your location before you commit.",
-    volume: "Listing model",
-    docketTitle: "Package enquiry",
-    docket: [
-      { key: "Received", value: "Sat 19 Sep 2026", note: "· 11:40am AEST" },
-      { key: "Package", value: "Four-bedroom home and 400 m² lot", note: "· illustrative" },
-      { key: "Estate", value: "Your estate", note: "· your listing" },
-      { key: "Message", value: "\"Is the block titled, and can we inspect the display home this weekend?\"" },
-      { key: "Contact", value: "Sam", note: "· mobile and email" },
-    ],
-    docketConsents: ["Enquiry to you only", "Mobile required", "Package named"],
-    stats: [
-      { value: "1", label: "Recipient per enquiry" },
-      { value: "0%", label: "Share of the sale" },
-      { value: "100%", label: "With a mobile" },
-      { value: "7 days", label: "Replacement window" },
-    ],
-    sourcesIntro:
-      "New-home buyers on the site are usually part-way through the research: grants, stamp duty concessions, whether house and land is worth it, and how to choose a builder. Your packages sit in the house-and-land section they browse, and each package page carries its own enquiry form.",
-    sources: [
-      { label: "Are house and land packages worth it?", href: "/guides/house-and-land-packages-are-they-worth-it", why: "The honest pros and cons. Readers who finish it and keep going are serious." },
-      { label: "How to find a builder", href: "/guides/how-to-find-a-builder-australia", why: "Buyers vetting builders before they commit to a package." },
-      { label: "First home owner grant", href: "/guides/first-home-owner-grant-australia", why: "New-build grants by state, the main reason many first home buyers look at new stock." },
-      { label: "Stamp duty calculator", href: "/stamp-duty-calculator", why: "Buyers working out land-only and new-home concessions." },
-      { label: "First home buyers", href: "/first-home-buyers", why: "Schemes, deposits and grants, state by state." },
-    ],
-    contents: [
-      "Full name, email and mobile (mobile required)",
-      "The package and estate they enquired about",
-      "Their message, in their words",
-      "Timestamp, and confirmation that the enquiry went to you",
-    ],
-    profilesIntro: "Three new-home buyers typical of the people who enquire on packages. Composites, but the shape is right.",
-    profiles: [
-      {
-        title: "The first home buyer chasing the grant",
-        text: "Has read the grant and stamp duty guides for their state and knows a new build is where the concessions are. Wants to know what is titled, what the build timeline is, and what the total cost looks like.",
-      },
-      {
-        title: "The investor comparing stock",
-        text: "Comparing house and land with established property on yield and depreciation. Wants rental estimates, the land size and the build contract terms. Answer with numbers, not a brochure.",
-      },
-      {
-        title: "The upgrader building next",
-        text: "Selling an established home and building their next one. Timing is everything: land settlement, build time and when they need to be out. A builder who talks through the timeline wins the conversation.",
-      },
-    ],
-    working: [
-      { head: "Answer the question they asked.", text: "Package enquiries come with a message. Reply to it specifically, with the land, the price and the next available inspection time." },
-      { head: "Call the same day.", text: "New-home buyers enquire on several packages in one sitting. The first builder or sales consultant to ring with answers gets the display-home visit." },
-      { head: "Qualify finance and timing early.", text: "Pre-approval, deposit, grant eligibility and when they need to move. It decides whether they are buying this release or the next." },
-      { head: "Plan for a long cycle.", text: "From first enquiry to settlement on a new build can take many months. Construction updates and display-home invites keep the buyer engaged." },
-      { head: "Report what sold.", text: "Deposits and contracts from our enquiries. It shows which package pages work and helps us place your stock in front of the right readers." },
-    ],
-    chapter: {
-      title: "From a pre-sales target back to the enquiries you need.",
-      kicker: "The maths developers skip, worked through",
-      paragraphs: [
-        "Lenders usually want a share of a project sold before they fund construction. Work backwards from that number and you get the enquiry volume a campaign has to produce: pre-sales needed, divided by the share of qualified buyers who pay a deposit, divided by the share of enquiries who become qualified buyers.",
-        "The example below uses a 40-lot release with 26 pre-sales needed. The conversion rates are placeholders, not benchmarks; use your own from the last release. The point is the shape: small changes in how many enquiries you follow up properly change the enquiry count you need far more than the price of each enquiry does.",
-      ],
-      table: {
-        head: ["If this many enquiries become qualified buyers", "And this many qualified buyers pay a deposit", "Enquiries needed for 26 pre-sales"],
-        rows: [
-          ["1 in 5 (20%)", "1 in 2 (50%)", "260"],
-          ["1 in 10 (10%)", "1 in 2 (50%)", "520"],
-          ["1 in 10 (10%)", "1 in 4 (25%)", "1,040"],
-        ],
-        caption:
-          "Illustrative. Pre-sale requirements vary by lender and project, and your conversion rates will differ. Not a forecast of enquiry volume from Your Property Guide.",
-      },
-    },
-    faqs: [
-      {
-        question: "What are property developer leads?",
-        answer:
-          "For us, they are buyer enquiries for new homes: people who enquired about your house-and-land package on Your Property Guide. They are not contact lists of developers, and they are not trade or renovation job leads.",
-      },
-      {
-        question: "How do developers and builders receive enquiries?",
-        answer:
-          "You list your house-and-land packages on the site. Each package page has an enquiry form, and an enquiry on your package goes to you alone, by email, with the buyer's name, mobile, email and message.",
-      },
-      {
-        question: "How much do enquiries cost?",
-        answer:
-          "Pay per enquiry, priced by location and volume, with no platform fee, no minimum and no share of the sale. Register and we will send current availability and pricing in writing within one business day.",
-      },
-      {
-        question: "How many enquiries will we get?",
-        answer:
-          "It depends on your location, your price point and how many packages you list. We will quote realistic enquiry numbers for your location before you list, and we will not promise a number we cannot back.",
-      },
-      {
-        question: "Do you supply off-the-plan apartment buyers?",
-        answer:
-          "Not as a separate product yet. Our new-home enquiries today come from house-and-land package listings. If you are marketing an off-the-plan project, tell us on the form and we will let you know what we can do.",
-      },
-      {
-        question: "Are these the same as builder leads on trade directories?",
-        answer:
-          "No. Trade directories send renovation and construction jobs. These are home buyers enquiring about a specific house-and-land package, which suits volume builders, developers and their sales teams.",
-      },
-    ],
-    cardText:
-      "New-home buyers enquiring about your house-and-land packages, sent to you alone. A listing model with no share of the sale.",
-    cardTags: ["Package and estate", "Buyer's message", "Mobile, required", "Enquiry to you only"],
   },
 ];
 
