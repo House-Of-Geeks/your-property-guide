@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -317,9 +318,9 @@ export default function BestTimeToBuyGuide() {
           can actually buy.
         </li>
         <li>
-          Track the suburb you want on{" "}
-          <a href="/sold">recently sold</a> for 4 to 6 weeks to learn what
-          properties actually fetch (vs the asking price).
+          Track the sale prices on the{" "}
+          <Link href="/suburbs">suburb page</Link> you want for 4 to 6 weeks to
+          learn what properties actually fetch (vs the asking price).
         </li>
         <li>
           Check the{" "}

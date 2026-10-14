@@ -550,7 +550,6 @@ export const leadTypePages: LeadTypePage[] = [
     sourcesIntro:
       "New-home buyers on the site are usually part-way through the research: grants, stamp duty concessions, whether house and land is worth it, and how to choose a builder. Your packages sit in the house-and-land section they browse, and each package page carries its own enquiry form.",
     sources: [
-      { label: "House and land packages", href: "/house-and-land", why: "Where your packages are listed, by location and price." },
       { label: "Are house and land packages worth it?", href: "/guides/house-and-land-packages-are-they-worth-it", why: "The honest pros and cons. Readers who finish it and keep going are serious." },
       { label: "How to find a builder", href: "/guides/how-to-find-a-builder-australia", why: "Buyers vetting builders before they commit to a package." },
       { label: "First home owner grant", href: "/guides/first-home-owner-grant-australia", why: "New-build grants by state, the main reason many first home buyers look at new stock." },

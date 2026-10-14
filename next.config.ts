@@ -60,24 +60,34 @@ const nextConfig: NextConfig = {
       // external links (e.g. RSS subscribers, partner sites).
       { source: "/blog",          destination: "/guides",          permanent: true },
       { source: "/blog/:path*",   destination: "/guides/:path*",   permanent: true },
-      // Property slug migration: removed agency suffix, added state code
-      { source: "/buy/28-spearmint-street-griffin-4503-thomson",         destination: "/buy/28-spearmint-street-griffin-qld-4503",          permanent: true },
-      { source: "/buy/dakabin-4503-thomson",                             destination: "/buy/dakabin-qld-4503-21611295",                     permanent: true },
-      { source: "/buy/16-dent-crescent-burpengary-east-4505-thomson",    destination: "/buy/16-dent-crescent-burpengary-east-qld-4505",     permanent: true },
-      { source: "/buy/newport-4020-thomson",                             destination: "/buy/newport-qld-4020-21613358",                     permanent: true },
-      { source: "/buy/3-grassy-street-banya-4551-thomson",               destination: "/buy/3-grassy-street-banya-qld-4551",               permanent: true },
-      { source: "/buy/8-medinah-circuit-north-lakes-4509-thomson",       destination: "/buy/8-medinah-circuit-north-lakes-qld-4509",        permanent: true },
-      { source: "/buy/9-ficus-drive-palmview-4553-thomson",              destination: "/buy/9-ficus-drive-palmview-qld-4553",              permanent: true },
-      { source: "/buy/63-sorrento-street-margate-4019-thomson",          destination: "/buy/63-sorrento-street-margate-qld-4019",           permanent: true },
-      { source: "/buy/unit-14-9-violet-st-redcliffe-4020-thomson",       destination: "/buy/unit-14-9-violet-st-redcliffe-qld-4020",        permanent: true },
-      { source: "/buy/27-cassidy-crescent-bridgeman-downs-4035-thomson", destination: "/buy/27-cassidy-crescent-bridgeman-downs-qld-4035",  permanent: true },
-      { source: "/buy/6-belcher-street-caboolture-4510-thomson",         destination: "/buy/6-belcher-street-caboolture-qld-4510",          permanent: true },
-      { source: "/buy/33-bellini-road-burpengary-4505-thomson",          destination: "/buy/33-bellini-road-burpengary-qld-4505",           permanent: true },
-      { source: "/buy/4-18-20-wyllie-street-redcliffe-4020-thomson",     destination: "/buy/4-18-20-wyllie-street-redcliffe-qld-4020",      permanent: true },
-      { source: "/buy/12-wilton-court-morayfield-4506-thomson",          destination: "/buy/12-wilton-court-morayfield-qld-4506",           permanent: true },
-      { source: "/buy/56-sunreef-street-burpengary-4505-thomson",        destination: "/buy/56-sunreef-street-burpengary-qld-4505",         permanent: true },
-      { source: "/buy/burpengary-4505-thomson",                          destination: "/buy/burpengary-qld-4505-21369936",                  permanent: true },
-      { source: "/buy/burpengary-4505-21049882-thomson",                 destination: "/buy/burpengary-qld-4505-21049882",                  permanent: true },
+      // Portal consolidation (14 Oct 2026, docs/portal-consolidation-2026-10-14.md):
+      // the site is an education and introduction service, not a listings
+      // portal. The listing routes drew no clicks in 90 days of Search
+      // Console data and nothing in Bing, so each one goes, in one hop, to
+      // the page that now serves its reader. Listed before the suburb and
+      // non-locality rules. `:path*` matches the bare path too (/buy), and
+      // only whole segments, so /buying, /rental-yield-calculator and
+      // /selling-guide are untouched. The 17 legacy /buy/*-thomson slug
+      // redirects (property slug migration) are folded into the /buy rule:
+      // they land on /buying in one hop instead of hopping through a /buy
+      // listing that no longer exists.
+      { source: "/buy/:path*",            destination: "/buying",  permanent: true },
+      // No renting category exists under /guides/category; the renters'
+      // rights and rentvesting guides are on the guides hub.
+      { source: "/rent/:path*",           destination: "/guides",  permanent: true },
+      // Sale prices live on the suburb profiles.
+      { source: "/sold/:path*",           destination: "/suburbs", permanent: true },
+      { source: "/off-market/:path*",     destination: "/selling", permanent: true },
+      { source: "/house-and-land/:path*", destination: "/buying",  permanent: true },
+      { source: "/best-deals/:path*",     destination: "/buying",  permanent: true },
+      // A suburb's six listing sub-pages go to its profile. The segment is
+      // matched whole against these six words only, so /rental-market,
+      // /schools, /agents, /vs/... and street pages (410) are not caught.
+      {
+        source: "/suburbs/:slug/:listing(buy|rent|houses|units|townhouses|land)",
+        destination: "/suburbs/:slug",
+        permanent: true,
+      },
       // "South Melbourne DC", "Penrith Plaza", "Parliament House": not places
       // people live. Each goes to the real suburb of that name in its
       // postcode, or to the postcode page (29 Sep 2026, 290 entries).

@@ -85,7 +85,7 @@ describe("header", () => {
     expect(src).toMatch(/\$\{open \? "" : "hidden "\}/);
   });
   it("adds no top-level item: the 1080px breakpoint of PR #77 was measured with five", () => {
-    const navBlock = src.slice(src.indexOf("const NAV_LINKS"), src.indexOf("const BUYER_PATHS"));
+    const navBlock = src.slice(src.indexOf("const NAV_LINKS"), src.indexOf("export function Header"));
     const topLevel = navBlock.match(/^  \{\n    label: "/gm) ?? [];
     expect(topLevel).toHaveLength(5);
     expect(src).toContain("min-[67.5rem]:flex");

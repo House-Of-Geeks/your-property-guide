@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 
@@ -15,6 +14,8 @@ import { guideOgImages } from "@/lib/og/helpers";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 import { HUB_GUIDE_LISTS, hubGuideGroups } from "@/lib/guides/hub-guides";
 import { StickyGuideBar } from "../selling-guide/StickyGuideBar";
+import { Book3D } from "@/components/interactive/Book3D";
+import { GuideContents } from "@/components/interactive/GuideContents";
 
 const META_TITLE = "Free guide to buying property in Australia (2026)";
 const META_DESCRIPTION =
@@ -37,24 +38,12 @@ export const metadata: Metadata = {
   },
 };
 
-const CHAPTERS = [
-  { title: "Which buyer are you?", sub: "First home, upgrader, investor, downsizer: the playbook for each" },
-  { title: "What you can actually spend", sub: "Borrowing power, the lender buffer, deposits, LMI, true upfront costs" },
-  { title: "Schemes, state by state", sub: "2026 settings: 5% Deposit Scheme, Help to Buy, FHOG, duty concessions" },
-  { title: "Finding the right suburb", sub: "The data that matters, school catchments, growth signals" },
-  { title: "Inspecting like a professional", sub: "The 30-minute method, building and pest, strata, when to walk" },
-  { title: "How the selling side plays you", sub: "Underquoting, price guides decoded, auction psychology" },
-  { title: "Making the offer", sub: "Negotiation, protective conditions, auction strategy" },
-  { title: "Finance to unconditional", sub: "Pre-approval realities, valuation shortfalls, investor lending" },
-  { title: "Contracts to keys", sub: "Conveyancing, cooling-off by state, settlement day" },
-  { title: "Your 12-week buying timeline", sub: "A printable week-by-week plan, persona footnotes included" },
-];
 
 const FAQS = [
   {
     question: "Is the buying guide really free?",
     answer:
-      "Yes. The guide is a free PDF and there's no charge for anything on Your Property Guide. Your details are never sold and never passed to selling agents. If you ask us to, we can introduce you to a vetted mortgage broker or buyer's agent, and they pay us for that introduction, never you.",
+      "Yes. The guide is a free PDF and there's no charge for anything on Your Property Guide. Requesting it never passes your details to any agent, and we never sell them. If you later want a buyer's agent, that's a separate request with its own permission box; we're still building that network, so we'll tell you honestly whether we can introduce one. We don't introduce mortgage brokers.",
   },
   {
     question: "Which first home buyer schemes apply in 2026?",
@@ -79,16 +68,12 @@ function GuidePitch() {
   return (
     <>
       <div className="flex items-start gap-5 sm:gap-6">
-        <Image
-          src="/images/guide/buying-guide-cover.png"
-          alt="The Complete Guide to Buying Property in Australia, 2026 edition"
-          width={168}
-          height={238}
-          className="block shrink-0 w-[88px] sm:w-[132px] lg:w-[150px] h-auto rounded-md shadow-[0_12px_28px_rgb(22_25_29/0.28)]"
-        />
+        <div className="shrink-0 pl-1 pt-1">
+          <Book3D guide="buying" turn={18} className="[--bw:84px] sm:[--bw:120px] lg:[--bw:136px]" />
+        </div>
         <ul className="space-y-3">
           {[
-            "2026 schemes state by state, worth tens of thousands",
+            "2026 schemes, grants and concessions, state by state",
             "What a lender may lend you, buffer included",
             "Underquoting and auction psychology, decoded",
             "A printable 12-week buying timeline",
@@ -169,12 +154,12 @@ export default function BuyingGuidePage() {
               <div className="mt-6 px-1">
                 <p className="text-sm font-semibold text-ink mb-2">What happens next</p>
                 <ol className="space-y-1.5 text-sm text-ink-muted leading-snug list-decimal pl-5 marker:text-ink-subtle">
-                  <li>Answer six quick questions, about 60 seconds</li>
-                  <li>Download instantly, plus a copy lands in your inbox</li>
+                  <li>Answer three quick questions</li>
+                  <li>Download it straight away, or have it emailed</li>
                   <li>We point you at the chapters for your situation</li>
                 </ol>
                 <p className="mt-3 text-xs text-ink-subtle leading-relaxed">
-                  Free. Your details are never sold and never passed to selling agents.
+                  Free. Requesting the guide never passes your details to any agent.
                 </p>
               </div>
 
@@ -187,14 +172,13 @@ export default function BuyingGuidePage() {
           <p className="text-sm font-semibold text-ink-muted mb-3 sm:mb-5">
             Free PDF, 2026 edition
           </p>
-          <HeroTitle>Overpaying is the default. This is the fix</HeroTitle>
+          <HeroTitle>The free guide to buying property</HeroTitle>
           {/* Phone-sized lede, as before: the funnel stays on the first screen. */}
           <HeroLead className="max-sm:mt-4 max-sm:text-base">
-            The complete guide to buying property in Australia, written
-            for the buyer you actually are: first home, upgrading,
-            investing or downsizing. What you can really spend, the
-            schemes worth tens of thousands, and how the selling side
-            plays you. Free, in your inbox in 60 seconds.
+            Ten chapters for buyers in Australia, whether it&rsquo;s your
+            first home, your next one, an investment or a downsize: what
+            you can really spend, the schemes in your state, inspecting,
+            how the selling side works, and making the offer.
           </HeroLead>
           <div className="hidden lg:block mt-12">
             <GuidePitch />
@@ -207,18 +191,9 @@ export default function BuyingGuidePage() {
         <div className="max-w-5xl">
           <SectionHeading title="Ten chapters, four buyers, no filler" />
 
-          {/* CSS columns so chapters 1 to 5 read down the left column. */}
-          <ol className="mt-10 sm:mt-12 sm:columns-2 sm:gap-x-10 border-b border-line">
-            {CHAPTERS.map((c, i) => (
-              <li key={c.title} className="flex items-start gap-4 border-t border-line py-4 break-inside-avoid">
-                <span className="w-6 shrink-0 text-base font-semibold text-ink-subtle leading-6">{i + 1}</span>
-                <div>
-                  <p className="text-base font-semibold text-ink leading-6">{c.title}</p>
-                  <p className="mt-0.5 text-sm text-ink-muted leading-snug">{c.sub}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <div className="mt-10 sm:mt-12">
+            <GuideContents guide="buying" />
+          </div>
 
           <p className="mt-10 text-base text-ink-muted">
             Selling as well?{" "}

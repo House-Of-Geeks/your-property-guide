@@ -1,9 +1,9 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
-import { MatchAgent } from "@/components/journey/MatchAgent";
+import { NextStepCard } from "@/components/journeys/NextStepCard";
 import { formatPriceFull } from "@/lib/utils/format";
 import {
   CONCESSIONAL_CAP,
@@ -223,19 +223,14 @@ export function FhssCalculator() {
         </div>
       )}
 
-      <div id="match-fhss" className="scroll-mt-24 rounded-xl border border-line bg-surface-warm p-6 sm:p-7">
-        <p className="text-[13px] text-cta font-medium mb-2">Next step</p>
-        <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight tracking-tight mb-2">
-          Plan the rest of your deposit with someone who does this every day
-        </h3>
-        <p className="text-sm text-ink-muted leading-relaxed mb-5">
-          FHSS is one part of a first home deposit, alongside the 5% Deposit Scheme, grants and stamp duty concessions.
-          Tell us where you&rsquo;re buying and we&rsquo;ll introduce one vetted specialist. Free, no commitment.
-        </p>
-        <Suspense fallback={<div className="h-64" aria-busy="true" />}>
-          <MatchAgent compact initialIntent="buying" source={FHSS_CALCULATOR_SOURCE} />
-        </Suspense>
-      </div>
+      <NextStepCard
+        id="match-fhss"
+        title="Plan the rest of your deposit"
+        body="FHSS is one part of a first home deposit, alongside the 5% Deposit Scheme, grants and stamp duty concessions. A first home plan puts them in order for your state."
+        primary={{ label: "Make a first home plan", href: "/plan?j=buying" }}
+        secondary={[{ label: "First home buyer guide", href: "/guides/first-home-buyer-guide" }, { label: "Borrowing power calculator", href: "/borrowing-power-calculator" }]}
+        note="We don’t introduce brokers or lenders. Check your eligibility with the scheme’s official site or a licensed adviser."
+      />
     </div>
   );
 }

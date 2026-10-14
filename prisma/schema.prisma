@@ -540,21 +540,21 @@ model PropertySale {
 // Idempotency: (addressId, kind, source) is unique. Each ingest run uses
 // runId so a single run is undoable: DELETE WHERE "runId" = '...'
 model PropertyOverlay {
-  id              String   @id @default(cuid())
-  addressId       String                        // → PropertyAddress.id (G-NAF PID)
-  kind            String                        // "zoning" | "flood" | "bushfire" | "heritage"
-  source          String                        // e.g. "nsw-epi-zoning"
-  code            String                        // e.g. "R2"
-  label           String?                       // e.g. "Low Density Residential"
-  attrs           Json?                         // additional structured fields
-  state           String                        // for fast per-state queries
-  runId           String                        // undo target
+  id        String  @id @default(cuid())
+  addressId String // → PropertyAddress.id (G-NAF PID)
+  kind      String // "zoning" | "flood" | "bushfire" | "heritage"
+  source    String // e.g. "nsw-epi-zoning"
+  code      String // e.g. "R2"
+  label     String? // e.g. "Low Density Residential"
+  attrs     Json? // additional structured fields
+  state     String // for fast per-state queries
+  runId     String // undo target
 
-  effectiveAt     DateTime?                     // when the overlay was assessed/published
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  effectiveAt DateTime? // when the overlay was assessed/published
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
-  address         PropertyAddress @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  address PropertyAddress @relation(fields: [addressId], references: [id], onDelete: Cascade)
 
   @@unique([addressId, kind, source])
   @@index([addressId, kind])
@@ -567,7 +567,8 @@ model PropertyOverlay {
 // ---------------------------------------------------------------------------
 model Lead {
   id               String  @id @default(cuid())
-  // "property-enquiry" | "appraisal-request" | "off-market-register" | "general-contact" | "house-and-land-enquiry" | "match-request"
+  // "guide-download" | "plan-email" | "introduction-request" | "appraisal-request"
+  // | "match-request" | "general-contact" | "newsletter" | ... (src/lib/lead-kinds.ts)
   type             String
   firstName        String
   lastName         String?
@@ -597,6 +598,52 @@ model Lead {
   gclid            String?
   attribution      Json?
 
+  // Two paths, kept apart (Oct 2026 "confident moves" rebuild; DDL in
+  // scripts/sql/2026-10-14-lead-journeys.sql). kind says which:
+  //   "learning"     a guide, a plan or a tips series. Never goes to an agent.
+  //   "introduction" someone asked to be introduced to a professional and
+  //                  ticked the permission box (introConsent).
+  //   "enquiry"      contact, listing and other one-off enquiries.
+  //   "newsletter"   the quarterly email.
+  // Rows from before 14 Oct 2026 have no kind; src/lib/lead-kinds.ts infers one from type.
+  kind             String?
+  // "buying" | "selling" | "buying-and-selling"
+  journey          String?
+  // Introductions only: "selling-agent" | "buyers-agent". A combined
+  // buying-and-selling request makes one row per service (shared groupId),
+  // each with its own permission.
+  service          String?
+  state            String? // AU state code
+  stage            String? // where they are up to (src/lib/plans/questions.ts)
+  timeframe        String?
+  // The exact permission statement the person ticked, and whether they ticked it.
+  introConsent     Boolean?
+  consentText      String?
+  // Separate, unticked-by-default yes to our own tips emails.
+  marketingConsent Boolean?
+  // The optional guidance email series ("seller-early", "buyer-first-home"...),
+  // where it is up to, when the next one is due, and an unsubscribe.
+  sequence         String?
+  sequenceStep     Int?
+  sequenceNextAt   DateTime?
+  unsubscribedAt   DateTime?
+  // "phone" | "sms" | "email", and a free "best time" choice.
+  preferredContact String?
+  bestTime         String?
+  // Introductions: where the request is up to. Set from real outcomes only
+  // (Sent 24/7's response, the team or the partner recording it), never
+  // from a click. See src/lib/introductions/status.ts.
+  status           String?
+  statusReason     String?
+  statusAt         DateTime?
+  // The form's idempotency key: a double-click or a retried request finds
+  // the first row instead of making a second one.
+  requestKey       String?     @unique
+  groupId          String?
+  // Opaque token for the feedback and unsubscribe links in emails.
+  token            String?     @unique
+  events           LeadEvent[]
+
   createdAt DateTime @default(now())
 
   @@index([type])
@@ -604,6 +651,30 @@ model Lead {
   @@index([agentId])
   @@index([createdAt])
   @@index([gclid])
+  @@index([kind, createdAt])
+  @@index([status])
+  @@index([sequenceNextAt])
+  @@index([groupId])
+}
+
+// What happened to a lead after it was submitted, one row per fact:
+// delivered to a partner, held for the team, accepted, appointment booked,
+// agreement signed, feedback, a sequence email sent. Written by the server
+// from a real response or a person recording it (team admin, partner,
+// the customer's feedback link), so reports count outcomes, not clicks.
+model LeadEvent {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  // src/lib/introductions/status.ts LEAD_EVENT_TYPES
+  type      String
+  // "system" | "team" | "partner" | "customer"
+  actor     String
+  detail    Json?
+  createdAt DateTime @default(now())
+
+  @@index([leadId])
+  @@index([type, createdAt])
 }
 
 // RETIRED (Oct 2026, same day): the guide is now given for an email, so
@@ -699,8 +770,8 @@ model BestDeal {
   tags      String[] @default([]) // free-form: "sub-median", "high-yield", "auction-this-weekend", etc.
 
   // Lifecycle dates
-  publishAt DateTime?
-  expiresAt DateTime // default 30 days; agent can request shorter
+  publishAt       DateTime?
+  expiresAt       DateTime // default 30 days; agent can request shorter
   lastReviewedBy  String? // FK to User.id (staff)
   lastReviewedAt  DateTime?
   rejectionReason String?
@@ -792,20 +863,20 @@ model SuburbRentalStat {
 // Aggregate medians from state Valuer-General time-series datasets.
 // ---------------------------------------------------------------------------
 model SuburbSalesStat {
-  id            String   @id @default(cuid())
-  suburbSlug    String?
-  suburbName    String
-  postcode      String
-  state         String
-  period        String // "2023" annual or "2025-Q4" quarterly
-  periodDate    DateTime
-  medianHouse   Int?
-  medianUnit    Int?
-  medianVacant  Int?
-  saleCountHouse Int?
-  saleCountUnit  Int?
+  id              String   @id @default(cuid())
+  suburbSlug      String?
+  suburbName      String
+  postcode        String
+  state           String
+  period          String // "2023" annual or "2025-Q4" quarterly
+  periodDate      DateTime
+  medianHouse     Int?
+  medianUnit      Int?
+  medianVacant    Int?
+  saleCountHouse  Int?
+  saleCountUnit   Int?
   saleCountVacant Int?
-  source        String // DataSource.id
+  source          String // DataSource.id
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

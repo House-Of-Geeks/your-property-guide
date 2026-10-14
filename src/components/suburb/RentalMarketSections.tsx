@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import type { Suburb } from "@/types/suburb";
 import type { RentalMarketModel } from "@/lib/rental-market";
 import type { LandlordModel } from "@/lib/rental-landlord";
@@ -127,17 +126,6 @@ export function RentalMarketSections({ suburb, slug, model: m, landlord }: { sub
             </table>
           </div>
         </section>
-      )}
-
-      {has("listings") && (
-        <p id="listings" className="font-sans text-base text-ink">
-          <Link
-            href={`/suburbs/${slug}/rent`}
-            className="inline-flex items-center gap-2 font-medium underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
-          >
-            {m.listings} {m.listings === 1 ? "property" : "properties"} for rent in {suburb.name} now <ArrowRight className="w-4 h-4" aria-hidden="true" />
-          </Link>
-        </p>
       )}
 
       {/* Landlord intent ("rental appraisal {suburb}", "property managers

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import { FhssNote } from "@/components/guide/FhssNote";
 import {
@@ -16,14 +15,24 @@ import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap, hgCapSentence } from "@/lib/data/home-guarantee";
+import { calculateStampDuty } from "@/lib/utils/stamp-duty";
+import { FIRST_HOME_REVIEWED_ON, currentGrant, formatPolicyDate, grantFor, money } from "@/lib/policy/first-home";
+
+// Figures from src/lib/policy/first-home.ts and the stamp duty engine.
+const GRANT = currentGrant("TAS");
+const GRANT_TO = formatPolicyDate(GRANT.effectiveTo as string);
+const GRANT_FROM = formatPolicyDate(GRANT.effectiveFrom as string);
+const PREVIOUS_GRANT = grantFor("TAS", "2026-06-30", "new").version?.amount ?? 0;
+const NEXT_GRANT = grantFor("TAS", "2027-07-01", "new").version?.amount ?? 0;
+const duty = (price: number) => calculateStampDuty(price, "TAS", true, false, false).total;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide Tasmania: Grants, Stamp Duty & Schemes (2026)",
   description:
-    "Tasmania first home buyer guide: $30,000 FHOG on new homes, 50% stamp duty concession on established homes up to $600K, federal schemes, and Tasmania's affordability advantage.",
+    "Tasmania first home buyer guide: the $20,000 First Home Owner Grant on new homes for 2026-27, why the established-home stamp duty exemption ended on 30 June 2026, federal schemes, and Tasmania's prices.",
   slug: "first-home-buyer-tas",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-14",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -51,9 +60,9 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Tasmania's $30,000 FHOG is one of the most generous in Australia, on new homes only.",
-  "Established homes get a 50% stamp duty concession up to $600,000, saving roughly $9,000 on a $500,000 home.",
-  "You can have FHOG on a new home OR the stamp duty concession on an established home, not both on the same property.",
+  `Tasmania's First Home Owner Grant is ${money(GRANT.amount)} on a new home, including a kit home, with no value cap, for transactions from ${GRANT_FROM} to ${GRANT_TO}. It was ${money(PREVIOUS_GRANT)} in 2025-26 and is scheduled to fall to ${money(NEXT_GRANT)} from 1 July 2027.`,
+  `The stamp duty exemption for first home buyers of established homes up to $750,000 isn't available for transfers settling after 30 June 2026. A first home buyer now pays the full rate: ${money(duty(500_000))} on a $500,000 home.`,
+  "There's no first home duty relief on a new home or land either, so the grant is the only Tasmanian first home help left.",
   `The 5% Deposit Scheme's price cap is ${fmtCap(HG_PRICE_CAPS.TAS.capital)} in Greater Hobart and ${fmtCap(HG_PRICE_CAPS.TAS.rest)} in the rest of Tasmania, with no income test since ${HG_DATES.expanded}.`,
   "Tasmania remains one of Australia's most affordable states; Hobart medians sit well below Sydney/Melbourne, and the north-west coast is among the cheapest in the country.",
   `The Regional First Home Buyer Guarantee closed to new guarantees on ${HG_DATES.expanded}. Buyers in Launceston, Burnie and Devonport use the 5% Deposit Scheme at the ${fmtCap(HG_PRICE_CAPS.TAS.rest)} cap.`,
@@ -61,7 +70,7 @@ const TLDR = [
 
 const TOC: GuideTOCEntry[] = [
   { id: "fhog",          label: "First Home Owner Grant Tasmania" },
-  { id: "stamp-duty",    label: "Stamp duty concession" },
+  { id: "stamp-duty",    label: "Stamp duty for first home buyers" },
   { id: "federal-schemes", label: "Federal government schemes" },
   { id: "affordability", label: "Tasmania's affordability advantage" },
   { id: "key-areas",     label: "Hobart, Launceston, and Burnie" },
@@ -72,14 +81,14 @@ const TOC: GuideTOCEntry[] = [
 
 const FAQS: FaqItem[] = [
   {
-    question: "Is Tasmania really one of Australia's most generous FHOGs?",
+    question: "How much is Tasmania's First Home Owner Grant now?",
     answer:
-      "Yes. The $30,000 FHOG ties with Queensland's for the largest grant in Australia (Queensland's 2026-27 Budget locked its $30,000 in for another four years). Combined with Tasmania's lower median prices, the grant covers a much larger share of a typical deposit than the same dollar amount in Sydney or Melbourne.",
+      `${money(GRANT.amount)} for a new home, including a kit home, with no value cap, for transactions from ${GRANT_FROM} to ${GRANT_TO} (State Revenue Office Tasmania). It was ${money(PREVIOUS_GRANT)} from 1 July 2025 to 30 June 2026 and is scheduled to revert to ${money(NEXT_GRANT)} from 1 July 2027. Queensland pays $30,000 and the NT's HomeGrown Territory Grant $50,000 on a new home, so Tasmania's is no longer the largest, but with lower prices it still covers a good share of a deposit.`,
   },
   {
-    question: "Can I get the FHOG and the stamp duty concession on the same home?",
+    question: "Do first home buyers still get a stamp duty exemption in Tasmania?",
     answer:
-      "No. The FHOG is for new homes only; the 50% stamp duty concession is for established homes only. Pick one strategy: build/buy new and take the $30K, or buy established and take the duty saving. Run the numbers on both at your target price to see which is better in your situation.",
+      `Not for a transfer settling after 30 June 2026. The 100% exemption on established homes up to $750,000 covered settlements from 18 February 2024 to 30 June 2026 and was not extended (State Revenue Office Tasmania). It follows the settlement date, so a contract signed in June that settled in July missed out. A first home buyer now pays ${money(duty(500_000))} on a $500,000 home, and there's no first home relief on a new home or land.`,
   },
   {
     question: "What's the price cap for the Tasmanian First Home Guarantee?",
@@ -105,16 +114,16 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide", description: "Federal schemes, FHOG by state, stamp duty concessions and step-by-step process." },
-  { title: "Stamp Duty TAS",         href: "/guides/stamp-duty-tas",          description: "Tasmanian duty, the 50% first home concession and worked examples." },
-  { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate your Tasmanian duty (with or without the concession)." },
+  { title: "Stamp Duty TAS",         href: "/guides/stamp-duty-tas",          description: "Tasmanian duty rates, worked examples and why the first home exemption ended." },
+  { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate your Tasmanian duty by settlement date." },
   { title: "Building & Pest Inspection",        href: "/guides/building-pest-inspection",description: "Why pre-contract inspections matter, especially on older Tasmanian homes." },
   { title: "Conveyancing in Australia",         href: "/guides/conveyancing-guide",      description: "What conveyancers do, what they cost, and what to ask." },
   { title: "Renter's Rights in Tasmania",       href: "/guides/renters-rights-tas",      description: "Tenant entitlements while you save for that first deposit." },
 ];
 
 const STEPS = [
-  { step: "1", title: "Understand your finances", desc: "Calculate borrow + save. Factor in stamp duty (or 50% concession for established), legal fees, pest and building inspection, and moving costs." },
-  { step: "2", title: "Decide: new or established", desc: "New: $30,000 FHOG, full stamp duty. Established: no FHOG but 50% duty concession. Run the numbers at your target price." },
+  { step: "1", title: "Understand your finances", desc: "Calculate borrow + save. Factor in full stamp duty (the first home exemption ended for settlements after 30 June 2026), legal fees, pest and building inspection, and moving costs." },
+  { step: "2", title: "Decide: new or established", desc: `New: the ${money(GRANT.amount)} grant to ${GRANT_TO}, plus full stamp duty. Established: full stamp duty and no grant. Run the numbers at your target price.` },
   { step: "3", title: "Check federal scheme eligibility", desc: "5% Deposit Scheme (5% deposit, no LMI, no income test) via a participating lender." },
   { step: "4", title: "Get pre-approval", desc: "A clear budget and a stronger offer. Important in tight stock markets." },
   { step: "5", title: "Search and inspect", desc: "Building and pest inspection before contract is essential, especially on older Tassie homes." },
@@ -144,71 +153,66 @@ export default function FirstHomeBuyerTasPage() {
 
       <EditorNote>
         <p>
-          Tasmania pays $30K on a new home or a 50% duty concession on
-          an established one, and most buyers I&rsquo;ve seen here pick
-          wrong on the maths. The grant is bigger up front, but on a
-          sub-$500K established home the duty concession plus the lower
-          purchase price often nets out better. Check the 5% Deposit
-          Scheme cap for where you&rsquo;re buying too: it&rsquo;s{" "}
-          {fmtCap(HG_PRICE_CAPS.TAS.capital)} in Greater Hobart but{" "}
-          {fmtCap(HG_PRICE_CAPS.TAS.rest)} in Launceston and the rest of the
-          state.
+          {`Tasmania changed the maths for first home buyers on 1 July 2026. Until 30 June a first home buyer of an established home up to $750,000 paid no stamp duty; now they pay full duty, ${money(duty(500_000))} on a $500,000 home, and the only help is a ${money(GRANT.amount)} grant on a new home. If you were counting on the exemption, rework your cash-to-buy figure before you make an offer. Check the 5% Deposit Scheme cap for where you're buying too: it's ${fmtCap(HG_PRICE_CAPS.TAS.capital)} in Greater Hobart but ${fmtCap(HG_PRICE_CAPS.TAS.rest)} in Launceston and the rest of the state.`}
         </p>
       </EditorNote>
 
       <h2 id="fhog">First Home Owner Grant, Tasmania</h2>
       <p className="lead">
-        Tasmania offers one of the most generous First Home Owner Grants in
-        Australia. As of 2026, eligible first home buyers can receive $30,000 when
-        purchasing or building a new home, increased from $20,000 to attract
-        buyers and stimulate housing construction.
+        {`Tasmania pays a ${money(GRANT.amount)} First Home Owner Grant for a new home, including a kit home, with no value cap, for transactions from ${GRANT_FROM} to ${GRANT_TO}. It was ${money(PREVIOUS_GRANT)} in 2025-26 and is scheduled to return to ${money(NEXT_GRANT)} from 1 July 2027.`}
       </p>
 
       <KeyFigure
-        value="$30,000"
-        label="The Tasmanian First Home Owner Grant on new homes."
-        context="Established homes don't qualify (but get the 50% duty concession)"
+        value={money(GRANT.amount)}
+        label={`The Tasmanian First Home Owner Grant on a new home, for transactions from ${GRANT_FROM} to ${GRANT_TO}.`}
+        context="No value cap; established homes don't qualify"
       />
 
       <p>
-        The grant applies to new homes only, newly built homes that haven't
-        previously been occupied or sold as a residence, or homes being
-        constructed for the first time on vacant land. Established homes don't
-        qualify for the FHOG, but may get the stamp duty concession instead.
+        The grant applies to new homes only: newly built homes that haven&rsquo;t
+        been occupied or sold as a residence, homes built on vacant land for the
+        first time, and kit homes. Established homes don&rsquo;t qualify, and since
+        1 July 2026 there&rsquo;s no duty concession on them either.
       </p>
       <p>
-        Given Tasmania's lower median prices, $30,000 represents a large share of
-        a typical deposit, making this one of the most powerful FHB incentives in
-        the country.
+        Given Tasmania&rsquo;s lower median prices, the grant still covers a
+        meaningful share of a typical deposit. The amount follows the
+        commencement date of the transaction, so check the date on your contract
+        with the{" "}
+        <a href="https://www.sro.tas.gov.au/first-home-owner/eligibility" target="_blank" rel="noopener noreferrer">
+          State Revenue Office
+        </a>
+        .
       </p>
 
-      <h2 id="stamp-duty">Stamp duty concession for first home buyers</h2>
+      <h2 id="stamp-duty">Stamp duty for first home buyers</h2>
       <p>
-        Tasmania provides a <strong>50% stamp duty concession</strong> for
-        eligible first home buyers purchasing established homes up to a $600,000
-        threshold (verify current threshold at sro.tas.gov.au).
+        The first home buyer duty exemption on established homes (100% up to
+        $750,000) applied to transfers settling from 18 February 2024 to 30 June
+        2026, and is not available for transfers settling after 30 June 2026
+        (State Revenue Office Tasmania). Before 18 February 2024 a 50% concession
+        applied up to $600,000. There is no first home duty relief on a new home
+        or vacant land.
       </p>
       <p>
-        Stamp duty on a $500,000 Tasmanian property is roughly $18,247. With the
-        50% concession, an eligible first home buyer pays around $9,123, a saving
-        of roughly $9,000.
+        {`So a first home buyer now pays the same duty as anyone else: ${money(duty(500_000))} on a $500,000 home and ${money(duty(750_000))} on $750,000. The exemption followed the settlement date, not the contract date. Rules checked on ${formatPolicyDate(FIRST_HOME_REVIEWED_ON)}.`}
       </p>
 
-      <Callout variant="info" title="Pick one path: new or established">
+      <Callout variant="info" title="New or established: the grant is the only first home help now">
         <p>
-          The FHOG applies to new homes; the 50% stamp duty concession applies to
-          established homes. You can't use both on the same property. Decide which
-          path suits your target price and area.
+          Buying new gets you the grant, with full stamp duty. Buying
+          established gets you neither the grant nor a duty concession. Run
+          both at your target price.
         </p>
       </Callout>
 
       <table>
         <thead>
-          <tr><th>Scenario</th><th>Benefit</th><th>Property type</th></tr>
+          <tr><th>Scenario</th><th>First home help</th><th>Property type</th></tr>
         </thead>
         <tbody>
-          <tr><td>Buying new / building</td><td>$30,000 FHOG + normal stamp duty</td><td>New homes only</td></tr>
-          <tr><td>Buying established</td><td>50% stamp duty concession (up to $600,000)</td><td>Established homes only</td></tr>
+          <tr><td>Buying new or building</td><td>{`${money(GRANT.amount)} grant (to ${GRANT_TO}) and full stamp duty`}</td><td>New homes, including kit homes</td></tr>
+          <tr><td>Buying established</td><td>None: full stamp duty, no grant</td><td>Established homes</td></tr>
         </tbody>
       </table>
 
@@ -234,7 +238,7 @@ export default function FirstHomeBuyerTasPage() {
       <ul>
         <li>Hobart medians are significantly lower than Sydney, Melbourne, and Brisbane</li>
         <li>Launceston, Burnie, and Devonport offer further affordability</li>
-        <li>The $30,000 FHOG covers a higher proportion of a typical deposit relative to purchase price</li>
+        <li>{`The ${money(GRANT.amount)} grant on a new home covers a higher share of a typical deposit than it would in Sydney or Melbourne`}</li>
         <li>Growing remote work culture has made Tasmania viable for mainland workers</li>
       </ul>
       <p>
@@ -277,8 +281,9 @@ export default function FirstHomeBuyerTasPage() {
         <li>The property must be a new home (not previously occupied or sold as a residence)</li>
       </ul>
       <p>
-        For the stamp duty concession on established homes, standard FHB criteria
-        apply. Confirm exact requirements at sro.tas.gov.au.
+        The established-home duty exemption isn&rsquo;t available for transfers
+        settling after 30 June 2026. Confirm the grant rules for your
+        transaction date at sro.tas.gov.au.
       </p>
 
       <h2 id="steps">Step-by-step, buying your first home in Tasmania</h2>

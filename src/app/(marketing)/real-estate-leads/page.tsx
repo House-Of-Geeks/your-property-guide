@@ -91,7 +91,7 @@ const ledger: Array<{ feature: string; us: string; them: string }> = [
   },
   {
     feature: "Consent",
-    us: "A plain-English statement at the point they give their details: a local agent will contact you about selling. The form they used is recorded with the lead.",
+    us: "A separate permission box they tick themselves, worded to say one participating local agent will contact them about selling. The exact words they ticked, and the time, are recorded with the lead.",
     them: "A pre-ticked box, or terms buried under the button.",
   },
   {
@@ -140,11 +140,13 @@ const wontPromise = [
   },
 ];
 
+// The same four checks the consumer pages describe (src/lib/service-model.ts
+// PARTNER_CHECKS), written to the agent.
 const vetting = [
-  "You hold a current real estate licence or registration, and it checks out on your state's public register.",
-  "You sell in the suburbs you ask for. Recent sales there, not just an office nearby. We would rather send you fewer leads you can list than pad a number.",
-  "You can make first contact fast. Speed to lead is the single biggest thing you control, and every homeowner has been told a local agent will be in touch.",
-  "You will tell us what lists. Partners who share outcomes get first call on volume, and it tells us which pages produce vendors who sign.",
+  "You hold a current real estate licence or registration, and it checks out on your state's public register. Homeowners are told how to check it themselves.",
+  "You sell in the suburbs you ask for. We review your recent sales there, not just an office nearby. We would rather send you fewer leads you can list than pad a number.",
+  "Your reviews from past sellers hold up. We read them, not just the ones on your website.",
+  "We talk to you before you join. You agree to make first contact promptly (homeowners are told to expect contact within one business day, the way they chose) and to tell us what happened. Homeowners are asked too.",
 ];
 
 const states = [
@@ -513,13 +515,8 @@ export default function RealEstateLeadsPage() {
             </div>
             <div className={s.prose} style={{ maxWidth: "54ch" }} data-reveal>
               <p>
-                <strong>And on the homeowner&rsquo;s side:</strong> the questions
-                come before the contact form, so by the time they give their
-                details they have already told us they are selling, when, and
-                that no agent has them signed. At the point they give their
-                details they see a plain sentence saying a local agent will
-                contact them about selling, and a separate, unticked box for our
-                own emails.
+                <strong>And on the homeowner&rsquo;s side:</strong>
+                {" the questions come before the contact form, so by the time they give their details they have already told us they are selling, when, and that no agent has them signed. At the point they give their details they tick a separate permission box saying one participating local agent will contact them about selling, choose how they’d like to be contacted, and see a separate, unticked box for our own emails."}
               </p>
               <p>
                 <strong>Already listed?</strong> Their details are never passed

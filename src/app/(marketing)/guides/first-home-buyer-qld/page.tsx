@@ -15,6 +15,16 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
+import { QLD_FIRST_HOME, calculateStampDuty } from "@/lib/utils/stamp-duty";
+import { FIRST_HOME_REVIEWED_ON, currentDutyRelief, currentGrant, formatPolicyDate, money } from "@/lib/policy/first-home";
+
+// Figures from src/lib/policy/first-home.ts and the stamp duty engine.
+const GRANT = currentGrant("QLD");
+const GRANT_CAP = GRANT.caps[0].cap ?? 0;
+const NEW_FROM = formatPolicyDate(currentDutyRelief("QLD", "new").effectiveFrom as string);
+const homeDuty = (price: number) => calculateStampDuty(price, "QLD", false, false, false).total;
+const generalDuty = (price: number) => calculateStampDuty(price, "QLD", false, false, true).total;
+const NEAR_CAP = GRANT_CAP - 1_000;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide QLD: $30K Grant, Stamp Duty & Schemes (2026)",
@@ -22,7 +32,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Queensland first home buyer guide: $30,000 FHOG for new homes under $750K (locked in by the 2026-27 QLD Budget), zero stamp duty on new homes, federal schemes, and QLD buying tips.",
   slug: "first-home-buyer-qld",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-14",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -51,8 +61,8 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Queensland's FHOG is $30,000 on new homes only, capped at $750,000 contract price. The 2026-27 QLD Budget locked the $30,000 amount in for another four years — it was due to halve on 1 July 2026 but didn't.",
-  "Eligible first home buyers pay zero transfer duty on new homes and vacant land (made permanent in the 2026-27 Budget), and a full concession applies on established homes up to $700,000, phasing out at $800,000.",
-  "Stacked together, the grant plus duty relief on a new build routinely exceeds $50,000 in support.",
+  `Eligible first home buyers pay no transfer duty on a new home or on vacant land to build one, at any price (contracts from ${NEW_FROM}), and none on an established home up to ${money(QLD_FIRST_HOME.exemptTo)}, phasing out to ${money(QLD_FIRST_HOME.concessionTo)}.`,
+  `Stacked on a new home valued just under ${money(GRANT_CAP)}, the ${money(GRANT.amount)} grant plus no transfer duty (${money(homeDuty(NEAR_CAP))} saved at the home concession rate) comes to nearly $50,000.`,
   "Federal schemes (the 5% Deposit Scheme, Family Home Guarantee, Help to Buy) all work in QLD, and the 5% Deposit Scheme no longer has income caps or place limits.",
   "QLD uses the REIQ standard contract with conditions built in (building, pest, finance) rather than relying on a cooling-off period.",
   "Cooling-off in QLD is 5 business days from the buyer receiving the contract; no cooling-off at auction.",
@@ -72,17 +82,17 @@ const FAQS: FaqItem[] = [
   {
     question: "Is QLD's FHOG still $30,000?",
     answer:
-      "Yes. The boosted $30,000 grant was due to revert to $15,000 for contracts signed from 1 July 2026, but the 2026-27 Queensland Budget (23 June 2026) locked it in for another four years. The Queensland Revenue Office confirms $30,000 for eligible contracts signed from 20 November 2023, with no end date currently published. It is triple the $10,000 paid in NSW, VIC metro, and WA, and combined with zero transfer duty on new homes it makes Queensland the most generous state for buying a new first home.",
+      "Yes. The boosted $30,000 grant was due to revert to $15,000 for contracts signed from 1 July 2026, but the 2026-27 Queensland Budget (23 June 2026) locked it in for another four years. The Queensland Revenue Office confirms $30,000 for eligible contracts signed from 20 November 2023, with no end date currently published. It is triple the $10,000 paid in NSW, Victoria and WA, and with no transfer duty on new homes it makes Queensland one of the most generous states for buying a new first home (the NT's HomeGrown Territory Grant pays $50,000).",
   },
   {
     question: "Can I get the QLD FHOG on an established home?",
     answer:
-      "No. The grant only applies to new homes, off-the-plan, or owner-builder new builds. Established properties don't qualify. However, the First Home Concession on stamp duty is available for both new and established homes up to $550,000.",
+      `No. The grant only applies to new homes, off-the-plan, or owner-builder new builds. Established properties don't qualify. An established home can still get the first home concession on transfer duty: no duty up to ${money(QLD_FIRST_HOME.exemptTo)}, reducing to nil at ${money(QLD_FIRST_HOME.concessionTo)} (contracts from ${QLD_FIRST_HOME.from}).`,
   },
   {
     question: "Does QLD have a full stamp duty exemption like NSW or VIC?",
     answer:
-      "No. QLD reduces transfer duty rather than eliminating it. The First Home Concession applies to homes up to $550,000 and gives a flat reduction. There's also a separate Home Concession (the standard owner-occupier rate) that applies even if you're not a first home buyer.",
+      `Yes. An eligible first home buyer pays no transfer duty on a new home or on vacant land to build one, at any price, for contracts from ${NEW_FROM}, and none on an established home up to ${money(QLD_FIRST_HOME.exemptTo)}, with the concession phasing out to ${money(QLD_FIRST_HOME.concessionTo)}. There's also the home concession rate for any owner-occupier, first home buyer or not. From 1 August 2026 the home concessions need an Australian citizen, permanent resident or specified foreign retiree.`,
   },
   {
     question: "When is the FHOG paid?",
@@ -154,13 +164,13 @@ export default function FirstHomeBuyerQLDPage() {
       <h2 id="fhog-qld">$30,000 First Home Owner Grant QLD</h2>
       <p className="lead">
         Queensland pays a $30,000 First Home Owner Grant to eligible first home
-        buyers purchasing or building a new home — the largest first home grant
-        in the country, locked in by the 2026-27 State Budget.
+        buyers purchasing or building a new home, the largest state First Home
+        Owner Grant, kept by the 2026-27 State Budget.
       </p>
 
       <KeyFigure
         value="$30,000"
-        label="The QLD First Home Owner Grant on new homes up to $750,000, for eligible contracts signed from 20 November 2023."
+        label={`The QLD First Home Owner Grant on new homes valued under ${money(GRANT_CAP)}, for eligible contracts signed from ${formatPolicyDate(GRANT.effectiveFrom as string)}.`}
         context="Established homes do not qualify"
       />
 
@@ -169,13 +179,13 @@ export default function FirstHomeBuyerQLDPage() {
         <li>At least one applicant must be an Australian citizen or permanent resident</li>
         <li>All applicants must be 18 years or older</li>
         <li>No applicant can have previously owned residential property in Australia</li>
-        <li>At least one applicant must occupy the home as their principal place of residence for at least 12 months within 12 months of completion or settlement</li>
+        <li>At least one applicant must move into the home as their principal place of residence within 1 year of the transaction completing, and live there continuously for 6 months</li>
       </ul>
 
       <h3>Eligible properties</h3>
       <ul>
-        <li>New homes (not previously occupied or sold as residential property) with a contract price of $750,000 or less</li>
-        <li>Owner-built new homes must have a building contract value of $750,000 or less</li>
+        <li>New homes (not previously occupied or sold as residential property) valued under {money(GRANT_CAP)}, including the land and any contract variations</li>
+        <li>Homes built under a contract or by an owner-builder, under the same {money(GRANT_CAP)} value limit</li>
         <li>Established properties do <strong>not</strong> qualify for the FHOG in QLD</li>
       </ul>
 
@@ -195,17 +205,22 @@ export default function FirstHomeBuyerQLDPage() {
 
       <h3>New homes and vacant land: zero duty</h3>
       <ul>
-        <li>Eligible first home buyers pay <strong>no transfer duty on a new home</strong>, with no price cap — made permanent in the 2026-27 Budget (in place since 1 May 2025)</li>
-        <li>A separate first home vacant land concession applies on land up to $500,000</li>
+        <li>Eligible first home buyers pay <strong>no transfer duty on a new home</strong>, with no price cap, for contracts from {NEW_FROM}; the 2026-27 Budget made it permanent</li>
+        <li>No transfer duty on vacant residential land to build your first home either, with no value cap (also from {NEW_FROM})</li>
         <li>The property must be your first home in Australia and you must move in within the required occupancy window</li>
       </ul>
 
       <h3>Established homes: full concession to $700,000</h3>
       <ul>
-        <li>Full concession (i.e. $0 duty) on established homes up to <strong>$700,000</strong></li>
-        <li>The concession phases out between $700,000 and $800,000</li>
-        <li>Above $800,000, standard duty applies with no first home discount — on an $800,000 buy that's the full $29,025</li>
+        <li>Full concession ($0 duty) on established homes up to <strong>{money(QLD_FIRST_HOME.exemptTo)}</strong>, for contracts from {QLD_FIRST_HOME.from}</li>
+        <li>The concession phases out between {money(QLD_FIRST_HOME.exemptTo)} and {money(QLD_FIRST_HOME.concessionTo)}</li>
+        <li>From {money(QLD_FIRST_HOME.concessionTo)} there&rsquo;s no first home discount: an owner-occupier pays the home concession rate, {money(homeDuty(800_000))}{" "}at $800,000 (an investor would pay {money(generalDuty(800_000))})</li>
       </ul>
+      <p>
+        From 1 August 2026 Queensland&rsquo;s home concessions need an Australian
+        citizen, permanent resident or specified foreign retiree. Rules checked
+        against the Queensland Revenue Office on {formatPolicyDate(FIRST_HOME_REVIEWED_ON)}.
+      </p>
 
       <p>
         See our full <Link href="/guides/stamp-duty-qld">Queensland stamp duty
@@ -247,9 +262,9 @@ export default function FirstHomeBuyerQLDPage() {
           buyers. Check with your broker or lender.
         </li>
         <li>
-          <strong>First Home Vacant Land Concession:</strong> For buyers
-          purchasing vacant land to build their first home. Reduced transfer duty
-          applies on land valued at $400,000 or less.
+          <strong>First home vacant land concession:</strong> For buyers
+          purchasing vacant land to build their first home. No transfer duty on
+          residential land at any value, for contracts from {NEW_FROM}.
         </li>
       </ul>
 

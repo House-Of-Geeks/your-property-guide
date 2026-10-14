@@ -19,6 +19,10 @@ import { checkRateLimit, ipKeyFromRequest } from "@/lib/rate-limit";
 import { normalizePhone } from "@/lib/utils/phone";
 import { attributionFromRequest, attributionJson, attributionRowsFor } from "@/lib/attribution-server";
 import { callConsentText, downloadConsentText, guideCallKind } from "@/lib/guide-consent";
+import { kindForType } from "@/lib/lead-kinds";
+import { addressFromSuburbSlug } from "@/lib/sent247";
+import { SEQUENCES, dueAt, sequenceFor } from "@/lib/email-sequences";
+import { randomBytes } from "node:crypto";
 import {
   describeSent247,
   leadMagnetDeliveryEnabled,
@@ -106,6 +110,11 @@ const leadSchema = z.object({
   // message below, the way the appraisal timeframe is.
   tenanted: z.enum(["yes", "no"]).optional(),
   managerTimeframe: z.enum(["asap", "0-3-months", "3-6-months", "researching"]).optional(),
+  // Learning path (14 Oct 2026). The tips series is its own unticked box
+  // (wantsSequence); requestKey stops a double submit making two rows.
+  wantsSequence: z.boolean().optional(),
+  stage: z.string().max(40).optional(),
+  requestKey: z.string().min(8).max(80).optional(),
   // Honeypot. Real users never see/fill this field (visually hidden,
   // aria-hidden, tabindex=-1). Bots autofill it. If populated, we silently
   // 200 the request without persisting or notifying — don't tip them off.
@@ -142,6 +151,15 @@ export async function POST(request: Request) {
     // bot believes the submission worked and doesn't retry differently.
     if (lead.website && lead.website.trim().length > 0) {
       return NextResponse.json({ success: true, message: "Enquiry submitted successfully" });
+    }
+
+    // A double click or a retried request: return the first row's answer.
+    if (lead.requestKey) {
+      const first = await db.lead.findUnique({ where: { requestKey: lead.requestKey }, select: { id: true } });
+      if (first) {
+        await db.leadEvent.create({ data: { leadId: first.id, type: "duplicate-submit", actor: "system" } }).catch(() => {});
+        return NextResponse.json({ success: true, message: "Enquiry submitted successfully", id: first.id, emailOnItsWay: true, duplicate: true });
+      }
     }
 
     // How this browser found us (first visit, latest ad click) from the
@@ -220,11 +238,11 @@ export async function POST(request: Request) {
         lead.agentStatus && `Agent status: ${AGENT_STATUS_LABELS[lead.agentStatus] ?? lead.agentStatus}`,
         lead.motivation && `Motivation: ${lead.motivation}`,
         lead.priceExpectation && `Price expectation: ${lead.priceExpectation}`,
-        `Marketing consent: ${lead.marketingConsent ? "yes" : "no"}`,
+        `Tips series: ${(lead.wantsSequence ?? lead.marketingConsent) ? "yes" : "no"}`,
         guideDownload
           ? lead.phone
-            ? "Consent: guide and tips emails, and a call from YPG, no agent unless they ask (download)"
-            : "Consent: guide and tips emails (download)"
+            ? "Consent: the guide by email; gave a mobile for a call from YPG only, never an agent (download)"
+            : "Consent: the guide by email only (download)"
           : callKind === "agent"
             ? "Consent: one agent may call (call request)"
             : "Consent: call from YPG only, never an agent (call request)",
@@ -240,6 +258,35 @@ export async function POST(request: Request) {
     // can dial straight from the email/DB. If it doesn't normalise, keep
     // the raw string — a lead with an odd-looking number beats no lead.
     const storedPhone = lead.phone ? (normalizePhone(lead.phone) ?? lead.phone.trim()) : undefined;
+
+    // The path, journey and consent as columns (14 Oct 2026), so learning rows
+    // and introduction requests can't be confused in reports or delivery.
+    // Guide downloads: the tips series only with its own tick (wantsSequence,
+    // or marketingConsent from a page loaded before this deploy).
+    const kind = kindForType(lead.type, { call: guideCall });
+    const wantsSequence = lead.type === "guide-download" && !guideCall && (lead.wantsSequence ?? lead.marketingConsent ?? false);
+    const journey = lead.type === "guide-download" ? (lead.guideType === "buying" ? "buying" : "selling") : undefined;
+    const stage = lead.stage ?? (lead.type === "guide-download" ? (lead.guideType === "buying" ? undefined : lead.agentStatus) : undefined);
+    const sequence = wantsSequence && journey ? sequenceFor(journey, stage) : null;
+    const now = new Date();
+    const journeyFields = {
+      kind,
+      journey,
+      state: addressFromSuburbSlug(lead.suburb)?.state,
+      stage,
+      timeframe: lead.sellingTimeframe,
+      marketingConsent: lead.type === "guide-download" ? wantsSequence : lead.marketingConsent,
+      consentText: guideDownload ? downloadConsentText(lead.guideType) : callKind ? callConsentText(callKind) : undefined,
+      introConsent: callKind === "agent" ? true : undefined,
+      service: callKind === "agent" ? "selling-agent" : undefined,
+      status: kind === "introduction" ? "received" : undefined,
+      sequence,
+      sequenceStep: sequence ? 0 : undefined,
+      sequenceNextAt: sequence ? dueAt(sequence, 0, now) : undefined,
+      requestKey: lead.requestKey,
+      token: randomBytes(18).toString("base64url"),
+      events: { create: { type: "submitted", actor: "customer", detail: { type: lead.type, kind, sequence } } },
+    };
 
     const saved = await db.lead.create({
       data: {
@@ -262,6 +309,7 @@ export async function POST(request: Request) {
         routedReason:     routing?.reason,
         gclid:            attribution.gclid ?? undefined,
         attribution:      attributionJson(attribution),
+        ...journeyFields,
       },
     });
 
@@ -381,14 +429,14 @@ export async function POST(request: Request) {
       }
       // After the response, as the phone-added email is: the reader
       // shouldn't wait out an SMTP round-trip for the team's copy.
+      await db.leadEvent
+        .create({ data: { leadId: saved.id, type: "guide-delivered", actor: "system", detail: { guideEmail } } })
+        .catch(() => {});
       const notify = () =>
         notifyTeam([
-          [
-            "Call requested",
-            lead.guideType === "buying" || lead.agentStatus === "already-listed"
-              ? "No (guide download). Our team may call. Never pass to an agent."
-              : "No (guide download). Our team may call. No agent unless they ask.",
-          ],
+          ["Path", "Learning (guide download). Never pass to an agent."],
+          ["Team call", lead.phone ? "They added a mobile for a call from our team (not an agent)." : "No mobile given. Email only."],
+          ["Tips series", sequence ? `Yes: ${SEQUENCES[sequence].label}` : "No"],
           ["Guide email", guideEmail],
         ]);
       try {
@@ -410,7 +458,7 @@ export async function POST(request: Request) {
     if (callKind) {
       deliveryRows.push([
         "Call requested",
-        callKind === "agent" ? "One top local agent (vendor lead)" : "From YPG only. Never pass to an agent.",
+        callKind === "agent" ? "One participating local agent (vendor lead)" : "From YPG only. Never pass to an agent.",
       ]);
       const cfg = sent247Config();
       const hold = sent247HoldReason(lead);
@@ -431,6 +479,13 @@ export async function POST(request: Request) {
         console.error("Sent 24/7 delivery failed (lead saved to DB):", { leadId: saved.id, reason: outcome.reason });
       }
       deliveryRows.push(["Sent 24/7", describeSent247(outcome)]);
+      const delivered = outcome.kind === "accepted";
+      await db.lead
+        .update({ where: { id: saved.id }, data: { status: delivered ? "sent" : "held", statusReason: describeSent247(outcome), statusAt: new Date() } })
+        .catch(() => {});
+      await db.leadEvent
+        .create({ data: { leadId: saved.id, type: delivered ? "delivered" : outcome.kind === "failed" ? "delivery-failed" : "held", actor: "system", detail: { channel: "sent247", outcome: JSON.parse(JSON.stringify(outcome)) } } })
+        .catch(() => {});
     }
 
     // 1. Internal notification to the team (above), awaited here; only a
@@ -466,6 +521,11 @@ export async function POST(request: Request) {
       id: saved.id,
     });
   } catch (err) {
+    // A simultaneous double submit lost the requestKey race: the first copy's
+    // row exists now, so answer as the first request did.
+    if (typeof err === "object" && err !== null && (err as { code?: string }).code === "P2002") {
+      return NextResponse.json({ success: true, message: "Enquiry submitted successfully", duplicate: true, emailOnItsWay: true });
+    }
     console.error("Lead submission error:", err);
     return NextResponse.json(
       { error: "Internal server error" },

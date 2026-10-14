@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { sendMail, ANDY_EMAIL } from "@/lib/email";
 import { EMAIL_COLORS, emailLayout } from "@/lib/email-theme";
+import { leadKind } from "@/lib/lead-kinds";
 
 // GET /api/cron/leads-health
 // Triggered by Vercel Cron (see vercel.json). Counts lead submissions in
@@ -53,14 +54,15 @@ function buildZeroFloorHtml(windowHours: number, newsletterCount: number): strin
 
 // Sent when leads DID come in. A daily heartbeat so that silence is
 // meaningful: if no email arrives at all, the cron itself didn't run.
-function buildHeartbeatHtml(count: number, windowHours: number, newsletterCount: number): string {
+function buildHeartbeatHtml(count: number, windowHours: number, newsletterCount: number, split?: { introductions: number; learning: number; enquiries: number }): string {
   const C = EMAIL_COLORS;
   return emailLayout({
     variant: "brand",
     eyebrow: `${count} lead${count === 1 ? "" : "s"} in the last ${windowHours}h`,
     body: `
     <div style="padding:18px 24px;font-size:14px;color:${C.ink};line-height:1.55;">
-      <p style="margin:0;">Daily lead-health check ran OK — <strong>${count}</strong> sales enquir${count === 1 ? "y" : "ies"} captured in the last ${windowHours} hours.</p>
+      <p style="margin:0;">Daily lead-health check ran OK — <strong>${count}</strong> submission${count === 1 ? "" : "s"} captured in the last ${windowHours} hours.</p>
+      ${split ? `<p style="margin:10px 0 0;">Introduction requests: <strong>${split.introductions}</strong> · Guides and plans (learning): <strong>${split.learning}</strong> · Other enquiries: <strong>${split.enquiries}</strong></p>` : ""}
       <p style="margin:12px 0 0;font-size:13px;color:${C.inkSubtle};">You get this every day so a silent failure is obvious: no email at all means the check didn't run.</p>
       ${newsletterNote(newsletterCount, windowHours)}
     </div>`,
@@ -111,13 +113,22 @@ export async function GET(request: NextRequest) {
   // separately for visibility but never drive the zero/heartbeat decision.
   let count: number | null = null;
   let newsletterCount = 0;
+  let split = { introductions: 0, learning: 0, enquiries: 0 };
   let lastErr: unknown = null;
   for (let attempt = 0; attempt < 4; attempt++) {
     try {
-      [count, newsletterCount] = await Promise.all([
-        db.lead.count({ where: { createdAt: { gte: since }, type: { notIn: NON_LEAD_TYPES } } }),
+      const [rows, nl] = await Promise.all([
+        db.lead.findMany({ where: { createdAt: { gte: since }, type: { notIn: NON_LEAD_TYPES } }, select: { type: true, kind: true } }),
         db.lead.count({ where: { createdAt: { gte: since }, type: "newsletter" } }),
       ]);
+      count = rows.length;
+      newsletterCount = nl;
+      // The two paths, counted apart (Oct 2026).
+      split = {
+        introductions: rows.filter((r) => leadKind(r) === "introduction").length,
+        learning: rows.filter((r) => leadKind(r) === "learning").length,
+        enquiries: rows.filter((r) => leadKind(r) === "enquiry").length,
+      };
       break;
     } catch (err) {
       lastErr = err;
@@ -159,7 +170,7 @@ export async function GET(request: NextRequest) {
         : `Lead health: ${count} lead${count === 1 ? "" : "s"} in last ${WINDOW_HOURS}h`,
       html: isZero
         ? buildZeroFloorHtml(WINDOW_HOURS, newsletterCount)
-        : buildHeartbeatHtml(count, WINDOW_HOURS, newsletterCount),
+        : buildHeartbeatHtml(count, WINDOW_HOURS, newsletterCount, split),
     });
   } catch (mailErr) {
     console.error("leads-health cron: daily email failed", mailErr);
@@ -169,5 +180,5 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  return NextResponse.json({ ok: true, count, newsletterCount, alertSent: true, windowHours: WINDOW_HOURS });
+  return NextResponse.json({ ok: true, count, ...split, newsletterCount, alertSent: true, windowHours: WINDOW_HOURS });
 }

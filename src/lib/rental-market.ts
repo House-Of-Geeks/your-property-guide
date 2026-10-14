@@ -21,7 +21,7 @@ export const RENTAL_MARKET_YEAR = 2026;
 const TITLE_BUDGET = 60;
 const DESCRIPTION_BUDGET = 160;
 
-export type RentalSection = "current" | "yield" | "history" | "listings" | "faq";
+export type RentalSection = "current" | "yield" | "history" | "faq";
 
 export interface CurrentRent {
   house: number | null;
@@ -178,12 +178,10 @@ export function buildRentalMarket(suburb: Suburb, history: SuburbRentalHistory[]
       answer: `Median weekly rent by bedroom count in ${name}: ${beds.join(", ")} (${current.label}, ${when}). ${bedroomDefinition(current.source)}`,
     });
   }
-  if (listings > 0) {
-    faqs.push({
-      question: `Are there properties for rent in ${name} right now?`,
-      answer: `Yes: ${listings} ${listings === 1 ? "property is" : "properties are"} listed for rent in ${name} on this site at the moment. Listings change daily; the rentals tab shows the current set with prices, bedrooms and inspection times.`,
-    });
-  }
+  // `listings` (the suburb's rent listings) adds no section and no FAQ: the
+  // rental listings sub-page they pointed to was retired on 14 Oct 2026
+  // (docs/portal-consolidation-2026-10-14.md). It stays on the model for
+  // the caller that passes it.
 
   // No rental row: nothing renders and the page shows its empty state.
   const sections: RentalSection[] = [];
@@ -191,7 +189,6 @@ export function buildRentalMarket(suburb: Suburb, history: SuburbRentalHistory[]
     sections.push("current");
     if (yieldHouse || yieldUnit) sections.push("yield");
     if (historyRows.length) sections.push("history");
-    if (listings > 0) sections.push("listings");
     if (faqs.length >= 2) sections.push("faq");
   }
 
@@ -200,7 +197,7 @@ export function buildRentalMarket(suburb: Suburb, history: SuburbRentalHistory[]
     ? fit([
         `Median weekly rent in ${name} ${suburb.postcode}: ${[current.house ? `${money(current.house)} houses` : null, current.unit ? `${money(current.unit)} units` : null].filter(Boolean).join(", ")} (${current.label}, ${when}).`,
         yieldHouse ? `Gross yield ${yieldHouse}%.` : "",
-        "Rent by bedroom, history and current listings.",
+        "Rent by bedroom and history.",
       ].filter(Boolean))
     : `View rental price trends and history for ${name}, ${suburb.state}. Compare weekly rent for houses, units, and bedrooms.`;
   const provenance = current ? `${current.label}${current.bonds ? `, median of ${current.bonds.toLocaleString("en-AU")} new house bonds` : ""}, ${when}` : null;

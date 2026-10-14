@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -252,8 +253,8 @@ export default function SydneyVsMelbourneGuide() {
         </li>
         <li>
           Pull comparable sales on three or four target suburbs in each city
-          using our{" "}
-          <a href="/sold">recently sold</a> data.
+          using the sale prices on our{" "}
+          <Link href="/suburbs">suburb pages</Link>.
         </li>
         <li>
           Cross-reference yield with our{" "}

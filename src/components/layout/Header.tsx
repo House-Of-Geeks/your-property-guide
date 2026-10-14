@@ -5,11 +5,14 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown, Search, Phone } from "lucide-react";
 import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
 import { Logo } from "@/components/brand/Logo";
+import { moveForPath } from "@/lib/journey-paths";
 
-// Brand v4 (Oct 2026): the site is a guide and an introduction service, so
-// the nav leads with the two jobs people come with, selling and buying.
-// Guides and suburbs follow; About carries how we're paid. The guide button
-// shows at every width, because phones carry most visits.
+// Oct 2026 ("confident moves"): the nav follows the move people are making
+// (buying, selling, or both), then guides and tools, then getting help.
+// About carries how we're paid and the agent-facing pages, so they're easy
+// for professionals to find without leading the consumer site. The one solid
+// button is the next-step plan, matched to the page's move; "Get help" is
+// the introduction path.
 
 interface NavChild {
   label: string;
@@ -26,67 +29,71 @@ interface NavLink {
 
 const NAV_LINKS: NavLink[] = [
   {
+    label: "Buying",
+    href: "/buying",
+    layout: "grouped",
+    children: [
+      { label: "Buying: where to start",  href: "/buying",                          group: "Start here" },
+      { label: "Make a buying plan",      href: "/plan?j=buying",                   group: "Start here" },
+      { label: "First home buyers",       href: "/first-home-buyers",               group: "Start here" },
+      { label: "Buyer’s agents",          href: "/buyers-agents",                   group: "Start here" },
+      { label: "Buying and selling",      href: "/buying-and-selling",              group: "Start here" },
+      { label: "Investing",               href: "/investing",                       group: "Start here" },
+      { label: "Borrowing power",         href: "/borrowing-power-calculator",      group: "Tools" },
+      { label: "Stamp duty",              href: "/stamp-duty-calculator",           group: "Tools" },
+      { label: "Mortgage repayments",     href: "/mortgage-calculator",             group: "Tools" },
+      { label: "Rental yield",            href: "/rental-yield-calculator",         group: "Tools" },
+      { label: "Due diligence checklist", href: "/guides/due-diligence-checklist-buying-a-house", group: "Tools" },
+      { label: "Free buying guide (PDF)", href: "/buying-guide",                    group: "Tools" },
+    ],
+  },
+  {
     label: "Selling",
     href: "/selling",
     layout: "grouped",
     children: [
-      { label: "Free selling guide",        href: "/selling-guide",                               group: "Start here" },
-      { label: "Free property appraisal",   href: "/appraisal",                                   group: "Start here" },
-      { label: "Selling your home",         href: "/selling",                                     group: "Start here" },
-      { label: "Commission calculator",     href: "/real-estate-commission-calculator",           group: "Start here" },
-      { label: "Selling costs calculator",  href: "/selling-costs-calculator",                    group: "Start here" },
-      { label: "How to sell a house",       href: "/guides/how-to-sell-a-house-australia",        group: "Guides" },
-      { label: "Choosing a selling agent",  href: "/guides/how-to-choose-a-selling-agent",        group: "Guides" },
-      { label: "Agent fees and commission", href: "/guides/real-estate-agent-fees-australia",     group: "Guides" },
-      { label: "Cost of selling",           href: "/guides/cost-of-selling-a-house-australia",    group: "Guides" },
-      { label: "Auction or private sale",   href: "/guides/auction-vs-private-treaty",            group: "Guides" },
-      { label: "What's my home worth?",     href: "/guides/how-much-is-my-house-worth-australia", group: "Guides" },
+      { label: "Selling: where to start", href: "/selling",                         group: "Start here" },
+      { label: "Make a selling plan",     href: "/plan?j=selling",                  group: "Start here" },
+      { label: "Choosing a selling agent", href: "/guides/how-to-choose-a-selling-agent", group: "Start here" },
+      { label: "Agent fees and commission", href: "/guides/real-estate-agent-fees-australia", group: "Start here" },
+      { label: "Buying and selling",      href: "/buying-and-selling",              group: "Start here" },
+      { label: "Selling costs",           href: "/selling-costs-calculator",        group: "Tools" },
+      { label: "Commission calculator",   href: "/real-estate-commission-calculator", group: "Tools" },
+      { label: "Agent proposal worksheet", href: "/tools/agent-proposal-worksheet", group: "Tools" },
+      { label: "Free selling guide (PDF)", href: "/selling-guide",                  group: "Tools" },
     ],
   },
   {
-    label: "Buying",
-    href: "/buying-guide",
-    layout: "grouped",
-    children: [
-      { label: "Free buying guide",       href: "/buying-guide",               group: "Start here" },
-      { label: "First home buyers",       href: "/first-home-buyers",          group: "Start here" },
-      { label: "Upgrading or downsizing", href: "/upgrading",                  group: "Start here" },
-      { label: "Investing",               href: "/investing",                  group: "Start here" },
-      { label: "Stamp duty calculator",   href: "/stamp-duty-calculator",      group: "Calculators" },
-      { label: "Borrowing power",         href: "/borrowing-power-calculator", group: "Calculators" },
-      { label: "Mortgage repayments",     href: "/mortgage-calculator",        group: "Calculators" },
-      { label: "Rental yield",            href: "/rental-yield-calculator",    group: "Calculators" },
-      { label: "All calculators",       href: "/tools",                      group: "Calculators" },
-    ],
-  },
-  {
-    label: "Guides",
+    label: "Guides and tools",
     href: "/guides",
+    layout: "list",
+    children: [
+      { label: "All guides",          href: "/guides" },
+      { label: "All calculators",       href: "/tools" },
+      { label: "Your next-step plan", href: "/plan" },
+      { label: "Suburb profiles",     href: "/suburbs" },
+      { label: "Market reports",      href: "/market-reports" },
+      { label: "Property glossary",   href: "/glossary" },
+      { label: "Latest news",         href: "/guides/category/news" },
+    ],
   },
   {
-    label: "Suburbs",
-    href: "/suburbs",
+    label: "Find an agent",
+    href: "/get-help",
   },
   {
     label: "About",
     href: "/about",
     layout: "list",
     children: [
-      { label: "About us",           href: "/about" },
-      { label: "How we're paid",     href: "/about#ownership-funding" },
+      { label: "About us",            href: "/about" },
+      { label: "How we’re paid",      href: "/about#ownership-funding" },
+      { label: "How we choose agents", href: "/get-help#how-we-choose" },
       { label: "Editorial standards", href: "/about#methodology" },
-      { label: "Corrections",        href: "/about#corrections" },
-      { label: "Contact",            href: "/contact" },
+      { label: "Contact",             href: "/contact" },
+      { label: "For agents",          href: "/real-estate-leads" },
     ],
   },
-];
-
-// Buyer-context routes show the buying-guide button; everywhere else the
-// selling guide leads (it's the revenue side).
-const BUYER_PATHS = [
-  "/buying-guide", "/first-home-buyers", "/investing", "/upgrading", "/buy",
-  "/stamp-duty-calculator", "/borrowing-power-calculator", "/mortgage-calculator",
-  "/affordability-calculator", "/lmi-calculator", "/help-to-buy-calculator", "/fhss-calculator",
 ];
 
 export function Header() {
@@ -94,11 +101,32 @@ export function Header() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
-  const buyerContext = BUYER_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
-  const guideHref = buyerContext ? "/buying-guide" : "/selling-guide";
-  const guideLabel = buyerContext ? "Free buying guide" : "Free selling guide";
+  const move = moveForPath(pathname);
+  // Education first: the solid button is the free guide for the page's move;
+  // the agent route sits beside it as a plain link.
+  const guideHref = move === "buying" ? "/buying-guide" : move === "selling" ? "/selling-guide" : "/guides";
+  const guideLabel = move === "buying" ? "Free buying guide" : move === "selling" ? "Free selling guide" : "Free guides";
+  const planHref = move ? `/plan?j=${move}` : "/plan";
+  const planLabel = move === "buying" ? "Your buying plan" : move === "selling" ? "Your selling plan" : move === "buying-and-selling" ? "Your moving plan" : "Make a plan";
 
   const toggle = (label: string) => setOpenMenu((o) => (o === label ? null : label));
+
+  // Escape closes whichever menu is open; a navigation closes both.
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key !== "Escape") return;
+      setOpenMenu(null);
+      setMobileOpen(false);
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
+    setOpenMenu(null);
+    setMobileOpen(false);
+  }
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -170,24 +198,20 @@ export function Header() {
               <Phone className="w-4 h-4" aria-hidden="true" />
               {CONTACT_PHONE_DISPLAY}
             </a>
-            <Link
-              href="/appraisal"
-              className="hidden lg:inline-flex px-3 py-2 text-sm font-semibold text-ink hover:text-primary whitespace-nowrap transition-colors"
-            >
-              Free appraisal
-            </Link>
+            {/* Phones get the plan (and help) in the bottom bar and the menu,
+                so the header doesn't repeat the same solid button. */}
             <Link
               href={guideHref}
-              className="inline-flex items-center rounded-md bg-cta hover:bg-cta-hover text-white px-3 sm:px-4 py-2 text-[13px] sm:text-sm font-semibold whitespace-nowrap transition-colors"
+              className="hidden sm:inline-flex items-center rounded-md bg-cta hover:bg-cta-hover text-white px-4 py-2 text-sm font-semibold whitespace-nowrap transition-colors"
             >
-              <span className="sm:hidden">Free guide</span>
-              <span className="hidden sm:inline">{guideLabel}</span>
+              {guideLabel}
             </Link>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="min-[67.5rem]:hidden -mr-1 p-2 text-ink hover:bg-surface-sunken rounded-md cursor-pointer"
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
             >
               {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -195,24 +219,41 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile menu: the two actions first, then short groups. */}
+      {/* Mobile menu: the three moves first, then the plan and help, then
+          short groups. */}
       {mobileOpen && (
-        <div className="min-[67.5rem]:hidden border-t border-line bg-white max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <div id="mobile-menu" className="min-[67.5rem]:hidden border-t border-line bg-white max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain">
           <nav className="mx-auto max-w-7xl px-4 pt-4 pb-6" aria-label="Main">
+            <div className="grid grid-cols-3 gap-2 mb-3">
+              {[
+                { href: "/buying", label: "Buying" },
+                { href: "/selling", label: "Selling" },
+                { href: "/buying-and-selling", label: "Both" },
+              ].map((m) => (
+                <Link
+                  key={m.href}
+                  href={m.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-center rounded-md border border-ink px-2 py-3 text-sm font-semibold text-ink"
+                >
+                  {m.label}
+                </Link>
+              ))}
+            </div>
             <div className="grid grid-cols-2 gap-2 mb-5">
               <Link
-                href={guideHref}
+                href={planHref}
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center rounded-md bg-cta hover:bg-cta-hover text-white px-3 py-3 text-sm font-semibold transition-colors"
               >
-                {guideLabel}
+                {planLabel}
               </Link>
               <Link
-                href="/appraisal"
+                href="/get-help"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center rounded-md border border-ink text-ink px-3 py-3 text-sm font-semibold hover:bg-ink hover:text-white transition-colors"
+                className="flex items-center justify-center rounded-md border border-line-strong text-ink px-3 py-3 text-sm font-semibold hover:border-ink transition-colors"
               >
-                Free appraisal
+                Get personal help
               </Link>
             </div>
             <div className="space-y-5">

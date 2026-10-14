@@ -1,10 +1,13 @@
 import type { ComponentType, HTMLAttributes, ReactNode } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Breadcrumbs } from "@/components/layout";
+import { Book3D } from "@/components/interactive/Book3D";
+import { GUIDE_BOOKS, type GuideBookId } from "@/lib/guide-books";
 
-// The premium building blocks (Oct 2026), taken from the homepage so every
-// page shares one look: a full-bleed photo hero under a flat charcoal
-// overlay, generous bands that alternate light, quiet and charcoal, editorial
+// The premium building blocks (Oct 2026). Since 14 Oct (v5): every page
+// opens on a light band with a crisp photo panel (no overlay), then
+// generous bands that alternate light, quiet and charcoal, editorial
 // headings, grids with a heavy top rule, and a connected step timeline.
 // BRAND.md section 11 has the rules. Dark surfaces use the .tone-dark scope
 // (globals.css), so text-ink and border-line flip to light values inside them;
@@ -36,7 +39,7 @@ interface Crumb {
 }
 
 interface PhotoHeroProps {
-  /** A library photo behind the hero. Without one (or `image`) the hero is a plain charcoal band. */
+  /** A library photo beside the heading. Without one (or `image`) the hero is a plain white band. */
   photo?: PhotoKey;
   /**
    * A page's own photo instead of a library one, e.g. a post's cover. Blog
@@ -51,36 +54,58 @@ interface PhotoHeroProps {
   aside?: ReactNode;
   /** "lg" for the homepage and conversion pages, "md" for guides, hubs and tools. */
   size?: "lg" | "md";
+  /** Stand the free guide (or both), as books, on the photo's corner. Each links to its guide. */
+  book?: GuideBookId | readonly GuideBookId[];
+  /** Where a single book links; defaults to the guide's page. */
+  bookHref?: string;
   className?: string;
 }
 
 /**
- * The page-opening band. The overlay is flat (no gradient) and is only there
- * so white type reads on the photo; the photo is decorative, so its alt is
- * empty and it is preloaded as the page's largest image.
+ * The page-opening band (v5, 14 Oct 2026, the light first screen Andy kept):
+ * white, the heading and actions on the left, and on the right either the
+ * page's form (aside) or a crisp photo in a rounded panel, never under an overlay.
+ * On phones a guide or hub ("md") drops the photo so the content starts on
+ * the first screen; conversion pages ("lg") keep it below the text.
  */
-export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside, size = "md", className = "" }: PhotoHeroProps) {
+export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside, size = "md", book, bookHref, className = "" }: PhotoHeroProps) {
   const image = ownImage
     ? { src: ownImage.src, position: ownImage.position ?? "object-center", unoptimized: ownImage.unoptimized ?? false }
     : photo
       ? { ...PHOTOS[photo], unoptimized: false }
       : null;
-  // Less room on top when breadcrumbs already sit above the heading.
   const top = breadcrumbs
-    ? size === "lg" ? "pt-6 sm:pt-10 lg:pt-16" : "pt-4 sm:pt-6 lg:pt-8"
-    : size === "lg" ? "pt-12 sm:pt-16 lg:pt-24" : "pt-8 sm:pt-10 lg:pt-14";
-  const bottom = size === "lg" ? "pb-16 sm:pb-24 lg:pb-32" : "pb-12 sm:pb-16 lg:pb-20";
+    ? size === "lg" ? "pt-5 sm:pt-8 lg:pt-12" : "pt-4 sm:pt-6 lg:pt-8"
+    : size === "lg" ? "pt-10 sm:pt-14 lg:pt-20" : "pt-8 sm:pt-10 lg:pt-14";
+  const bottom = size === "lg" ? "pb-12 sm:pb-16 lg:pb-20" : "pb-10 sm:pb-12 lg:pb-16";
+  const photoPanel = (cls: string) =>
+    image ? (
+      <div className={`relative overflow-hidden rounded-2xl bg-surface-warm ${cls}`}>
+        <Image src={image.src} alt="" fill preload unoptimized={image.unoptimized} sizes="(min-width: 1024px) 40vw, 100vw" className={`object-cover ${image.position}`} />
+      </div>
+    ) : null;
+  const shape = size === "lg" ? "aspect-[4/3] lg:aspect-[4/5]" : "aspect-[16/10] lg:aspect-[4/3]";
+  const panel = !image
+    ? null
+    : book
+      ? (
+        <div className={`relative pb-7 sm:pb-9 ${size === "lg" ? "" : "hidden sm:block"}`}>
+          {photoPanel(`ml-[12%] ${shape}`)}
+          <div className="absolute bottom-0 left-0 flex items-end">
+            {(typeof book === "string" ? [book] : book).map((b, i) => (
+              <Link key={b} href={(typeof book === "string" && bookHref) || GUIDE_BOOKS[b].href} aria-label={`Free: ${GUIDE_BOOKS[b].title}`} className={`block ${i > 0 ? "-ml-3 translate-y-2" : ""}`}>
+                <Book3D guide={b} turn={16} className="[--bw:clamp(96px,24vw,140px)] lg:[--bw:clamp(120px,10.5vw,164px)]" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      )
+      : photoPanel(size === "lg" ? shape : `hidden sm:block ${shape}`);
+  const side = aside ?? panel;
   return (
     // Clipped sideways only: a suburb autocomplete in a form near the hero's
-    // foot must still drop below it (overflow-hidden clipped it), while a
-    // decorative card leaning past the edge must not widen the page on phones.
-    <section className={`tone-dark relative isolate overflow-x-clip bg-surface-inverse ${className}`}>
-      {image && (
-        <>
-          <Image src={image.src} alt="" fill preload unoptimized={image.unoptimized} sizes="100vw" className={`-z-20 object-cover ${image.position}`} />
-          <div className="absolute inset-0 -z-10 bg-surface-inverse/70" aria-hidden="true" />
-        </>
-      )}
+    // foot must still drop below it, while nothing may widen the page on phones.
+    <section className={`relative isolate overflow-x-clip border-b border-line bg-white ${className}`}>
       <div className={SHELL}>
         {breadcrumbs && (
           <div className="pt-3">
@@ -88,10 +113,10 @@ export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside
           </div>
         )}
         <div className={`${top} ${bottom}`}>
-          {aside ? (
-            <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          {side ? (
+            <div className={`grid gap-10 lg:grid-cols-12 lg:gap-14 ${aside ? "items-start" : "items-center"}`}>
               <div className="lg:col-span-7">{children}</div>
-              <div className="lg:col-span-5">{aside}</div>
+              <div className="lg:col-span-5">{side}</div>
             </div>
           ) : (
             <div className="max-w-3xl">{children}</div>

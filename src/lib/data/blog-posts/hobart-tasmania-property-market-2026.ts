@@ -1,5 +1,6 @@
 import type { BlogPost } from "@/types";
 import { HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
+import { currentGrant, money } from "@/lib/policy/first-home";
 
 export const post: BlogPost = {
   id: "blog-hobart-market-2026",
@@ -26,8 +27,8 @@ export const post: BlogPost = {
 
 <h2>What to watch through 2026</h2>
 <ul>
-<li>Hobart's $30,000 FHOG (one of Australia's most generous) continues to support first home buyer activity in new builds</li>
-<li>The 50% stamp duty concession on established homes up to $600,000 keeps the established market accessible</li>
+<li>Tasmania's First Home Owner Grant is ${money(currentGrant("TAS").amount)} on a new home for transactions from 1 July 2026 to 30 June 2027, down from $30,000 in 2025-26, so new-build demand from first home buyers may soften</li>
+<li>The stamp duty exemption for first home buyers of established homes up to $750,000 ended for settlements after 30 June 2026, adding the full duty to the cost of an established first home</li>
 <li>Tasmanian short-stay regulation reform continues to evolve; investors with Airbnb portfolios should track changes</li>
 <li>Continued interstate migration, particularly from Victoria, is expected to support price growth</li>
 <li>The federal 5% Deposit Scheme (First Home Guarantee) caps are ${fmtCap(HG_PRICE_CAPS.TAS.capital)} in Greater Hobart and ${fmtCap(HG_PRICE_CAPS.TAS.rest)} in the rest of Tasmania, so buyers outside Hobart work to the lower number</li>
@@ -39,6 +40,6 @@ export const post: BlogPost = {
   category: "Market Update",
   tags: ["hobart", "tasmania", "market update", "2026", "launceston"],
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-14",
   readingTime: 7,
 };

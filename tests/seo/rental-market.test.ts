@@ -53,14 +53,16 @@ describe("buildRentalMarket", () => {
     expect(m.faqs[1].answer).toContain("About 3.7% for houses: $460 a week is $23,920 a year against a median house price of $650,000");
     expect(m.faqs[2].answer).toContain("three-bedroom figure is the median for houses");
   });
-  it("adds history, the 12-month change and a listings section when the data exists", () => {
+  it("adds history and the 12-month change when the data exists; rent listings add nothing (sub-page retired 14 Oct 2026)", () => {
     const m = buildRentalMarket(suburb(), [row({}), row({ period: "2024-Q3", periodDate: new Date("2024-09-01T00:00:00Z"), medianRentHouse: 420, medianRentUnit: 380 })], 12);
-    expect(m.sections).toEqual(["current", "yield", "history", "listings", "faq"]);
+    expect(m.sections).toEqual(["current", "yield", "history", "faq"]);
     expect(m.change).toMatchObject({ house: 9.5, unit: 6.6, fromPeriod: "2024-Q3", toPeriod: "2025-Q3" });
     expect(m.history).toHaveLength(2);
     expect(m.columns).toEqual({ bed3: true, bed2: true, bed1: true, bonds: false });
     expect(m.faqs.map((f) => f.question)).toContain("How have rents in Werribee changed over the past year?");
-    expect(m.faqs.find((f) => f.question.startsWith("Are there"))?.answer).toContain("12 properties are listed");
+    // The listings FAQ pointed at the rentals tab, which went with the listing sub-pages.
+    expect(m.faqs.find((f) => f.question.startsWith("Are there"))).toBeUndefined();
+    expect(JSON.stringify(m)).not.toContain("/rent");
   });
   it("leaves yield out of the title and the page when the price is withheld (NSW postcode-level row, no bedroom split)", () => {
     const nsw = suburb({ medianHousePrice: 0, medianUnitPrice: 0 }, "Bondi", "NSW", "2026");

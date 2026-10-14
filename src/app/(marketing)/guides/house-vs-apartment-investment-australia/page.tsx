@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -268,8 +269,8 @@ export default function HouseVsApartmentInvestmentGuide() {
           three or four candidates side by side.
         </li>
         <li>
-          Pull comparable sales for the suburb on{" "}
-          <a href="/sold">recently sold</a> to ground-truth the asking price.
+          Check the sale prices on the{" "}
+          <Link href="/suburbs">suburb page</Link> to ground-truth the asking price.
         </li>
         <li>
           Read our{" "}

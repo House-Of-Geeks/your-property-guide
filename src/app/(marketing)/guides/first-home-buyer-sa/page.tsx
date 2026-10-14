@@ -16,14 +16,33 @@ import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
+import { SHARED_EQUITY_SCHEMES } from "@/lib/data/help-to-buy";
+import { calculateStampDuty } from "@/lib/utils/stamp-duty";
+import {
+  FIRST_HOME_REVIEWED_ON,
+  currentDutyRelief,
+  currentGrant,
+  formatPolicyDate,
+  grantFor,
+  money,
+} from "@/lib/policy/first-home";
+
+// Figures from src/lib/policy/first-home.ts, src/lib/data/help-to-buy.ts and the stamp duty engine.
+const GRANT = currentGrant("SA");
+const GRANT_LABEL = `${GRANT.upTo ? "up to " : ""}${money(GRANT.amount)}`;
+const NEW_RELIEF = currentDutyRelief("SA", "new");
+const RELIEF_FROM = formatPolicyDate(NEW_RELIEF.effectiveFrom as string);
+const PREVIOUS_GRANT_CAP = grantFor("SA", "2024-06-05", "new").version?.caps[0]?.cap ?? 0;
+const duty = (price: number) => calculateStampDuty(price, "SA", false, false, false).total;
+const HOMESTART = SHARED_EQUITY_SCHEMES.find((x) => x.state === "SA")!;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide South Australia: Grants, Stamp Duty & Schemes (2026)",
   description:
-    "Complete guide for first home buyers in South Australia: $15,000 FHOG, stamp duty rules, First Home Guarantee, HomeSeeker SA shared equity, and off-the-plan concessions.",
+    "First home buyers in South Australia: no stamp duty on a new home, off-the-plan apartment or land to build (no price cap), a grant of up to $15,000 on new homes, federal schemes and HomeStart shared equity.",
   slug: "first-home-buyer-sa",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-14",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -51,20 +70,20 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "SA's FHOG is $15,000 on new homes only, capped at $650,000 contract price.",
-  "SA does NOT offer a stamp duty exemption or concession for first home buyers on established homes, the FHOG is the main FHB-specific concession.",
-  "On a $600,000 home, SA stamp duty is roughly $26,830, a significant upfront cost to factor into your savings target.",
+  `SA charges first home buyers no stamp duty on a new home, an off-the-plan apartment or vacant land to build, with no price cap, for contracts from ${RELIEF_FROM}. It also pays a First Home Owner Grant of ${GRANT_LABEL} on new homes, with no value cap.`,
+  `There's no first home duty relief on an established home: a $600,000 established home costs ${money(duty(600_000))} in stamp duty.`,
+  `So on a new $750,000 home a first home buyer pays no duty (${money(duty(750_000))} saved) and can claim the grant on top.`,
   `Federal schemes work in SA. The 5% Deposit Scheme has had no income test or limit on places since ${HG_DATES.expanded}; its price cap is ${fmtCap(HG_PRICE_CAPS.SA.capital)} in Greater Adelaide and ${fmtCap(HG_PRICE_CAPS.SA.rest)} elsewhere.`,
-  "HomeSeeker SA is a state shared-equity scheme; availability changes per round, check the SA Housing Authority before relying on it.",
-  "SA's off-the-plan stamp duty concession can deliver meaningful savings on apartment purchases, not exclusive to first home buyers.",
+  "HomeStart's Shared Equity Option is SA's own shared equity loan. HomeSeeker SA is something else: the SA Government's listing of affordable homes for eligible buyers.",
+  "Since 13 February 2025 any previous interest in residential property rules you out of the duty relief, so check your history before you count on it.",
 ];
 
 const TOC: GuideTOCEntry[] = [
+  { id: "stamp-duty",    label: "Stamp duty: new homes and land" },
   { id: "fhog",          label: "First Home Owner Grant SA" },
-  { id: "stamp-duty",    label: "Stamp duty in South Australia" },
   { id: "federal-schemes", label: "Federal government schemes" },
-  { id: "homeseeker",    label: "HomeSeeker SA shared equity" },
-  { id: "off-the-plan",  label: "Off-the-plan stamp duty concession" },
+  { id: "shared-equity", label: "Shared equity and affordable homes" },
+  { id: "off-the-plan",  label: "Off-the-plan apartments" },
   { id: "eligibility",   label: "Who is eligible?" },
   { id: "steps",         label: "Step-by-step buying in SA" },
   { id: "resources",     label: "Resources and contacts" },
@@ -74,22 +93,22 @@ const FAQS: FaqItem[] = [
   {
     question: "Does SA have a stamp duty exemption for first home buyers?",
     answer:
-      "No. Unlike NSW and VIC, South Australia doesn't offer a stamp duty exemption or concession specifically for first home buyers on established homes. The $15,000 FHOG (new homes only) is SA's primary first-home-buyer concession. The off-the-plan apartment concession is available but it's not exclusive to first home buyers.",
+      `Yes, on a new home, an off-the-plan apartment or vacant land to build a home: an eligible first home buyer pays no stamp duty, with no price cap, for contracts from ${RELIEF_FROM} (RevenueSA). There is no relief on an established home, where you pay the full rate, ${money(duty(600_000))} on a $600,000 home. Since 13 February 2025 any previous interest in residential property rules you out, and the relief doesn't cover the foreign ownership surcharge.`,
   },
   {
     question: "What's the price cap for the SA FHOG?",
     answer:
-      "$650,000 contract price (or combined land + build value). One dollar over the cap and you lose the entire grant. With Adelaide's recent price growth, plenty of new builds sit above this cap, so plan around it carefully.",
+      `There isn't one for contracts from ${RELIEF_FROM}. The grant of ${GRANT_LABEL} applies to a new home, an off-the-plan home, a substantially renovated home or a building contract at any value. Contracts from 15 June 2023 to 5 June 2024 had a ${money(PREVIOUS_GRANT_CAP)} cap.`,
   },
   {
     question: "Is the SA FHOG available on established homes?",
     answer:
-      "No. The grant only applies to new homes (never previously occupied or sold as a residence), owner-builder new homes, and some substantially renovated dwellings. If you buy an established home in SA, no grant applies and you pay full stamp duty.",
+      "No. The grant only applies to new homes (never previously occupied or sold as a residence), off-the-plan homes, owner-builder and building contracts, and some substantially renovated dwellings. It isn't paid on vacant land alone. If you buy an established home in SA, no grant applies and you pay full stamp duty.",
   },
   {
-    question: "How does HomeSeeker SA shared equity work?",
+    question: "Does SA have a shared equity scheme?",
     answer:
-      "The state government co-invests in your home in exchange for a proportional equity share. You don't pay rent on the government's share. You can buy out the government's share over time. Income and property value thresholds apply, and rounds open and close periodically, confirm current availability with the SA Housing Authority before relying on it.",
+      `Yes. HomeStart's Shared Equity Option is an extra loan taken with a HomeStart home loan: HomeStart lends 5% to 25% of the price, interest free, for a matching share of the home, for households with net income up to $120,000 after tax, on homes up to $750,000. HomeStart shares in the gain or loss when you sell. You can't use it together with the federal Help to Buy scheme. HomeSeeker SA is a different thing: the SA Government's listing of affordable homes for buyers who meet its income and asset limits.`,
   },
   {
     question: "What's the cooling-off period in SA?",
@@ -99,26 +118,26 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I combine the FHOG with the federal First Home Guarantee?",
     answer:
-      `Yes, on a new home under both caps ($650K FHOG cap, and the 5% Deposit Scheme cap of ${fmtCap(HG_PRICE_CAPS.SA.capital)} in Greater Adelaide or ${fmtCap(HG_PRICE_CAPS.SA.rest)} elsewhere). Adding the First Home Super Saver Scheme on top can let eligible buyers stack the federal scheme + state grant + tax-advantaged super deposit, materially reducing your savings target.`,
+      `Yes. With no cap on the grant or on the duty relief for a new home, the cap to watch is the 5% Deposit Scheme's: ${fmtCap(HG_PRICE_CAPS.SA.capital)} in Greater Adelaide and ${fmtCap(HG_PRICE_CAPS.SA.rest)} elsewhere. Adding the First Home Super Saver Scheme lets eligible buyers stack the federal scheme, the state grant, no stamp duty and a tax-advantaged super deposit.`,
   },
 ];
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide", description: "Federal schemes, FHOG by state, and step-by-step buying process." },
   { title: "Stamp Duty SA",          href: "/guides/stamp-duty-sa",          description: "South Australian rates, worked examples and the new-home first home exemption." },
-  { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate your SA conveyance duty in seconds." },
+  { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate your SA stamp duty, new or established, in seconds." },
   { title: "Conveyancing in Australia",         href: "/guides/conveyancing-guide",      description: "What conveyancers do, what they cost, and what to ask." },
   { title: "Lenders Mortgage Insurance",        href: "/guides/lenders-mortgage-insurance-guide", description: "What LMI costs and the schemes that waive it." },
   { title: "Borrowing Power Calculator",        href: "/borrowing-power-calculator",     description: "Estimate how much you can borrow before you start searching." },
 ];
 
 const STEPS = [
-  { step: "1", title: "Calculate your budget", desc: "Use a borrowing power calculator. Account for stamp duty, legal fees ($1,500 to $2,500), building inspections, and moving costs on top of the deposit." },
-  { step: "2", title: "Check eligibility for grants and schemes", desc: "Confirm eligibility for the FHOG ($15,000 on new homes under $650,000), First Home Guarantee (5% deposit, no LMI), and FHSSS. A broker can assess the right combination." },
+  { step: "1", title: "Calculate your budget", desc: "Use a borrowing power calculator. Account for stamp duty on an established home, legal fees ($1,500 to $2,500), building inspections, and moving costs on top of the deposit." },
+  { step: "2", title: "Check eligibility for grants and schemes", desc: `Confirm eligibility for the grant (${GRANT_LABEL} on a new home, no value cap), no stamp duty on a new home or land to build, the 5% Deposit Scheme (5% deposit, no LMI), and the FHSS. A broker can assess the right combination.` },
   { step: "3", title: "Get pre-approval", desc: "Conditional pre-approval gives you a clear budget and shows sellers you're serious." },
-  { step: "4", title: "Search for properties", desc: "For the FHOG, focus on new builds and house-and-land packages under $650,000. For established homes you can still use the federal FHBG." },
+  { step: "4", title: "Search for properties", desc: "A new build, house-and-land package or off-the-plan apartment gets you the grant and no stamp duty at any price. An established home means full duty, but you can still use the 5% Deposit Scheme." },
   { step: "5", title: "Arrange conveyancing", desc: "Engage an SA-licensed conveyancer or solicitor to review the contract, do title searches, and manage settlement." },
-  { step: "6", title: "Apply for the FHOG", desc: "Apply through your lender (approved agent) or directly with RevenueSA before settlement." },
+  { step: "6", title: "Apply for the FHOG and duty relief", desc: "Apply through your lender (approved agent) or directly with RevenueSA before settlement; your conveyancer claims the duty relief." },
   { step: "7", title: "Settlement", desc: "Your conveyancer manages settlement; the FHOG is typically received at settlement and applied to purchase costs." },
 ];
 
@@ -144,58 +163,34 @@ export default function FirstHomeBuyerSAPage() {
 
       <EditorNote>
         <p>
-          South Australia is the odd one out on stamp duty. There is no
-          general first-home-buyer exemption or concession on established
-          homes, which most buyers from the east coast assume exists.
-          Plan on paying full duty unless you&rsquo;re buying new or
-          off-the-plan. The $15K FHOG is the main FHB-specific lever
-          here, and the off-the-plan concession quietly does more
-          financial work than it gets credit for. Run the duty number on
-          a calculator before you set your savings target.
+          South Australia splits first home buyers in two. Buy new, off the
+          plan, or land to build on, and you pay no stamp duty at any price and
+          can claim the grant as well. Buy established and you get neither: full
+          duty, and no grant. On a $600,000 home that gap is the whole duty bill,
+          so run both numbers before you set your savings target.
         </p>
       </EditorNote>
 
-      <h2 id="fhog">First Home Owner Grant, South Australia</h2>
+      <h2 id="stamp-duty">Stamp duty: no duty on a new home or land</h2>
       <p className="lead">
-        South Australia offers a $15,000 First Home Owner Grant for eligible first
-        home buyers purchasing or building a new home. The grant is administered by
-        RevenueSA and funded by the South Australian Government.
+        {`South Australia charges an eligible first home buyer no stamp duty on a new home, an off-the-plan apartment or vacant land to build a home, with no value cap, for contracts from ${RELIEF_FROM}. There's no first home relief on an established home.`}
       </p>
 
       <KeyFigure
-        value="$15,000"
-        label="The SA First Home Owner Grant on new homes up to $650,000."
-        context="Established homes do not qualify"
+        value="$0"
+        label="Stamp duty for an eligible SA first home buyer on a new home, an off-the-plan apartment or vacant land to build, at any value."
+        context={`RevenueSA · contracts from ${RELIEF_FROM} · established homes excluded`}
       />
 
-      <p>The FHOG applies to new homes only. A "new home" includes:</p>
       <ul>
-        <li>A newly built home that has not been previously occupied or sold as a place of residence</li>
-        <li>A home built by you (owner-builder) for the first time</li>
-        <li>Substantially renovated homes may qualify in some circumstances (check with RevenueSA)</li>
+        <li>Since 13 February 2025 any previous interest in residential property rules you out</li>
+        <li>The relief doesn&rsquo;t cover the foreign ownership surcharge</li>
+        <li>From 15 June 2023 to 5 June 2024 the relief had caps: a new home was duty free to $650,000 (partial to $700,000) and land to $400,000 (partial to $450,000)</li>
       </ul>
-      <p>
-        The contract price (or total value of construction plus land) must not
-        exceed <strong>$650,000</strong>. If you're buying land separately and
-        building, the combined value of land + build contract must fall within
-        the cap.
-      </p>
-      <p>
-        The grant is generally paid at settlement for off-the-plan or completed
-        new homes, or at the first progress payment for construction loans. Your
-        lender can often apply on your behalf as an approved agent.
-      </p>
 
-      <h2 id="stamp-duty">Stamp duty in South Australia</h2>
       <p>
-        Unlike NSW and VIC, <strong>South Australia does not offer a stamp duty
-        exemption or concession specifically for first home buyers</strong> on
-        established properties. The FHOG (new homes only) is SA's primary
-        first-home-buyer concession.
-      </p>
-      <p>
-        Stamp duty (called "conveyance duty" in SA) is calculated on a sliding
-        scale based on the property value:
+        On an established home everyone pays the same scale. Stamp duty (called
+        &ldquo;conveyance duty&rdquo; in SA) is worked out on a sliding scale:
       </p>
 
       <table>
@@ -216,10 +211,40 @@ export default function FirstHomeBuyerSAPage() {
       </table>
 
       <p>
-        On a $600,000 home, SA conveyance duty is roughly $26,830, a significant
-        upfront cost to factor in alongside your deposit. Use our{" "}
-        <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link> for your
-        exact figure.
+        {`On a $600,000 established home, SA stamp duty is ${money(duty(600_000))}; a first home buyer of a new home at the same price pays $0. `}
+        Use our <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link>{" "}
+        and choose new or established for your exact figure. Rules checked
+        against{" "}
+        <a href="https://www.revenuesa.sa.gov.au/stamp-duty-land/first-home-buyer-relief" target="_blank" rel="noopener noreferrer">
+          RevenueSA
+        </a>{" "}
+        on {formatPolicyDate(FIRST_HOME_REVIEWED_ON)}.
+      </p>
+
+      <h2 id="fhog">First Home Owner Grant, South Australia</h2>
+      <p>
+        {`South Australia pays a First Home Owner Grant of ${GRANT_LABEL} to eligible first home buyers buying or building a new home. The grant is administered by RevenueSA.`}
+      </p>
+
+      <KeyFigure
+        value={`${GRANT.upTo ? "Up to " : ""}${money(GRANT.amount)}`}
+        label={`The SA First Home Owner Grant on a new home, with no value cap for contracts from ${RELIEF_FROM}.`}
+        context="Established homes and vacant land alone do not qualify"
+      />
+
+      <p>The grant applies to new homes only. A &ldquo;new home&rdquo; includes:</p>
+      <ul>
+        <li>A newly built home that has not been previously occupied or sold as a place of residence, including off-the-plan</li>
+        <li>A home built under a building contract, or by you as an owner-builder</li>
+        <li>Substantially renovated homes in some circumstances (check with RevenueSA)</li>
+      </ul>
+      <p>
+        {`For contracts from ${RELIEF_FROM} there is no value cap. Contracts from 15 June 2023 to 5 June 2024 had a ${money(PREVIOUS_GRANT_CAP)} cap, and earlier contracts $575,000.`}
+      </p>
+      <p>
+        The grant is generally paid at settlement for off-the-plan or completed
+        new homes, or at the first progress payment for construction loans. Your
+        lender can often apply on your behalf as an approved agent.
       </p>
 
       <h2 id="federal-schemes">Federal government schemes</h2>
@@ -239,41 +264,31 @@ export default function FirstHomeBuyerSAPage() {
       <h3>Help to Buy (shared equity)</h3>
       <HelpToBuyNote state="SA" as="p" />
 
-      <h2 id="homeseeker">HomeSeeker SA, state shared equity</h2>
+      <h2 id="shared-equity">Shared equity and affordable homes in SA</h2>
       <p>
-        South Australia has run HomeSeeker SA, a shared equity scheme aimed at
-        helping lower-to-moderate income earners buy. The state co-invests in your
-        property, reducing the size of your mortgage and the deposit you need.
+        HomeStart Finance, the SA Government&rsquo;s lender, offers a Shared
+        Equity Option with a HomeStart home loan. It lends 5% to 25% of the
+        price, for households with net income up to $120,000 after tax, on homes
+        up to $750,000 in metropolitan Adelaide and some regional centres.
+        HomeStart takes a share of the home that matches what it lends, charges
+        no interest on it, and shares in the gain or loss when you sell. You
+        can&rsquo;t combine it with Help to Buy.
       </p>
       <p>
-        Availability and eligibility have changed over time, with rounds being
-        fully subscribed. Check the current status with the SA Housing Authority
-        (housing.sa.gov.au) before planning around this scheme.
+        HomeSeeker SA is a different thing: the SA Government&rsquo;s sales
+        listing of affordable homes, open only to buyers who meet its income and
+        asset limits and will live in the home. It can be a way into a cheaper
+        home, not a source of equity.
       </p>
-      <p>Typical features of shared equity programs:</p>
-      <ul>
-        <li>Government takes a share of the property proportional to its equity contribution</li>
-        <li>You pay no rent on the government's share (unlike some other schemes)</li>
-        <li>You can buy out the government's share over time</li>
-        <li>Income and property value thresholds apply</li>
-      </ul>
 
-      <h2 id="off-the-plan">Off-the-plan stamp duty concession</h2>
+      <h2 id="off-the-plan">Off-the-plan apartments</h2>
       <p>
-        SA offers a stamp duty concession for off-the-plan apartment purchases,
-        primarily targeting CBD and inner-city developments. This concession
-        reduces the duty payable on eligible off-the-plan apartment contracts,
-        making high-density new developments more accessible.
-      </p>
-      <ul>
-        <li>Applies to apartments purchased off-the-plan (before construction is complete)</li>
-        <li>Duty is assessed on the value at contract, not at completion</li>
-        <li>Significant savings if values rise between contract and settlement</li>
-        <li>Not exclusive to first home buyers, applies more broadly</li>
-      </ul>
-      <p>
-        Verify the current scope with RevenueSA, as these concessions are
-        periodically reviewed.
+        An off-the-plan apartment counts as a new home, so an eligible first
+        home buyer pays no stamp duty on it at any price and can claim the
+        grant. Duty is assessed on the contract, so check with your conveyancer
+        how the value is worked out for your purchase. SA has run off-the-plan
+        concessions for all buyers in the past; ask RevenueSA whether one applies
+        to your contract date before counting on it.
       </p>
 
       <h2 id="eligibility">Who is eligible for the SA FHOG?</h2>
@@ -283,7 +298,7 @@ export default function FirstHomeBuyerSAPage() {
         <li>Be 18 years or older</li>
         <li>Have never previously owned residential property in Australia used as a place of residence</li>
         <li>Occupy the property as a principal place of residence for at least 6 continuous months, starting within 12 months of settlement or construction completion</li>
-        <li>Purchase or build a new home with a contract price not exceeding $650,000</li>
+        <li>Buy or build a new home (no value cap for contracts from 6 June 2024)</li>
       </ul>
       <p>
         All parties must satisfy the criteria, unless they are a spouse or de
@@ -302,7 +317,7 @@ export default function FirstHomeBuyerSAPage() {
       <h2 id="resources">Resources and contacts</h2>
       <ul>
         <li>
-          <strong>RevenueSA</strong>, FHOG and stamp duty:{" "}
+          <strong>RevenueSA</strong>, FHOG and stamp duty relief:{" "}
           <a href="https://www.revenuesa.sa.gov.au" target="_blank" rel="noopener noreferrer">revenuesa.sa.gov.au</a>
         </li>
         <li>
@@ -310,8 +325,12 @@ export default function FirstHomeBuyerSAPage() {
           <a href="https://www.cbs.sa.gov.au" target="_blank" rel="noopener noreferrer">cbs.sa.gov.au</a>
         </li>
         <li>
-          <strong>SA Housing Authority</strong>, HomeSeeker SA and shared equity:{" "}
-          <a href="https://www.housing.sa.gov.au" target="_blank" rel="noopener noreferrer">housing.sa.gov.au</a>
+          <strong>HomeStart Finance</strong>, Shared Equity Option:{" "}
+          <a href={HOMESTART.source.href} target="_blank" rel="noopener noreferrer">homestart.com.au</a>
+        </li>
+        <li>
+          <strong>HomeSeeker SA</strong>, affordable homes for eligible buyers:{" "}
+          <a href="https://homeseeker.sa.gov.au" target="_blank" rel="noopener noreferrer">homeseeker.sa.gov.au</a>
         </li>
         <li>
           <strong>Housing Australia</strong>, First Home Guarantee and federal schemes:{" "}

@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import type { AllDwellingsMarket } from "@/lib/rental-market";
 import { ALL_DWELLINGS_LABEL, SMALL_SAMPLE_BONDS, quarterSpan } from "@/lib/rental-labels";
 
@@ -22,14 +20,17 @@ const money = (n: number) => `$${n.toLocaleString("en-AU")}`;
 
 export function RentalMarketAllDwellings({
   name,
-  slug,
   all,
-  rentListings,
 }: {
   name: string;
-  slug: string;
   all: AllDwellingsMarket;
-  rentListings: boolean;
+  /**
+   * `slug` and `rentListings` fed the link to the suburb's rental listings,
+   * retired on 14 Oct 2026 (docs/portal-consolidation-2026-10-14.md). Still
+   * accepted so the rental-market page needs no change; not read.
+   */
+  slug?: string;
+  rentListings?: boolean;
 }) {
   const c = all.current;
   const change = all.change;
@@ -108,16 +109,6 @@ export function RentalMarketAllDwellings({
         </section>
       )}
 
-      {rentListings && (
-        <p className="font-sans text-base text-ink">
-          <Link
-            href={`/suburbs/${slug}/rent`}
-            className="inline-flex items-center gap-2 font-medium underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
-          >
-            {`Properties for rent in ${name} now`} <ArrowRight className="w-4 h-4" aria-hidden="true" />
-          </Link>
-        </p>
-      )}
     </>
   );
 }

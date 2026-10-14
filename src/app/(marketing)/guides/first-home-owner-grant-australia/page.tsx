@@ -12,10 +12,18 @@ import {
   type FaqItem,
   type RelatedGuide,
   type SourceItem,
-  ScrollTable,
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { FirstHomeGrantTable } from "@/components/guide/FirstHomeTables";
+import { AUSTRALIAN_STATES } from "@/lib/utils/stamp-duty";
+import { FIRST_HOME_GRANTS, FIRST_HOME_REVIEWED_ON, currentGrant, formatPolicyDate, grantFor, money, periodLabel } from "@/lib/policy/first-home";
+
+// Figures from src/lib/policy/first-home.ts.
+const amount = (s: keyof typeof FIRST_HOME_GRANTS) => money(currentGrant(s).amount);
+const TAS = currentGrant("TAS");
+const NT = currentGrant("NT");
+const NT_ESTABLISHED = grantFor("NT", "2025-01-01", "established").version!;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Owner Grant (FHOG) by State: 2026 Amounts & Eligibility",
@@ -23,7 +31,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "The First Home Owner Grant is a state grant, not federal. See FHOG amounts, price caps and eligibility for every state and territory, plus links to each state's detailed guide.",
   slug: "first-home-owner-grant-australia",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-14",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -53,7 +61,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "The First Home Owner Grant (FHOG) is a state and territory grant, not a federal scheme. Each state runs its own version with its own amount, price cap and rules.",
   "The grant generally applies to new homes only: newly built, off-the-plan, or substantially renovated properties. Established homes do not qualify in most states.",
-  "Amounts range from no flat grant in the ACT, through $10,000 in NSW, WA and NT, to $30,000 in Queensland and Tasmania. Queensland's boosted $30,000 grant was locked in for another four years by the 2026-27 State Budget.",
+  `Amounts range from no grant in the ACT, through ${amount("NSW")} in NSW, Victoria and WA, up to ${amount("SA")} in SA, ${amount("TAS")} in Tasmania and ${amount("QLD")} in Queensland, to ${amount("NT")} under the NT's HomeGrown Territory Grant. Queensland's $30,000 was kept by the 2026-27 State Budget.`,
   "Price caps vary by state and apply to the contract price. Even a dollar over the cap can disqualify the whole grant, so plan well under.",
   "The FHOG usually stacks with first home buyer stamp duty concessions and federal schemes like the First Home Guarantee, which can save eligible buyers tens of thousands.",
   "Scheme rules, amounts and caps change. Verify the current figure with your state revenue office before you sign anything.",
@@ -82,7 +90,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can you get the FHOG on an established home?",
     answer:
-      "In most states, no. The FHOG is designed to encourage new housing supply, so it generally applies only to new builds, off-the-plan purchases, and substantially renovated homes. The Northern Territory is the main exception, where a substantially renovated home can qualify. If you buy an established home you usually miss the grant, but you may still get a first home buyer stamp duty concession and a federal scheme like the First Home Guarantee, which both apply to established homes.",
+      `No, not now. The FHOG is designed to encourage new housing supply, so it applies only to new builds, off-the-plan purchases, and substantially renovated homes. The NT paid ${money(NT_ESTABLISHED.amount)} on an established home, but only for contracts from ${periodLabel(NT_ESTABLISHED)}. If you buy an established home you miss the grant, but you may still get a first home buyer stamp duty concession (not in SA, Tasmania or the NT) and a federal scheme like the First Home Guarantee.`,
   },
   {
     question: "Can you combine the FHOG with stamp duty concessions?",
@@ -157,8 +165,8 @@ export default function FirstHomeOwnerGrantAustraliaPage() {
       </p>
 
       <KeyFigure
-        value="$0–$30k"
-        label="The FHOG ranges from no flat grant in the ACT up to $30,000 for new builds in Queensland and Tasmania. Queensland's $30,000 was locked in for another four years by the 2026-27 State Budget."
+        value={`$0–$${Math.round(NT.amount / 1000)}k`}
+        label={`The first home grant ranges from nothing in the ACT to ${money(NT.amount)} for a new home in the NT (the HomeGrown Territory Grant). Queensland pays ${amount("QLD")}, kept by the 2026-27 State Budget.`}
         context="State grant, new homes only, amounts and caps change"
       />
 
@@ -170,85 +178,18 @@ export default function FirstHomeOwnerGrantAustraliaPage() {
         review or are time-limited boosts.
       </p>
 
-      <ScrollTable label="First Home Owner Grant by state">
-        <table>
-        <thead>
-          <tr>
-            <th>State / Territory</th>
-            <th>FHOG amount</th>
-            <th>Applies to</th>
-            <th>State guide</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>NSW</strong></td>
-            <td>$10,000</td>
-            <td>New homes up to $600,000, or land and a building contract up to $750,000</td>
-            <td><Link href="/guides/first-home-buyer-nsw">NSW guide</Link></td>
-          </tr>
-          <tr>
-            <td><strong>VIC</strong></td>
-            <td>$10,000</td>
-            <td>New homes up to $750,000 (the $20,000 regional grant ended on 30 June 2021)</td>
-            <td><Link href="/guides/first-home-buyer-vic">VIC guide</Link></td>
-          </tr>
-          <tr>
-            <td><strong>QLD</strong></td>
-            <td>$30,000 (for eligible contracts signed from 20 Nov 2023; locked in by the 2026-27 Budget)</td>
-            <td>New builds up to $750,000</td>
-            <td><Link href="/guides/first-home-buyer-qld">QLD guide</Link></td>
-          </tr>
-          <tr>
-            <td><strong>WA</strong></td>
-            <td>$10,000</td>
-            <td>New homes</td>
-            <td><Link href="/guides/first-home-buyer-wa">WA guide</Link></td>
-          </tr>
-          <tr>
-            <td><strong>SA</strong></td>
-            <td>$15,000</td>
-            <td>New homes</td>
-            <td><Link href="/guides/first-home-buyer-sa">SA guide</Link></td>
-          </tr>
-          <tr>
-            <td><strong>TAS</strong></td>
-            <td>Up to $30,000 (check current)</td>
-            <td>New homes</td>
-            <td><Link href="/guides/first-home-buyer-tas">TAS guide</Link></td>
-          </tr>
-          <tr>
-            <td><strong>NT</strong></td>
-            <td>$10,000</td>
-            <td>New or substantially renovated homes</td>
-            <td><Link href="/guides/first-home-buyer-nt">NT guide</Link></td>
-          </tr>
-          <tr>
-            <td><strong>ACT</strong></td>
-            <td>No flat grant</td>
-            <td>Uses the income-tested Home Buyer Concession Scheme instead</td>
-            <td><Link href="/guides/first-home-buyer-act">ACT guide</Link></td>
-          </tr>
-        </tbody>
-      </table>
-      </ScrollTable>
+      <FirstHomeGrantTable guideLinks />
 
-      <Callout variant="info" title="Queensland's $30,000 boost was locked in, not lapsed">
+      <Callout variant="info" title="Three grants depend on your date">
         <p>
-          Queensland&rsquo;s boosted $30,000 grant was scheduled to revert to
-          $15,000 for contracts signed from 1 July 2026, but the 2026-27
-          Queensland Budget (23 June 2026) extended the $30,000 amount for
-          another four years — the Queensland Revenue Office confirms $30,000
-          for eligible contracts signed from 20 November 2023. Tasmania&rsquo;s
-          boosted $30,000 grant is tied to a set window, so wherever you are
-          buying, confirm the exact amount that applies to your contract date
-          with the state revenue office.
+          {`Queensland's $30,000 grant was scheduled to revert to $15,000 for contracts signed from 1 July 2026, but the 2026-27 Queensland Budget (23 June 2026) kept it; the Queensland Revenue Office confirms $30,000 for eligible contracts signed from 20 November 2023, with no end date. Tasmania's grant is ${money(TAS.amount)} for transactions from ${periodLabel(TAS)}, down from $30,000, and is scheduled to fall to $10,000 after that. The NT's ${money(NT.amount)} grant covers contracts from ${periodLabel(NT)}. Confirm the amount for your contract date with the state revenue office.`}
         </p>
       </Callout>
 
       <p>
-        Each grant pairs with a separate first home buyer stamp duty concession in
-        that state, which is often the larger saving. Our state guides cover both
+        In most states the grant pairs with a separate first home buyer stamp
+        duty concession, which is often the larger saving; Tasmania and the NT
+        no longer have one. Our state guides cover both
         the grant and the duty rules together, and you can model the duty side
         with our{" "}
         <Link href="/stamp-duty-calculator">stamp duty calculator</Link>. For the
@@ -276,10 +217,10 @@ export default function FirstHomeOwnerGrantAustraliaPage() {
       </ul>
       <p>
         An established home that someone has already lived in does not qualify for
-        the grant in most states. The Northern Territory is the main exception,
-        where a substantially renovated home can be eligible. If you have your
-        heart set on an established home, focus on the stamp duty concession and
-        federal schemes instead, both of which apply to established properties.
+        the grant in any state now. The NT&rsquo;s grant for established homes
+        covered contracts from 1 October 2024 to 30 September 2025 only. If you
+        have your heart set on an established home, focus on the stamp duty
+        concession (where your state has one) and federal schemes instead.
       </p>
 
       <h2 id="stacking">Combining the FHOG with other help</h2>
@@ -385,8 +326,13 @@ export default function FirstHomeOwnerGrantAustraliaPage() {
 
 const FHOG_SOURCES: readonly SourceItem[] = [
   { label: "firsthome.gov.au: First home buyer support and grants", href: "https://www.firsthome.gov.au/", note: "Federal hub linking to each state and territory grant" },
-  { label: "Revenue NSW: First Home Owner Grant (New Homes)", href: "https://www.revenue.nsw.gov.au/grants-schemes/first-home-buyer", note: "NSW grant amount, caps and eligibility" },
-  { label: "State Revenue Office Victoria: First Home Owner Grant", href: "https://www.sro.vic.gov.au/fhogapply", note: "Victorian grant detail" },
-  { label: "Queensland Revenue Office: First Home Owner Grant", href: "https://qro.qld.gov.au/property-concessions-grants/first-home-grant/", note: "Queensland new-build grant and current amount" },
+  ...AUSTRALIAN_STATES.map((s) => {
+    const src = FIRST_HOME_GRANTS[s].source;
+    return {
+      label: src.label,
+      href: src.href,
+      note: `${src.updated ? `page updated ${formatPolicyDate(src.updated)}, ` : ""}checked ${formatPolicyDate(FIRST_HOME_REVIEWED_ON)}`,
+    };
+  }),
   { label: "Housing Australia: First Home Guarantee", href: "https://www.housingaustralia.gov.au/support-buy-home", note: "Federal scheme that stacks with the state grant" },
 ];

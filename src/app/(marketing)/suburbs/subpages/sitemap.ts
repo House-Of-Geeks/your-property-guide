@@ -9,25 +9,22 @@ import type { MetadataRoute } from "next";
 import { unstable_cache } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
 import { getIndexableSuburbsForSitemaps } from "@/lib/sitemap-data";
-import { getSuburbListingInventory } from "@/lib/services/property-service";
-import { LISTING_SUBPAGE_FILTERS, type ListingInventoryRow } from "@/lib/suburb-subpages";
 import { getSuburbSlugsWithRentalData } from "@/lib/services/rental-service";
 import { getSuburbSlugsWithReliablePrice } from "@/lib/services/suburb-service";
 import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 
-// Suburb intent sub-pages (/suburbs/[slug]/houses etc.). Split into one
-// sitemap per type: ~15k indexable suburbs × 8 types would overflow the
-// 50,000-URL-per-sitemap limit combined, but each per-type file stays well
-// under it. Exported because Next emits these at
+// Suburb intent sub-pages (/suburbs/[slug]/schools etc.). Split into one
+// sitemap per type: ~15k indexable suburbs × several types would overflow
+// the 50,000-URL-per-sitemap limit combined, but each per-type file stays
+// well under it. Exported because Next emits these at
 // /suburbs/subpages/sitemap/{id}.xml and the sitemap index
 // (src/app/sitemap.xml/route.ts) must enumerate them.
+//
+// The six listing sub-pages (buy, rent, houses, units, townhouses, land)
+// were retired on 14 Oct 2026 and 308 to the suburb profile (next.config.ts,
+// docs/portal-consolidation-2026-10-14.md). Their old sitemap ids now answer
+// an empty urlset (the guard below).
 export const SUBPAGE_TYPES = [
-  "houses",
-  "units",
-  "townhouses",
-  "land",
-  "buy",
-  "rent",
   "schools",
   "rental-market",
   "agents",
@@ -37,28 +34,10 @@ export async function generateSitemaps() {
   return SUBPAGE_TYPES.map((id) => ({ id }));
 }
 
-// The six listing types render empty shells for suburbs with no matching
-// stock (and those pages noindex themselves — see e.g. [slug]/buy/page.tsx),
-// so submitting them would burn crawl budget on ~17,908 near-identical empty
-// pages per type. The predicates (LISTING_SUBPAGE_FILTERS, shared with the
-// links on the pages) each mirror the getProperties() filter their page
-// runs. schools is absent there on purpose: it carries real data for every
-// suburb and stays in the sitemap unconditionally. rental-market is gated
-// below on having a rental row (5,530 of 17,872 indexable suburbs on
-// 8 Sep 2026): the rest render "No rental data available yet" and noindex
-// themselves (fix item 13).
-const LISTING_TYPE_FILTERS: Partial<Record<string, (row: ListingInventoryRow) => boolean>> =
-  LISTING_SUBPAGE_FILTERS;
-
-// force-dynamic (above) means every crawler hit reaches this file, so the
-// inventory groupBy is deduped through unstable_cache like the suburb list —
-// one small query per day shared across the six listing-type sitemaps.
-const getCachedListingInventory = unstable_cache(
-  async () => getSuburbListingInventory(),
-  ["sitemap-suburb-listing-inventory:v1"],
-  { revalidate: 86400, tags: ["sitemap-suburbs"] },
-);
-
+// schools carries real data for every suburb and stays in the sitemap
+// unconditionally. rental-market is gated below on having a rental row
+// (5,530 of 17,872 indexable suburbs on 8 Sep 2026): the rest render "No
+// rental data available yet" and noindex themselves (fix item 13).
 const getCachedRentalSuburbs = unstable_cache(
   async () => getSuburbSlugsWithRentalData(),
   ["sitemap-rental-suburbs:v2", NOT_PLACES_VERSION],
@@ -91,13 +70,6 @@ export default async function sitemap(props: {
   if (type === "agents") {
     const priced = new Set(await getCachedReliablePriceSuburbs());
     suburbs = suburbs.filter(({ slug }) => priced.has(slug));
-  }
-
-  const filter = LISTING_TYPE_FILTERS[type];
-  if (filter) {
-    const inventory = await getCachedListingInventory();
-    const withStock = new Set(inventory.filter(filter).map((r) => r.suburbSlug));
-    suburbs = suburbs.filter(({ slug }) => withStock.has(slug));
   }
 
   return suburbs.map(({ slug, updatedAt }) => ({

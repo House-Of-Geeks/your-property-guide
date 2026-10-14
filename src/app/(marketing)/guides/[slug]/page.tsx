@@ -10,6 +10,7 @@ import { AuthorBylineCard, GuideStartInline } from "@/components/guide";
 import { GuideByline } from "@/components/guide/GuideByline";
 import { GuideTOC, type GuideTOCEntry } from "@/components/guide/GuideTOC";
 import { GuideNextStep } from "@/components/guide/GuideNextStep";
+import { ReadingProgress } from "@/components/interactive/ReadingProgress";
 import { RelatedGuides, type RelatedGuide } from "@/components/guide/RelatedGuides";
 import articleScope from "@/components/guide/article-scope.module.css";
 import { categoryToSlug, getBlogPostBySlug, getRelatedPosts } from "@/lib/services/blog-service";
@@ -136,12 +137,15 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
         ]}
       />
       {/* Tells the phone bar (MobileBottomNav) which guide this reader gets. */}
+      <ReadingProgress />
       <span hidden data-guide-audience={nextStep} />
 
       <PhotoHero
         {...(heroCover ? { image: { src: heroCover, unoptimized: true } } : { photo: CATEGORY_PHOTO[post.category] ?? "paperwork" })}
         breadcrumbs={[{ label: "Guides", href: "/guides" }, { label: post.title }]}
         className={CRUMB_TRUNCATE}
+        book={audience ?? ["selling", "buying"]}
+        bookHref={audience ? `/${audience}-guide?from=${post.slug}` : undefined}
       >
         <header>
           <Link

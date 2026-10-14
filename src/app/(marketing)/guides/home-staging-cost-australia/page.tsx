@@ -112,7 +112,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Best Time to Sell a House",           href: "/guides/best-time-to-sell-a-house-australia", description: "Seasonality, market timing and how they affect your campaign." },
   { title: "Commission Calculator",               href: "/real-estate-commission-calculator",          description: "Size the biggest selling cost for your price and state." },
   { title: "Free Selling Guide (PDF)",            href: "/selling-guide",                              description: "The full process from listing to settlement, personalised to your suburb." },
-  { title: "Free Property Appraisal",             href: "/appraisal",                                  description: "An honest appraisal from a vetted local agent, no commitment." },
+  { title: "Free Property Appraisal",             href: "/appraisal",                                  description: "An appraisal from one participating local agent, only if you ask. No commitment." },
 ];
 
 export default function HomeStagingCostAustraliaPage() {

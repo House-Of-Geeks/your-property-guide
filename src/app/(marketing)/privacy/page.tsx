@@ -40,15 +40,24 @@ export default function PrivacyPage() {
             you sent it from. If we connect you with an agent or specialist, they may tell us whether an appraisal
             or listing followed.
           </p>
+          <p>
+            When you ask for an introduction, we also keep how and when you&rsquo;d like to be contacted, the exact
+            permission statement you ticked, whether you ticked our separate box for tips emails, and what happened
+            next: whether we passed your request to an agent, whether the agent took it on, whether an appraisal or
+            consultation was booked or an agreement signed (as the agent, our team or you tell us), and any feedback
+            you give us about the introduction. When you make a next-step plan, your answers stay in the page&rsquo;s
+            web address; we only keep them if you ask us to email you the plan.
+          </p>
 
           <h2>2. How We Use Your Information</h2>
           <p>We use your personal information to:</p>
           <ul>
-            <li>Connect you with one agent or specialist when you ask us to</li>
+            <li>Connect you with one agent when you ask us to and give your permission, and check afterwards whether it was useful</li>
             <li>Send property alerts matching your criteria</li>
             <li>
-              Email you the guide you asked for, and tips and market updates for your suburb when you download a
-              guide or sign up for our newsletter. You can unsubscribe from these at any time
+              Email you the guide or plan you asked for. We only send a short series of tips if you tick the separate
+              box for it, and our quarterly newsletter only if you sign up for it. Every one of these emails has an
+              unsubscribe link
             </li>
             <li>Process your property appraisal requests</li>
             <li>Improve our website and services</li>
@@ -73,9 +82,10 @@ export default function PrivacyPage() {
           </p>
           <p>
             We do not sell your personal information to anyone else, and we never pass the same request to a second
-            agent or specialist. We do not pass your details to agents if you download our buying guide, join our
-            off-market register, sign up for our newsletter or suburb alerts, or tell us in our selling guide that
-            your property is already listed.
+            agent or specialist. We do not pass your details to any agent when you download a guide, make or email a
+            plan, sign up for our newsletter or tips, or tell us you&rsquo;re already working with an agent. An
+            introduction only happens when you ask for one and tick its permission box; if you ask for a selling agent
+            and a buyer&rsquo;s agent, each is a separate permission.
           </p>
 
           <h2>4. Data Security</h2>

@@ -107,8 +107,9 @@ export default function AboutPage() {
           make. Most of the people explaining it have something to sell. We
           wrote this site because that&rsquo;s a problem. Free guides to
           selling and buying in every state, the calculators that go with
-          them, and, when you ask, one local agent for a free appraisal. Our
-          team talks to you first, and the agent pays us for the introduction.
+          them, a next-step plan, and, only when you ask, an introduction to
+          one participating local agent. The agent pays us for the
+          introduction; you pay us nothing.
         </HeroLead>
         <nav aria-label="On this page" className="mt-8">
           <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
@@ -275,11 +276,13 @@ export default function AboutPage() {
           <SectionHeading title={<>How we&rsquo;re paid</>} />
           <div className="mt-8 space-y-4 text-base sm:text-lg text-ink-muted leading-[1.7]">
             <p>
-              Buyers and sellers pay nothing. When you&rsquo;re ready to sell,
-              we&rsquo;ll introduce you to one local agent who sells in your area.
-              If we don&rsquo;t have one yet, we&rsquo;ll tell you. The agent pays
-              us a fee for the introduction. It&rsquo;s not a share of their
-              commission, and they pay it whether or not you go ahead with them.
+              Buyers and sellers pay nothing. When you ask, and tick the
+              permission box, we introduce you to one participating agent who
+              covers your area: a selling agent, or a buyer&rsquo;s agent where
+              we can. If we can&rsquo;t cover your area, we tell you. The agent
+              pays us a fee for the introduction. It&rsquo;s not a share of
+              their commission, and they pay it whether or not you go ahead
+              with them.
             </p>
             <p>
               That fee comes out of their pocket, not yours. It doesn&rsquo;t
@@ -301,16 +304,16 @@ export default function AboutPage() {
               scenes.
             </p>
             <p>
-              100% of our revenue comes from introduction fees paid by
-              partner agents. When you ask to be connected with an agent,
+              Our revenue comes from introduction fees paid by the agents we
+              introduce people to. When you ask to be connected with an agent,
               your details go to one agent only, and they pay us a fee for
               that introduction.
               It&rsquo;s not a share of their commission, and it
               doesn&rsquo;t depend on a sale or job going ahead. No
               advertising. No paid placements in editorial. No fees from any
               party we wouldn&rsquo;t recommend to our own family. Partner
-              relationships are disclosed on every introduction and on every
-              Best Deal listing.
+              relationships are disclosed on every introduction form and in
+              every introduction email.
             </p>
           </div>
         </div>

@@ -15,12 +15,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     { url: SITE_URL,                                   changeFrequency: "daily",   priority: 1   },
-    { url: `${SITE_URL}/buy`,                          changeFrequency: "weekly",  priority: 0.5 },
-    { url: `${SITE_URL}/rent`,                         changeFrequency: "weekly",  priority: 0.5 },
-    { url: `${SITE_URL}/sold`,                         changeFrequency: "daily",   priority: 0.7 },
-    // /house-and-land is submitted by /house-and-land/sitemap.xml alone, and
-    // only while it has stock (src/lib/house-and-land-indexability.ts).
-    { url: `${SITE_URL}/off-market`,                   changeFrequency: "weekly",  priority: 0.7 },
+    // The journey hubs, the plan and the introduction form (Oct 2026).
+    { url: `${SITE_URL}/buying`,                       changeFrequency: "monthly", priority: 0.9 },
+    { url: `${SITE_URL}/plan`,                         changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/get-help`,                     changeFrequency: "monthly", priority: 0.7 },
+    // /buy, /rent, /sold, /off-market, /house-and-land and /best-deals were
+    // retired on 14 Oct 2026 and 308 elsewhere (next.config.ts,
+    // docs/portal-consolidation-2026-10-14.md): a sitemap lists none of them.
     { url: `${SITE_URL}/suburbs`,                      changeFrequency: "weekly",  priority: 0.8 },
     { url: `${SITE_URL}/regions`,                      changeFrequency: "weekly",  priority: 0.7 },
     // /agents and /real-estate-agencies are noindex while the directory is
@@ -56,6 +57,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/compare`,                      changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/find-your-suburb`,             changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/tools`,                        changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/tools/agent-proposal-worksheet`, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/insights`,                     changeFrequency: "daily",   priority: 0.8 },
     { url: `${SITE_URL}/search`,                       changeFrequency: "monthly", priority: 0.5 },
     { url: `${SITE_URL}/methodology`,                  changeFrequency: "monthly", priority: 0.5 },
@@ -72,6 +74,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/first-home-buyers`,            changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/selling`,                      changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/upgrading`,                    changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE_URL}/buying-and-selling`,           changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE_URL}/buyers-agents`,                changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/investing`,                    changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/renovating`,                   changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/about`,                        changeFrequency: "yearly",  priority: 0.5 },

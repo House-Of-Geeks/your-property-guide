@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Loader2, MapPin } from "lucide-react";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
 import { SuburbAppraisalCTA } from "@/components/suburb/SuburbAppraisalCTA";
-import { AppraisalForm } from "@/components/forms/AppraisalForm";
+import { IntroductionForm } from "@/components/journeys/IntroductionForm";
 import { formatPriceFull } from "@/lib/utils/format";
 import { STATE_NAMES } from "@/lib/data/commission-rates";
 import { AUSTRALIAN_STATES, type AustralianState } from "@/lib/utils/stamp-duty";
@@ -315,11 +315,12 @@ export function BridgingLoanCalculator() {
             Firm up your sale price before you talk to a lender
           </h3>
           <p className="text-sm text-ink-muted leading-relaxed mb-5">
-            Every figure above depends on what your current home sells for. A local agent will give you a free appraisal
-            from recent comparable sales, and the lender will want a valuation for the bridging application anyway.
+            Every figure above depends on what your current home sells for. If you&rsquo;d like one, we can introduce one
+            participating local agent for a free appraisal from recent comparable sales. The lender will want its own
+            valuation for a bridging application anyway.
           </p>
           <Suspense fallback={<div className="h-96" aria-busy="true" />}>
-            <AppraisalForm source={bridgingCalculatorSource()} formName={BRIDGING_CALCULATOR_SOURCE} />
+            <IntroductionForm defaultService="selling-agent" source={bridgingCalculatorSource()} compact />
           </Suspense>
         </div>
       )}

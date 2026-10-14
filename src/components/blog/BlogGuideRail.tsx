@@ -31,7 +31,7 @@ const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
   ],
   "understanding-off-market-properties": [
     { href: "/guides/buyers-agent-cost-australia",           title: "Buyer's agent cost in Australia",   description: "Off-market access is part of what a buyer's agent buys you." },
-    { href: "/off-market",                                   title: "Off-market listings",               description: "Browse properties before they hit Domain or REA." },
+    { href: "/guides/auction-vs-private-treaty#hybrids",     title: "Auction vs private treaty",         description: "Where off-market sits beside auctions, EOIs and private sale." },
     { href: "/guides/buying-property-australia",             title: "Buying property in Australia",      description: "End-to-end buyer's playbook." },
   ],
   "investment-property-guide-moreton-bay-corridor": [

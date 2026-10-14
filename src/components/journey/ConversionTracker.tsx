@@ -5,24 +5,26 @@ import { useSearchParams } from "next/navigation";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
 
 interface ConversionTrackerProps {
-  /** Identifies the funnel — appraisal form, match-an-expert, or a guide download. */
+  /** Which thanks page this is. */
   flow: "appraisal" | "get-connected" | "selling-guide" | "buying-guide";
 }
 
-// Fires once on mount when a thank-you page renders. Single source of
-// truth for "a lead converted" — anchor-scroll CTAs can't measure this,
-// which is why we route through a dedicated thank-you URL.
+// Fires once when a thanks page renders. Since 14 Oct 2026 the two paths are
+// counted apart: the guide thanks pages are a learning view
+// ("guide_thanks_view"); only an introduction thanks page is a
+// "lead_conversion". The submissions themselves are counted from the API's
+// answer (src/lib/analytics.ts), so a reload here never adds a lead.
 export function ConversionTracker({ flow }: ConversionTrackerProps) {
   const params = useSearchParams();
 
   useEffect(() => {
-    clarityEvent("lead_conversion");
+    const learning = flow === "selling-guide" || flow === "buying-guide";
+    clarityEvent(learning ? "guide_thanks_view" : "lead_conversion");
     clarityTag("conversion_flow", flow);
+    clarityTag("lead_type", learning ? "learning" : "introduction");
     const intent = params.get("intent");
-    const suburb = params.get("suburb");
     const score = params.get("score");
     if (intent) clarityTag("conversion_intent", intent);
-    if (suburb) clarityTag("conversion_suburb", suburb);
     if (score) clarityTag("conversion_score", score);
   }, [flow, params]);
 

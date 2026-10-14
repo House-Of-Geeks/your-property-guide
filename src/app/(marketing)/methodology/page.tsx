@@ -91,7 +91,7 @@ const SOURCES: DataSource[] = [
     source: "Bureau of Meteorology (BoM)",
     cadence: "Annually (BoM long-term averages)",
     description:
-      "Mean monthly rainfall and temperature are sourced from BoM's long-term station averages. Each suburb is matched to its nearest active BoM station.",
+      "Mean monthly rainfall and temperature are BoM long-term station averages (a 30-year average where BoM publishes one). Each suburb takes its figures from the nearest BoM station within 100 km that records temperature; stations that record rainfall only are passed over. Where we can't find one, we show rainfall from the nearest station that records it and say temperature isn't available. Rainfall and temperature always come from the same station, and each suburb page names that station and its distance, with a note when it is more than 25 km away.",
     link: { label: "Bureau of Meteorology", href: "http://www.bom.gov.au/" },
   },
   {

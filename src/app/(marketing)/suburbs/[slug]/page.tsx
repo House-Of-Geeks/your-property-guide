@@ -16,13 +16,11 @@ import { SuburbContextualLinks } from "@/components/suburb/SuburbContextualLinks
 import { SuburbMap } from "@/components/suburb/SuburbMap";
 import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
 import { SuburbPriceTrend } from "@/components/suburb/SuburbPriceTrend";
-import { PropertyGrid } from "@/components/property/PropertyGrid";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
 import { Button } from "@/components/ui";
 import { BUTTON_PRIMARY, Band, SectionHeading } from "@/components/premium";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { isThinProfile } from "@/lib/suburb-indexability";
-import { getPropertiesBySuburb } from "@/lib/services/property-service";
 import { getSuburbCrimeWithLgaFallback } from "@/lib/services/data-freshness";
 import { suburbTitle, suburbDescription } from "@/lib/utils/seo";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
@@ -145,8 +143,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) notFound();
 
-  const [properties, crimeStat, availability] = await Promise.all([
-    getPropertiesBySuburb(slug, 6),
+  const [crimeStat, availability] = await Promise.all([
     getSuburbCrimeWithLgaFallback(slug, suburb.state, suburb.region),
     // Which sub-pages have something on them: the page links only to those.
     getSuburbSubpageAvailability(suburb),
@@ -643,7 +640,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             {suburb.climate && (
               <section id="climate" className={SECTION}>
                 <h2 className={`${H2_SMALL} mb-4`}>Weather year-round</h2>
-                <SuburbClimate climate={suburb.climate} />
+                <SuburbClimate climate={suburb.climate} withheld={suburb.climateWithheld} suburbName={suburb.name} />
                 <DataFreshnessNote
                   label="Climate"
                   asOf={suburb.dataFreshness?.climateAsOf ?? null}
@@ -655,46 +652,9 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         </div>
       </Band>
 
-      {/* Properties */}
-      {properties.length > 0 && (
-        <Band tone="quiet" spacing="compact">
-          <section className={SECTION}>
-            <div className="grid lg:grid-cols-12 gap-6 mb-10 items-end">
-              <div className="lg:col-span-7">
-                <SectionHeading size="md" title={<>Properties in {suburb.name}</>} />
-              </div>
-              <div className="lg:col-span-5 flex flex-wrap gap-2 lg:justify-end">
-                {availability.buy && (
-                  <Link href={`/suburbs/${suburb.slug}/buy`}>
-                    <Button variant="outline" size="sm">For sale <ArrowRight className="w-4 h-4" /></Button>
-                  </Link>
-                )}
-                {availability.rent && (
-                  <Link href={`/suburbs/${suburb.slug}/rent`}>
-                    <Button variant="outline" size="sm">For rent <ArrowRight className="w-4 h-4" /></Button>
-                  </Link>
-                )}
-                {availability.houses && (
-                  <Link href={`/suburbs/${suburb.slug}/houses`}>
-                    <Button variant="outline" size="sm">Houses</Button>
-                  </Link>
-                )}
-                {availability.units && (
-                  <Link href={`/suburbs/${suburb.slug}/units`}>
-                    <Button variant="outline" size="sm">Units</Button>
-                  </Link>
-                )}
-                {availability.townhouses && (
-                  <Link href={`/suburbs/${suburb.slug}/townhouses`}>
-                    <Button variant="outline" size="sm">Townhouses</Button>
-                  </Link>
-                )}
-              </div>
-            </div>
-            <PropertyGrid properties={properties} />
-          </section>
-        </Band>
-      )}
+      {/* Listings were removed on 14 Oct 2026 ("confident moves"): the site
+          is a guide and introduction service, not a portal, and the listing
+          rows were legacy demo data. See docs/portal-consolidation-2026-10-14.md. */}
 
       <Band spacing="compact">
         <div className="space-y-14 sm:space-y-20">

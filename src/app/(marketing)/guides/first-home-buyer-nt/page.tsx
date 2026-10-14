@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import { FhssNote } from "@/components/guide/FhssNote";
 import {
@@ -16,14 +15,25 @@ import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
 import { HG_DATES, HG_NT_CAP_BEFORE_SPLIT, HG_PRICE_CAPS, fmtCap, hgCapSentence } from "@/lib/data/home-guarantee";
+import { calculateStampDuty } from "@/lib/utils/stamp-duty";
+import { FIRST_HOME_GRANTS, FIRST_HOME_REVIEWED_ON, currentGrant, formatPolicyDate, money, periodLabel } from "@/lib/policy/first-home";
+
+// Figures from src/lib/policy/first-home.ts and the stamp duty engine.
+const GRANT = currentGrant("NT");
+const GRANT_FROM = formatPolicyDate(GRANT.effectiveFrom as string);
+const GRANT_TO = formatPolicyDate(GRANT.effectiveTo as string);
+const NT_GRANTS = FIRST_HOME_GRANTS.NT.versions;
+const NEXT = NT_GRANTS.find((v) => v.effectiveFrom === "2027-10-01")!;
+const ESTABLISHED = NT_GRANTS.find((v) => v.kinds.includes("established"))!;
+const duty = (price: number) => calculateStampDuty(price, "NT", true, false, false).total;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide Northern Territory: Grants & Schemes (2026)",
   description:
-    "NT first home buyer guide: $10,000 FHOG, First Home Owner Discount of up to $23,928.60 in stamp duty relief, leasehold land considerations, and federal scheme caps for Darwin.",
+    "NT first home buyer guide: the $50,000 HomeGrown Territory Grant for a new home (contracts to 30 September 2027), no first home stamp duty concession, leasehold land, and federal scheme caps for Darwin.",
   slug: "first-home-buyer-nt",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-14",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -51,17 +61,17 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "NT's FHOG is $10,000 on new or substantially renovated homes (more flexible than most state grants).",
-  "The First Home Owner Discount delivers up to $23,928.60 of stamp duty relief, on new and established homes alike.",
-  "Total maximum benefit for new homes is roughly $33,928.60, one of the most generous combinations in Australia by dollar value.",
+  `The HomeGrown Territory Grant pays ${money(GRANT.amount)} to a first home buyer building or buying a new home, including off-the-plan and owner-builder homes, with no price cap, for contracts from ${GRANT_FROM} to ${GRANT_TO}. Apply by 30 September 2028 and live in the home for 12 months.`,
+  `From 1 October 2027 the grant is scheduled to revert to the ${money(NEXT.amount)} First Home Owner Grant on new homes. The ${money(ESTABLISHED.amount)} grant for established homes covered contracts from ${periodLabel(ESTABLISHED)} only.`,
+  `The NT has no first home stamp duty concession: a first home buyer pays the same duty as anyone else, ${money(duty(500_000))} on a $500,000 home.`,
   `The 5% Deposit Scheme cap is ${fmtCap(HG_PRICE_CAPS.NT.capital)} in Greater Darwin and ${fmtCap(HG_PRICE_CAPS.NT.rest)} in the rest of the NT; Darwin's rose from ${fmtCap(HG_NT_CAP_BEFORE_SPLIT)} on ${HG_DATES.ntCapSplit}.`,
   "Land tenure matters in the NT: a significant share of land is leasehold, not freehold. In established Darwin suburbs Crown Lease is the norm and behaves like freehold for most purposes.",
   "Engage an NT-qualified conveyancer early, especially for properties in remote areas or on community land.",
 ];
 
 const TOC: GuideTOCEntry[] = [
-  { id: "fhog",                  label: "First Home Owner Grant NT" },
-  { id: "stamp-duty-discount",   label: "First Home Owner Discount (stamp duty)" },
+  { id: "fhog",                  label: "HomeGrown Territory Grant" },
+  { id: "stamp-duty",            label: "Stamp duty in the NT" },
   { id: "federal-schemes",       label: "Federal government schemes" },
   { id: "leasehold",             label: "Leasehold land in the NT" },
   { id: "darwin-market",         label: "Darwin property market" },
@@ -72,14 +82,14 @@ const TOC: GuideTOCEntry[] = [
 
 const FAQS: FaqItem[] = [
   {
-    question: "How does the NT FHOG differ from other states?",
+    question: "How does the NT grant differ from other states?",
     answer:
-      "Two ways. First, it covers substantially renovated homes (not just new builds), which adds flexibility in the NT where new stock can be limited. Second, it stacks with the First Home Owner Discount on stamp duty (up to $23,928.60), so the total benefit can reach roughly $34,000 on a new home.",
+      `It's the largest first home grant in Australia: ${money(GRANT.amount)} on a new home, with no price cap, for contracts from ${GRANT_FROM} to ${GRANT_TO} (Territory Revenue Office). The NT has no first home stamp duty concession, so the grant is the help; on a $600,000 new home it more than covers the ${money(duty(600_000))} duty bill. It isn't paid on vacant land alone.`,
   },
   {
-    question: "Does the NT First Home Owner Discount apply to established homes?",
+    question: "Does the NT have a first home stamp duty concession?",
     answer:
-      "Yes. Unlike the FHOG (new homes only), the First Home Owner Discount applies to both new and established homes, up to $23,928.60 in stamp duty relief. For lower-priced properties this can fully eliminate stamp duty.",
+      `No. The First Home Owner Discount no longer applies, and there's no first home buyer duty concession on new or established homes. A first home buyer pays ${money(duty(500_000))} on a $500,000 home, the same as anyone else. A separate House and Land Package Exemption, open to any buyer of a new house-and-land package from a builder, applies to contracts from 1 July 2022 to 30 June 2027; check its conditions with the Territory Revenue Office.`,
   },
   {
     question: "Should I worry about leasehold land in Darwin?",
@@ -105,8 +115,8 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide", description: "Federal schemes, FHOG by state, and step-by-step process." },
-  { title: "Stamp Duty NT",          href: "/guides/stamp-duty-nt",          description: "Northern Territory conveyance duty, worked examples and the $10K FHOG." },
-  { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate NT stamp duty (with or without the First Home Owner Discount)." },
+  { title: "Stamp Duty NT",          href: "/guides/stamp-duty-nt",          description: "Northern Territory stamp duty, worked examples and the HomeGrown Territory Grant." },
+  { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate NT stamp duty in seconds." },
   { title: "Building & Pest Inspection",        href: "/guides/building-pest-inspection",description: "Cyclone-zone construction and tropical-climate inspection priorities." },
   { title: "Conveyancing in Australia",         href: "/guides/conveyancing-guide",      description: "What conveyancers do, what they cost, and what to ask." },
   { title: "Renter's Rights in the NT",         href: "/guides/renters-rights-nt",       description: "Tenant entitlements while you save your deposit." },
@@ -114,12 +124,12 @@ const RELATED: RelatedGuide[] = [
 
 const STEPS = [
   { step: "1", title: "Understand the NT market and land tenure", desc: "Research Darwin/regional and the tenure of any property you consider. Engage an NT conveyancer early, leasehold rules differ from mainland states." },
-  { step: "2", title: "Calculate your total costs", desc: "Stamp duty (up to $23,928.60 offset by the First Home Owner Discount), legal fees, building inspection (cyclone rating compliance), moving costs." },
-  { step: "3", title: "Check grant and scheme eligibility", desc: `Confirm eligibility for the $10,000 FHOG (new/substantially renovated), First Home Owner Discount, and the 5% Deposit Scheme (${fmtCap(HG_PRICE_CAPS.NT.capital)} cap in Greater Darwin, ${fmtCap(HG_PRICE_CAPS.NT.rest)} elsewhere).` },
+  { step: "2", title: "Calculate your total costs", desc: "Stamp duty at the full rate (there's no first home concession), legal fees, building inspection (cyclone rating compliance), moving costs." },
+  { step: "3", title: "Check grant and scheme eligibility", desc: `Confirm eligibility for the ${money(GRANT.amount)} HomeGrown Territory Grant (a new home, contract by ${GRANT_TO}) and the 5% Deposit Scheme (${fmtCap(HG_PRICE_CAPS.NT.capital)} cap in Greater Darwin, ${fmtCap(HG_PRICE_CAPS.NT.rest)} elsewhere).` },
   { step: "4", title: "Get pre-approval", desc: "Use a lender that actively lends on NT Crown Lease properties. Not all lenders operate in the NT; a broker familiar with Darwin helps." },
   { step: "5", title: "Search and inspect", desc: "Building and pest inspection. In Darwin also check cyclone ratings, AC systems, flood/inundation exposure." },
   { step: "6", title: "Engage an NT conveyancer", desc: "They review the contract, confirm land tenure, do title searches, and manage settlement." },
-  { step: "7", title: "Apply for the FHOG and Discount", desc: "Through your lender or directly with the Territory Revenue Office before settlement." },
+  { step: "7", title: "Apply for the grant", desc: "Through your lender or directly with the Territory Revenue Office, by 30 September 2028." },
 ];
 
 export default function FirstHomeBuyerNTPage() {
@@ -144,11 +154,11 @@ export default function FirstHomeBuyerNTPage() {
 
       <EditorNote>
         <p>
-          The NT combines a $10K FHOG with a stamp duty discount worth
-          up to $23,928.60 on both new and established homes. Stacked,
-          that&rsquo;s one of the bigger combined benefits in the
-          country by dollar value. The Territory&rsquo;s real trap is
-          land tenure. A meaningful share of NT land is leasehold, and
+          The NT&rsquo;s help for first home buyers is one big number: a
+          $50,000 grant on a new home, the largest in the country, with no
+          price cap. There&rsquo;s no first home duty concession, so on an
+          established home you pay full duty and get no grant. The
+          Territory&rsquo;s real trap is land tenure. A meaningful share of NT land is leasehold, and
           properties on community land or in remote areas have
           conveyancing and financing quirks no east-coast lender or
           solicitor will spot. Hire an NT-licensed conveyancer before
@@ -156,24 +166,19 @@ export default function FirstHomeBuyerNTPage() {
         </p>
       </EditorNote>
 
-      <h2 id="fhog">First Home Owner Grant, Northern Territory</h2>
+      <h2 id="fhog">HomeGrown Territory Grant, Northern Territory</h2>
       <p className="lead">
-        The Northern Territory offers a $10,000 First Home Owner Grant for
-        eligible first home buyers purchasing or building a new or substantially
-        renovated home. The grant is administered by the Territory Revenue Office.
+        {`The HomeGrown Territory Grant pays ${money(GRANT.amount)} to an eligible first home buyer who builds or buys a new home, including off-the-plan and owner-builder homes, for contracts from ${GRANT_FROM} to ${GRANT_TO}. There's no price cap. It's administered by the Territory Revenue Office.`}
       </p>
 
       <KeyFigure
-        value="$33,928"
-        label="The maximum total benefit available to NT first home buyers stacking the FHOG and First Home Owner Discount."
-        context="On a new home meeting all thresholds"
+        value={money(GRANT.amount)}
+        label={`The HomeGrown Territory Grant for a first home buyer building or buying a new home, contracts ${GRANT_FROM} to ${GRANT_TO}.`}
+        context="No price cap · not for vacant land alone"
       />
 
       <p>
-        Unlike most state FHOGs, the NT grant also extends to <strong>substantially
-        renovated homes</strong>, properties so comprehensively renovated they're
-        effectively new. That gives more options in a market where new stock can
-        be limited.
+        {`You must live in the home for 12 months, and apply by 30 September 2028. The grant isn't paid on vacant land alone. For contracts from 1 October 2027 it's scheduled to revert to the ${money(NEXT.amount)} First Home Owner Grant on new homes. The ${money(ESTABLISHED.amount)} grant for an established home applied to contracts from ${periodLabel(ESTABLISHED)} and has closed.`}
       </p>
       <p>
         The grant is paid at settlement for completed purchases, or at the first
@@ -181,28 +186,29 @@ export default function FirstHomeBuyerNTPage() {
         through your lender as an approved agent of the Territory Revenue Office.
       </p>
 
-      <h2 id="stamp-duty-discount">First Home Owner Discount, stamp duty relief</h2>
+      <h2 id="stamp-duty">Stamp duty in the NT: no first home concession</h2>
       <p>
-        On top of the FHOG, the NT provides a First Home Owner Discount on stamp
-        duty (conveyance duty), worth up to <strong>$23,928.60</strong>. That can
-        completely eliminate stamp duty on lower-priced properties and
-        significantly reduce it on higher-value purchases.
+        {`The NT has no first home buyer duty concession on new or established homes; the First Home Owner Discount no longer applies. Every buyer pays the same duty: ${money(duty(500_000))} on a $500,000 home and ${money(duty(750_000))} on $750,000. A separate House and Land Package Exemption, for any buyer of a new house-and-land package from a builder, applies to contracts from 1 July 2022 to 30 June 2027.`}
       </p>
 
       <table>
         <thead>
-          <tr><th>Benefit</th><th>Maximum value</th><th>Property type</th></tr>
+          <tr><th>First home help</th><th>Amount</th><th>Property</th><th>Contracts</th></tr>
         </thead>
         <tbody>
-          <tr><td>First Home Owner Grant</td><td>$10,000</td><td>New / substantially renovated</td></tr>
-          <tr><td>First Home Owner Discount (stamp duty)</td><td>$23,928.60</td><td>New and established</td></tr>
-          <tr><td><strong>Total maximum benefit</strong></td><td><strong>~$33,928.60</strong></td><td>New homes</td></tr>
+          <tr><td>HomeGrown Territory Grant</td><td>{money(GRANT.amount)}</td><td>New home, bought or built</td><td>{periodLabel(GRANT)}</td></tr>
+          <tr><td>Established-home grant (closed)</td><td>{money(ESTABLISHED.amount)}</td><td>Established home</td><td>{periodLabel(ESTABLISHED)}</td></tr>
+          <tr><td>First Home Owner Grant (scheduled)</td><td>{money(NEXT.amount)}</td><td>New home</td><td>{periodLabel(NEXT)}</td></tr>
+          <tr><td>First home stamp duty concession</td><td>None</td><td>Any</td><td></td></tr>
         </tbody>
       </table>
 
       <p>
-        Verify exact eligibility and current discount amounts with the Territory
-        Revenue Office, as thresholds can be adjusted.
+        Checked against the{" "}
+        <a href={FIRST_HOME_GRANTS.NT.source.href} target="_blank" rel="noopener noreferrer">
+          Territory Revenue Office
+        </a>{" "}
+        on {formatPolicyDate(FIRST_HOME_REVIEWED_ON)}.
       </p>
 
       <h2 id="federal-schemes">Federal government schemes</h2>
@@ -268,13 +274,13 @@ export default function FirstHomeBuyerNTPage() {
       </ul>
 
       <h2 id="eligibility">Eligibility requirements</h2>
-      <p>For the NT FHOG and First Home Owner Discount:</p>
+      <p>For the HomeGrown Territory Grant:</p>
       <ul>
         <li>Be an Australian citizen or permanent resident</li>
         <li>Be 18 years or older</li>
         <li>Have never previously owned residential property in Australia used as a place of residence</li>
-        <li>Occupy the home as your principal place of residence for at least 6 continuous months, starting within 12 months of settlement or completion</li>
-        <li>For the FHOG, the property must be new or substantially renovated</li>
+        <li>Live in the home as your principal place of residence for 12 months</li>
+        <li>Build or buy a new home, including off-the-plan (not vacant land alone), under a contract signed by 30 September 2027, and apply by 30 September 2028</li>
       </ul>
 
       <h2 id="steps">Step-by-step, buying your first home in the NT</h2>

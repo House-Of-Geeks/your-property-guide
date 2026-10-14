@@ -28,8 +28,8 @@ export const post: BlogPost = {
 <li>Continued steady growth, 4 to 7% annually, with low volatility</li>
 <li>Rental tightness will persist; vacancy below 1.5% likely through year-end</li>
 <li>Interstate investor inflow expected to continue, particularly into outer-northern and southern suburbs</li>
-<li>The HomeSeeker SA shared-equity scheme and SA's $15K FHOG continue to support first home buyer activity</li>
-<li>Off-the-plan apartment concession is still attracting CBD-fringe development activity</li>
+<li>First home buyers pay no stamp duty on a new home, off-the-plan apartment or land to build, at any price, and can claim a First Home Owner Grant of up to $15K on a new home, which keeps first home buyer demand pointed at new builds and apartments</li>
+<li>HomeStart's Shared Equity Option and the SA Government's HomeSeeker SA listings of affordable homes give lower-income buyers a way in</li>
 </ul>
 
 <p>Adelaide in 2026 isn't a market for thrill-seekers. It's a market for buyers who value steady compounding, strong yields, and low volatility. Five-year holders in Adelaide's middle and inner suburbs have done very well; those buying in 2026 with a similar horizon should expect more of the same.</p>`,
@@ -38,5 +38,6 @@ export const post: BlogPost = {
   category: "Market Update",
   tags: ["adelaide", "south australia", "market update", "2026", "property prices"],
   publishedAt: "2026-05-06",
+  updatedAt: "2026-10-14",
   readingTime: 7,
 };

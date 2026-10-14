@@ -105,7 +105,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Free Property Appraisal",             href: "/appraisal",                                   description: "An independent appraisal from a vetted local agent, no commitment to list." },
+  { title: "Free Property Appraisal",             href: "/appraisal",                                   description: "An appraisal from one participating local agent, only if you ask. No commitment to list." },
   { title: "How to Choose a Selling Agent",       href: "/guides/how-to-choose-a-selling-agent",        description: "The interview process, the appraisal-price trap, and what to negotiate." },
   { title: "How Much Is My House Worth?",         href: "/guides/how-much-is-my-house-worth-australia", description: "The three ways to value a home and how to land on a figure you can trust." },
   { title: "Cost of Selling a House",             href: "/guides/cost-of-selling-a-house-australia",    description: "Every fee from commission to conveyancing, with a worked example." },

@@ -1,4 +1,5 @@
 import type { BlogPost } from "@/types";
+import { currentExemptTo, money } from "@/lib/policy/first-home";
 
 export const post: BlogPost = {
   id: "blog-buying-property-interstate-2026",
@@ -22,7 +23,7 @@ export const post: BlogPost = {
 <h2>What changes between states</h2>
 
 <h3>Stamp duty</h3>
-<p>Each state calculates stamp duty differently and offers different concessions. NSW and VIC offer first home buyer exemptions to $800K and $600K respectively. QLD and WA offer concessions but no full exemptions for established homes. SA has no first home buyer concession. Foreign buyers face surcharges of 7 to 8% in most states. Use a state-specific stamp duty calculator before you commit.</p>
+<p>Each state calculates stamp duty differently and offers different concessions. On an established home, first home buyers pay no duty up to ${money(currentExemptTo("NSW") ?? 0)} in NSW, ${money(currentExemptTo("QLD") ?? 0)} in QLD and ${money(currentExemptTo("VIC") ?? 0)} in VIC and WA, with reduced duty above that. QLD and SA charge first home buyers nothing on a new home or land to build, at any price, but SA gives no relief on an established home. The ACT charges eligible buyers nothing at any price; Tasmania and the NT have no first home duty relief. Foreign buyers face surcharges of 7 to 9% in every state except the ACT and the NT. Use the <a href="/stamp-duty-calculator">stamp duty calculator</a> before you commit.</p>
 
 <h3>Cooling-off period</h3>
 <p>NSW: 5 business days from exchange. VIC: 3 business days from signing. QLD: 5 business days from buyer's receipt of contract. SA: 2 clear business days. WA: <strong>no statutory cooling-off period at all</strong>. TAS: no statutory period. ACT: 5 business days. NT: 4 business days. Auctions waive cooling off in all states. WA's lack of cooling off is the single biggest trap for southern interstate buyers.</p>
@@ -75,5 +76,6 @@ export const post: BlogPost = {
   category: "Buying Guide",
   tags: ["interstate", "buying property", "2026", "australia", "stamp duty"],
   publishedAt: "2026-05-06",
+  updatedAt: "2026-10-14",
   readingTime: 11,
 };

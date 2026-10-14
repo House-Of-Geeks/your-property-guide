@@ -6,12 +6,12 @@ export const SITE_URL = "https://www.yourpropertyguide.com.au";
 // introduction service for sellers and buyers, not a data tool. Stays
 // under 160 chars so Google doesn't truncate.
 export const SITE_DESCRIPTION =
-  "Free guides to selling and buying property in Australia: pricing, agent fees, choosing an agent and settlement. One trusted local agent when you're ready.";
+  "Free guides, calculators and next-step plans for buying and selling property in Australia. When you want personal help, one participating local agent, only with your permission.";
 
 // Long-form description used inside JSON-LD Organization schema and any
 // AI-citation surface (llms.txt, etc.) where richer context helps.
 export const SITE_DESCRIPTION_LONG =
-  "Your Property Guide helps Australians sell and buy property with confidence. We publish free, practical guides on pricing, agent fees, choosing an agent, contracts and settlement for every state, with calculators for commission, selling costs, stamp duty and borrowing. When a seller wants help, our team talks to them first and, if they ask, introduces one local agent for a free appraisal. The agent pays us for the introduction; it costs the seller nothing and doesn't change what they pay the agent.";
+  "Your Property Guide helps Australians sell and buy property with confidence. We publish free, practical guides on pricing, agent fees, choosing an agent, contracts and settlement for every state, with calculators for commission, selling costs, stamp duty and borrowing. When someone wants personal help and gives permission, we introduce one participating local agent: a selling agent for a free appraisal, or a buyer's agent where we can. The agent pays us for the introduction; it costs the buyer or seller nothing and doesn't change what they pay the agent.";
 
 export const SITE_TAGLINE = "Property, explained by people.";
 export const DEFAULT_OG_IMAGE = "/og-image.jpg";

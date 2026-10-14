@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { CheckCircle } from "lucide-react";
 import { FaqAccordion } from "@/components/guide";
-import { AppraisalForm } from "@/components/forms/AppraisalForm";
+import { IntroductionForm } from "@/components/journeys/IntroductionForm";
 import { SuburbValueRange } from "@/components/journey/SuburbValueRange";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
@@ -323,7 +323,7 @@ export default function PropertyValuationPage() {
         <SectionHeading title="How to check what your property is worth" />
         <ol className="mt-10 space-y-3 font-sans text-base text-ink-muted leading-relaxed list-decimal pl-5 max-w-3xl">
           <li>Pick your suburb and dwelling type in the range block above for the published median and its band. That is the suburb, not your home; it anchors everything that follows.</li>
-          <li>Look up sold prices, not asking prices, for homes like yours from the last 90 days: similar bedrooms, land and condition. Our <Link href="/sold" className={linkClass}>sold listings</Link> and the suburb pages are a start.</li>
+          <li>Look up sold prices, not asking prices, for homes like yours from the last 90 days: similar bedrooms, land and condition. Our <Link href="/suburbs" className={linkClass}>suburb pages</Link> are a start.</li>
           <li>Get two or three free appraisals from agents who actually sell in your suburb, and ask each for the comparable sales behind the figure. When they cluster, that is your range; when one sits far above the rest, treat it as a pitch.</li>
           <li>If a lender, a court or the tax office needs the number, book a licensed valuer. Expect $300 to $600 (Aussie, January 2025) and a written report you can hand over.</li>
           <li>Before you list, run the figure through the <Link href="/selling-costs-calculator" className={linkClass}>selling costs calculator</Link> so you know what you keep, then read <Link href="/guides/how-to-choose-a-selling-agent" className={linkClass}>how to choose a selling agent</Link>.</li>
@@ -340,9 +340,10 @@ export default function PropertyValuationPage() {
               <p>
                 An appraisal is the number that matters when you are deciding whether to sell, because it comes from
                 someone who watches buyers in your street every week and can show you the sales behind it. Tell us
-                where the property is and we introduce you to one local agent who sells in your area. If we don&rsquo;t
-                have one yet, we&rsquo;ll tell you. Our team will call you within one business day; the agent inspects
-                and gives you a figure or a range in writing. There is no commitment to list, with them or with anyone.
+                where the property is and, with your permission, we introduce you to one participating agent who sells
+                in your area. If we can&rsquo;t cover your suburb, we tell you before you send anything. The agent
+                contacts you the way you choose, inspects, and gives you a figure or a range in writing. There is no
+                commitment to list, with them or with anyone.
               </p>
               <p>
                 Not ready for an agent yet? Read{" "}
@@ -353,13 +354,9 @@ export default function PropertyValuationPage() {
             </div>
           </div>
           <div className="lg:col-span-7">
-            <div id="appraisal-form" className="tone-light scroll-mt-24 rounded-xl border border-line bg-white p-5 sm:p-8 shadow-[0_12px_40px_-14px_rgb(22_25_29/0.22)]">
-              <h3 className="font-display text-ink tracking-[-0.02em] text-xl sm:text-2xl font-bold leading-tight mb-1">
-                Two minutes, then we take it from there
-              </h3>
-              <p className="text-sm text-ink-muted mb-5">Tell us about the property.</p>
+            <div id="appraisal-form" className="scroll-mt-24">
               <Suspense fallback={<div className="h-96" aria-busy="true" />}>
-                <AppraisalForm />
+                <IntroductionForm defaultService="selling-agent" source="property-valuation" compact />
               </Suspense>
             </div>
           </div>

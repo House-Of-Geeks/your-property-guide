@@ -72,7 +72,6 @@ describe("every reader of a suburb's sales figures goes through the rule", () =>
       "src/lib/services/city-market-service.ts",
       "src/lib/services/region-service.ts",
       "src/lib/services/suburb-finder-service.ts",
-      "src/app/(marketing)/buy/[slug]/page.tsx",
       ...Object.keys(ON_PURPOSE),
     ]) expect(readers, f).toContain(f);
   });
@@ -98,13 +97,8 @@ describe("every reader of a suburb's sales figures goes through the rule", () =>
   it("the rollups apply the five-sale floor", () => {
     expect(src("src/lib/services/city-market-service.ts")).toContain("rows.filter((s) => publishesMedians(s) && s.medianHousePrice > 0)");
   });
-  it("the listing page prints the suburb's figures from the suburb service, and no days on market", () => {
-    const page = src("src/app/(marketing)/buy/[slug]/page.tsx");
-    expect(page).toContain("await getSuburbBySlug(property.suburbSlug)");
-    expect(page).not.toMatch(/suburbData\.(medianHousePrice|medianUnitPrice|annualGrowthHouse|medianRentHouse|daysOnMarket)/);
-    // No feed measures days on market; the medians are not census figures.
-    expect(page).not.toMatch(/label="Days on market"|daysOnMarket/);
-    expect(page).not.toContain("ABS Census");
+  it("no listing page is left to print a suburb's figures (the /buy listings were retired on 14 Oct 2026)", () => {
+    expect(fs.existsSync("src/app/(marketing)/buy")).toBe(false);
   });
 });
 
