@@ -20,7 +20,9 @@
  *     stopped when run again.
  *   - It stops (and keeps the existing data) after MAX_CONSECUTIVE_FAILURES
  *     failed cells in a row, rather than writing gaps for every suburb.
- *     Database writes retry through a dropped connection (withDbRetry).
+ *     Database writes retry through a dropped connection (withDbRetry); for
+ *     a run from outside Railway set SYNC_QUERY_TIMEOUT_MS (see ../db.ts) so a
+ *     silently dropped connection errors instead of hanging.
  *
  * Rows keep the BoM-era column names: bomStationId = "silo:<lat>,<lon>",
  * bomStationName = "SILO grid point <lat>, <lon>", distanceKm = suburb
@@ -70,7 +72,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // connection is retried rather than ending the run.
 const DB_RETRY_DELAYS_MS = [2_000, 10_000, 30_000];
 const isConnectionError = (err: unknown) =>
-  /closed the connection|connection terminated|ECONNRESET|ETIMEDOUT|P1001|P1017|Can't reach database/i.test(String((err as Error)?.message ?? err));
+  /closed the connection|connection terminated|ECONNRESET|ETIMEDOUT|timeout|P1001|P1017|Can't reach database/i.test(String((err as Error)?.message ?? err));
 
 async function withDbRetry<T>(fn: () => Promise<T>): Promise<T> {
   for (let attempt = 0; ; attempt++) {
