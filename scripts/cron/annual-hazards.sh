@@ -11,6 +11,11 @@ run hazard-bushfire
 run walkability
 run silo-climate
 
+# Suburb pages are 7-day ISR: invalidate the ones this run touched (the
+# climate sync touches every suburb), as the quarterly script does.
+echo "::: revalidate-paths :::"
+npx tsx scripts/sync/revalidate-paths.ts 48 || echo "!!! revalidate-paths failed (non-fatal)"
+
 # Tell IndexNow-participating engines which suburb/postcode pages changed
 # this run (non-fatal; skips itself if INDEXNOW_KEY is unset).
 echo "::: indexnow-ping :::"
