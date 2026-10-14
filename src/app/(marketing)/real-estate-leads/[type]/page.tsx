@@ -51,7 +51,6 @@ const LEAD_TYPE_PHOTO: Record<string, PhotoKey> = {
   "vendor-leads": "selling",
   "appraisal-leads": "kitchen",
   "buyer-leads": "buying",
-  "property-developer-leads": "investing",
 };
 
 export default async function LeadTypePage(props: { params: Promise<{ type: string }> }) {

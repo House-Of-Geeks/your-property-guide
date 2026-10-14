@@ -19,6 +19,7 @@ import {
   hasRealTemperatureSeries,
   realAnnualRainfallMm,
   stationDistanceCaveat,
+  isGridClimate,
 } from "@/lib/climate";
 
 // ─── State-level reference baselines ──────────────────────────────────
@@ -335,11 +336,15 @@ export function buildClimateSentence(c: Suburb["climate"]): string {
   if (rainfall !== null) {
     parts.push(`Annual rainfall lands at about ${Math.round(rainfall).toLocaleString("en-AU")} mm.`);
   }
-  parts.push(
-    `Figures are long-term averages from the Bureau of Meteorology's ${c.bomStationName} station, ${formatStationDistance(c.distanceKm)} away.`,
-  );
-  const caveat = stationDistanceCaveat(c.distanceKm);
-  if (caveat) parts.push(caveat);
+  if (isGridClimate(c)) {
+    parts.push("Figures are our 1991–2020 averages of SILO data for this location (Queensland Government, built from Bureau of Meteorology observations).");
+  } else {
+    parts.push(
+      `Figures are long-term averages from the Bureau of Meteorology's ${c.bomStationName} station, ${formatStationDistance(c.distanceKm)} away.`,
+    );
+    const caveat = stationDistanceCaveat(c.distanceKm);
+    if (caveat) parts.push(caveat);
+  }
   return parts.join(" ");
 }
 

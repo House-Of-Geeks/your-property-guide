@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { GraduationCap, ExternalLink } from "lucide-react";
 import { getSchoolBySlug, getSchoolsInSuburb, makeSchoolSlug } from "@/lib/services/school-service";
-import { getProperties } from "@/lib/services/property-service";
-import { PropertyGrid } from "@/components/property/PropertyGrid";
-import { SchoolListings, SchoolListingsEmpty } from "@/components/school/SchoolListings";
-import { SchoolSearchBar } from "@/components/school/SchoolSearchBar";
 import { SITE_URL } from "@/lib/constants";
 import { BreadcrumbJsonLd, EducationalOrganizationJsonLd } from "@/components/seo";
 import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
@@ -16,14 +11,12 @@ interface SchoolPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// 24h ISR (fix item 4a, part two). 9,670 school pages rendered from the
-// database on every request because this route read `searchParams` on the
-// server for the listing filters; that read is a dynamic-API call and also
-// what breaks an ISR render (DYNAMIC_SERVER_USAGE). The server now renders
-// the school and its suburb's full listing sets once, and mode / sort /
-// filters from the URL are applied on the client in SchoolListings. The
-// annual schools sync and the quarterly sync revalidate these paths on
-// demand (scripts/sync/revalidate-paths.ts).
+// 24h ISR (fix item 4a, part two). The annual schools sync and the
+// quarterly sync revalidate these paths on demand
+// (scripts/sync/revalidate-paths.ts). The listing search that used to fill
+// the left column (legacy demo listings, buy/rent/sold filters) went with the
+// portal on 14 Oct 2026; the column now points to the suburb and the next
+// steps for buying or selling near the school.
 export const revalidate = 86400;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
@@ -71,16 +64,8 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
   const school = await getSchoolBySlug(slug);
   if (!school) notFound();
 
-  // All four queries only need data from `school`, so they run concurrently.
-  // Each listing set is capped by getProperties; the client picks the mode.
   const suburbSlug = school.suburb.slug;
-  const [nearbySchools, buy, rent, sold] = await Promise.all([
-    getSchoolsInSuburb(school.suburbId, school.acaraId ?? undefined),
-    getProperties({ listingType: "buy", suburb: suburbSlug }),
-    getProperties({ listingType: "rent", suburb: suburbSlug }),
-    getProperties({ listingType: "sold", suburb: suburbSlug }),
-  ]);
-  const listings = { buy, rent, sold };
+  const nearbySchools = await getSchoolsInSuburb(school.suburbId, school.acaraId ?? undefined);
 
   // Street map (roadmap), not satellite
   const mapSrc = school.lat && school.lng && GMAPS_KEY
@@ -135,32 +120,44 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
         <HeroLead>{school.suburb.name}, {school.suburb.state}</HeroLead>
       </PhotoHero>
 
-      {/* Sticky search/filter bar */}
-      <Suspense fallback={null}>
-        <SchoolSearchBar schoolName={school.name} />
-      </Suspense>
-
       <Band tone="quiet" spacing="compact">
         <div className="flex flex-col lg:flex-row gap-8">
 
-          {/* ── Left: property listings ───────────────────────────────── */}
+          {/* ── Left: living near the school ──────────────────────────── */}
           <div className="flex-1 min-w-0">
-            {/* The fallback is the server-rendered buy grid (or empty state): it is
-                what the static HTML carries; SchoolListings takes over on the client. */}
-            <Suspense
-              fallback={
-                buy.length > 0
-                  ? <PropertyGrid properties={buy} />
-                  : <SchoolListingsEmpty suburbName={school.suburb.name} suburbSlug={suburbSlug} />
-              }
-            >
-              <SchoolListings
-                schoolName={school.name}
-                suburbName={school.suburb.name}
-                suburbSlug={suburbSlug}
-                listings={listings}
-              />
-            </Suspense>
+            <h2 className="text-2xl sm:text-3xl text-ink">Living near {school.name}</h2>
+            <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+              {[
+                {
+                  href: `/suburbs/${suburbSlug}`,
+                  label: `${school.suburb.name} suburb profile`,
+                  note: "House and unit prices, rents, the other schools and who lives there.",
+                },
+                {
+                  href: "/buying",
+                  label: "Buying near this school",
+                  note: "Your budget, the schemes you qualify for, stamp duty and every step to the keys.",
+                },
+                {
+                  href: "/selling",
+                  label: "Selling near this school",
+                  note: "What it will cost to sell, what it’s worth and how to choose your agent.",
+                },
+                {
+                  href: "/plan",
+                  label: "Make a plan for your move",
+                  note: "Three questions, then your next steps, the right tools and a checklist.",
+                },
+              ].map((c) => (
+                <li key={c.href}>
+                  <Link href={c.href} className="group flex h-full flex-col rounded-xl border border-line bg-white p-6 transition-colors hover:border-ink">
+                    <span className="text-lg font-bold text-ink">{c.label}</span>
+                    <span className="mt-2 text-base leading-relaxed text-ink-muted">{c.note}</span>
+                    <span className="mt-auto pt-4 text-sm font-semibold text-ink group-hover:underline underline-offset-4">Open</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
           {/* ── Right: map + school info ──────────────────────────────── */}

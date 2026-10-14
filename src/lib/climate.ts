@@ -1,5 +1,9 @@
-// Bureau of Meteorology climate figures, as stored per suburb (SuburbClimate)
-// and shown on suburb pages, the suburb narrative and the compare pages.
+// Climate figures, as stored per suburb (SuburbClimate) and shown on suburb
+// pages, the suburb narrative and the compare pages. Since Oct 2026 the sync
+// (scripts/sync/sources/silo-climate.ts) writes 1991–2020 averages for each
+// suburb's own point on SILO's ~5 km grid (bomStationId "silo:<lat>,<lon>").
+// Rows from the old Bureau station sync stay until each suburb is re-synced,
+// so every helper here reads which kind a row is.
 //
 // A BoM station that records rainfall only has no temperature series. Older
 // syncs stored twelve zeros in its place, which the page then showed as
@@ -46,6 +50,7 @@ export function hasRealRainfallSeries(series: Series): series is number[] {
 }
 
 interface StationClimate {
+  bomStationId?: string | null;
   bomStationName: string;
   distanceKm: number;
   meanMaxTemp: number[];
@@ -76,12 +81,27 @@ export function formatStationDistance(km: number): string {
   return `${(Math.round(km * 10) / 10).toFixed(1)} km`;
 }
 
+/** True for a row from the SILO grid sync, not a Bureau station. */
+export function isGridClimate(c: { bomStationId?: string | null } | null | undefined): boolean {
+  return !!c?.bomStationId?.startsWith("silo:");
+}
+
+/** SILO's credit (CC BY 4.0 asks us to name SILO and say we changed the data: we average it). */
+export const SILO_CREDIT =
+  "SILO data (Queensland Government, built from Bureau of Meteorology observations, CC BY 4.0)";
+
+/** Who a suburb's climate figures come from, for the freshness note. */
+export function climateSourceLabel(c: { bomStationId?: string | null } | null | undefined): string {
+  return isGridClimate(c) ? "SILO (Queensland Government), from Bureau of Meteorology observations" : "Bureau of Meteorology";
+}
+
 /** The source line under the climate figures. */
-export function climateSourceNote(c: Pick<StationClimate, "bomStationName" | "distanceKm">): string {
+export function climateSourceNote(c: Pick<StationClimate, "bomStationId" | "bomStationName" | "distanceKm">): string {
+  if (isGridClimate(c)) return `Our 1991–2020 averages of ${SILO_CREDIT} for this location.`;
   return `Bureau of Meteorology station ${c.bomStationName}, ${formatStationDistance(c.distanceKm)} away; long-term averages.`;
 }
 
-/** A caveat for a distant station, or null when the station is close. */
+/** A caveat for a distant station, or null when the station is close (always null for a grid point, a few km at most). */
 export function stationDistanceCaveat(distanceKm: number): string | null {
   return distanceKm > FAR_STATION_KM
     ? `The station is more than ${FAR_STATION_KM} km away, so conditions here may differ.`
@@ -95,13 +115,13 @@ export function stationDistanceCaveat(distanceKm: number): string | null {
 // Syncs before October 2026 grouped suburbs by station and stamped every
 // suburb in a group with the first suburb's distance, so all ~970 suburbs
 // mapped to "Brisbane" read "11 km away" (Buderim is about 89 km from that
-// station). And while BoM's station list URL fails, the sync falls back to
+// station). And with BoM's station list URL gone, the old sync fell back to
 // the 20 stations below, so many suburbs sit a long way from theirs. Until
-// the data is re-synced, pages recompute the distance from the suburb's
-// coordinates for these stations, and stop presenting a station's weather
-// as the suburb's when it is too far away to describe it.
+// a suburb is re-synced from SILO, pages recompute the distance from the
+// suburb's coordinates for these stations, and stop presenting a station's
+// weather as the suburb's when it is too far away to describe it.
 
-/** The sync's fallback stations (scripts/sync/sources/bom-climate.ts), by BoM site id. */
+/** The old BoM sync's fallback stations, by BoM site id (for rows not yet re-synced). */
 export const REFERENCE_STATIONS: Readonly<Record<string, { name: string; lat: number; lon: number }>> = {
   "066062": { name: "Sydney (Observatory Hill)", lat: -33.8607, lon: 151.2050 },
   "086071": { name: "Melbourne (Olympic Park)", lat: -37.8255, lon: 144.9816 },

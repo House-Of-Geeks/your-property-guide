@@ -264,7 +264,7 @@ export default async function ComparePage() {
             { title: "Lifestyle",          body: "Walk, transit, and bike scores. Population and median age." },
             { title: "Risk",               body: "Flood class and bushfire rating from Geoscience Australia." },
             { title: "Schools",            body: "Schools nearby and average ICSEA from ACARA data." },
-            { title: "Climate",            body: "Annual rainfall and average summer max temp from BoM." },
+            { title: "Climate",            body: "Annual rainfall and average summer max temp (SILO, from Bureau of Meteorology observations)." },
           ].map((d) => (
             <RuleItem
               key={d.title}

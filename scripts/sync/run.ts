@@ -43,7 +43,7 @@ import { run as nearbySuburbs }     from "./sources/nearby-suburbs";
 import { run as hazardFlood }       from "./sources/hazard-flood";
 import { run as hazardBushfire }    from "./sources/hazard-bushfire";
 import { run as walkability }       from "./sources/walkability";
-import { run as bomClimate }        from "./sources/bom-climate";
+import { run as siloClimate }       from "./sources/silo-climate";
 import { run as zoningNsw }         from "./sources/zoning-nsw";
 import { run as zoningVic }         from "./sources/zoning-vic";
 import { run as zoningAct }         from "./sources/zoning-act";
@@ -107,7 +107,7 @@ const SOURCES: Record<string, { run: () => Promise<void>; schedule: "quarterly" 
   "hazard-flood":   { run: hazardFlood,     schedule: "annual"    },
   "hazard-bushfire":{ run: hazardBushfire,  schedule: "annual"    },
   "walkability":    { run: walkability,     schedule: "annual"    },
-  "bom-climate":    { run: bomClimate,      schedule: "annual"    },
+  "silo-climate":   { run: siloClimate,     schedule: "annual"    },
   "zoning-nsw":     { run: zoningNsw,       schedule: "quarterly" },
   "zoning-vic":     { run: zoningVic,       schedule: "quarterly" },
   "zoning-act":     { run: zoningAct,       schedule: "quarterly" },

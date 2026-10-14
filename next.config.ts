@@ -38,19 +38,21 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      {
-        source: "/agencies",
-        destination: "/real-estate-agencies",
-        permanent: true,
-      },
-      {
-        source: "/agencies/:slug*",
-        destination: "/real-estate-agencies/:slug*",
-        permanent: true,
-      },
+      // Old agency URLs. While the directory is off (below) they go straight
+      // to the introduction form; when it returns, point them back at
+      // /real-estate-agencies and /real-estate-agencies/:slug* (permanent).
+      { source: "/agencies/:slug*", destination: "/get-help", permanent: false },
       // Agent lead-supply page renamed so the slug matches the query
       // ("real estate leads"), mirroring yourfinanceguide.com.au/finance-leads.
       { source: "/for-agents", destination: "/real-estate-leads", permanent: true },
+      // Agent profiles stay off the site until Andy launches the directory
+      // (2026-07-03). These pages were noindex but still showed placeholder
+      // profiles; they go to the introduction form. Remove these two lines
+      // (and restore the /agencies rules above) to bring the directory back.
+      { source: "/agents/:path*", destination: "/get-help", permanent: false },
+      { source: "/real-estate-agencies/:path*", destination: "/get-help", permanent: false },
+      // The developer offer sold house-and-land listings, retired 14 Oct 2026.
+      { source: "/real-estate-leads/property-developer-leads", destination: "/real-estate-leads", permanent: true },
       // Item 20 (30 Sep 2026): the Queensland stamp duty article was folded
       // into the calculator-first QLD guide. The /blog form is listed before
       // the /blog wildcard so it lands in one hop.

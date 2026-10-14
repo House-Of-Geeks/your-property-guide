@@ -17,7 +17,6 @@ import { SuburbMap } from "@/components/suburb/SuburbMap";
 import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
 import { SuburbPriceTrend } from "@/components/suburb/SuburbPriceTrend";
 import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
-import { Button } from "@/components/ui";
 import { BUTTON_PRIMARY, Band, SectionHeading } from "@/components/premium";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { isThinProfile } from "@/lib/suburb-indexability";
@@ -49,6 +48,7 @@ import { buildSnapshotProvenance, buildSnapshotStats, type SnapshotStat } from "
 import { buildSuburbFaqs } from "@/lib/suburb-faq";
 import { guideFunnelHref } from "@/lib/guide-funnel";
 import { rentalSourceLabel } from "@/lib/rental-labels";
+import { climateSourceLabel } from "@/lib/climate";
 
 interface SuburbDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -636,7 +636,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
               </section>
             )}
 
-            {/* Climate: only when BoM data is attached to the suburb. */}
+            {/* Climate: only when climate data is attached to the suburb. */}
             {suburb.climate && (
               <section id="climate" className={SECTION}>
                 <h2 className={`${H2_SMALL} mb-4`}>Weather year-round</h2>
@@ -644,7 +644,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 <DataFreshnessNote
                   label="Climate"
                   asOf={suburb.dataFreshness?.climateAsOf ?? null}
-                  source="Bureau of Meteorology"
+                  source={climateSourceLabel(suburb.climate)}
                 />
               </section>
             )}

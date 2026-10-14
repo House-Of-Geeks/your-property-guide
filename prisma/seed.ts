@@ -423,7 +423,7 @@ async function main() {
     { id: "hazard-flood",    label: "Flood Hazard (GA AFRIP)",                  category: "hazard",      schedule: "annual", sourceUrl: "https://www.ga.gov.au/geoserver/ows" },
     { id: "hazard-bushfire", label: "Bushfire Risk (State GeoJSON)",             category: "hazard",      schedule: "annual", sourceUrl: "https://data.gov.au" },
     { id: "walkability",     label: "Walkability (OpenStreetMap Overpass)",      category: "walkability", schedule: "annual", sourceUrl: "https://overpass-api.de/api/interpreter" },
-    { id: "bom-climate",     label: "Climate Averages (BOM CDO)",                category: "climate",     schedule: "annual", sourceUrl: "http://www.bom.gov.au/climate/data/" },
+    { id: "silo-climate",    label: "Climate averages (SILO, Queensland Government)", category: "climate", schedule: "annual", sourceUrl: "https://www.longpaddock.qld.gov.au/silo/" },
     { id: "catchment-nsw-primary",   label: "NSW School Catchments — Primary (DEC School Finder)",   category: "schools", schedule: "annual", sourceUrl: "https://schoolfinder.education.nsw.gov.au/" },
     { id: "catchment-nsw-secondary", label: "NSW School Catchments — Secondary (DEC School Finder)", category: "schools", schedule: "annual", sourceUrl: "https://schoolfinder.education.nsw.gov.au/" },
     { id: "catchment-vic-primary",   label: "VIC School Zones — Primary (DET)",                   category: "schools", schedule: "annual", sourceUrl: "https://discover.data.vic.gov.au/dataset/victorian-government-school-zones-2026" },

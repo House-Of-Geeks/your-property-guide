@@ -138,14 +138,14 @@ export default async function DataPage() {
       rows: [
         { value: formatCount(c.suburbs),  label: "Suburbs",       source: "ABS Statistical Areas + Australia Post", context: "Every Australian suburb with median, growth, and demographic data." },
         { value: formatCount(c.hazards),  label: "Hazard records", source: "Geoscience Australia + state hazard mapping",  context: "Flood class and bushfire risk classification per suburb." },
-        { value: formatCount(c.climates), label: "Climate records", source: "Bureau of Meteorology",                       context: "Mean monthly rainfall and temperature from the nearest BoM station that records temperature." },
+        { value: formatCount(c.climates), label: "Climate records", source: "SILO (Queensland Government)",                context: "1991–2020 monthly rainfall and temperature averages for each suburb's location, from Bureau of Meteorology observations." },
       ],
     },
     {
       heading: "People",
       rows: [
         { value: formatCount(c.agents),   label: "Real estate agents", source: "State licensing registers",       context: "Active agents with listing and sales history.", href: "/find-an-expert" },
-        { value: formatCount(c.agencies), label: "Real estate agencies", source: "State licensing registers",     context: "Agencies operating across Australia.", href: "/real-estate-agencies" },
+        { value: formatCount(c.agencies), label: "Real estate agencies", source: "State licensing registers",     context: "Agencies operating across Australia." },
       ],
     },
     {

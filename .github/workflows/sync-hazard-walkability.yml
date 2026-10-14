@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       source:
-        description: "Specific source ID to run (leave empty for all)"
+        description: "Run one source only: hazard-flood, hazard-bushfire, walkability or silo-climate (leave empty for all)"
         required: false
         default: ""
 
@@ -18,6 +18,7 @@ jobs:
     timeout-minutes: 360
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SILO_API_EMAIL: ${{ secrets.SILO_API_EMAIL }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,14 +28,20 @@ jobs:
       - run: npm ci
       - run: npx prisma generate
       - name: Sync flood hazard (GA AFRIP WFS)
+        if: ${{ inputs.source == '' || inputs.source == 'hazard-flood' }}
         run: npx tsx scripts/sync/run.ts hazard-flood
         continue-on-error: true
       - name: Sync bushfire hazard (state GeoJSON sources)
+        if: ${{ inputs.source == '' || inputs.source == 'hazard-bushfire' }}
         run: npx tsx scripts/sync/run.ts hazard-bushfire
         continue-on-error: true
       - name: Sync walkability scores (Overpass API)
+        if: ${{ inputs.source == '' || inputs.source == 'walkability' }}
         run: npx tsx scripts/sync/run.ts walkability
         continue-on-error: true
-      - name: Sync BOM climate averages
-        run: npx tsx scripts/sync/run.ts bom-climate
+      # SILO DataDrill, ~12k requests at one a second (about 3.5 hours).
+      # Resumable: run it again if the job time limit cuts it off.
+      - name: Sync climate averages (SILO)
+        if: ${{ inputs.source == '' || inputs.source == 'silo-climate' }}
+        run: npx tsx scripts/sync/run.ts silo-climate
         continue-on-error: true

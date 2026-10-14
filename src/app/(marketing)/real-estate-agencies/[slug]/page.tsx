@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: AgencyDetailPageProps): Promi
   if (isSuburbSlug(slug)) {
     const { name, state, postcode } = parseSuburbSlug(slug);
     const title = `Real Estate Agencies in ${name}, ${state} ${postcode}`;
-    const description = `Find local real estate agencies serving ${name}, ${state} ${postcode}. Compare agencies, meet the team, and browse current listings.`;
+    const description = `Find local real estate agencies serving ${name}, ${state} ${postcode}. Compare agencies and meet the team.`;
     // When there are no agencies for this suburb the page still renders an empty
     // "No agencies listed yet" state. Keep that thin variant out of the index
     // (but let it pass equity through its links), mirroring the suburb detail

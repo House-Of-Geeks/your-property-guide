@@ -9,7 +9,7 @@ run() { echo "::: $1 :::"; npx tsx scripts/sync/run.ts "$1" || echo "!!! $1 fail
 run hazard-flood
 run hazard-bushfire
 run walkability
-run bom-climate
+run silo-climate
 
 # Tell IndexNow-participating engines which suburb/postcode pages changed
 # this run (non-fatal; skips itself if INDEXNOW_KEY is unset).

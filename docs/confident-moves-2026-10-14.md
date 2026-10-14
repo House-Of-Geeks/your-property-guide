@@ -51,7 +51,7 @@ Duplicate protection: each form sends a `requestKey` (unique in the DB); a repea
    - `CRON_SECRET` must be set (the cron uses it, as leads-health does).
 3. **Blog posts**: corrected posts reach production only after `npm run publish:blogs`.
 4. **Clarity**: guide thanks pages now fire `guide_thanks_view`; `lead_conversion` is introduction thanks pages only. New events: `plan_started`, `plan_completed`, `plan_emailed`, `guide_delivered`, `guide_downloaded_direct`, `sequence_opted_in`, `intro_started`, `intro_submitted` (with the server's status), `tool_used`. Update any dashboards that counted `lead_conversion` on guide pages.
-5. **Climate data**: syncs before this release stamped every suburb on a station with one suburb's distance (all ~970 "Brisbane" suburbs read 11.4 km; Buderim is ~89 km away). Pages now recompute the distance and withhold figures beyond 50 km. To fix the data: repair the BoM station-list URL in `scripts/sync/sources/bom-climate.ts` (it 404s, so the sync falls back to 20 capital-city stations) and re-run the climate sync.
+5. **Climate data** (fixed 14 Oct, after deploy): the Bureau now blocks automated access to its Climate Data Online pages and asks scrapers to stop, and its station-list URL had moved, so the old sync only ever used 20 capital-city stations (7,782 of 17,939 suburbs had figures, 1,632 of them from a station more than 50 km away). The sync is now `silo-climate` (`scripts/sync/sources/silo-climate.ts`): 1991–2020 averages for each suburb's own point on SILO's ~5 km grid (Queensland Government, from Bureau observations, CC BY 4.0, credited on the pages). It needs `SILO_API_EMAIL` (a GitHub secret for the "Data Sync — Hazard + Walkability + Climate" workflow, and in Railway for the annual cron); run the workflow with source `silo-climate` (about 3.5 hours, resumable). Rows not yet re-synced keep their station wording and the 50 km guard.
 6. **Recording outcomes**: `/dashboard/admin/leads` (admins) shows learning and introduction counts and lets the team record partner acceptance, appointments and signed agreements, with who confirmed each. Customers can report the same through their feedback link.
 
 ## Decisions for Andy
@@ -61,8 +61,9 @@ Duplicate protection: each form sends a `requestKey` (unique in the DB); a repea
 - **Partner checks**: `PARTNER_CHECKS` combines the agent page's vetting list with the 13 Oct bar (licence, local results, reviews, a conversation). Confirm each check is actually done for every partner.
 - **Buyer's agents**: shown as limited and reviewed by hand. Confirm whether any buyer's agents are signed, and where.
 - **Response window**: "normally within one business day" for partner contact. Confirm partners agree to it.
-- **Developer leads page** (`/real-estate-leads/property-developer-leads`) still sells a house-and-land listing model that no longer exists.
-- **Listing grids** remain on region, school and agency pages (legacy data).
+- **Developer leads page**: retired 14 Oct (it sold house-and-land listings that no longer exist); the URL redirects to `/real-estate-leads`.
+- **Listing grids**: removed 14 Oct from region and school pages (legacy demo listings). School pages now point to the suburb and the buying and selling next steps.
+- **Agent directory**: `/agents` and `/real-estate-agencies` (noindex placeholders) now redirect to `/get-help` until the directory launches; remove the two redirects in `next.config.ts` to bring it back.
 
 ## Experiments once there is a baseline (4 to 6 weeks)
 
