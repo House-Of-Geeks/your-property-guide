@@ -102,7 +102,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms abolished no-grounds evictions." },
   { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD's 2024 reforms toward grounds-based evictions." },
   { title: "Renter's Rights in WA",       href: "/guides/renters-rights-wa",  description: "WA's Residential Tenancies Act and entry rules." },
-  { title: "First Home Buyer Guide TAS",  href: "/guides/first-home-buyer-tas", description: "Tasmania's $30K FHOG and 50% stamp duty concession." },
+  { title: "First Home Buyer Guide TAS",  href: "/guides/first-home-buyer-tas", description: "Tasmania's $20K grant on new homes, and why the duty exemption ended." },
 ];
 
 export default function RentersRightsTasPage() {

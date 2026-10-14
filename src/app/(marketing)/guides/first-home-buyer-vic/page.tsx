@@ -16,6 +16,15 @@ import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
+import { VIC_FIRST_HOME, VIC_PPR_MAX, calculateStampDuty } from "@/lib/utils/stamp-duty";
+import { FIRST_HOME_REVIEWED_ON, VIC_OFF_THE_PLAN_TEMPORARY, currentGrant, formatPolicyDate, money } from "@/lib/policy/first-home";
+
+// Figures from src/lib/policy/first-home.ts and the stamp duty engine.
+const GRANT = currentGrant("VIC");
+const GRANT_CAP = GRANT.caps[0].cap ?? 0;
+const ownerDuty = (price: number) => calculateStampDuty(price, "VIC", false, false, false).total;
+const investorDuty = (price: number) => calculateStampDuty(price, "VIC", false, false, true).total;
+const firstHomeDuty = (price: number) => calculateStampDuty(price, "VIC", true, false, false).total;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide VIC: Grants, Stamp Duty & Schemes (2026)",
@@ -23,7 +32,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Victoria first home buyer guide: the $10,000 FHOG on new homes, stamp duty exemption up to $600K and concession to $750K, Help to Buy and federal schemes, and VIC buying tips.",
   slug: "first-home-buyer-vic",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-14",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -52,8 +61,8 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Victoria's FHOG is $10,000 on new homes only, capped at $750,000. The $20,000 regional grant ended on 30 June 2021.",
-  "Full stamp duty exemption applies to any first home (new or established) up to $600,000, with a scaled concession up to $750,000.",
-  "On a $550,000 first home, eligible buyers pay $0 stamp duty, saving roughly $26,000.",
+  `First home buyers pay no stamp duty up to ${money(VIC_FIRST_HOME.exemptTo)} and reduced duty to ${money(VIC_FIRST_HOME.concessionTo)}, on new and established homes and vacant land (contracts from ${VIC_FIRST_HOME.from}).`,
+  `On a $550,000 first home an eligible buyer pays $0, where an owner-occupier who isn't a first home buyer pays ${money(ownerDuty(550_000))}. At $700,000 a first home buyer pays ${money(firstHomeDuty(700_000))} instead of ${money(ownerDuty(700_000))}.`,
   `Federal schemes all work in VIC. The 5% Deposit Scheme has had no income test or limit on places since ${HG_DATES.expanded}; its price cap is ${fmtCap(HG_PRICE_CAPS.VIC.capital)} in Greater Melbourne and Geelong and ${fmtCap(HG_PRICE_CAPS.VIC.rest)} elsewhere.`,
   "The Victorian Homebuyer Fund closed to new applications on 10 September 2025; the federal Help to Buy scheme is now Victoria's shared equity option.",
   "Always verify amounts and thresholds with the State Revenue Office Victoria before signing.",
@@ -88,7 +97,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Do I really pay $0 stamp duty in VIC for a first home?",
     answer:
-      "Up to $600,000 purchase price, yes, full exemption. Between $600,001 and $750,000 a scaled concession applies (not zero, but significantly reduced). Above $750,000 the standard rate kicks in.",
+      `Up to ${money(VIC_FIRST_HOME.exemptTo)}, yes, a full exemption. Between ${money(VIC_FIRST_HOME.exemptTo + 1)} and ${money(VIC_FIRST_HOME.concessionTo)} the duty is reduced on a sliding scale: SRO Victoria's own example is a $700,000 home paying ${money(firstHomeDuty(700_000))} instead of ${money(ownerDuty(700_000))}. Above ${money(VIC_FIRST_HOME.concessionTo)} the standard rate applies.`,
   },
   {
     question: "Is the Victorian Homebuyer Fund still open?",
@@ -150,8 +159,8 @@ export default function FirstHomeBuyerVICPage() {
 
       <KeyFigure
         value="$10,000"
-        label="The FHOG for a new home in Victoria, for contracts from 1 July 2013."
-        context="Capped at $750,000 total value"
+        label={`The FHOG for a new home in Victoria, for contracts from ${formatPolicyDate(GRANT.effectiveFrom as string)}.`}
+        context={`Capped at ${money(GRANT_CAP)} total value`}
       />
 
       <p>
@@ -189,25 +198,21 @@ export default function FirstHomeBuyerVICPage() {
           </tr>
         </thead>
         <tbody>
-          <tr><td>Up to $600,000</td><td>$0 (full exemption)</td></tr>
-          <tr><td>$600,001 to $750,000</td><td>Concession (scaled reduction, not zero but significantly reduced)</td></tr>
-          <tr><td>Over $750,000</td><td>Full transfer duty applies</td></tr>
+          <tr><td>Up to {money(VIC_FIRST_HOME.exemptTo)}</td><td>$0 (full exemption)</td></tr>
+          <tr><td>{money(VIC_FIRST_HOME.exemptTo + 1)} to {money(VIC_FIRST_HOME.concessionTo)}</td><td>Reduced duty on a sliding scale</td></tr>
+          <tr><td>Over {money(VIC_FIRST_HOME.concessionTo)}</td><td>Full transfer duty applies</td></tr>
         </tbody>
       </table>
 
       <p>
-        On a $550,000 purchase, an eligible first home buyer in Victoria pays{" "}
-        <strong>$0</strong> in stamp duty. Without the concession, stamp duty would
-        be roughly $26,000. Use our{" "}
-        <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link> for your
-        exact figures.
+        {`On a $550,000 purchase, an eligible first home buyer in Victoria pays $0 in stamp duty. An owner-occupier who isn't a first home buyer would pay ${money(ownerDuty(550_000))} at the principal place of residence rate, and an investor ${money(investorDuty(550_000))}. The same thresholds apply to vacant land, on the land's value. Rules checked against SRO Victoria on ${formatPolicyDate(FIRST_HOME_REVIEWED_ON)}. `}
+        Use our <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link>{" "}
+        for your exact figures.
       </p>
 
-      <h3>Principal Place of Residence concession (non-first home buyers)</h3>
+      <h3>Principal place of residence concession (non-first home buyers)</h3>
       <p>
-        Victoria also offers a PPR concession for owner-occupiers who are{" "}
-        <em>not</em> first home buyers, on properties up to $550,000. It's a
-        separate concession from the first home buyer exemption.
+        {`Victoria also has a lower principal place of residence rate for owner-occupiers who aren't first home buyers, on properties up to ${money(VIC_PPR_MAX)}. It's separate from the first home buyer exemption.`}
       </p>
 
       <h2 id="federal-schemes">Federal schemes available in VIC</h2>
@@ -228,6 +233,10 @@ export default function FirstHomeBuyerVICPage() {
           <strong>Victorian Homebuyer Fund:</strong>{" "}closed to new applications on
           10 September 2025. Victoria&rsquo;s shared equity option is now the federal{" "}
           <Link href="/guides/help-to-buy-scheme-victoria">Help to Buy scheme</Link>.
+        </li>
+        <li>
+          <strong>Off-the-plan apartments and townhouses:</strong>{" "}
+          {`a temporary duty concession for any buyer of a lot in a strata subdivision with common property, for contracts from ${formatPolicyDate(VIC_OFF_THE_PLAN_TEMPORARY.effectiveFrom)} to ${formatPolicyDate(VIC_OFF_THE_PLAN_TEMPORARY.effectiveTo)}. SRO Victoria says it has been extended to that date; confirm with SRO before relying on a late contract date.`}
         </li>
         <li>
           <strong>Homes Victoria:</strong> Check homes.vic.gov.au for any current

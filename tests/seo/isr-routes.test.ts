@@ -28,7 +28,10 @@ const rel = (f: string) => path.relative(APP, f);
 
 describe("ISR routes", () => {
   it("finds the suburb sub-routes", () => {
-    expect(SUBURB_ROUTES.length).toBeGreaterThanOrEqual(10);
+    // The profile, agents, rental-market, schools and vs/[compareSlug]. The
+    // six listing sub-routes were retired on 14 Oct 2026 (they 308 to the
+    // profile, docs/portal-consolidation-2026-10-14.md).
+    expect(SUBURB_ROUTES.length).toBeGreaterThanOrEqual(5);
   });
 
   for (const file of [...SUBURB_ROUTES, ...OTHER_ISR_ROUTES]) {

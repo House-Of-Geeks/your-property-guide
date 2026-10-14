@@ -5,7 +5,7 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { getAgentContext } from "@/lib/auth/permissions";
 import { ListingEditForm } from "@/components/dashboard/ListingEditForm";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = { title: "Edit Listing" };
 
@@ -47,13 +47,8 @@ export default async function EditListingPage({ params }: { params: Promise<{ id
           </Link>
           <h1 className="text-2xl font-bold text-gray-900 truncate max-w-lg">{property.addressFull}</h1>
         </div>
-        <Link
-          href={`/buy/${property.slug}`}
-          target="_blank"
-          className="flex items-center gap-1.5 text-sm text-primary hover:underline shrink-0"
-        >
-          View listing <ExternalLink className="w-3.5 h-3.5" />
-        </Link>
+        {/* No "View listing" link: the public listing pages (/buy/[slug]) were
+            retired on 14 Oct 2026 (docs/portal-consolidation-2026-10-14.md). */}
       </div>
 
       <div className="rounded-xl bg-white shadow-card border border-gray-100 p-6">

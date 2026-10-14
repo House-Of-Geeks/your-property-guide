@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -305,8 +306,8 @@ export default function BestBrisbaneFamilySuburbsGuide() {
           catchment finder for the exact streets you'd consider.
         </li>
         <li>
-          Pull comparable sales for each suburb on{" "}
-          <a href="/sold">recently sold</a>.
+          Check the sale prices for each suburb on its{" "}
+          <Link href="/suburbs">suburb page</Link>.
         </li>
         <li>
           Run flood reports on any address you're seriously considering.

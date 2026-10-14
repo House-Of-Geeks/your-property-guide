@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { HelpToBuyNote } from "@/components/guide/HelpToBuyNote";
 import { FhssNote } from "@/components/guide/FhssNote";
 import {
@@ -16,14 +15,23 @@ import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
+import { calculateStampDuty } from "@/lib/utils/stamp-duty";
+import { FIRST_HOME_REVIEWED_ON, currentDutyRelief, dutyReliefFor, formatPolicyDate, money } from "@/lib/policy/first-home";
+
+// Figures from src/lib/policy/first-home.ts and the stamp duty engine.
+const HBCS = currentDutyRelief("ACT", "established");
+const HBCS_FROM = formatPolicyDate(HBCS.effectiveFrom as string);
+const PREVIOUS = dutyReliefFor("ACT", "established", "2026-06-30").version!;
+const PREVIOUS_LIMIT = PREVIOUS.method.type === "flat-reduction" ? PREVIOUS.method.exemptTo : 0;
+const ownerDuty = (price: number) => calculateStampDuty(price, "ACT", false, false, false).total;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide ACT: Schemes, Stamp Duty & Canberra Property (2026)",
   description:
-    "ACT first home buyer guide: no FHOG (instead a full stamp duty waiver via the Home Buyer Concession Scheme), ACT Shared Equity, the $1 million 5% Deposit Scheme cap, and how leasehold land works.",
+    "ACT first home buyer guide: no FHOG, but no stamp duty at any price under the Home Buyer Concession Scheme from 1 July 2026 (no income test), the $1 million 5% Deposit Scheme cap, and how leasehold land works.",
   slug: "first-home-buyer-act",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-14",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -51,9 +59,10 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "ACT is the only jurisdiction in Australia with no FHOG. Instead, the Home Buyer Concession Scheme delivers a full stamp duty waiver, often worth more than a cash grant.",
-  "On a $700,000 ACT home, the HBCS can wipe out a stamp duty bill of roughly $27,000.",
-  "The ACT Shared Equity Scheme co-invests with eligible lower-to-middle income buyers (teachers, nurses, junior public servants).",
+  "The ACT is the only jurisdiction in Australia with no first home owner grant. Instead, the Home Buyer Concession Scheme removes stamp duty, often worth more than a cash grant.",
+  `From ${HBCS_FROM} an eligible buyer pays no duty at any price, with no income test, on a new or established home or vacant land, if they haven't held an interest in any property in the last five years.`,
+  `On a $700,000 ACT home, that wipes out a ${money(ownerDuty(700_000))} duty bill (owner-occupier rate); on $1,000,000 it's ${money(ownerDuty(1_000_000))}.`,
+  "The ACT's own Shared Equity Scheme is for public housing tenants buying their Housing ACT home; for everyone else the shared equity option is the federal Help to Buy scheme.",
   "Land Rent Scheme lets you lease the land from the ACT Government and only finance the build, lowering upfront capital required.",
   `The 5% Deposit Scheme (First Home Guarantee) cap is ${fmtCap(HG_PRICE_CAPS.ACT.capital)} across the ACT, with no income test since ${HG_DATES.expanded}.`,
   "All ACT land is held under 99-year Crown Lease (leasehold). For standard residential purchases this operates almost identically to freehold.",
@@ -62,7 +71,7 @@ const TLDR = [
 const TOC: GuideTOCEntry[] = [
   { id: "no-fhog",       label: "No FHOG in the ACT" },
   { id: "hbcs",          label: "Home Buyer Concession Scheme" },
-  { id: "shared-equity", label: "ACT Shared Equity Scheme" },
+  { id: "shared-equity", label: "Shared equity in the ACT" },
   { id: "land-rent",     label: "Land Rent Scheme" },
   { id: "federal-schemes", label: "Federal government schemes" },
   { id: "leasehold",     label: "Leasehold land in the ACT" },
@@ -76,12 +85,12 @@ const FAQS: FaqItem[] = [
   {
     question: "Why doesn't the ACT offer a First Home Owner Grant?",
     answer:
-      "The ACT replaced the FHOG with the Home Buyer Concession Scheme, which gives eligible first home buyers a full stamp duty waiver. Given Canberra's high property prices and high stamp duty bills, this is typically worth more than a $10,000 to $30,000 grant. On a $700,000 home, the saving can be roughly $27,000.",
+      `The ACT's grant ceased on 1 July 2019, and the Home Buyer Concession Scheme removes the duty instead. From ${HBCS_FROM} an eligible buyer pays no conveyance duty at any price. Given Canberra's prices, that's often worth more than a $10,000 to $30,000 grant: ${money(ownerDuty(700_000))} on a $700,000 home at the owner-occupier rate.`,
   },
   {
     question: "Does HBCS apply to both new and established homes?",
     answer:
-      "Yes. Unlike most state FHOGs, the HBCS isn't restricted to new builds. Both new and established homes qualify provided income and property value thresholds are met.",
+      `Yes, and vacant residential land too. From ${HBCS_FROM} there's no property value limit and no income test. You, and any domestic partner, must not have held an interest in any property in the five years before the transaction, and one of you must live in the home for at least a year, moving in within a year of settlement.`,
   },
   {
     question: "Should I worry about leasehold land?",
@@ -94,9 +103,9 @@ const FAQS: FaqItem[] = [
       "An ACT-specific scheme where you lease the land from the ACT Government and pay annual land rent, while owning the dwelling outright. It cuts the upfront capital required because you only finance the build, not the land. You can convert to a standard Crown Lease (buy the land outright) at any time.",
   },
   {
-    question: "Can dual-income professional households get the HBCS?",
+    question: "Is there still an income test for the Home Buyer Concession Scheme?",
     answer:
-      "It depends on combined gross income. ACT income thresholds are designed to include typical public service incomes at lower classifications, but dual-income professional households can exceed the cap. Check current thresholds at revenue.act.gov.au before assuming eligibility.",
+      `Not for transactions from ${HBCS_FROM}: the ACT Revenue Office removed the income threshold and the property value limit. From 1 July 2025 to 30 June 2026 the scheme had an income test ($250,000, plus $4,600 for each dependent child) and gave no duty only up to ${money(PREVIOUS_LIMIT)}, with $35,238 off the duty above that.`,
   },
   {
     question: "What's the cooling-off period in the ACT?",
@@ -107,16 +116,16 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide (national)", href: "/guides/first-home-buyer-guide", description: "Federal schemes, FHOG by state, stamp duty concessions and step-by-step process." },
-  { title: "Stamp Duty ACT",         href: "/guides/stamp-duty-act",          description: "ACT duty rates and the income-tested Home Buyer Concession Scheme." },
-  { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate ACT conveyance duty (with or without the HBCS waiver)." },
+  { title: "Stamp Duty ACT",         href: "/guides/stamp-duty-act",          description: "ACT duty rates and the Home Buyer Concession Scheme." },
+  { title: "Stamp Duty Calculator",             href: "/stamp-duty-calculator",          description: "Estimate ACT conveyance duty by transaction date, with or without the concession." },
   { title: "Conveyancing in Australia",         href: "/guides/conveyancing-guide",      description: "What conveyancers do, what they cost, and what to ask in the ACT." },
   { title: "Lenders Mortgage Insurance",        href: "/guides/lenders-mortgage-insurance-guide", description: "What LMI costs and the schemes that waive it." },
   { title: "Renter's Rights in the ACT",        href: "/guides/renters-rights-act",      description: "Tenant entitlements while you save your deposit." },
 ];
 
 const STEPS = [
-  { step: "1", title: "Check HBCS eligibility first", desc: "Confirm income and property-value thresholds before searching. Zero stamp duty vs a $20K+ bill changes your total budget significantly." },
-  { step: "2", title: "Calculate your total budget", desc: "Conveyancing ($1,500 to $2,500), inspections, title searches, moving. Exclude stamp duty if HBCS-eligible; include it if not." },
+  { step: "1", title: "Check HBCS eligibility first", desc: "Confirm nobody buying (or their domestic partner) has held an interest in any property in the last five years. Zero stamp duty against a $17,000-plus bill changes your budget significantly." },
+  { step: "2", title: "Calculate your total budget", desc: "Conveyancing ($1,500 to $2,500), inspections, title searches, moving. Leave out stamp duty if you're HBCS-eligible; include it if not." },
   { step: "3", title: "Consider the First Home Guarantee", desc: `If your deposit is under 20%, the 5% Deposit Scheme (5% deposit, no LMI, ${fmtCap(HG_PRICE_CAPS.ACT.capital)} cap) saves tens of thousands in LMI. Apply via a participating lender.` },
   { step: "4", title: "Get pre-approval", desc: "Any major bank lends on ACT Crown Lease properties without issue, leasehold isn't an obstacle." },
   { step: "5", title: "Understand the Crown Lease", desc: "Have your conveyancer review lease conditions and any development or change-of-use restrictions on the property." },
@@ -135,7 +144,7 @@ export default function FirstHomeBuyerACTPage() {
     >
       <Callout variant="warning" title="Verify with the ACT Revenue Office">
         <p>
-          ACT property rules (income and property thresholds, leasehold change-of-use
+          ACT property rules (concession eligibility, leasehold change-of-use
           charges) can be complex and change. Always verify current details with the{" "}
           <a href="https://www.revenue.act.gov.au" target="_blank" rel="noopener noreferrer">
             ACT Revenue Office
@@ -148,9 +157,9 @@ export default function FirstHomeBuyerACTPage() {
         <p>
           The ACT is the one jurisdiction with no FHOG, and most buyers
           read that as &ldquo;less generous.&rdquo; It isn&rsquo;t. The
-          Home Buyer Concession Scheme delivers a full stamp duty waiver
-          which on a $700K Canberra home is worth roughly $27K, well
-          ahead of any state grant. The thing that actually catches
+          Home Buyer Concession Scheme removes stamp duty at any price
+          from {HBCS_FROM}, worth {money(ownerDuty(700_000))}{" "}on a $700K Canberra home and
+          more as the price rises. The thing that actually catches
           Canberra buyers off guard is leasehold land. Every block is a
           99-year Crown Lease. For owner-occupier purchases it behaves
           like freehold, but make sure your conveyancer is ACT-licensed
@@ -168,8 +177,8 @@ export default function FirstHomeBuyerACTPage() {
 
       <KeyFigure
         value="$0"
-        label="Stamp duty payable in the ACT under the Home Buyer Concession Scheme."
-        context="A $700K home would normally attract roughly $27,000 in duty"
+        label={`Stamp duty payable by an eligible buyer under the Home Buyer Concession Scheme, at any price, from ${HBCS_FROM}.`}
+        context={`A $700K home would otherwise attract ${money(ownerDuty(700_000))} at the owner-occupier rate`}
       />
 
       <p>
@@ -180,48 +189,31 @@ export default function FirstHomeBuyerACTPage() {
 
       <h2 id="hbcs">Home Buyer Concession Scheme (HBCS)</h2>
       <p>
-        The HBCS allows eligible first home buyers in the ACT to pay <strong>no
-        stamp duty (conveyance duty)</strong> on their purchase. This is a full
-        exemption, not a concession or reduction.
+        {`From ${HBCS_FROM} the HBCS lets an eligible buyer pay no conveyance duty on a home or vacant residential land, new or established, at any price. The ACT Revenue Office removed both the property value limit and the income threshold on that date.`}
       </p>
 
       <p>Key eligibility requirements:</p>
       <ul>
-        <li>At least one buyer must be an Australian citizen or permanent resident</li>
-        <li>No buyer or their spouse/partner can have previously owned residential property in Australia</li>
-        <li>The property must be the buyer's principal place of residence</li>
-        <li>Income thresholds apply (combined gross income of all buyers)</li>
-        <li>Property value thresholds apply (dutiable value cap)</li>
+        <li>All buyers must be individuals aged 18 or over</li>
+        <li>You, and any domestic partner, must not have held an interest in any property in the five years before the transaction</li>
+        <li>At least one buyer must live in the home continuously for at least a year, moving in within a year of settlement</li>
+        <li>No income test and no property value limit, for transactions from {HBCS_FROM}</li>
       </ul>
       <p>
-        Income and property price thresholds are adjusted periodically. Always
-        check current thresholds at{" "}
-        <a href="https://www.revenue.act.gov.au" target="_blank" rel="noopener noreferrer">
+        {`From 1 July 2025 to 30 June 2026 the scheme had an income test ($250,000, plus $4,600 for each dependent child) and gave no duty only up to ${money(PREVIOUS_LIMIT)}. Checked against the ACT Revenue Office on ${formatPolicyDate(FIRST_HOME_REVIEWED_ON)}; confirm your eligibility at `}
+        <a href="https://www.revenue.act.gov.au/home-buyer-assistance/home-buyer-concession-scheme/about-the-home-buyer-concession-scheme" target="_blank" rel="noopener noreferrer">
           revenue.act.gov.au
-        </a>{" "}
-        before planning around HBCS, buying a property just over the threshold
-        means full stamp duty applies.
+        </a>
+        .
       </p>
 
-      <h2 id="shared-equity">ACT Shared Equity Scheme</h2>
+      <h2 id="shared-equity">Shared equity in the ACT</h2>
       <p>
-        The ACT Government runs a shared equity scheme for eligible buyers who
-        can't afford to purchase without additional support. The government
-        contributes a portion of the purchase price (equity contribution) in
-        exchange for a proportional interest in the property.
-      </p>
-      <ul>
-        <li>The government's equity stake reduces the loan you need, lowering repayments</li>
-        <li>You pay no rent or return on the government's share during occupancy</li>
-        <li>You can progressively buy out the government's share over time</li>
-        <li>When you sell, the government recoups its proportional share of the sale price</li>
-        <li>Strict income and asset eligibility criteria apply</li>
-      </ul>
-      <p>
-        This is particularly valuable in Canberra where prices are high relative
-        to income for many essential workers (teachers, nurses, junior public
-        servants). Check current availability and eligibility with the ACT Housing
-        Authority.
+        The ACT Government&rsquo;s own Shared Equity Scheme helps public housing
+        tenants buy their Housing ACT home. If you aren&rsquo;t a Housing ACT
+        tenant, the shared equity option is the federal Help to Buy scheme
+        (below), where the government takes a share of the home and you buy
+        it back over time.
       </p>
 
       <h2 id="land-rent">Land Rent Scheme</h2>
@@ -288,23 +280,22 @@ export default function FirstHomeBuyerACTPage() {
         <li>Inner Canberra (Braddon, Kingston, Barton, New Acton) commands significant premiums</li>
       </ul>
       <p>
-        For first home buyers, the HBCS waiver and the{" "}
+        For first home buyers, the HBCS and the{" "}
         {fmtCap(HG_PRICE_CAPS.ACT.capital)} 5% Deposit Scheme cap are critical enablers in a market where median house prices regularly exceed
         $900,000.
       </p>
 
       <h2 id="eligibility">Eligibility requirements</h2>
-      <p>For the Home Buyer Concession Scheme:</p>
+      <p>For the Home Buyer Concession Scheme, from {HBCS_FROM}:</p>
       <ul>
-        <li>At least one buyer must be an Australian citizen or permanent resident</li>
-        <li>No buyer (or their domestic partner) can have previously owned residential property in Australia</li>
-        <li>The property must become the buyer's principal place of residence</li>
-        <li>Income and property value thresholds must be met (check current figures at revenue.act.gov.au)</li>
+        <li>No buyer (or their domestic partner) can have held an interest in any property in the last five years</li>
+        <li>The home must become a buyer&rsquo;s principal place of residence for at least a year</li>
+        <li>There&rsquo;s no income test and no property value limit</li>
       </ul>
       <p>
-        ACT income thresholds are set to include typical public service incomes at
-        lower classifications, recognising the importance of accessibility for
-        essential workers. Dual-income professional households may exceed the cap.
+        Because the test is five years without a property interest rather than
+        never owning, some people who have owned before can qualify. Check the
+        limited exemptions with the ACT Revenue Office.
       </p>
 
       <h2 id="steps">Step-by-step, buying your first home in the ACT</h2>
@@ -323,7 +314,7 @@ export default function FirstHomeBuyerACTPage() {
           <a href="https://www.revenue.act.gov.au" target="_blank" rel="noopener noreferrer">revenue.act.gov.au</a>
         </li>
         <li>
-          <strong>ACT Housing Authority</strong>, shared equity and community housing:{" "}
+          <strong>Housing ACT</strong>, the Shared Equity Scheme for public housing tenants:{" "}
           <a href="https://www.housing.act.gov.au" target="_blank" rel="noopener noreferrer">housing.act.gov.au</a>
         </li>
         <li>

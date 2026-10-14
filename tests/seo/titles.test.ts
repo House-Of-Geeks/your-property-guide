@@ -390,15 +390,17 @@ describe("the control's description still respects the price-reliability gate", 
 
 describe("the sub-page titles keep their own shape", () => {
   // Fix item 2, step 3: the profile owns "{Suburb} {State} {Postcode}: House
-  // Prices ... & Suburb Profile". The buy, rent, houses, units, townhouses,
-  // land, agents, rental-market and schools pages keep "{Thing} in {Suburb}"
-  // or "{Suburb} Rental Market", so no two pages of a suburb compete for one query.
+  // Prices ... & Suburb Profile". The agents, rental-market and schools pages
+  // keep "{Thing} in {Suburb}" or "{Suburb} Rental Market", so no two pages of
+  // a suburb compete for one query. (The buy, rent, houses, units, townhouses
+  // and land pages were retired on 14 Oct 2026 and 308 to the profile.)
   const SUB = "src/app/(marketing)/suburbs/[slug]";
   const subpages = fs.readdirSync(SUB, { withFileTypes: true })
     .filter((d) => d.isDirectory() && fs.existsSync(`${SUB}/${d.name}/page.tsx`))
     .map((d) => `${SUB}/${d.name}/page.tsx`);
   it("finds the sub-pages", () => {
-    for (const p of ["buy", "rent", "houses", "units", "agents", "rental-market"]) expect(subpages).toContain(`${SUB}/${p}/page.tsx`);
+    for (const p of ["agents", "rental-market", "schools"]) expect(subpages).toContain(`${SUB}/${p}/page.tsx`);
+    for (const p of ["buy", "rent", "houses", "units", "townhouses", "land"]) expect(subpages).not.toContain(`${SUB}/${p}/page.tsx`);
   });
   it("none of them uses the profile title or its words", () => {
     for (const f of [...subpages, "src/lib/suburb-agents.ts", "src/lib/rental-market.ts"]) {

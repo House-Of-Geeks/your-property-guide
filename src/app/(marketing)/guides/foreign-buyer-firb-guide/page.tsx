@@ -12,6 +12,19 @@ import {
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { AUSTRALIAN_STATES, STAMP_DUTY_VERIFIED_ON, STATE_DUTY_SCHEDULES, calculateStampDuty, type AustralianState } from "@/lib/utils/stamp-duty";
+import { formatPolicyDate, money } from "@/lib/policy/first-home";
+
+// Surcharges and duty from the stamp duty engine (src/lib/utils/stamp-duty.ts),
+// checked against each revenue office; the guide no longer retypes them.
+const pct = (rate: number) => `${Math.round(rate * 1000) / 10}%`;
+const SURCHARGE_STATES = AUSTRALIAN_STATES.filter((st) => STATE_DUTY_SCHEDULES[st].foreign);
+const RATES = SURCHARGE_STATES.map((st) => STATE_DUTY_SCHEDULES[st].foreign!.rate);
+const RATE_RANGE = `${pct(Math.min(...RATES))} to ${pct(Math.max(...RATES))}`;
+const RATE_LIST = SURCHARGE_STATES.map((st) => `${st} ${pct(STATE_DUTY_SCHEDULES[st].foreign!.rate)}`).join(", ");
+const standardDuty = (st: AustralianState, price: number) => calculateStampDuty(price, st, false, false, true).total;
+const DUTY_1M = SURCHARGE_STATES.map((st) => standardDuty(st, 1_000_000));
+const capitalise = (t: string) => t.replace(/\b([a-z])/g, (m) => m.toUpperCase());
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Buying property in Australia as a foreign buyer: complete FIRB guide (2026)",
@@ -19,7 +32,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Who counts as a foreign buyer, what properties you can purchase, FIRB application process and fees, state-by-state foreign-buyer surcharges, and tax implications.",
   slug: "foreign-buyer-firb-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-14",
   readingTimeMinutes: 12,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -51,7 +64,7 @@ const TLDR = [
   "Non-resident foreign buyers can generally buy new dwellings or vacant land, but NOT established homes (with very limited exceptions, plus a 2025 to 2027 ban announced by government).",
   "Temporary residents (student, working holiday, partner visas) can buy ONE established home as principal residence, but must sell when leaving Australia permanently.",
   "FIRB application fees are tiered by purchase price, $14,100 on a $1M property, $84,600+ on $4M, and are non-refundable.",
-  "All states except ACT and NT charge a foreign-buyer stamp duty surcharge of 7% to 8% on top of standard duty. Most also charge an annual foreign land-tax surcharge.",
+  `All states except the ACT and the NT charge a foreign-buyer stamp duty surcharge of ${RATE_RANGE} on top of standard duty. Most also charge an annual foreign land-tax surcharge.`,
   "On a $1M NSW purchase, total foreign-buyer charges (FIRB fee + surcharge + standard duty) can exceed $130,000 before any other costs.",
 ];
 
@@ -81,7 +94,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What's the foreign buyer stamp duty surcharge?",
     answer:
-      "An additional state duty on top of standard stamp duty. NSW 8%, VIC 8%, QLD 7%, SA 7%, WA 7%, TAS 8%. ACT and NT have no surcharge. On a $1M property, the surcharge alone is $70,000 to $80,000 in addition to the standard $40,000 to $55,000 duty.",
+      `An additional state duty on top of standard stamp duty: ${RATE_LIST}. The ACT and the NT have no surcharge. On a $1M property, the surcharge alone is ${money(Math.min(...RATES) * 1_000_000)} to ${money(Math.max(...RATES) * 1_000_000)}, on top of standard duty of ${money(Math.min(...DUTY_1M))} to ${money(Math.max(...DUTY_1M))} (rates checked ${formatPolicyDate(STAMP_DUTY_VERIFIED_ON)}).`,
   },
   {
     question: "How long does FIRB approval take?",
@@ -121,7 +134,7 @@ export default function ForeignBuyerFIRBGuidePage() {
           { name: "Apply to FIRB before signing a contract", text: "FIRB approval is required before contracts exchange. Standard processing time: 30 days. Application fee scales with property price." },
           { name: "Pay the FIRB application fee", text: "Tiered by property price, for a $1M property, around $14,000+. Non-refundable even if FIRB declines." },
           { name: "Sign contract subject to FIRB approval", text: "Most foreign buyer contracts include a FIRB-approval clause that lets you rescind if FIRB declines." },
-          { name: "Pay state foreign buyer stamp duty surcharge", text: "On top of standard stamp duty, foreign buyers pay an additional 7-8% in most states. NSW: 8%. VIC: 8%. QLD: 7%." },
+          { name: "Pay state foreign buyer stamp duty surcharge", text: `On top of standard stamp duty, foreign buyers pay an additional ${RATE_RANGE} in every state except the ACT and the NT: ${RATE_LIST}.` },
           { name: "Settle as a normal Australian property purchase", text: "Once FIRB approval is granted and contracts are unconditional, settlement proceeds the same as any other purchase." },
         ]}
       />
@@ -284,14 +297,16 @@ export default function ForeignBuyerFIRBGuidePage() {
           </tr>
         </thead>
         <tbody>
-          <tr><td>NSW</td><td>8%</td><td>Foreign Investor Surcharge Purchaser Duty</td></tr>
-          <tr><td>VIC</td><td>8%</td><td>Foreign Purchaser Additional Duty (FPAD)</td></tr>
-          <tr><td>QLD</td><td>7%</td><td>Additional Foreign Acquirer Duty (AFAD)</td></tr>
-          <tr><td>SA</td><td>7%</td><td>Foreign Ownership Surcharge</td></tr>
-          <tr><td>WA</td><td>7%</td><td>Foreign Buyers Duty</td></tr>
-          <tr><td>TAS</td><td>8%</td><td>Foreign Investor Duty Surcharge</td></tr>
-          <tr><td>ACT</td><td>None</td><td></td></tr>
-          <tr><td>NT</td><td>None</td><td></td></tr>
+          {AUSTRALIAN_STATES.map((st) => {
+            const f = STATE_DUTY_SCHEDULES[st].foreign;
+            return (
+              <tr key={st}>
+                <td>{st}</td>
+                <td>{f ? pct(f.rate) : "None"}</td>
+                <td>{f ? `${capitalise(f.name)}${f.from ? `, from ${f.from}` : ""}` : ""}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 
@@ -302,8 +317,11 @@ export default function ForeignBuyerFIRBGuidePage() {
       />
 
       <p>
-        State revenue offices update rates and thresholds regularly. Always
-        verify current rates before transacting.
+        Rates checked against each state revenue office on{" "}
+        {formatPolicyDate(STAMP_DUTY_VERIFIED_ON)}. NSW&rsquo;s surcharge rose to 9% on 1 January
+        2025 (it was 8%), and Queensland&rsquo;s to 8% on 1 July 2024 (it was
+        7%). Revenue offices update rates and thresholds regularly, so verify
+        before you transact.
       </p>
 
       <h2 id="land-tax-surcharges">Land tax surcharges for foreign owners</h2>
@@ -346,7 +364,7 @@ export default function ForeignBuyerFIRBGuidePage() {
         <li>Australian CGT applies to the capital gain.</li>
         <li>Foreign residents are <strong>not entitled to the main residence exemption</strong> for the period they are a foreign resident (since 2020 reforms). This is a significant tax, you cannot exempt the gain on your &ldquo;home&rdquo; if you were a foreign resident during the ownership period.</li>
         <li>The 50% CGT discount is generally available to foreign residents only for the period they were an Australian tax resident. For non-residents, no discount applies to gains accrued while a non-resident.</li>
-        <li><strong>Foreign Resident Capital Gains Withholding (FRCGW).</strong> For property sold above $750,000, the buyer must withhold 15% of the purchase price and remit it to the ATO unless the seller provides a clearance certificate.</li>
+        <li><strong>Foreign Resident Capital Gains Withholding (FRCGW).</strong> For contracts signed from 1 January 2025, the buyer must withhold 15% of the purchase price on the sale of any Australian property, whatever its value, and pay it to the ATO, unless the seller gives a clearance certificate (Australian residents) or a variation notice. From 1 July 2017 to 31 December 2024 the rate was 12.5% and applied only to property worth $750,000 or more. The contract date decides, not settlement (ATO, page updated 22 June 2026).</li>
       </ul>
 
       <h3>FIRB notification on sale</h3>

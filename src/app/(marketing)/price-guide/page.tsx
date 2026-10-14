@@ -358,7 +358,7 @@ export default async function PriceGuidePage({
           with the selling guide as the softer fallback below. */}
       <ExpertCTA
         headline="Wondering what your own place is worth?"
-        body="Medians tell you the suburb; an appraisal tells you your home. Get a free, no-obligation property appraisal from a top local agent, based on recent sales in your street."
+        body="Medians tell you the suburb; an appraisal tells you your home. Ask us to introduce one participating local agent for a free, no-obligation appraisal based on recent sales near you. Only with your permission."
         ctaLabel="Get a free property appraisal"
         href="/appraisal"
       />

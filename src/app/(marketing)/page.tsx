@@ -2,188 +2,133 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, MessagesSquare, ShieldCheck, Star, TrendingUp } from "lucide-react";
+import { ArrowRight, BookOpen, Calculator, CalendarClock, Route, Users } from "lucide-react";
 
-import { SellingGuideFunnel } from "@/components/journey";
-import {
-  BUTTON_PRIMARY,
-  Band,
-  HeroLead,
-  HeroTitle,
-  PhotoHero,
-  PhotoPanel,
-  RuleGrid,
-  RuleItem,
-  SectionHeading,
-  StepTimeline,
-} from "@/components/premium";
-import { GuideCover } from "@/components/brand/GuideCover";
-import { getBlogPosts } from "@/lib/services/blog-service";
+import { BUTTON_PRIMARY, BUTTON_SECONDARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
+import { RouteChooser } from "@/components/journeys/RouteChooser";
+import { PlanBuilder } from "@/components/journeys/PlanBuilder";
+import { HowIntroductionsWork, HowWeChooseAgents } from "@/components/journeys/ServiceSections";
+import { ALL_GUIDES } from "@/lib/guides/registry";
+import { PROMISE } from "@/lib/service-model";
 import { SITE_URL } from "@/lib/constants";
 
-// Homepage (Oct 2026). One job above the fold: sell the agent network and the
-// help that comes with it, and start sellers in the guide funnel beside a real
-// person. Every claim here is the network's actual bar and the team's actual
-// help, as Andy set them on 13 Oct 2026: keep them true if either changes.
-// Buying, guides and research follow.
+// Homepage (14 Oct 2026, "confident moves"). Organised around one question:
+// what should I do next, and who can help me do it well? In order:
+//   1. the promise and the three ways in (buying, selling, both);
+//   2. the questions people arrive with: costs, timing, process, help;
+//   3. tools and guides for each move;
+//   4. a next-step plan, right here;
+//   5. how introductions work, and the permission they need;
+//   6. why the guides and the agents can be trusted (process, not claims);
+//   7. a clear way to ask for personal help.
+// Every promise comes from src/lib/service-model.ts.
 export const revalidate = 86400;
 
-const META_TITLE = "Sell with the best real estate agent in your area";
+const META_TITLE = "Buying or selling property? Know what to do next";
 const META_DESCRIPTION =
-  "We match Australian sellers with agents who have proven local sales results, strong reviews and a clean record, and who have been interviewed by our team. Then we help you through to settlement. Free, with no obligation to list.";
+  "Free Australian guides, calculators and next-step plans for buying, selling or both. When you want personal help, we introduce you to a suitable local agent, only with your permission.";
 
 export const metadata: Metadata = {
-  title: META_TITLE,
+  title: { absolute: `${META_TITLE} | Your Property Guide` },
   description: META_DESCRIPTION,
   alternates: { canonical: SITE_URL },
   openGraph: { title: META_TITLE, description: META_DESCRIPTION, type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
-// What an agent has to show before we introduce them.
-const AGENT_CHECKS = [
+const QUESTIONS = [
   {
-    icon: TrendingUp,
-    title: "Proven local sales results",
-    body: "A strong record of recent sales in the suburbs they cover.",
+    icon: Calculator,
+    title: "Costs",
+    links: [
+      { label: "What will selling cost me?", href: "/selling-costs-calculator" },
+      { label: "How much stamp duty will I pay?", href: "/stamp-duty-calculator" },
+      { label: "How much could I borrow?", href: "/borrowing-power-calculator" },
+    ],
   },
   {
-    icon: Star,
-    title: "Strong reviews from past sellers",
-    body: "Consistently high ratings from the people they’ve sold for.",
+    icon: CalendarClock,
+    title: "Timing",
+    links: [
+      { label: "When is a good time to sell?", href: "/guides/best-time-to-sell-a-house-australia" },
+      { label: "Should I sell first or buy first?", href: "/guides/sell-first-or-buy-first" },
+      { label: "How long does buying take?", href: "/guides/how-long-does-it-take-to-buy-a-house-australia" },
+    ],
   },
   {
-    icon: ShieldCheck,
-    title: "Licensed, experienced, clean record",
-    body: "Fully licensed, with real selling experience and nothing against their name.",
+    icon: Route,
+    title: "Process",
+    links: [
+      { label: "How does selling work, step by step?", href: "/guides/how-to-sell-a-house-australia" },
+      { label: "How does buying work?", href: "/guides/buying-property-australia" },
+      { label: "What happens at settlement?", href: "/guides/settlement-day-australia" },
+    ],
   },
   {
-    icon: MessagesSquare,
-    title: "Interviewed by our team",
-    body: "We interview every agent before they join the network.",
-  },
-] as const;
-
-const HERO_POINTS = [
-  "Matched to your suburb and your property, anywhere in Australia",
-  "We review the agent’s proposal and help you negotiate the fee",
-  "Free to you, with no obligation to list",
-] as const;
-
-const STEPS = [
-  {
-    title: "Tell us about your sale",
-    body: "A few quick questions about your property and your timing. Your free selling guide for your state arrives straight away.",
-  },
-  {
-    title: "Talk it through with us",
-    body: "Someone from our team calls to understand your property, your timing and what you need from an agent.",
-  },
-  {
-    title: "Meet your matched agent",
-    body: "We pick the right agent from our network for your suburb and your property, and set up a free appraisal. Only when you say yes.",
-  },
-  {
-    title: "We stay with you to settlement",
-    body: "We go through the agent’s proposal with you, help you negotiate the fee, and check in through the campaign, the offers and settlement.",
+    icon: Users,
+    title: "Choosing help",
+    links: [
+      { label: "How do I choose a selling agent?", href: "/guides/how-to-choose-a-selling-agent" },
+      { label: "Do I need a buyer’s agent?", href: "/buyers-agents" },
+      { label: "What do agents charge?", href: "/guides/real-estate-agent-fees-australia" },
+    ],
   },
 ] as const;
 
-const CHAPTERS = [
-  "Is now the right time to sell?",
-  "What your property is really worth",
-  "The real cost of selling",
-  "Preparing your property",
-  "Choosing your agent",
-  "Auction, private sale or off-market",
-  "Marketing that sells",
-  "Offers, negotiation and exchange",
-  "Contracts and settlement",
-  "Your 12-week selling timeline",
+const BY_MOVE = [
+  {
+    title: "Buying",
+    href: "/buying",
+    tools: [
+      { label: "Borrowing power calculator", href: "/borrowing-power-calculator" },
+      { label: "Stamp duty calculator", href: "/stamp-duty-calculator" },
+    ],
+    guides: [
+      { label: "First home buyer guide", href: "/guides/first-home-buyer-guide" },
+      { label: "Due diligence checklist", href: "/guides/due-diligence-checklist-buying-a-house" },
+      { label: "Buyer’s agents: what they do and cost", href: "/buyers-agents" },
+    ],
+  },
+  {
+    title: "Selling",
+    href: "/selling",
+    tools: [
+      { label: "Selling costs calculator", href: "/selling-costs-calculator" },
+      { label: "Agent proposal worksheet", href: "/tools/agent-proposal-worksheet" },
+    ],
+    guides: [
+      { label: "Preparing for an appraisal", href: "/guides/how-to-prepare-for-a-property-appraisal" },
+      { label: "Questions to ask an agent", href: "/guides/questions-to-ask-a-real-estate-agent" },
+      { label: "Agent fees and commission", href: "/guides/real-estate-agent-fees-australia" },
+    ],
+  },
+  {
+    title: "Buying and selling",
+    href: "/buying-and-selling",
+    tools: [
+      { label: "Bridging loan calculator", href: "/bridging-loan-calculator" },
+      { label: "Selling costs calculator", href: "/selling-costs-calculator" },
+    ],
+    guides: [
+      { label: "Sell first or buy first?", href: "/guides/sell-first-or-buy-first" },
+      { label: "Alternatives to a bridging loan", href: "/guides/bridging-loan-alternatives" },
+      { label: "Settlement day", href: "/guides/settlement-day-australia" },
+    ],
+  },
 ] as const;
 
-const SELLER_GUIDES = [
-  { title: "How to sell a house in Australia",            href: "/guides/how-to-sell-a-house-australia",         note: "The whole process, step by step" },
-  { title: "How to choose a selling agent",               href: "/guides/how-to-choose-a-selling-agent",         note: "What to compare, and what to ignore" },
-  { title: "Real estate agent fees and commission",       href: "/guides/real-estate-agent-fees-australia",      note: "Typical rates by state, and how to negotiate" },
-  { title: "The cost of selling a house",                 href: "/guides/cost-of-selling-a-house-australia",     note: "Every cost, from marketing to conveyancing" },
-  { title: "Questions to ask a real estate agent",        href: "/guides/questions-to-ask-a-real-estate-agent",  note: "Take this list to every appraisal" },
-  { title: "Auction or private sale?",                    href: "/guides/auction-vs-private-treaty",             note: "Which method suits your home" },
-] as const;
-
-const fmtDate = (iso: string) =>
-  new Date(iso).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" });
-
-async function LatestGuidesList() {
-  const posts = (await getBlogPosts()).slice(0, 4);
-  if (posts.length === 0) return null;
-  return (
-    <ul className="divide-y divide-line border-y border-line">
-      {posts.map((p) => (
-        <li key={p.slug}>
-          <Link href={`/guides/${p.slug}`} className="group flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 py-4">
-            <span className="text-sm text-ink-subtle sm:w-40 shrink-0">{fmtDate(p.updatedAt ?? p.publishedAt)}</span>
-            <span className="text-base font-semibold text-ink group-hover:text-primary transition-colors">{p.title}</span>
-          </Link>
-        </li>
-      ))}
-    </ul>
-  );
-}
+const linkClass = "text-base text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink";
 
 export default function HomePage() {
+  const guideCount = ALL_GUIDES.length;
   return (
     <>
-      {/* 1. Hero: the offer over the selling photo, a person, and the guide
-          funnel itself. */}
-      <PhotoHero
-        photo="selling"
-        size="lg"
-        aside={
-          <div id="guide-start" className="scroll-mt-24">
-            <p className="mb-4 text-base text-ink-muted">
-              {"Start with a few quick questions. Your free selling guide arrives straight away, and our team will be in touch to talk through your sale."}
-            </p>
-            <Suspense fallback={null}>
-              <SellingGuideFunnel source="homepage-hero" />
-            </Suspense>
-            {/* The one fee disclosure on the page (BRAND.md §8: beside every
-                form). The full explanation is /about#ownership-funding,
-                linked from the header and footer too. */}
-            <p className="mt-4 text-sm text-ink-subtle">
-              {"Agents in our network pay us for introductions. It costs you nothing and doesn’t change what you pay your agent. "}
-              <Link href="/about#ownership-funding" className="underline underline-offset-4 decoration-line-strong hover:text-ink hover:decoration-ink">
-                How we’re paid
-              </Link>
-            </p>
-            <p className="mt-3 text-sm text-ink-muted">
-              {"Ready to meet an agent now? "}
-              <Link href="/appraisal" className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
-                Book a free appraisal
-              </Link>
-              {". Buying instead? "}
-              <Link href="/buying-guide" className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
-                Get the free buying guide
-              </Link>
-            </p>
-          </div>
-        }
-      >
-        <HeroTitle size="lg">Sell with one of the best agents in your area</HeroTitle>
-        <HeroLead className="max-w-xl">
-          {"Every agent in our network has proven local sales results, strong reviews from past sellers and a clean record, and has been interviewed by our team. We match you with the right one, then stay with you until settlement."}
-        </HeroLead>
-
-        <ul className="mt-8 grid gap-3 text-base sm:text-lg text-ink">
-          {HERO_POINTS.map((t) => (
-            <li key={t} className="flex items-start gap-3">
-              <Check className="mt-1 w-5 h-5 shrink-0 text-primary" strokeWidth={3} aria-hidden="true" />
-              {t}
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-10 flex items-center gap-4 border-t border-line pt-6 max-w-xl">
+      {/* 1. The promise and the three ways in. Compact, so the choices are on
+          the first screen of a phone. */}
+      <PhotoHero photo="street" size="md" aside={<RouteChooser />}>
+        <HeroTitle size="lg">{PROMISE.headline}</HeroTitle>
+        <HeroLead className="max-w-xl">{PROMISE.support}</HeroLead>
+        <div className="mt-8 hidden lg:flex items-center gap-4 border-t border-line pt-6 max-w-xl">
           <Image
             src="/images/agents/andy-mcmaster.jpg"
             alt="Andy McMaster"
@@ -192,159 +137,143 @@ export default function HomePage() {
             className="w-14 h-14 rounded-full object-cover object-top shrink-0 ring-2 ring-line"
           />
           <p className="text-[15px] text-ink-muted leading-snug">
-            <span className="font-semibold text-ink">Andy McMaster, founder.</span>{" "}
-            Our team reads every request and hand-picks your agent. We only
-            introduce one when you say yes.
+            <span className="font-semibold text-ink">Andy McMaster, founder and editor.</span>{" "}
+            {`We write for the person making the move, check the rules against official sources, and only introduce an agent when you ask.`}
           </p>
         </div>
       </PhotoHero>
 
-      {/* 2. The bar: what makes an agent "the best" here, check by check. */}
-      <Band>
+      {/* 2. The questions people arrive with. */}
+      <Band spacing="compact">
         <SectionHeading
-          title="Every agent we introduce has cleared four checks"
-          intro="Plenty of agents call themselves the best. We only work with the ones who can show it."
+          title="Start with the question on your mind"
+          intro="Plain answers and calculators, free to read and use. No sign-up."
         />
-        <RuleGrid>
-          {AGENT_CHECKS.map(({ icon, title, body }) => (
-            <RuleItem key={title} icon={icon} title={title}>{body}</RuleItem>
+        <div className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+          {QUESTIONS.map(({ icon: Icon, title, links }) => (
+            <section key={title} className="border-t-2 border-ink pt-5" aria-labelledby={`q-${title}`}>
+              <h3 id={`q-${title}`} className="flex items-center gap-2 text-xl text-ink">
+                <Icon className="h-5 w-5 text-primary" aria-hidden="true" /> {title}
+              </h3>
+              <ul className="mt-4 space-y-3">
+                {links.map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href} className={linkClass}>{l.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
           ))}
-        </RuleGrid>
-      </Band>
-
-      {/* 3. How it works: the help a seller gets, from first call to
-          settlement, beside a photo. */}
-      <Band tone="dark">
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          <div className="lg:col-span-5">
-            <PhotoPanel photo="kitchen" alt="Two people going through paperwork at a kitchen bench" />
-          </div>
-          <div className="lg:col-span-7">
-            <SectionHeading title="With you from the first call to settlement" />
-            <StepTimeline steps={STEPS} />
-            <Link href="#guide-start" className={`mt-12 ${BUTTON_PRIMARY}`}>
-              Tell us about your property <ArrowRight className="w-4 h-4" aria-hidden="true" />
-            </Link>
-          </div>
         </div>
       </Band>
 
-      {/* 4. What's inside the selling guide. */}
-      <Band tone="quiet">
-        <div className="grid lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-4">
-            <div className="mx-auto max-w-[260px] text-[22px] sm:text-[26px] rotate-[-2deg]">
-              <GuideCover guide="selling" />
-            </div>
-          </div>
-          <div className="lg:col-span-8">
-            <h2 className="text-4xl sm:text-5xl leading-[1.05] tracking-[-0.03em] text-ink max-w-2xl">
-              Ten chapters on selling well, for your state
-            </h2>
-            <p className="mt-4 text-lg text-ink-muted leading-relaxed max-w-2xl">
-              The questions sellers ask us most, answered in order. Read it
-              before you talk to agents, and keep it for when the offers come in.
+      {/* 3. Tools and guides for each move. */}
+      <Band tone="quiet" spacing="compact">
+        <SectionHeading title="Tools and guides for your move" intro={`${guideCount} guides and articles, each dated, all free to read. Pick your move.`} />
+        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          {BY_MOVE.map((m) => (
+            <section key={m.title} className="rounded-xl border border-line bg-white p-6" aria-labelledby={`m-${m.href}`}>
+              <h3 id={`m-${m.href}`} className="text-2xl text-ink">{m.title}</h3>
+              <p className="mt-4 flex items-center gap-2 text-sm font-semibold text-ink-muted"><Calculator className="h-4 w-4" aria-hidden="true" /> Tools</p>
+              <ul className="mt-2 space-y-2">
+                {m.tools.map((t) => (
+                  <li key={t.href}><Link href={t.href} className={linkClass}>{t.label}</Link></li>
+                ))}
+              </ul>
+              <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-ink-muted"><BookOpen className="h-4 w-4" aria-hidden="true" /> Guides</p>
+              <ul className="mt-2 space-y-2">
+                {m.guides.map((g) => (
+                  <li key={g.href}><Link href={g.href} className={linkClass}>{g.label}</Link></li>
+                ))}
+              </ul>
+              <Link href={m.href} className="mt-6 inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-primary">
+                Everything for {m.title.toLowerCase()} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </section>
+          ))}
+        </div>
+      </Band>
+
+      {/* 4. A next-step plan, without leaving the page. */}
+      <Band id="plan" spacing="compact">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16 items-start">
+          <div className="lg:col-span-5">
+            <SectionHeading title="Get your next-step plan" size="md" />
+            <p className="mt-5 text-lg text-ink-muted leading-relaxed">
+              {`A few questions about your move, then your next three steps, the calculators and guides for your state, a checklist and the questions worth settling first.`}
             </p>
-            <ol className="mt-8 grid sm:grid-cols-2 gap-x-10 border-t border-line">
-              {CHAPTERS.map((c, i) => (
-                <li key={c} className="flex gap-4 py-3 border-b border-line text-base text-ink">
-                  <span className="w-6 shrink-0 text-ink-subtle font-semibold">{i + 1}</span>
-                  {c}
-                </li>
-              ))}
-            </ol>
-            <Link
-              href="#guide-start"
-              className="mt-8 inline-flex items-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white px-5 py-3 text-base font-semibold transition-colors"
-            >
-              Get the free guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
-            </Link>
+            <ul className="mt-6 space-y-2 text-base text-ink-muted">
+              <li className="border-l-2 border-line-strong pl-4">{`No name, email or phone needed to see it.`}</li>
+              <li className="border-l-2 border-line-strong pl-4">{`Email yourself a copy afterwards if you like.`}</li>
+              <li className="border-l-2 border-line-strong pl-4">{`General information, not advice or a valuation.`}</li>
+            </ul>
+          </div>
+          <div className="lg:col-span-7">
+            <Suspense fallback={null}>
+              <PlanBuilder placement="home" />
+            </Suspense>
           </div>
         </div>
       </Band>
 
-      {/* 5. Guides sellers read first, and the latest. */}
-      <section className="border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20 grid lg:grid-cols-12 gap-12">
+      {/* 5. How introductions work, and the permission they need. */}
+      <HowIntroductionsWork
+        tone="dark"
+        cta={
+          <Link href="/get-help" className={BUTTON_PRIMARY}>
+            Ask for personal help <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
+        }
+      />
+
+      {/* 6. Why you can trust what you read, and who we introduce. */}
+      <Band spacing="compact" id="trust">
+        <SectionHeading title="Why you can rely on what you read here" intro="We’d rather show our working than ask you to take our word for it." />
+        <div className="mt-12 grid gap-10 lg:grid-cols-3">
+          <div className="border-t-2 border-ink pt-5">
+            <h3 className="text-xl text-ink">Checked against official sources</h3>
+            <p className="mt-2 text-base text-ink-muted leading-relaxed">
+              {`Grants, stamp duty and scheme rules come from the state revenue offices, the ATO and Housing Australia, with the date we checked them. When a rule changes, we update the guide and say so.`}
+            </p>
+            <Link href="/about#methodology" className={`mt-3 inline-block ${linkClass}`}>Our editorial standards</Link>
+          </div>
+          <div className="border-t-2 border-ink pt-5">
+            <h3 className="text-xl text-ink">Written for the person moving</h3>
+            <p className="mt-2 text-base text-ink-muted leading-relaxed">
+              {`Guides are written for buyers and sellers, not for agents, and signed off by a named editor. If we get something wrong, we correct it in public.`}
+            </p>
+            <Link href="/about#corrections" className={`mt-3 inline-block ${linkClass}`}>Corrections</Link>
+          </div>
+          <div className="border-t-2 border-ink pt-5">
+            <h3 className="text-xl text-ink">Data with its sources</h3>
+            <p className="mt-2 text-base text-ink-muted leading-relaxed">
+              {`Suburb figures name where they come from and when. Where we don’t have a reliable figure, we leave it out rather than guess.`}
+            </p>
+            <Link href="/methodology" className={`mt-3 inline-block ${linkClass}`}>How our data works</Link>
+          </div>
+        </div>
+      </Band>
+      <HowWeChooseAgents tone="quiet" />
+
+      {/* 7. A clear way to ask for personal help. */}
+      <Band tone="dark" spacing="compact">
+        <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-7">
-            <h2 className="text-3xl sm:text-4xl text-ink">Guides sellers read first</h2>
-            <ul className="mt-8 grid sm:grid-cols-2 gap-x-8 border-t border-line">
-              {SELLER_GUIDES.map((g) => (
-                <li key={g.href} className="border-b border-line">
-                  <Link href={g.href} className="group block py-4">
-                    <span className="block text-base font-semibold text-ink group-hover:text-primary transition-colors">{g.title}</span>
-                    <span className="block mt-1 text-sm text-ink-muted">{g.note}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <Link href="/guides" className="mt-6 inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-primary">
-              All guides <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            <h2 className="text-3xl sm:text-4xl text-ink tracking-[-0.025em]">Want someone to help in person?</h2>
+            <p className="mt-4 text-lg text-ink-muted leading-relaxed max-w-2xl">
+              {`Ask for an introduction to one participating selling agent for an appraisal, or a buyer’s agent who acts for you. We tell you before you send anything if we can’t cover your area.`}
+            </p>
+          </div>
+          <div className="lg:col-span-5 flex flex-wrap gap-3 lg:justify-end">
+            <Link href="/get-help?service=selling-agent&from=home" className={BUTTON_PRIMARY}>
+              I’d like a selling agent
+            </Link>
+            <Link href="/get-help?service=buyers-agent&from=home" className={BUTTON_SECONDARY}>
+              I’d like a buyer’s agent
             </Link>
           </div>
-          <div className="lg:col-span-5">
-            <h2 className="text-2xl sm:text-3xl text-ink">Latest</h2>
-            <div className="mt-8">
-              <Suspense fallback={null}>
-                <LatestGuidesList />
-              </Suspense>
-            </div>
-          </div>
         </div>
-      </section>
-
-      {/* 6. Buying band. */}
-      <section className="border-b border-line bg-surface-inverse text-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-          <div className="grid lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-8">
-              <h2 className="text-3xl sm:text-4xl text-white max-w-2xl">Buying? There&rsquo;s a free guide for that too</h2>
-              <p className="mt-4 text-lg text-white/75 leading-relaxed max-w-2xl">
-                Grants and schemes by state, deposits, pre-approval, inspections
-                and making an offer. We never pass buyers&rsquo; details to selling agents.
-              </p>
-              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-                <Link
-                  href="/buying-guide"
-                  className="inline-flex items-center gap-2 rounded-md bg-white text-ink hover:bg-white/90 px-5 py-3 text-base font-semibold transition-colors"
-                >
-                  Get the free buying guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                </Link>
-                <Link href="/first-home-buyers" className="text-base font-semibold text-white/85 hover:text-white underline underline-offset-4 decoration-white/30">
-                  First home buyers
-                </Link>
-                <Link href="/stamp-duty-calculator" className="text-base font-semibold text-white/85 hover:text-white underline underline-offset-4 decoration-white/30">
-                  Stamp duty calculator
-                </Link>
-              </div>
-            </div>
-            <div className="lg:col-span-4 hidden md:block">
-              <div className="relative aspect-[3/2] rounded-xl overflow-hidden">
-                <Image
-                  src="/images/photos/open-home.jpg"
-                  alt="A couple walking through a house at an open inspection"
-                  fill
-                  sizes="(min-width: 1024px) 33vw, 100vw"
-                  className="object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Research tools, kept low on the page. */}
-      <section>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-          <p className="text-base text-ink-muted">
-            Also here:{" "}
-            <Link href="/real-estate-commission-calculator" className="font-semibold text-ink hover:text-primary">commission calculator</Link>,{" "}
-            <Link href="/tools" className="font-semibold text-ink hover:text-primary">all calculators</Link>,{" "}
-            <Link href="/suburbs" className="font-semibold text-ink hover:text-primary">suburb profiles</Link> and{" "}
-            <Link href="/market-reports" className="font-semibold text-ink hover:text-primary">market reports</Link>.
-          </p>
-        </div>
-      </section>
+      </Band>
     </>
   );
 }

@@ -21,12 +21,11 @@ if (!KEY) {
 
 // Which child sitemaps to submit. Excludes property/sitemap.xml — millions
 // of G-NAF address URLs the search engine wouldn't reward us for blasting.
+// buy, sold and house-and-land went with the listing routes on 14 Oct 2026
+// (docs/portal-consolidation-2026-10-14.md).
 const INCLUDE_CHILDREN = [
   "pages",
   "regions",
-  "buy",
-  "sold",
-  "house-and-land",
   "suburbs",
   "suburbs/streets",
   "guides",

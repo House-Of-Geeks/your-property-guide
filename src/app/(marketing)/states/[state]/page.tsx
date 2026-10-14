@@ -264,20 +264,21 @@ export default async function StatePage({ params }: StatePageProps) {
       {/* CTAs */}
       <Band tone="dark" spacing="compact">
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-12">
-          {/* Buy CTA */}
+          {/* Buy CTA: the buyer hub. The listings it once linked (/buy) were
+              retired on 14 Oct 2026 (docs/portal-consolidation-2026-10-14.md). */}
           <div className="border-t-2 border-ink pt-6 flex flex-col gap-3">
             <Building2 className="w-7 h-7 text-primary mb-2" strokeWidth={1.75} aria-hidden="true" />
             <h2 className="text-2xl sm:text-3xl leading-tight tracking-[-0.02em] text-ink">
-              Properties for Sale in {stateName}
+              Buying in {stateName}
             </h2>
             <p className="text-base text-ink-muted leading-relaxed">
-              Browse active property listings across {stateName}.
+              Budget, schemes, inspections and offers, step by step.
             </p>
             <Link
-              href={`/buy?state=${upperState}`}
+              href="/buying"
               className={`mt-auto w-fit ${BUTTON_SECONDARY}`}
             >
-              Browse Properties for Sale →
+              Buying: where to start →
             </Link>
           </div>
 

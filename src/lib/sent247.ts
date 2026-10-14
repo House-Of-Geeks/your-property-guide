@@ -31,7 +31,9 @@ import { normalizePhone } from "@/lib/utils/phone";
 // leads (sent247HoldReason): in Sent 24/7 a campaign with no buyers linked
 // offers its leads to every active buyer in the tenant.
 
-export const SENT247_BASE_URL = "https://api.sent247.com";
+// SENT247_BASE_URL overrides the host for staging checks against a mock
+// intake (never set in production).
+export const SENT247_BASE_URL = process.env.SENT247_BASE_URL?.trim() || "https://api.sent247.com";
 const LEADS_URL = `${SENT247_BASE_URL}/api/v1/leads`;
 const LEAD_MAGNETS_URL = `${SENT247_BASE_URL}/api/v1/lead-magnets`;
 const TIMEOUT_MS = 8_000;
@@ -54,6 +56,14 @@ export const LEAD_MAGNETS = {
 /** Exactly "true", as on Why Solar, so a half-made config change can't switch delivery on. */
 export function leadMagnetDeliveryEnabled(): boolean {
   return process.env.LEAD_MAGNET_TO_SENT247 === "true" && sent247Config() !== null;
+}
+
+/**
+ * The buyer's agent campaign, when one exists (SENT247_BUYER_CAMPAIGN_ID).
+ * Until it does, buyer's agent introductions are reviewed by the team.
+ */
+export function sent247BuyerCampaignId(): string | null {
+  return process.env.SENT247_BUYER_CAMPAIGN_ID?.trim() || null;
 }
 
 export function sent247Config(): { apiKey: string; vendorCampaignId: string } | null {
@@ -174,6 +184,8 @@ export interface Sent247LeadInput {
   ctx: RequestContext;
   /** ?c= from a Sent 24/7 email link: credits that email with the lead. */
   resumeClickId?: string;
+  /** Extra custom fields (an introduction request's service, preferred contact, timing). */
+  extraFields?: Record<string, string>;
 }
 
 export function buildSent247LeadBody(i: Sent247LeadInput) {
@@ -188,7 +200,7 @@ export function buildSent247LeadBody(i: Sent247LeadInput) {
       phone: toE164AU(i.lead.phone),
       address: addressFromSuburbSlug(i.lead.suburb),
     },
-    custom_fields: { ...guideCustomFields(i.lead), reference_id: i.referenceId },
+    custom_fields: { ...guideCustomFields(i.lead), ...(i.extraFields ?? {}), reference_id: i.referenceId },
     attribution: sent247Attribution(i.attribution, i.ctx),
     consent: {
       tcpa_consent: true,

@@ -110,14 +110,15 @@ describe("guide-download confirmation copy", () => {
     const copy = confirmationCopy(guideLead());
     expect(copy.cta?.url).toBe(GUIDE_PDF_URL);
     expect(copy.subject).toBe("Your selling guide + the $20,000 question");
-    expect(copy.preheader).toContain("pay for themselves");
+    expect(copy.preheader).toContain("Ten chapters, in order");
+    expect(copy.preheader).not.toContain("pay for themselves");
   });
 
   it("each score band gets its own momentum copy", () => {
     const hot = confirmationCopy(guideLead());
     expect(hot.next).toContain("within three months");
     const warm = confirmationCopy(guideLead({ sellingTimeframe: "3-6-months" }));
-    expect(warm.next).toContain("sweet spot");
+    expect(warm.next).toContain("time to prepare properly");
     const cold = confirmationCopy(guideLead({ sellingTimeframe: "researching" }));
     expect(cold.next).not.toContain("within three months");
     expect(cold.next).toContain("pick your moment");
@@ -150,16 +151,18 @@ describe("email branding", () => {
     expect(html).toContain(GUIDE_PDF_URL);
     expect(html).toContain("Where the money is");
     expect(html).toContain("$20,000 question");
-    // HOT gets the dark appraisal panel and the fast-track P.S.
+    // HOT gets the dark appraisal panel and a reply-with-a-question P.S.
+    // (never an implied introduction: that needs the /get-help form).
     expect(html).toContain("Put a number on it");
-    expect(html).toContain("fast-track");
+    expect(html).toContain("Reply with your question");
+    expect(html).not.toContain("top local agent");
     expect(html).not.toContain("#1a3a5c");
   });
 
   it("COLD sellers still get the appraisal panel, but not the P.S.", () => {
     const html = buildConfirmationHtml(guideLead({ sellingTimeframe: "researching" }));
     expect(html).toContain("Put a number on it");
-    expect(html).not.toContain("fast-track");
+    expect(html).not.toContain("Reply with your question");
   });
 
   it("listed sellers get no agent ask at all", () => {
@@ -171,8 +174,9 @@ describe("email branding", () => {
   it("every buyer gets the buyer's agent panel", () => {
     for (const buyerPersona of ["first-home", "investing"]) {
       const html = buildConfirmationHtml(guideLead({ guideType: "buying", buyerPersona, sellingTimeframe: undefined, agentStatus: undefined }));
-      expect(html).toContain("Get matched with a buyer's agent");
-      expect(html).toContain("find-an-expert?intent=buying#match");
+      expect(html).toContain("What a buyer's agent does");
+      expect(html).not.toContain("Get matched");
+      expect(html).toContain("/buyers-agents");
       expect(html).not.toContain("Put a number on it");
     }
   });

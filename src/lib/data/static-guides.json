@@ -157,9 +157,9 @@
     {
       "slug": "first-home-buyer-act",
       "title": "First Home Buyer Guide ACT: Schemes, Stamp Duty & Canberra Property (2026)",
-      "description": "ACT first home buyer guide: no FHOG (instead a full stamp duty waiver via the Home Buyer Concession Scheme), ACT Shared Equity, the $1 million 5% Deposit Scheme cap, and how leasehold land works.",
+      "description": "ACT first home buyer guide: no FHOG, but no stamp duty at any price under the Home Buyer Concession Scheme from 1 July 2026 (no income test), the $1 million 5% Deposit Scheme cap, and how leasehold land works.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-14",
       "readingTimeMinutes": 9,
       "persona": "first-home"
     },
@@ -168,7 +168,7 @@
       "title": "First Home Buyer Guide Australia: Grants, Schemes & Steps (2026)",
       "description": "Complete guide for Australian first home buyers: federal grants and schemes (FHBG, Family Home Guarantee), state grants by state, stamp duty concessions, and step-by-step buying advice.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-14",
       "readingTimeMinutes": 10,
       "persona": "first-home"
     },
@@ -186,16 +186,16 @@
       "title": "First Home Buyer Guide NSW: Grants, Stamp Duty & Schemes (2026)",
       "description": "NSW first home buyer guide: $10,000 FHOG for new homes, stamp duty exemption up to $800K, concession to $1M, federal schemes, and step-by-step NSW buying advice.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-14",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
     {
       "slug": "first-home-buyer-nt",
       "title": "First Home Buyer Guide Northern Territory: Grants & Schemes (2026)",
-      "description": "NT first home buyer guide: $10,000 FHOG, First Home Owner Discount of up to $23,928.60 in stamp duty relief, leasehold land considerations, and federal scheme caps for Darwin.",
+      "description": "NT first home buyer guide: the $50,000 HomeGrown Territory Grant for a new home (contracts to 30 September 2027), no first home stamp duty concession, leasehold land, and federal scheme caps for Darwin.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-14",
       "readingTimeMinutes": 8,
       "persona": "first-home"
     },
@@ -204,25 +204,25 @@
       "title": "First Home Buyer Guide QLD: $30K Grant, Stamp Duty & Schemes (2026)",
       "description": "Queensland first home buyer guide: $30,000 FHOG for new homes under $750K (locked in by the 2026-27 QLD Budget), zero stamp duty on new homes, federal schemes, and QLD buying tips.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-14",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
     {
       "slug": "first-home-buyer-sa",
       "title": "First Home Buyer Guide South Australia: Grants, Stamp Duty & Schemes (2026)",
-      "description": "Complete guide for first home buyers in South Australia: $15,000 FHOG, stamp duty rules, First Home Guarantee, HomeSeeker SA shared equity, and off-the-plan concessions.",
+      "description": "First home buyers in South Australia: no stamp duty on a new home, off-the-plan apartment or land to build (no price cap), a grant of up to $15,000 on new homes, federal schemes and HomeStart shared equity.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-14",
       "readingTimeMinutes": 9,
       "persona": "first-home"
     },
     {
       "slug": "first-home-buyer-tas",
       "title": "First Home Buyer Guide Tasmania: Grants, Stamp Duty & Schemes (2026)",
-      "description": "Tasmania first home buyer guide: $30,000 FHOG on new homes, 50% stamp duty concession on established homes up to $600K, federal schemes, and Tasmania's affordability advantage.",
+      "description": "Tasmania first home buyer guide: the $20,000 First Home Owner Grant on new homes for 2026-27, why the established-home stamp duty exemption ended on 30 June 2026, federal schemes, and Tasmania's prices.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-14",
       "readingTimeMinutes": 8,
       "persona": "first-home"
     },
@@ -231,16 +231,16 @@
       "title": "First Home Buyer Guide VIC: Grants, Stamp Duty & Schemes (2026)",
       "description": "Victoria first home buyer guide: the $10,000 FHOG on new homes, stamp duty exemption up to $600K and concession to $750K, Help to Buy and federal schemes, and VIC buying tips.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-14",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
     {
       "slug": "first-home-buyer-wa",
       "title": "First Home Buyer Guide WA: $10K Grant, Stamp Duty & Schemes (2026)",
-      "description": "Western Australia first home buyer guide: $10,000 FHOG for new homes under $750K, stamp duty exemption under $450K, concession to $600K, federal schemes, and Keystart loans.",
+      "description": "Western Australia first home buyer guide: the $10,000 FHOG on new homes (cap $800K in Perth and the south), no stamp duty to $600K and a concessional rate to $800K, federal schemes, and Keystart loans.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-14",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
@@ -258,7 +258,7 @@
       "title": "First Home Owner Grant (FHOG) by State: 2026 Amounts & Eligibility",
       "description": "The First Home Owner Grant is a state grant, not federal. See FHOG amounts, price caps and eligibility for every state and territory, plus links to each state's detailed guide.",
       "publishedAt": "2026-06-14",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-14",
       "readingTimeMinutes": 8,
       "persona": "first-home"
     },
@@ -285,7 +285,7 @@
       "title": "Buying property in Australia as a foreign buyer: complete FIRB guide (2026)",
       "description": "Who counts as a foreign buyer, what properties you can purchase, FIRB application process and fees, state-by-state foreign-buyer surcharges, and tax implications.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-14",
       "readingTimeMinutes": 12,
       "persona": "investing"
     },

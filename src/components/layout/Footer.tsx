@@ -4,70 +4,66 @@ import { NewsletterForm as NewsletterFormFooter } from "@/components/newsletter/
 import { Logo } from "@/components/brand/Logo";
 import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
 
-// Brand v4 (Oct 2026). Columns follow the two jobs (selling, buying), then
-// guides and tools, then the company. Agent-facing links sit in their own
-// group. Social icons were removed until the accounts exist (they linked
-// to "#").
+// Oct 2026 ("confident moves"). Columns follow the move (buying, selling,
+// both), then guides and tools, then the company and how we're paid. The
+// agent-facing pages sit in their own column, last.
 const FOOTER_COLUMNS = [
-  {
-    heading: "Selling",
-    links: [
-      { label: "Free selling guide",        href: "/selling-guide" },
-      { label: "Free property appraisal",   href: "/appraisal" },
-      { label: "Selling your home",         href: "/selling" },
-      { label: "Choosing a selling agent",  href: "/guides/how-to-choose-a-selling-agent" },
-      { label: "Agent fees and commission", href: "/guides/real-estate-agent-fees-australia" },
-      { label: "Cost of selling",           href: "/guides/cost-of-selling-a-house-australia" },
-      { label: "Commission calculator",     href: "/real-estate-commission-calculator" },
-      { label: "Selling costs calculator",  href: "/selling-costs-calculator" },
-    ],
-  },
   {
     heading: "Buying",
     links: [
-      { label: "Free buying guide",       href: "/buying-guide" },
+      { label: "Buying: where to start",  href: "/buying" },
       { label: "First home buyers",       href: "/first-home-buyers" },
-      { label: "Upgrading or downsizing", href: "/upgrading" },
+      { label: "Buyer’s agents",          href: "/buyers-agents" },
       { label: "Investing",               href: "/investing" },
-      { label: "Renovating",              href: "/renovating" },
       { label: "Stamp duty calculator",   href: "/stamp-duty-calculator" },
       { label: "Borrowing power",         href: "/borrowing-power-calculator" },
-      { label: "Mortgage calculator",     href: "/mortgage-calculator" },
+      { label: "Free buying guide",       href: "/buying-guide" },
+    ],
+  },
+  {
+    heading: "Selling",
+    links: [
+      { label: "Selling: where to start",   href: "/selling" },
+      { label: "Choosing a selling agent",  href: "/guides/how-to-choose-a-selling-agent" },
+      { label: "Agent fees and commission", href: "/guides/real-estate-agent-fees-australia" },
+      { label: "Selling costs calculator",  href: "/selling-costs-calculator" },
+      { label: "Agent proposal worksheet",  href: "/tools/agent-proposal-worksheet" },
+      { label: "Free selling guide",        href: "/selling-guide" },
+      { label: "Buying and selling",        href: "/buying-and-selling" },
     ],
   },
   {
     heading: "Guides and tools",
     links: [
+      { label: "Your next-step plan", href: "/plan" },
       { label: "All guides",          href: "/guides" },
-      { label: "Latest news",         href: "/guides/category/news" },
       { label: "All calculators",     href: "/tools" },
       { label: "LMI calculator",      href: "/lmi-calculator" },
       { label: "Negative gearing",    href: "/negative-gearing-calculator" },
-      { label: "Property glossary",   href: "/glossary" },
       { label: "Suburb profiles",     href: "/suburbs" },
-      { label: "Browse by postcode",  href: "/postcodes" },
       { label: "Market reports",      href: "/market-reports" },
-      { label: "RBA cash rate",       href: "/rba-cash-rate" },
+      { label: "Property glossary",   href: "/glossary" },
+      { label: "Latest news",         href: "/guides/category/news" },
     ],
   },
   {
     heading: "Company",
     links: [
-      { label: "About us",            href: "/about" },
-      { label: "How we're paid",      href: "/about#ownership-funding" },
-      { label: "Editorial standards", href: "/about#methodology" },
-      { label: "Our team",            href: "/about#people" },
-      { label: "Corrections",         href: "/about#corrections" },
-      { label: "Contact",             href: "/contact" },
-      { label: "Privacy policy",      href: "/privacy" },
-      { label: "Site map",            href: "/site-map" },
+      { label: "Get personal help",    href: "/get-help" },
+      { label: "How we’re paid",       href: "/about#ownership-funding" },
+      { label: "How we choose agents", href: "/get-help#how-we-choose" },
+      { label: "About us",             href: "/about" },
+      { label: "Editorial standards",  href: "/about#methodology" },
+      { label: "Corrections",          href: "/about#corrections" },
+      { label: "Contact",              href: "/contact" },
+      { label: "Privacy policy",       href: "/privacy" },
     ],
   },
   {
     heading: "For agents",
     links: [
-      { label: "Seller leads for agents", href: "/real-estate-leads" },
-      { label: "Agent login",             href: "/dashboard/login" },
+      { label: "Introductions for agents", href: "/real-estate-leads" },
+      { label: "Agent login",              href: "/dashboard/login" },
     ],
   },
 ];
@@ -142,7 +138,7 @@ function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: strin
   const nearby = nearbySuburbs.slice(0, 8);
   const selling = [
     { label: `Selling in ${name}`,       href: `/selling-guide?suburb=${slug}` },
-    { label: "Free property appraisal",  href: "/appraisal" },
+    { label: "Ask for an appraisal",     href: `/get-help?service=selling-agent&suburb=${slug}` },
     { label: "Commission calculator",    href: "/real-estate-commission-calculator" },
   ];
   const suburbLinks = [
@@ -186,9 +182,10 @@ export function Footer() {
               <Logo tone="light" size="md" />
             </Link>
             <p className="text-sm text-white/70 leading-relaxed max-w-xs">
-              Free guides to selling and buying property in Australia. When
-              you&rsquo;re ready, one trusted local agent. Agents pay us for
-              introductions; it costs you nothing.
+              Free guides, tools and plans for buying and selling property in
+              Australia. When you want personal help, we introduce one
+              participating local agent, with your permission. The agent pays
+              us for the introduction; you pay us nothing.
             </p>
             <a
               href={`tel:${CONTACT_PHONE_E164}`}
@@ -222,7 +219,8 @@ function NewsletterBand() {
             </h2>
             <p className="mt-2 text-base text-white/70 leading-relaxed max-w-lg">
               Rule changes, new guides and what they mean if you&rsquo;re
-              selling or buying. Nothing else.
+              selling or buying. Nothing else, and separate from any plan or
+              guide emails you ask for.
             </p>
           </div>
           <div className="lg:col-span-5">

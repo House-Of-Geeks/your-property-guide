@@ -3,8 +3,11 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 // vi.mock factories are hoisted above top-level variables. Use vi.hoisted
 // to define the spies in the same hoisted scope so the factories can
 // reference them safely.
-const { dbLeadCreate, dbAgentFind, sendMailMock, deferred } = vi.hoisted(() => ({
+const { dbLeadCreate, dbLeadFindUnique, dbLeadUpdate, dbEventCreate, dbAgentFind, sendMailMock, deferred } = vi.hoisted(() => ({
   dbLeadCreate: vi.fn(),
+  dbLeadFindUnique: vi.fn(),
+  dbLeadUpdate: vi.fn(),
+  dbEventCreate: vi.fn(),
   dbAgentFind:  vi.fn(),
   sendMailMock: vi.fn(),
   deferred:     [] as Array<() => unknown>,
@@ -22,7 +25,8 @@ vi.mock("next/server", async (importOriginal) => ({
 
 vi.mock("@/lib/db", () => ({
   db: {
-    lead: { create: dbLeadCreate },
+    lead: { create: dbLeadCreate, findUnique: dbLeadFindUnique, update: dbLeadUpdate },
+    leadEvent: { create: dbEventCreate },
     agent: { findUnique: dbAgentFind },
   },
 }));
@@ -67,6 +71,12 @@ beforeEach(() => {
   dbAgentFind.mockReset();
   sendMailMock.mockReset();
   dbLeadCreate.mockResolvedValue({ id: "lead_test_123" });
+  dbLeadFindUnique.mockReset();
+  dbLeadFindUnique.mockResolvedValue(null);
+  dbLeadUpdate.mockReset();
+  dbLeadUpdate.mockResolvedValue({});
+  dbEventCreate.mockReset();
+  dbEventCreate.mockResolvedValue({});
   dbAgentFind.mockResolvedValue({ fullName: "Test Agent" });
   sendMailMock.mockResolvedValue(undefined);
 });
@@ -159,9 +169,13 @@ describe("POST /api/leads", () => {
     const saved = dbLeadCreate.mock.calls[0][0].data;
     expect(saved.message).toContain("Score: HOT");
     expect(saved.message).toContain("Timeframe: Within 3 months");
-    expect(saved.message).toContain("Marketing consent: yes");
+    expect(saved.message).toContain("Tips series: yes");
+    // A guide is a learning request: its own kind, never an introduction.
+    expect(saved.kind).toBe("learning");
+    expect(saved.journey).toBe("selling");
+    expect(saved.introConsent).toBeUndefined();
     // A phone on a download is the team's to call, not an agent call.
-    expect(saved.message).toContain("Consent: guide and tips emails, and a call from YPG, no agent unless they ask (download)");
+    expect(saved.message).toContain("Consent: the guide by email; gave a mobile for a call from YPG only, never an agent (download)");
     expect(saved.message).not.toContain("one agent may call");
   });
 
@@ -263,7 +277,7 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       expect(res.status).toBe(200);
       expect((await res.json()).emailOnItsWay).toBe(true);
       expect(dbLeadCreate.mock.calls[0][0].data.phone).toBeUndefined();
-      expect(dbLeadCreate.mock.calls[0][0].data.message).toContain("Consent: guide and tips emails (download)");
+      expect(dbLeadCreate.mock.calls[0][0].data.message).toContain("Consent: the guide by email only (download)");
       expect(mails()).toHaveLength(1);
       expect(readerMail().subject).toBe("Your selling guide + the $20,000 question");
       expect(fetchMock).not.toHaveBeenCalled();
@@ -361,7 +375,7 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       expect((await res.json()).emailOnItsWay).toBe(true);
       const data = dbLeadCreate.mock.calls[0][0].data;
       expect(data.phone).toBe("0491570156");
-      expect(data.message).toContain("Consent: guide and tips emails, and a call from YPG, no agent unless they ask (download)");
+      expect(data.message).toContain("Consent: the guide by email; gave a mobile for a call from YPG only, never an agent (download)");
       expect(readerMail().subject).toBe("Your selling guide + the $20,000 question");
       await runDeferred();
       expect(adminMail().subject).toBe("[HOT] Selling Guide Download, Sarah Lee (burpengary-qld-4505)");
@@ -370,7 +384,8 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       expect(html).toContain("0491570156");
       expect(html).toContain("Within 3 months");
       expect(html).toContain("burpengary-qld-4505");
-      expect(html).toContain("No (guide download). Our team may call. No agent unless they ask.");
+      expect(html).toContain("Learning (guide download). Never pass to an agent.");
+      expect(html).toContain("They added a mobile for a call from our team (not an agent).");
       expect(html).not.toContain("One top local agent");
     });
 
@@ -407,7 +422,7 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       expect(body.lead).toMatchObject({ phone: "+61412345678", last_name: "Lee" });
       expect(body.consent.consent_text).toBe(AGENT_CALL_CONSENT);
       expect(adminMail().subject).toMatch(/^\[HOT\] Appraisal call: Selling Guide Download, Sarah Lee/);
-      expect(adminMail().html).toContain("One top local agent (vendor lead)");
+      expect(adminMail().html).toContain("One participating local agent (vendor lead)");
       expect(adminMail().html).toContain("Accepted (pending), lead s247_1");
       expect(readerMail().subject).toBe("Your free appraisal call is booked");
       expect(dbLeadCreate.mock.calls[0][0].data.message).toContain("Consent: one agent may call");

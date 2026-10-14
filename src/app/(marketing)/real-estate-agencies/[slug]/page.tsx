@@ -364,11 +364,8 @@ export default async function AgencyDetailPage({ params }: AgencyDetailPageProps
               <PropertyCard key={property.id} property={property} variant="grid" />
             ))}
           </div>
-          <div className="mt-8">
-            <Link href={`/buy?agency=${agency.slug}`} className="text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
-              View all listings by {agency.name} →
-            </Link>
-          </div>
+          {/* No "view all listings" link: the /buy listings were retired on
+              14 Oct 2026 (docs/portal-consolidation-2026-10-14.md). */}
         </Band>
       )}
 

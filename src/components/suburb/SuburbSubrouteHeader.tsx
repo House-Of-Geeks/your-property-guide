@@ -6,11 +6,12 @@ import { subpageTabs, type SubpageAvailability, type SubpageTab, type SuburbSubp
 
 export type SuburbSubrouteTab = SubpageTab;
 
-// Standard tab strip for the listing sub-routes and the rental market. Pass
-// the active segment to mark its tab, and the suburb's availability
-// (getSuburbSubpageAvailability): a tab is a link, so one is drawn only for
-// a sub-page with something on it. Until 29 Sep 2026 all seven were drawn on
-// every sub-page of every suburb, six of them to empty pages.
+// Standard tab strip for the suburb sub-routes. Pass the active segment to
+// mark its tab, and the suburb's availability (getSuburbSubpageAvailability):
+// a tab is a link, so one is drawn only for a sub-page with something on it.
+// Until 29 Sep 2026 seven were drawn on every sub-page of every suburb, six
+// of them to empty listing pages; those six were retired on 14 Oct 2026
+// (docs/portal-consolidation-2026-10-14.md).
 export type SuburbListingTab = SuburbSubpage;
 
 export function getSuburbListingTabs(

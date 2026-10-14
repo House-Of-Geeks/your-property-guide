@@ -9,10 +9,10 @@ interface SuburbContextualLinksProps {
     postcode?: string;
     nearbySuburbs: string[];
   };
-  // Which listing sub-pages have stock (getSuburbSubpageAvailability). The
-  // For Sale and For Rent columns link only to those, and are left out when
-  // there are none: until 29 Sep 2026 every profile linked eight listing
-  // pages, empty for all but 13 suburbs.
+  // Which sub-pages have something on them (getSuburbSubpageAvailability):
+  // the rental market row is drawn only with a rental row. The For Sale and
+  // For Rent listing columns went with the listing sub-pages on 14 Oct 2026
+  // (docs/portal-consolidation-2026-10-14.md).
   availability: SubpageAvailability;
 }
 
@@ -74,10 +74,7 @@ function sellingLinksForState(state: string | undefined): { label: string; href:
 // on a second row. Tailwind reads class names from the source: spelt out.
 const LG_COLUMNS: Record<number, string> = {
   3: "lg:grid-cols-3",
-  4: "lg:grid-cols-4",
   5: "lg:grid-cols-5",
-  6: "lg:grid-cols-3",
-  7: "lg:grid-cols-4",
 };
 
 const LINK = "font-sans text-[15px] text-ink-muted hover:text-ink underline-offset-4 hover:underline leading-snug";
@@ -112,16 +109,6 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
   const buyingLinks = buyingLinksForState(state);
   const sellingLinks = sellingLinksForState(state);
   const stateUpper = (state ?? "").toUpperCase();
-  // Canonical static sub-pages, not /buy?suburb=… query-param URLs:
-  // query-param variants split link equity and aren't the indexed canonical
-  // for these property-type queries.
-  const forSaleLinks = [
-    { show: availability.houses,     label: `Houses for sale in ${name}`,     href: `/suburbs/${slug}/houses` },
-    { show: availability.units,      label: `Units for sale in ${name}`,      href: `/suburbs/${slug}/units` },
-    { show: availability.townhouses, label: `Townhouses for sale in ${name}`, href: `/suburbs/${slug}/townhouses` },
-    { show: availability.land,       label: `Land for sale in ${name}`,       href: `/suburbs/${slug}/land` },
-    { show: availability.buy,        label: `All properties for sale in ${name}`, href: `/suburbs/${slug}/buy` },
-  ].filter((l) => l.show);
 
   const suburbLinks = [
     { label: `${name} house prices`, href: `/suburbs/${slug}#market` },
@@ -142,7 +129,7 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
     { label: "Find a local expert", href: `/find-an-expert?suburb=${slug}` },
   ];
 
-  const groups = 3 + (nearby.length > 0 ? 2 : 0) + (forSaleLinks.length > 0 ? 1 : 0) + (availability.rent ? 1 : 0);
+  const groups = 3 + (nearby.length > 0 ? 2 : 0);
 
   return (
     <section aria-labelledby="related-heading" className="border-t border-line pt-10 sm:pt-12">
@@ -170,23 +157,6 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
         <LinkColumn title={stateUpper ? `Selling in ${stateUpper}` : "Selling"} links={sellingLinks} />
 
         <LinkColumn title="Buying" links={buyingLinks} />
-
-        {/* For Sale: the listing pages that have stock */}
-        {forSaleLinks.length > 0 && (
-          <LinkColumn title="For sale" links={forSaleLinks} />
-        )}
-
-        {/* For Rent: only when rentals are listed */}
-        {availability.rent && (
-          <LinkColumn
-            title="For rent"
-            links={[
-              { label: `Houses for rent in ${name}`,    href: `/rent?suburb=${slug}&propertyType=house` },
-              { label: `Units for rent in ${name}`,     href: `/rent?suburb=${slug}&propertyType=unit` },
-              { label: `All rentals in ${name}`,        href: `/suburbs/${slug}/rent` },
-            ]}
-          />
-        )}
       </div>
     </section>
   );

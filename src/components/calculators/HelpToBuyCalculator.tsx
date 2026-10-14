@@ -1,9 +1,9 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Check, X } from "lucide-react";
-import { MatchAgent } from "@/components/journey/MatchAgent";
+import { NextStepCard } from "@/components/journeys/NextStepCard";
 import { formatPriceFull } from "@/lib/utils/format";
 import { STATE_NAMES } from "@/lib/data/commission-rates";
 import { AUSTRALIAN_STATES, type AustralianState } from "@/lib/utils/stamp-duty";
@@ -191,19 +191,14 @@ export function HelpToBuyCalculator() {
         </div>
       )}
 
-      <div id="match-help-to-buy" className="scroll-mt-24 rounded-xl border border-line bg-surface-warm p-6 sm:p-7">
-        <p className="text-[13px] text-cta font-medium mb-2">Next step</p>
-        <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight tracking-tight mb-2">
-          Talk to someone who works with Help to Buy
-        </h3>
-        <p className="text-sm text-ink-muted leading-relaxed mb-5">
-          Help to Buy only runs through a handful of lenders, and the government share is set when you apply. Tell us where
-          you&rsquo;re buying and we&rsquo;ll introduce one vetted specialist for your situation. Free, no commitment.
-        </p>
-        <Suspense fallback={<div className="h-64" aria-busy="true" />}>
-          <MatchAgent compact initialIntent="buying" source={HELP_TO_BUY_CALCULATOR_SOURCE} />
-        </Suspense>
-      </div>
+      <NextStepCard
+        id="match-help-to-buy"
+        title="Turn the numbers into a plan"
+        body="Help to Buy runs through participating lenders, and the government share is set when you apply. A first home plan puts it alongside the 5% Deposit Scheme, grants and stamp duty in your state, with the steps in order."
+        primary={{ label: "Make a first home plan", href: "/plan?j=buying" }}
+        secondary={[{ label: "Help to Buy explained", href: "/guides/help-to-buy-scheme-australia" }, { label: "Stamp duty calculator", href: "/stamp-duty-calculator" }]}
+        note="We don’t introduce brokers or lenders. Check your eligibility with the scheme’s official site or a licensed adviser."
+      />
     </div>
   );
 }

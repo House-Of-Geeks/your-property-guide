@@ -32,6 +32,10 @@ interface SuburbAutocompleteProps {
   inputClassName?: string;
   /** Size variant */
   size?: "default" | "lg";
+  /** For a visible <label htmlFor>; the listbox id derives from it. */
+  id?: string;
+  "aria-describedby"?: string;
+  "aria-invalid"?: boolean;
 }
 
 export function SuburbAutocomplete({
@@ -43,6 +47,9 @@ export function SuburbAutocomplete({
   onClear,
   inputClassName = "",
   size = "default",
+  id,
+  "aria-describedby": describedBy,
+  "aria-invalid": ariaInvalid,
 }: SuburbAutocompleteProps) {
   const router = useRouter();
   const [query, setQuery] = useState(() => slugToSuburbLabel(defaultSlug));
@@ -162,7 +169,15 @@ export function SuburbAutocomplete({
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
         <input
           ref={inputRef}
+          id={id}
           type="text"
+          role="combobox"
+          aria-autocomplete="list"
+          aria-expanded={open && allItems.length > 0}
+          aria-controls={id ? `${id}-listbox` : undefined}
+          aria-activedescendant={id && activeIdx >= 0 ? `${id}-opt-${activeIdx}` : undefined}
+          aria-describedby={describedBy}
+          aria-invalid={ariaInvalid || undefined}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -193,6 +208,8 @@ export function SuburbAutocomplete({
       {open && allItems.length > 0 && (
         <div
           ref={dropdownRef}
+          id={id ? `${id}-listbox` : undefined}
+          role="listbox"
           className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden"
         >
           {results.locations.length > 0 && (
@@ -205,6 +222,9 @@ export function SuburbAutocomplete({
                 return (
                   <button
                     key={loc.slug}
+                    id={id ? `${id}-opt-${idx}` : undefined}
+                    role="option"
+                    aria-selected={activeIdx === idx}
                     type="button"
                     onMouseDown={(e) => { e.preventDefault(); pickLocation(loc); }}
                     className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors ${
@@ -232,6 +252,9 @@ export function SuburbAutocomplete({
                 return (
                   <button
                     key={school.slug}
+                    id={id ? `${id}-opt-${idx}` : undefined}
+                    role="option"
+                    aria-selected={activeIdx === idx}
                     type="button"
                     onMouseDown={(e) => { e.preventDefault(); pickSchool(school); }}
                     className={`w-full flex items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors ${

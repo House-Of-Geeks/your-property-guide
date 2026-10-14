@@ -1,21 +1,33 @@
 // The guide funnels' collection statements, and who an optional call goes
-// to. Pure (no server imports): the funnels and the thanks-page call card
-// render these words, and /api/leads sends the same words to Sent 24/7 as
-// consent_text, so the record always matches what the visitor read.
+// to. Pure (no server imports): the funnels and the thanks pages render these
+// words, and /api/leads stores the same words with the row (and sends them to
+// Sent 24/7 as consent_text), so the record always matches what was read.
 //
-// Since Oct 2026 the guide is given for an email and, from 13 Oct, a mobile
-// (the email step's consent covers the guide and tips emails and a call
-// from the YPG team, not an agent). Agent contact is a separate, optional
-// request on the thanks page, with its own consent.
+// Since 14 Oct 2026 ("confident moves") a guide is a learning request: it is
+// given for an email address, nothing else is bundled with it. Each extra is
+// its own clear choice on the same step: a mobile (optional) if they'd like
+// our team to call, and an unticked box for the short tips series. Agent
+// contact is never part of a guide request; it's the introduction form
+// (/get-help), with its own permission box.
 
 export const SELLING_EMAIL_CONSENT =
-  "By requesting the guide you agree we may email it to you with selling tips for your suburb, and that our team may call you on the number above. Unsubscribe anytime. We only pass your details to an agent if you ask us to.";
+  "We’ll email you the guide. Nothing else is sent unless you tick the box above, and we never pass your details to an agent from this form.";
 
 export const BUYING_EMAIL_CONSENT =
-  "By requesting the guide you agree we may email it to you with buying tips for your suburb, and that our team may call you on the number above. Unsubscribe anytime. Your details are never sold and never passed to selling agents.";
+  "We’ll email you the guide. Nothing else is sent unless you tick the box above, and we never pass your details to any agent from this form.";
 
+/** Under the optional mobile field. Giving the number is the yes to a call from us, and only that. */
+export const GUIDE_PHONE_NOTE =
+  "Optional. Add it only if you’d like someone from our team to call with your questions. We never pass it to an agent.";
+
+/** The guide's separate opt-in for the short tips series (sequence copy in lib/email-sequences). */
+export const GUIDE_SEQUENCE_LABEL = "Also send me a few short emails for my stage";
+
+// Legacy: the thanks-page call card (until 14 Oct 2026). Kept so a call
+// request from a page that loaded before the deploy still records the words
+// that page showed. New pages link to /get-help instead.
 export const AGENT_CALL_CONSENT =
-  "By booking a call you agree we may share your details with one top local agent, who will call you about selling your property. The agent pays us for the introduction. You pay nothing. We never sell your details to anyone else.";
+  "By booking a call you agree we may share your details with one participating local agent, who will call you about selling your property. The agent pays us for the introduction. You pay nothing. We never sell your details to anyone else.";
 
 export const YPG_CALL_CONSENT =
   "We’ll use your mobile only to call you ourselves. We never pass it to an agent or sell it.";
@@ -47,12 +59,15 @@ export function callConsentText(kind: GuideCallKind): string {
 /** sessionStorage key: what the funnel hands its thanks page (never the URL). */
 export const GUIDE_THANKS_KEY = "ypg-guide-thanks";
 
+/**
+ * What the funnel hands its thanks page (sessionStorage, this tab only).
+ * Since 14 Oct 2026 nothing personal: no name, email or phone, because the
+ * thanks page no longer re-submits anything.
+ */
 export interface GuideThanksContext {
   guide: "selling" | "buying";
-  kind: GuideCallKind;
   /** True when the guide email is on its way (Sent 24/7 started the series, or YPG sent it). */
   emailOnItsWay: boolean;
-  /** The download's lead payload, mobile included (E.164): the call card prefills
-   *  it, and the call request re-sends the payload with the confirmed number. */
-  payload: Record<string, unknown>;
+  /** True when they ticked the tips series. */
+  sequence?: boolean;
 }

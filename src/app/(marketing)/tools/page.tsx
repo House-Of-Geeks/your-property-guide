@@ -57,6 +57,12 @@ const GROUPS: ToolGroup[] = [
         description: "Commission, marketing and legal costs on your sale, and your net proceeds.",
       },
       {
+        href: "/tools/agent-proposal-worksheet",
+        title: "Agent Proposal Worksheet",
+        description:
+          "Compare two or three agents' proposals side by side: each one's total cost at the same price, what you'd keep, and what to ask.",
+      },
+      {
         href: "/property-valuation",
         title: "Property Valuation Range",
         description:

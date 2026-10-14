@@ -5,72 +5,44 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { ArrowRight, ArrowLeft, Check } from "lucide-react";
 import { SuburbAutocomplete, slugToSuburbLabel } from "@/components/search/SuburbAutocomplete";
 import { clarityEvent, clarityTag } from "@/lib/clarity";
+import { track } from "@/lib/analytics";
 import { auMobileError } from "@/lib/utils/au-mobile";
 import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
-import { GUIDE_THANKS_KEY, BUYING_EMAIL_CONSENT, guideCallKind, type GuideThanksContext } from "@/lib/guide-consent";
+import { BUYING_EMAIL_CONSENT, GUIDE_PHONE_NOTE, GUIDE_SEQUENCE_LABEL, GUIDE_THANKS_KEY, type GuideThanksContext } from "@/lib/guide-consent";
+import { BUYING_GUIDE_PDF_PATH } from "@/lib/guide-pdfs";
+import { SEQUENCES, sequenceFor } from "@/lib/email-sequences";
 
 // ----- Option sets ---------------------------------------------------------
-// Question order is fixed by conversion research, lowest-friction first,
-// contact details last. Timeframe is the money question; agent status is
-// the kill/branch question (already-listed vendors get the guide but are
-// never passed to agents).
+// Since 14 Oct 2026 ("confident moves") the buying guide is a learning
+// request: where (state rules), who (first home, next home, investing,
+// downsizing) and where finance is up to change what we point the reader
+// to; budget, property type and timing didn't, so they're gone. Nothing
+// here reaches any agent; a buyer's agent introduction is /get-help.
 
-type PropertyType = "house" | "townhouse" | "unit" | "land" | "acreage";
-type Timeframe = "0-3-months" | "3-6-months" | "6-12-months" | "12-plus-months" | "researching";
 type BuyerPersona = "first-home" | "upgrading" | "investing" | "downsizing";
 type FinanceStatus = "pre-approved" | "talking-to-lenders" | "not-started" | "cash";
 
-const PROPERTY_TYPES: { id: PropertyType; label: string }[] = [
-  { id: "house",     label: "House" },
-  { id: "townhouse", label: "Townhouse" },
-  { id: "unit",      label: "Unit or apartment" },
-  { id: "land",      label: "Land" },
-  { id: "acreage",   label: "Acreage or rural" },
-];
-
-const TIMEFRAMES: { id: Timeframe; label: string; sub: string }[] = [
-  { id: "0-3-months",     label: "Within 3 months",  sub: "Actively looking now" },
-  { id: "3-6-months",     label: "3 to 6 months",    sub: "Getting serious" },
-  { id: "6-12-months",    label: "6 to 12 months",   sub: "Planning ahead" },
-  { id: "12-plus-months", label: "More than a year", sub: "Long-range planning" },
-  { id: "researching",    label: "Just researching", sub: "No firm plans yet" },
-];
-
 const PERSONAS: { id: BuyerPersona; label: string; sub: string }[] = [
-  { id: "first-home",  label: "First home buyer",   sub: "Schemes, deposits, the lot" },
-  { id: "upgrading",   label: "Upgrading or moving", sub: "Selling one, buying the next" },
+  { id: "first-home",  label: "First home buyer",    sub: "Grants, concessions and deposits" },
+  { id: "upgrading",   label: "Buying my next home", sub: "Often selling one at the same time" },
   { id: "investing",   label: "Investing",           sub: "Yield, growth and tax" },
-  { id: "downsizing",  label: "Downsizing",          sub: "Less house, more life" },
+  { id: "downsizing",  label: "Downsizing",          sub: "Smaller home, costs and timing" },
 ];
 
 const FINANCE_STATUSES: { id: FinanceStatus; label: string; sub: string }[] = [
-  { id: "pre-approved",       label: "Pre-approved",        sub: "A lender has signed off" },
-  { id: "talking-to-lenders", label: "Talking to lenders",  sub: "Comparing or applying now" },
-  { id: "not-started",        label: "Haven't started",     sub: "Finance is still ahead of me" },
-  { id: "cash",               label: "Cash buyer",          sub: "No loan needed" },
+  { id: "not-started",        label: "Haven’t started",    sub: "Finance is still ahead of me" },
+  { id: "talking-to-lenders", label: "Talking to lenders", sub: "Comparing or applying now" },
+  { id: "pre-approved",       label: "Pre-approved",       sub: "A lender has signed off" },
+  { id: "cash",               label: "Cash buyer",         sub: "No loan needed" },
 ];
 
-const BUDGETS: string[] = [
-  "Under $500k",
-  "$500k to $750k",
-  "$750k to $1m",
-  "$1m to $1.5m",
-  "$1.5m to $2m",
-  "Over $2m",
-  "Not sure yet",
-];
-
-const timeframeLabel = (id: Timeframe) => TIMEFRAMES.find((t) => t.id === id)?.label ?? "";
-
-// Mirrors the server-side scoring in /api/leads for display on the
-// thank-you page. The server computes its own score; this one only
-// drives copy.
-function displayScore(timeframe: Timeframe | null, finance: FinanceStatus | null): string {
-  const ready = finance === "pre-approved" || finance === "cash";
-  if (timeframe === "0-3-months" && ready) return "hot";
-  if (timeframe === "0-3-months" || timeframe === "3-6-months") return "warm";
-  return "cold";
-}
+// The plan stage each finance answer maps to (Lead.stage, the tips series).
+const STAGE: Record<FinanceStatus, string> = {
+  "not-started": "starting",
+  "talking-to-lenders": "finance",
+  "pre-approved": "searching",
+  cash: "searching",
+};
 
 interface BuyingGuideFunnelProps {
   /** Pre-fill the suburb (deep-link from suburb pages). Overrides ?suburb=. */
@@ -80,18 +52,14 @@ interface BuyingGuideFunnelProps {
 }
 
 /**
- * The selling-guide qualification funnel. Eight single-question screens,
- * one tap each, contact details last. Every question is framed as
- * personalising the guide, which is what keeps top-of-funnel conversion
- * up versus a bare "compare agents" form.
+ * The buying-guide funnel: three one-tap questions, then delivery. The last
+ * screen shows the reader's starting chapters and offers the PDF straight
+ * away; email, a mobile and the tips series are each optional choices.
  *
  * Reads ?suburb= so suburb pages can deep-link with the first step
  * pre-answered; the host page must wrap it in <Suspense>.
  */
-export function BuyingGuideFunnel({
-  initialSuburbSlug: propSuburbSlug,
-  source = "buying-guide",
-}: BuyingGuideFunnelProps = {}) {
+export function BuyingGuideFunnel({ initialSuburbSlug: propSuburbSlug, source = "buying-guide" }: BuyingGuideFunnelProps = {}) {
   const params = useSearchParams();
   const router = useRouter();
 
@@ -102,41 +70,41 @@ export function BuyingGuideFunnel({
   const [step, setStep] = useState(startSuburbSlug ? 1 : 0);
   const [suburbSlug, setSuburbSlug] = useState<string | null>(startSuburbSlug);
   const [suburbLabel, setSuburbLabel] = useState<string | null>(startSuburbLabel);
-  const [propertyType, setPropertyType] = useState<PropertyType | null>(null);
-  const [timeframe, setTimeframe] = useState<Timeframe | null>(null);
   const [persona, setPersona] = useState<BuyerPersona | null>(null);
   const [finance, setFinance] = useState<FinanceStatus | null>(null);
-  const [budget, setBudget] = useState<string | null>(null);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState<string | null>(null);
   // E.164 from the flagged field ("+61491570156"); the API stores 04…
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [wantsSequence, setWantsSequence] = useState(false);
   const [website, setWebsite] = useState(""); // honeypot, must stay empty
+  const [requestKey] = useState(() =>
+    typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `k${Date.now()}${Math.random().toString(36).slice(2)}`,
+  );
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
-  // Locks the option grid during the confirm beat between tap and advance.
   const [isAdvancing, setIsAdvancing] = useState(false);
-  // Drives step-in-fwd vs step-in-back on the keyed step wrapper.
   const direction = useRef<"fwd" | "back">("fwd");
+  // Set synchronously, so a double click can't send twice before React re-renders.
+  const inFlight = useRef(false);
 
   const markStart = () => {
     if (hasStarted) return;
     setHasStarted(true);
     clarityEvent("form_start");
     clarityTag("form_name", "buying-guide");
+    track("guide_started", { journey: "buying", placement: source });
   };
 
-  const reducedMotion = () =>
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // Single-tap options: paint the selection, hold a brief confirm beat,
-  // then advance. The beat is skipped under reduced motion.
   const advanceTo = (to: number) => {
     setIsAdvancing(true);
     window.setTimeout(() => {
@@ -146,25 +114,31 @@ export function BuyingGuideFunnel({
     }, reducedMotion() ? 0 : 220);
   };
 
-  // Forward moves with no card to confirm (suburb select, skip links).
   const goForward = (to: number) => {
     direction.current = "fwd";
     setStep(to);
   };
 
+  const stage = finance ? STAGE[finance] : "starting";
+  const seq = SEQUENCES[sequenceFor("buying", stage)];
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!timeframe || !persona) return;
-    // Mobile is required (13 Oct 2026: a number the team can call on every
-    // guide lead) and must be a real AU mobile. The API stays lenient
-    // (never reject a lead over a phone format); this gate is the check.
-    const mobileError = auMobileError(phone);
+    if (inFlight.current || submitted) return;
+    if (!persona || !finance) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setEmailError("Enter an email address like name@example.com.");
+      return;
+    }
+    setEmailError(null);
+    const mobileError = phone ? auMobileError(phone) : null;
     if (mobileError) {
       setPhoneError(mobileError);
       return;
     }
     setPhoneError(null);
     setError(null);
+    inFlight.current = true;
     setSubmitting(true);
     try {
       const payload = {
@@ -173,18 +147,14 @@ export function BuyingGuideFunnel({
         firstName: firstName.trim(),
         lastName: lastName.trim() || undefined,
         email: email.trim(),
-        phone,
+        phone: phone || undefined,
         suburb: suburbSlug ?? undefined,
-        propertyType: propertyType ?? undefined,
-        sellingTimeframe: timeframe,
         buyerPersona: persona,
-        financeStatus: finance ?? undefined,
-        budget: budget ?? undefined,
-        // Requesting the guide is the consent to the guide and tips
-        // emails and a call from our team (never an agent): the statement
-        // under the button says so (no checkbox since Oct 2026).
-        marketingConsent: true,
-        // ?c= from a Sent 24/7 email link: credits that email if they book a call.
+        financeStatus: finance,
+        stage,
+        wantsSequence,
+        marketingConsent: wantsSequence,
+        requestKey,
         resumeClickId: params.get("c") ?? undefined,
         source,
         website,
@@ -199,57 +169,50 @@ export function BuyingGuideFunnel({
         throw new Error(body?.error ?? "Submit failed");
       }
       const saved = (await res.json().catch(() => null)) as { emailOnItsWay?: boolean } | null;
-      // Hand the thanks page what its call card needs, in sessionStorage
-      // (this tab only, never the URL): who a call would go to, whether
-      // the guide email is on its way, and the answers (mobile included,
-      // to prefill the call card) to re-send if they book one.
-      const handoff: GuideThanksContext = {
-        guide: "buying",
-        kind: guideCallKind({ guideType: "buying", sellingTimeframe: timeframe }),
-        emailOnItsWay: saved?.emailOnItsWay === true,
-        payload,
-      };
+      const handoff: GuideThanksContext = { guide: "buying", emailOnItsWay: saved?.emailOnItsWay === true, sequence: wantsSequence };
       try {
         sessionStorage.setItem(GUIDE_THANKS_KEY, JSON.stringify(handoff));
       } catch {
-        // Storage blocked: the thanks page shows the download without the call card.
+        // Storage blocked: the thanks page shows the download without the email note.
       }
       clarityEvent("guide_download_submitted");
       clarityTag("guide_type", "buying");
-      clarityTag("guide_timeframe", timeframe);
       clarityTag("guide_persona", persona);
-      if (suburbSlug) clarityTag("guide_suburb", suburbSlug);
-      const qs = new URLSearchParams({ score: displayScore(timeframe, finance) });
+      track("guide_delivered", { journey: "buying", lead_type: "guide-download", stage, placement: source, sequence: wantsSequence ? "yes" : "no" });
+      const qs = new URLSearchParams({ who: persona, stage });
       if (suburbSlug) qs.set("suburb", suburbSlug);
-      // Success beat: the button confirms before the route changes.
       setSubmitted(true);
       window.setTimeout(() => {
         router.push(`/buying-guide/thanks?${qs.toString()}`);
       }, reducedMotion() ? 0 : 600);
     } catch {
       setError("Something went wrong. Please try again.");
+      inFlight.current = false;
     } finally {
       setSubmitting(false);
     }
   };
 
-  const stepTotal = 7;
+  const stepTotal = 4;
   const stepIndex = Math.min(step, stepTotal - 1);
 
-  // Shared option-button styling (brand v4: 6px corners, lines not
-  // shadows). The border darkens on hover and the press confirms the tap.
-  const optionClass = (active: boolean) =>
-    `relative text-left rounded-lg border px-4 py-3.5 transition-colors duration-150 cursor-pointer press ${
-      active
-        ? "bg-ink text-white border-ink"
-        : "bg-white text-ink border-line-strong hover:border-ink"
+  // Chapter titles as in /buying-guide's contents.
+  const startWith =
+    persona === "first-home"
+      ? ["Chapter 3: schemes, state by state", "Chapter 2: what you can actually spend", finance === "pre-approved" || finance === "cash" ? "Chapter 5: inspecting like a professional" : "Chapter 8: finance to unconditional"]
+      : persona === "investing"
+        ? ["Chapter 2: what you can actually spend", "Chapter 4: finding the right suburb", "Chapter 6: how the selling side plays you"]
+        : finance === "pre-approved" || finance === "cash"
+          ? ["Chapter 5: inspecting like a professional", "Chapter 6: how the selling side plays you", "Chapter 7: making the offer"]
+          : ["Chapter 2: what you can actually spend", "Chapter 8: finance to unconditional", "Chapter 6: how the selling side plays you"];
+
+  const optionCard = (active: boolean) =>
+    `relative flex items-center justify-between rounded-lg border px-4 sm:px-5 py-3.5 transition-colors duration-150 cursor-pointer press ${
+      active ? "bg-ink text-white border-ink" : "bg-white text-ink border-line-strong hover:border-ink"
     }${active && isAdvancing ? " opt-confirm" : ""}`;
 
-  // Tick on the just-selected card during the confirm beat.
-  const confirmCheck = (active: boolean) =>
-    active && isAdvancing ? (
-      <Check className="check-pop absolute top-2 right-2 w-4 h-4" aria-hidden="true" />
-    ) : null;
+  const fieldClass =
+    "w-full min-w-0 rounded-lg border border-line-strong bg-white px-4 py-3 text-base text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200 aria-[invalid=true]:border-danger";
 
   const backButton = (to: number) => (
     <button
@@ -258,376 +221,221 @@ export function BuyingGuideFunnel({
         direction.current = "back";
         setStep(to);
       }}
-      className="mt-4 inline-flex items-center gap-1.5 text-xs text-ink-subtle hover:text-ink transition-colors cursor-pointer"
+      className="mt-4 inline-flex items-center gap-1.5 rounded-md py-1 text-sm text-ink-muted hover:text-ink transition-colors cursor-pointer"
     >
-      <ArrowLeft className="w-3.5 h-3.5" /> Back
+      <ArrowLeft className="w-3.5 h-3.5" aria-hidden="true" /> Back
     </button>
+  );
+
+  const optionList = <T extends string>(
+    legend: string,
+    hint: string | null,
+    options: { id: T; label: string; sub: string }[],
+    value: T | null,
+    pick: (v: T) => void,
+    back: number | null,
+  ) => (
+    <fieldset>
+      <legend className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">{legend}</legend>
+      {hint && <p className="text-sm text-ink-muted mb-5">{hint}</p>}
+      <div className={`mt-4 flex flex-col gap-2.5 ${isAdvancing ? "pointer-events-none" : ""}`}>
+        {options.map((opt) => (
+          <button key={opt.id} type="button" aria-pressed={value === opt.id} onClick={() => pick(opt.id)} className={optionCard(value === opt.id)}>
+            <span className="text-left">
+              <span className="block text-[15px] font-semibold">{opt.label}</span>
+              <span className={`block text-sm ${value === opt.id ? "text-white/80" : "text-ink-subtle"}`}>{opt.sub}</span>
+            </span>
+            <ArrowRight className={`w-4 h-4 shrink-0 ${value === opt.id ? "text-white/70" : "text-ink-subtle"}`} aria-hidden="true" />
+            {value === opt.id && isAdvancing && <Check className="check-pop absolute top-2 right-2 w-4 h-4" aria-hidden="true" />}
+          </button>
+        ))}
+      </div>
+      {back !== null && backButton(back)}
+    </fieldset>
   );
 
   return (
     <div data-funnel-card className="tone-light bg-white text-ink rounded-xl p-5 sm:p-8 border border-line shadow-[0_12px_40px_-14px_rgb(22_25_29/0.22)]">
-      {/* Progress. Hidden on the opening question (a bar on screen one
-          costs conversions); from step 2 it shows already-earned progress
-          as one bar and a plain step count. */}
       {step > 0 && (
         <div className="mb-6">
-          <p className="mb-2 text-[13px] font-medium text-ink-muted">
+          <p className="mb-2 text-[13px] font-medium text-ink-muted" aria-live="polite">
             Step {Math.min(step + 1, stepTotal)} of {stepTotal}
           </p>
-          <div
-            className="h-1 rounded-full bg-line overflow-hidden"
-            role="progressbar"
-            aria-label="Guide questions"
-            aria-valuemin={1}
-            aria-valuemax={stepTotal}
-            aria-valuenow={stepIndex + 1}
-          >
-            <span
-              className="block h-full bg-ink origin-left transition-transform duration-300 ease-[var(--ease-out-quint)]"
-              style={{ transform: `scaleX(${(stepIndex + 1) / stepTotal})` }}
-            />
+          <div className="h-1 rounded-full bg-line overflow-hidden" role="progressbar" aria-label="Guide questions" aria-valuemin={1} aria-valuemax={stepTotal} aria-valuenow={stepIndex + 1}>
+            <span className="block h-full bg-ink origin-left transition-transform duration-300 ease-[var(--ease-out-quint)]" style={{ transform: `scaleX(${(stepIndex + 1) / stepTotal})` }} />
           </div>
         </div>
       )}
 
-      {/* Keyed wrapper: remounts on every step change so each question
-          slides in from the direction of travel (see .step-in-fwd /
-          .step-in-back in globals.css). */}
       <div key={step} className={direction.current === "back" ? "step-in-back" : "step-in-fwd"}>
-
-      {/* Step 0, suburb */}
-      {step === 0 && (
-        <div>
-          <p className="text-[13px] text-ink-muted font-medium mb-2">
-            Free guide · Takes about 60 seconds
-          </p>
-          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
-            Where are you looking?
-          </h3>
-          <p className="text-sm text-ink-muted mb-5">
-            We&rsquo;ll match the guide to your market: prices, schemes and
-            buying conditions are different in every suburb.
-          </p>
-          <SuburbAutocomplete
-            placeholder="Suburb or postcode, e.g. Burpengary or 4505"
-            onSelectLocation={(slug, label) => {
-              markStart();
-              setSuburbSlug(slug);
-              setSuburbLabel(label);
-              goForward(1);
-            }}
-            onClear={() => {
-              setSuburbSlug(null);
-              setSuburbLabel(null);
-            }}
-          />
-          <div className="mt-4 text-right">
-            <button
-              type="button"
-              onClick={() => {
+        {step === 0 && (
+          <div>
+            <p className="text-[13px] text-ink-muted font-medium mb-2">Free guide · Three quick questions</p>
+            <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
+              <label htmlFor="buy-guide-suburb">Where are you looking?</label>
+            </h3>
+            <p id="buy-guide-suburb-hint" className="text-sm text-ink-muted mb-5">Grants, stamp duty and contract rules differ by state, so we point you to the right ones.</p>
+            <SuburbAutocomplete
+              id="buy-guide-suburb"
+              aria-describedby="buy-guide-suburb-hint"
+              placeholder="Suburb or postcode"
+              onSelectLocation={(slug, label) => {
                 markStart();
-                setSuburbSlug(null);
-                setSuburbLabel(null);
+                setSuburbSlug(slug);
+                setSuburbLabel(label);
                 goForward(1);
               }}
-              className="text-xs text-ink-muted hover:text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink transition-colors cursor-pointer"
-            >
-              Skip for now →
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Step 1, persona (personalises the whole guide) */}
-      {step === 1 && (
-        <div>
-          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
-            Which best describes you?
-          </h3>
-          <p className="text-sm text-ink-muted mb-5">
-            The playbook changes with the buyer. We&rsquo;ll point you at the
-            chapters that fit.
-          </p>
-          <div className={`grid grid-cols-1 sm:grid-cols-2 gap-3 ${isAdvancing ? "pointer-events-none" : ""}`}>
-            {PERSONAS.map((opt) => (
+              onClear={() => {
+                setSuburbSlug(null);
+                setSuburbLabel(null);
+              }}
+            />
+            <div className="mt-4 text-right">
               <button
-                key={opt.id}
                 type="button"
                 onClick={() => {
                   markStart();
-                  setPersona(opt.id);
-                  advanceTo(2);
+                  setSuburbSlug(null);
+                  setSuburbLabel(null);
+                  goForward(1);
                 }}
-                className={optionClass(persona === opt.id)}
+                className="text-sm text-ink-muted hover:text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink transition-colors cursor-pointer"
               >
-                <p className="text-sm font-semibold mb-1">{opt.label}</p>
-                <p className={`text-xs ${persona === opt.id ? "text-white/78" : "text-ink-subtle"}`}>{opt.sub}</p>
-                {confirmCheck(persona === opt.id)}
+                Skip this question
               </button>
-            ))}
+            </div>
           </div>
-          {backButton(0)}
-        </div>
-      )}
+        )}
 
-      {/* Step 2, property type */}
-      {step === 2 && (
-        <div>
-          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-6">
-            What are you hoping to buy{suburbLabel ? ` in ${suburbLabel}` : ""}?
-          </h3>
-          <div className={`grid grid-cols-1 sm:grid-cols-2 gap-3 ${isAdvancing ? "pointer-events-none" : ""}`}>
-            {PROPERTY_TYPES.map((opt) => (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => {
-                  setPropertyType(opt.id);
-                  advanceTo(3);
-                }}
-                className={optionClass(propertyType === opt.id)}
-              >
-                <p className="text-sm font-semibold">{opt.label}</p>
-                {confirmCheck(propertyType === opt.id)}
-              </button>
-            ))}
-          </div>
-          {backButton(1)}
-        </div>
-      )}
+        {step === 1 &&
+          optionList("Which best describes you?", null, PERSONAS, persona, (v) => {
+            markStart();
+            setPersona(v);
+            advanceTo(2);
+          }, 0)}
 
-      {/* Step 3, budget */}
-      {step === 3 && (
-        <div>
-          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
-            Roughly what budget?
-          </h3>
-          <p className="text-sm text-ink-muted mb-5">
-            A ballpark is fine. It points you at the right cost benchmarks
-            and scheme caps.
-          </p>
-          <div className={`grid grid-cols-2 gap-2.5 ${isAdvancing ? "pointer-events-none" : ""}`}>
-            {BUDGETS.map((b) => (
-              <button
-                key={b}
-                type="button"
-                onClick={() => {
-                  setBudget(b);
-                  advanceTo(4);
-                }}
-                className={optionClass(budget === b)}
-              >
-                <p className="text-sm font-semibold">{b}</p>
-                {confirmCheck(budget === b)}
-              </button>
-            ))}
-          </div>
-          {backButton(2)}
-        </div>
-      )}
+        {step === 2 &&
+          optionList("Where’s your finance up to?", "It changes which chapters we point you to first.", FINANCE_STATUSES, finance, (v) => {
+            setFinance(v);
+            advanceTo(3);
+          }, 1)}
 
-      {/* Step 4, timeframe */}
-      {step === 4 && (
-        <div>
-          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-6">
-            When are you hoping to buy?
-          </h3>
-          <div className={`flex flex-col gap-2.5 ${isAdvancing ? "pointer-events-none" : ""}`}>
-            {TIMEFRAMES.map((opt) => (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => {
-                  setTimeframe(opt.id);
-                  advanceTo(5);
-                }}
-                className={`relative flex items-center justify-between rounded-lg border px-4 sm:px-5 py-3.5 transition-colors duration-150 cursor-pointer press ${
-                  timeframe === opt.id
-                    ? "bg-ink text-white border-ink"
-                    : "bg-white text-ink border-line-strong hover:border-ink"
-                }${timeframe === opt.id && isAdvancing ? " opt-confirm" : ""}`}
-              >
-                <div className="text-left">
-                  <p className="text-sm font-semibold">{opt.label}</p>
-                  <p className={`text-xs ${timeframe === opt.id ? "text-white/78" : "text-ink-subtle"}`}>{opt.sub}</p>
+        {step === 3 && (
+          <div>
+            <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em]">Your guide is ready</h3>
+            <p className="mt-2 text-sm text-ink-muted">{suburbLabel ? `For ${suburbLabel}. ` : ""}Start with:</p>
+            <ol className="mt-2 mb-5 space-y-1 text-[15px] text-ink">
+              {startWith.map((c) => (
+                <li key={c} className="flex gap-2"><Check className="mt-1 h-4 w-4 shrink-0 text-success" aria-hidden="true" strokeWidth={3} />{c}</li>
+              ))}
+            </ol>
+            <form onSubmit={onSubmit} className="space-y-4" noValidate>
+              <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
+                <label htmlFor="buy-guide-website">Website</label>
+                <input id="buy-guide-website" type="text" tabIndex={-1} autoComplete="off" value={website} onChange={(e) => setWebsite(e.target.value)} />
+              </div>
+              <p className="text-[15px] font-semibold text-ink">Email it to me</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label htmlFor="buy-guide-first" className="block text-sm font-medium text-ink mb-1">First name</label>
+                  <input id="buy-guide-first" type="text" required autoComplete="given-name" value={firstName} onChange={(e) => setFirstName(e.target.value)} className={fieldClass} />
                 </div>
-                <ArrowRight className={`w-4 h-4 shrink-0 ${timeframe === opt.id ? "text-white/70" : "text-ink-subtle"}`} />
-                {confirmCheck(timeframe === opt.id)}
-              </button>
-            ))}
-          </div>
-          {backButton(3)}
-        </div>
-      )}
-
-      {/* Step 5, finance status (the buyer-readiness question) */}
-      {step === 5 && (
-        <div>
-          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
-            Where&rsquo;s your finance up to?
-          </h3>
-          <p className="text-sm text-ink-muted mb-5">
-            No wrong answer. It changes which chapter you should read first.
-          </p>
-          <div className={`flex flex-col gap-2.5 ${isAdvancing ? "pointer-events-none" : ""}`}>
-            {FINANCE_STATUSES.map((opt) => (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => {
-                  setFinance(opt.id);
-                  advanceTo(6);
-                }}
-                className={`relative flex items-center justify-between rounded-lg border px-4 sm:px-5 py-3.5 transition-colors duration-150 cursor-pointer press ${
-                  finance === opt.id
-                    ? "bg-ink text-white border-ink"
-                    : "bg-white text-ink border-line-strong hover:border-ink"
-                }${finance === opt.id && isAdvancing ? " opt-confirm" : ""}`}
-              >
-                <div className="text-left">
-                  <p className="text-sm font-semibold">{opt.label}</p>
-                  <p className={`text-xs ${finance === opt.id ? "text-white/78" : "text-ink-subtle"}`}>{opt.sub}</p>
+                <div>
+                  <label htmlFor="buy-guide-last" className="block text-sm font-medium text-ink mb-1">Last name <span className="font-normal text-ink-muted">(optional)</span></label>
+                  <input id="buy-guide-last" type="text" autoComplete="family-name" value={lastName} onChange={(e) => setLastName(e.target.value)} className={fieldClass} />
                 </div>
-                <ArrowRight className={`w-4 h-4 shrink-0 ${finance === opt.id ? "text-white/70" : "text-ink-subtle"}`} />
-                {confirmCheck(finance === opt.id)}
+              </div>
+              <div>
+                <label htmlFor="buy-guide-email" className="block text-sm font-medium text-ink mb-1">Email</label>
+                <input
+                  id="buy-guide-email"
+                  type="email"
+                  required
+                  inputMode="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (emailError) setEmailError(null);
+                  }}
+                  aria-invalid={emailError ? true : undefined}
+                  aria-describedby={emailError ? "buy-guide-email-error" : undefined}
+                  className={fieldClass}
+                />
+                {emailError && <p id="buy-guide-email-error" className="mt-1.5 text-sm text-danger" role="alert">{emailError}</p>}
+              </div>
+              <div>
+                <label htmlFor="buy-guide-phone" className="block text-sm font-medium text-ink mb-1">Mobile <span className="font-normal text-ink-muted">(optional)</span></label>
+                <AuPhoneInput
+                  id="buy-guide-phone"
+                  value={phone}
+                  onChange={(v) => {
+                    setPhone(v);
+                    if (phoneError) setPhoneError(null);
+                  }}
+                  aria-describedby="buy-guide-phone-note"
+                  invalid={!!phoneError}
+                  tone="raised"
+                  placeholder="e.g. 0491 570 156"
+                />
+                {phoneError ? (
+                  <p id="buy-guide-phone-note" className="mt-1.5 text-sm text-danger" role="alert">{phoneError}</p>
+                ) : (
+                  <p id="buy-guide-phone-note" className="mt-1.5 text-[13px] text-ink-muted leading-relaxed">{GUIDE_PHONE_NOTE}</p>
+                )}
+              </div>
+              <div className="flex items-start gap-3">
+                <input id="buy-guide-sequence" type="checkbox" checked={wantsSequence} onChange={(e) => setWantsSequence(e.target.checked)} aria-describedby="buy-guide-sequence-hint" className="mt-0.5 h-5 w-5 shrink-0 accent-[var(--cta)]" />
+                <div>
+                  <label htmlFor="buy-guide-sequence" className="text-[15px] text-ink cursor-pointer">{GUIDE_SEQUENCE_LABEL}</label>
+                  <p id="buy-guide-sequence-hint" className="text-[13px] text-ink-muted leading-relaxed">{seq.promise} Optional. Unsubscribe anytime.</p>
+                </div>
+              </div>
+
+              {error && <p className="text-sm text-danger" role="alert">{error}</p>}
+
+              <button
+                type="submit"
+                disabled={submitting || submitted}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-base transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer press"
+              >
+                {submitted ? (
+                  <>
+                    <Check className="check-pop w-4 h-4" aria-hidden="true" /> On its way
+                  </>
+                ) : submitting ? (
+                  <>
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true" /> Sending…
+                  </>
+                ) : (
+                  <>
+                    Email me the guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  </>
+                )}
               </button>
-            ))}
-          </div>
-          {backButton(4)}
-        </div>
-      )}
-
-      {/* Step 6, contact (PII last) */}
-      {step === 6 && (
-        <div>
-          <p className="text-[13px] text-ink-muted font-medium mb-2">
-            Your guide is ready
-          </p>
-          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-3">
-            Where should we send it?
-          </h3>
-          <form onSubmit={onSubmit} className="space-y-3">
-            {/* Honeypot: visually hidden, off-screen, aria-hidden. */}
-            <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "auto", width: "1px", height: "1px", overflow: "hidden" }}>
-              <label htmlFor="buying-guide-website">Website</label>
-              <input
-                id="buying-guide-website"
-                type="text"
-                tabIndex={-1}
-                autoComplete="off"
-                value={website}
-                onChange={(e) => setWebsite(e.target.value)}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <input
-                type="text"
-                required
-                placeholder="First name"
-                autoComplete="given-name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="w-full min-w-0 rounded-lg border border-line-strong bg-white px-4 py-3 text-base sm:text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
-              />
-              <input
-                type="text"
-                placeholder="Last name"
-                aria-label="Last name (optional)"
-                autoComplete="family-name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                className="w-full min-w-0 rounded-lg border border-line-strong bg-white px-4 py-3 text-base sm:text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
-              />
-            </div>
-            <input
-              type="email"
-              required
-              placeholder="Email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-line-strong bg-white px-4 py-3 text-base sm:text-sm text-ink placeholder:text-ink-subtle caret-cta focus:border-cta focus:ring-[3px] focus:ring-cta/15 outline-none transition-[border-color,box-shadow] duration-200"
-            />
-            <div>
-              <AuPhoneInput
-                id="buying-guide-phone"
-                value={phone}
-                onChange={(v) => {
-                  setPhone(v);
-                  if (phoneError) setPhoneError(null);
-                }}
-                required
-                aria-label="Mobile"
-                aria-describedby="buying-guide-phone-note"
-                invalid={!!phoneError}
-                tone="raised"
-              />
-              {phoneError ? (
-                <p id="buying-guide-phone-note" className="mt-1.5 text-xs text-danger">{phoneError}</p>
-              ) : (
-                <p id="buying-guide-phone-note" className="mt-1.5 text-[11px] text-ink-subtle leading-relaxed">
-                  So our team can call you if you have questions. We never pass it to selling agents.
-                </p>
-              )}
-            </div>
-
-            {error && <p className="text-sm text-danger">{error}</p>}
-
-            <button
-              type="submit"
-              disabled={submitting || submitted}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-base sm:text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer press"
-            >
-              {submitted ? (
-                <>
-                  <Check className="check-pop w-4 h-4" aria-hidden="true" />
-                  On its way
-                </>
-              ) : submitting ? (
-                <>
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true" />
-                  Sending…
-                </>
-              ) : (
-                <>
-                  Get my free guide
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-
-            {/* Collection statement, also the marketing-email consent (no
-                checkbox), at the point of collection (APP 5): the guide and
-                tips emails and a call from our team, never selling agents.
-                An optional call is asked for on the thanks page, with its
-                own statement (lib/guide-consent.ts). */}
-            <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
-              {BUYING_EMAIL_CONSENT} Read our{" "}
-              <a href="/privacy" className="underline underline-offset-2 hover:text-ink">
-                privacy policy
+              <p className="text-[13px] text-ink-muted leading-relaxed">
+                {BUYING_EMAIL_CONSENT}{" "}
+                <a href="/privacy" className="underline underline-offset-2 hover:text-ink">Privacy policy</a>.
+              </p>
+            </form>
+            <p className="mt-4 border-t border-line pt-4 text-sm text-ink-muted">
+              Rather not give an email?{" "}
+              <a
+                href={BUYING_GUIDE_PDF_PATH}
+                onClick={() => track("guide_downloaded_direct", { journey: "buying", stage, placement: source })}
+                className="font-semibold text-ink underline underline-offset-4"
+              >
+                Download the PDF now
               </a>
-              .
             </p>
-          </form>
-          {backButton(5)}
-        </div>
-      )}
-
+            {backButton(2)}
+          </div>
+        )}
       </div>
 
-      {/* Persistent answer recap under the active question, light-touch
-          reassurance that their inputs are shaping the guide. */}
-      {step > 0 && step < 6 && (suburbLabel || persona) && (
-        <p className="mt-6 pt-4 border-t border-line text-[11px] text-ink-subtle leading-relaxed">
-          {[
-            suburbLabel,
-            persona && PERSONAS.find((x) => x.id === persona)?.label,
-            propertyType && PROPERTY_TYPES.find((x) => x.id === propertyType)?.label,
-            budget,
-            timeframe && timeframeLabel(timeframe),
-          ]
-            .filter(Boolean)
-            .join(" · ")}
+      {step > 0 && step < 3 && (suburbLabel || persona) && (
+        <p className="mt-6 pt-4 border-t border-line text-[13px] text-ink-subtle leading-relaxed">
+          {[suburbLabel, persona && PERSONAS.find((p) => p.id === persona)?.label].filter(Boolean).join(" · ")}
         </p>
       )}
     </div>

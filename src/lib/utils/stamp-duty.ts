@@ -7,13 +7,71 @@
 //
 // What the engine models: the standard (investor) schedule, the owner-occupier
 // schedule where a state has one (Vic PPR rate, Qld home concession, ACT
-// owner-occupier rate), the first home buyer exemption or concession on an
-// established home, and the foreign purchaser surcharge. What it does not
-// model: new-home and vacant-land first home concessions (Qld, SA, WA vacant
-// land), off-the-plan concessions, pensioner concessions, and the per-state
-// registration and transfer fees. The pages say so.
+// owner-occupier rate), the foreign purchaser surcharge, and the first home
+// buyer relief for an established home, a new home or vacant land, on the
+// rules in force on the transaction's date. The first home rules, with their
+// dated versions and sources, live in src/lib/policy/first-home.ts (checked
+// 14 October 2026); this file applies them. Call with no options and the
+// engine assumes an established home and today's date, which is what every
+// caller before October 2026 expected. What it does not model: off-the-plan
+// concessions for all buyers, pensioner and downsizer concessions, income
+// tests (the ACT's before 1 July 2026), partial concessions where a state
+// publishes no formula (noted in the result), and registration and transfer
+// fees. The pages say so.
+
+import {
+  DATE_BASIS_LABELS,
+  FIRST_HOME_REVIEWED_ON,
+  QLD_FIRST_HOME_DEDUCTION as POLICY_QLD_DEDUCTION,
+  currentDutyRelief,
+  dutyReliefFor,
+  formatPolicyDate,
+  grantFor,
+  money as policyMoney,
+  periodLabel,
+  summariseRelief,
+  toIsoDate,
+  todayIso,
+  type DateBasis,
+  type DutyReliefVersion,
+  type PolicySource,
+  type PropertyKind,
+  type ReliefMethod,
+} from "@/lib/policy/first-home";
+
+export type { PropertyKind } from "@/lib/policy/first-home";
 
 export type AustralianState = "QLD" | "NSW" | "VIC" | "WA" | "SA" | "TAS" | "NT" | "ACT";
+
+/** Optional facts about the transaction. Every field is optional; the defaults are today's date and an established home. */
+export interface StampDutyOptions {
+  /** The contract (agreement, exchange) date. Most states' first home rules follow it. Defaults to today. */
+  contractDate?: Date | string | null;
+  /** The settlement date. Tasmania's first home relief follows it; defaults to the contract date. */
+  settlementDate?: Date | string | null;
+  /** What is being bought. Defaults to an established home. */
+  propertyKind?: PropertyKind;
+  /** WA only, for agreements from 21 March 2025 to 6 May 2026, when the concession cap differed: Perth and Peel ("metro", the default) or elsewhere. */
+  region?: "metro" | "regional";
+}
+
+/** The first home rule the engine applied, for the calculator to show with its source. */
+export interface AppliedFirstHomeRule {
+  state: AustralianState;
+  kind: PropertyKind;
+  name: string;
+  /** The rule in one sentence, from the policy data. */
+  summary: string;
+  effectiveFrom: string | null;
+  effectiveTo: string | null;
+  dateBasis: DateBasis;
+  /** The date (ISO) the rule was chosen by. */
+  dateUsed: string;
+  source: PolicySource;
+  reviewedOn: string;
+  /** False where we hold no rules for the date, or the price falls in a band the state publishes no formula for. */
+  modelled: boolean;
+}
 
 export const AUSTRALIAN_STATES: readonly AustralianState[] = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"];
 
@@ -34,6 +92,8 @@ export interface StampDutyResult {
   /** The first home buyer exemption or concession taken off transferDuty. */
   concessionAmount: number;
   notes: string[];
+  /** Set for an eligible first home buyer (not foreign, not an investor): the rule looked up for the date and kind of property. */
+  firstHomeRule?: AppliedFirstHomeRule;
 }
 
 export interface SourceRef {
@@ -78,6 +138,7 @@ function finish(
   concessionAmount: number,
   foreignSurcharge: number,
   notes: string[],
+  firstHomeRule?: AppliedFirstHomeRule,
 ): StampDutyResult {
   const dutyAfterConcession = Math.max(0, transferDuty - concessionAmount);
   const total = dutyAfterConcession + foreignSurcharge;
@@ -92,7 +153,190 @@ function finish(
     concessionApplied: concessionAmount > 0,
     concessionAmount: Math.round(concessionAmount),
     notes,
+    ...(firstHomeRule ? { firstHomeRule } : {}),
   };
+}
+
+// ─── First home relief, from the policy data ─────────────────────────────────
+
+interface Ctx {
+  isFirstHome: boolean;
+  isForeign: boolean;
+  isInvestment: boolean;
+  kind: PropertyKind;
+  /** ISO dates; contract defaults to today. */
+  contract: string;
+  settlement: string | null;
+  /** True when the caller passed a date (so the engine adds date notes). */
+  dated: boolean;
+  /** True when the caller passed a contract date (not just a settlement date). */
+  contractGiven: boolean;
+  region: "metro" | "regional";
+}
+
+function makeCtx(isFirstHome: boolean, isForeign: boolean, isInvestment: boolean, options?: StampDutyOptions): Ctx {
+  const contract = toIsoDate(options?.contractDate ?? null);
+  const settlement = toIsoDate(options?.settlementDate ?? null);
+  return {
+    isFirstHome,
+    isForeign,
+    isInvestment,
+    kind: options?.propertyKind ?? "established",
+    contract: contract ?? todayIso(),
+    settlement,
+    dated: contract !== null || settlement !== null,
+    contractGiven: contract !== null,
+    region: options?.region ?? "metro",
+  };
+}
+
+const eligibleFirstHome = (c: Ctx) => c.isFirstHome && !c.isForeign && !c.isInvestment;
+
+const ceil100 = (v: number) => Math.ceil(v / 100) * 100;
+
+/**
+ * Applies the first home relief in force for the state, kind of property and
+ * date. `transferDuty` is the duty before relief at the price; `dutyAt` gives
+ * the duty before relief at another value (Revenue NSW's concession scales to
+ * the duty at the top of the band).
+ */
+function applyFirstHome(
+  state: AustralianState,
+  c: Ctx,
+  price: number,
+  transferDuty: number,
+  dutyAt: (value: number) => number,
+): { concession: number; notes: string[]; rule?: AppliedFirstHomeRule } {
+  if (!eligibleFirstHome(c)) return { concession: 0, notes: [] };
+  const officeName = STATE_DUTY_SCHEDULES[state].office.name;
+  const office = officeRef(state);
+  const first = dutyReliefFor(state, c.kind, c.contract).relief.versions[0];
+  const basis: DateBasis = first?.dateBasis ?? "contract";
+  const notes: string[] = [];
+  let dateUsed = c.contract;
+  if (basis === "settlement") {
+    dateUsed = c.settlement ?? c.contract;
+    if (!c.settlement && c.dated) notes.push(`${officeName}'s first home relief follows the settlement date; we used the date you entered as the settlement date.`);
+  }
+  const { relief, version } = dutyReliefFor(state, c.kind, dateUsed);
+  if (!version) {
+    const earliest = relief.versions[relief.versions.length - 1];
+    notes.push(
+      `We don't hold ${state}'s first home rules for a ${DATE_BASIS_LABELS[basis]} of ${formatPolicyDate(dateUsed)}${earliest?.effectiveFrom ? ` (our records start ${formatPolicyDate(earliest.effectiveFrom)})` : ""}, so no first home relief is shown. Check with ${office}.`,
+    );
+    return {
+      concession: 0,
+      notes,
+      rule: { state, kind: c.kind, name: relief.name, summary: "Rules for this date aren't held", effectiveFrom: null, effectiveTo: null, dateBasis: basis, dateUsed, source: relief.source, reviewedOn: relief.reviewedOn, modelled: false },
+    };
+  }
+  const { concession, modelled, bandNote } = reliefAmount(version.method, price, transferDuty, dutyAt, c.region);
+  const summary = summariseRelief(version);
+  const when = version.effectiveFrom || version.effectiveTo ? `, ${DATE_BASIS_LABELS[basis]}s ${periodLabel(version)}` : "";
+  notes.push(version.method.type === "none" ? `${summary} (${officeName}${when}).` : `${relief.name}: ${lowerFirst(summary)} (${officeName}${when}).`);
+  if (bandNote) notes.push(bandNote.replace("{office}", office));
+  for (const n of version.notes ?? []) notes.push(n);
+  return {
+    concession,
+    notes,
+    rule: {
+      state,
+      kind: c.kind,
+      name: relief.name,
+      summary,
+      effectiveFrom: version.effectiveFrom,
+      effectiveTo: version.effectiveTo,
+      dateBasis: basis,
+      dateUsed,
+      source: version.source ?? relief.source,
+      reviewedOn: relief.reviewedOn,
+      modelled,
+    },
+  };
+}
+
+function reliefAmount(
+  m: ReliefMethod,
+  price: number,
+  transferDuty: number,
+  dutyAt: (value: number) => number,
+  region: "metro" | "regional",
+): { concession: number; modelled: boolean; bandNote?: string } {
+  switch (m.type) {
+    case "none":
+      return { concession: 0, modelled: true };
+    case "full":
+      return { concession: transferDuty, modelled: true };
+    case "linear": {
+      if (price <= m.exemptTo) return { concession: transferDuty, modelled: true };
+      const inBand = m.concessionBelow ? price < m.concessionTo : price <= m.concessionTo;
+      if (!inBand) return { concession: 0, modelled: true };
+      const base = m.scale === "duty-at-cap" ? dutyAt(m.concessionTo) : transferDuty;
+      const payable = base * ((price - m.exemptTo) / (m.concessionTo - m.exemptTo));
+      return { concession: Math.max(0, transferDuty - payable), modelled: true };
+    }
+    case "rate-per-100": {
+      if (price <= m.exemptTo) return { concession: transferDuty, modelled: true };
+      const band = m.bands.find((b) => b.area === "all" || b.area === region) ?? m.bands[0];
+      if (price > band.concessionTo) return { concession: 0, modelled: true };
+      const payable = ((ceil100(price) - m.exemptTo) / 100) * band.ratePer100;
+      return { concession: Math.max(0, transferDuty - payable), modelled: true };
+    }
+    case "deduction-table": {
+      const row = m.table.find((r) => price < r.below);
+      return { concession: Math.min(transferDuty, row ? row.amount : 0), modelled: true };
+    }
+    case "flat-reduction":
+      return { concession: Math.min(transferDuty, m.maxConcession), modelled: true };
+    case "percent":
+      return { concession: price <= m.capTo ? transferDuty * (m.percent / 100) : 0, modelled: true };
+    case "exempt-partial-unmodelled":
+      if (price <= m.exemptTo) return { concession: transferDuty, modelled: true };
+      if (price < m.concessionTo) {
+        return {
+          concession: 0,
+          modelled: false,
+          bandNote: `A partial concession applied between ${policyMoney(m.exemptTo)} and ${policyMoney(m.concessionTo)}; the calculator doesn't model it, so this shows full duty. Check with {office}.`,
+        };
+      }
+      return { concession: 0, modelled: true };
+  }
+}
+
+/** A current relief version's method, checked for type, for the constants the pages print. */
+function currentMethod<T extends ReliefMethod["type"]>(state: AustralianState, kind: PropertyKind, type: T): Extract<ReliefMethod, { type: T }> {
+  const m = currentDutyRelief(state, kind).method;
+  if (m.type !== type) throw new Error(`${state} ${kind}: expected a ${type} first home rule, found ${m.type}`);
+  return m as Extract<ReliefMethod, { type: T }>;
+}
+
+function currentVersion(state: AustralianState, kind: PropertyKind): DutyReliefVersion {
+  return currentDutyRelief(state, kind);
+}
+
+const lowerFirst = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
+
+/** Where the state helps first home buyers with a grant rather than duty relief (Tasmania, the NT): the grant for a new home on the contract date. */
+function grantNote(state: AustralianState, c: Ctx): string[] {
+  // Without a contract date, a settlement date is a better guide to the grant's date than today.
+  const { grant, version } = grantFor(state, c.contractGiven ? c.contract : (c.settlement ?? c.contract), "new");
+  if (!version || version.amount === 0) return [];
+  return [`${version.name ?? grant.name}: ${lowerFirst(version.summary)} (${STATE_DUTY_SCHEDULES[state].office.name}). It is a grant, not a duty concession.`];
+}
+
+const fromLabel = (v: DutyReliefVersion) => (v.effectiveFrom ? formatPolicyDate(v.effectiveFrom) : "");
+
+/**
+ * The general schedules' start dates, where a contract before then was
+ * assessed on a different table (NSW indexes its thresholds each 1 July; the
+ * ACT sets a new table each 1 July).
+ */
+const SCHEDULE_FROM: Partial<Record<AustralianState, string>> = { NSW: "2026-07-01", ACT: "2025-07-01" };
+
+function scheduleNote(state: AustralianState, c: Ctx): string[] {
+  const from = SCHEDULE_FROM[state];
+  if (!from || !c.dated || c.contract >= from) return [];
+  return [`Duty is worked out on the schedule in force from ${formatPolicyDate(from)}; a contract signed before then was assessed on the schedule of the day, so the dollar figure is an estimate.`];
 }
 
 // ─── NSW ─────────────────────────────────────────────────────────────────────
@@ -112,42 +356,40 @@ export const NSW_BRACKETS: Bracket[] = [
 ];
 
 // Revenue NSW, First Home Buyers Assistance Scheme, contracts from 1 July
-// 2023: exempt to $800,000, concession above $800,000 and under $1,000,000.
-// In the concession band the duty rises in a straight line from $0 at
-// $800,000 to the full duty at $1,000,000 (Revenue NSW's calculator; e.g.
+// 2023: exempt to $800,000, concession above $800,000 and under $1,000,000;
+// vacant land exempt to $350,000, concession under $450,000. In the
+// concession band the duty rises in a straight line from $0 at the threshold
+// to the full duty at the top of the band (Revenue NSW's calculator; e.g.
 // $850,000 pays $9,796.75 and $900,000 pays $19,593.50 on the 2026-27 table).
+// The thresholds and their earlier versions are in src/lib/policy/first-home.ts.
 // https://www.revenue.nsw.gov.au/grants-schemes/first-home-buyer/assistance-scheme
-export const NSW_FIRST_HOME = { exemptTo: 800_000, concessionTo: 1_000_000, from: "1 July 2023" } as const;
-/** Vacant land for a first home: exempt to $350,000, concession to $450,000 (same page, same date). Not modelled by the calculator. */
-export const NSW_FIRST_HOME_LAND = { exemptTo: 350_000, concessionTo: 450_000 } as const;
+const NSW_HOME_RULE = currentMethod("NSW", "established", "linear");
+const NSW_LAND_RULE = currentMethod("NSW", "vacant-land", "linear");
+export const NSW_FIRST_HOME = {
+  exemptTo: NSW_HOME_RULE.exemptTo,
+  concessionTo: NSW_HOME_RULE.concessionTo,
+  from: fromLabel(currentVersion("NSW", "established")),
+} as const;
+/** Vacant land for a first home: exempt to $350,000, concession below $450,000. */
+export const NSW_FIRST_HOME_LAND = { exemptTo: NSW_LAND_RULE.exemptTo, concessionTo: NSW_LAND_RULE.concessionTo } as const;
 
 // Revenue NSW, surcharge purchaser duty: 9% for transactions on or after
 // 1 January 2025 (8% before that). 2024-25 State Budget measure.
 // https://www.revenue.nsw.gov.au/help-centre/resources-library/budget/2024-2025-state-budget
 export const NSW_FOREIGN_SURCHARGE = 0.09;
 
-function calcNSW(price: number, isFirstHome: boolean, isForeign: boolean, isInvestment: boolean): StampDutyResult {
-  let transferDuty = calcFromBrackets(price, NSW_BRACKETS, true);
-  if (price > 0 && transferDuty < 20) transferDuty = 20;
+function calcNSW(price: number, c: Ctx): StampDutyResult {
+  const nswDuty = (v: number) => Math.max(v > 0 ? 20 : 0, calcFromBrackets(v, NSW_BRACKETS, true));
+  const transferDuty = nswDuty(price);
   const notes: string[] = [];
-  let concessionAmount = 0;
+  const fh = applyFirstHome("NSW", c, price, transferDuty, nswDuty);
+  notes.push(...fh.notes);
 
-  if (isFirstHome && !isForeign && !isInvestment) {
-    if (price <= NSW_FIRST_HOME.exemptTo) {
-      concessionAmount = transferDuty;
-      notes.push("NSW First Home Buyers Assistance Scheme: no transfer duty on a home up to $800,000 (Revenue NSW, contracts from 1 July 2023).");
-    } else if (price < NSW_FIRST_HOME.concessionTo) {
-      const dutyAtCap = calcFromBrackets(NSW_FIRST_HOME.concessionTo, NSW_BRACKETS, true);
-      const payable = dutyAtCap * ((price - NSW_FIRST_HOME.exemptTo) / (NSW_FIRST_HOME.concessionTo - NSW_FIRST_HOME.exemptTo));
-      concessionAmount = Math.max(0, transferDuty - payable);
-      notes.push("NSW First Home Buyers Assistance Scheme concession: duty rises from $0 at $800,000 to the full rate at $1,000,000 (Revenue NSW).");
-    }
-  }
+  const foreignSurcharge = c.isForeign ? price * NSW_FOREIGN_SURCHARGE : 0;
+  if (c.isForeign) notes.push("NSW surcharge purchaser duty of 9% applies to foreign persons (Revenue NSW, from 1 January 2025).");
+  notes.push(...scheduleNote("NSW", c));
 
-  const foreignSurcharge = isForeign ? price * NSW_FOREIGN_SURCHARGE : 0;
-  if (isForeign) notes.push("NSW surcharge purchaser duty of 9% applies to foreign persons (Revenue NSW, from 1 January 2025).");
-
-  return finish(price, transferDuty, transferDuty, concessionAmount, foreignSurcharge, notes);
+  return finish(price, transferDuty, transferDuty, fh.concession, foreignSurcharge, notes, fh.rule);
 }
 
 // ─── VIC ─────────────────────────────────────────────────────────────────────
@@ -178,40 +420,33 @@ export const VIC_PPR_MAX = 550_000;
 
 // SRO Victoria, first home buyer duty exemption or concession (page updated
 // 15 September 2026): no duty up to $600,000, reduced duty from $600,001 to
-// $750,000 on a sliding scale ($700,000 pays $24,713, a saving of $12,357).
+// $750,000 on a sliding scale ($700,000 pays $24,713, a saving of $12,357),
+// on new and established homes and vacant land. Data in src/lib/policy/first-home.ts.
 // https://www.sro.vic.gov.au/buying-property/land-transfer-stamp-duty/concessions-exemptions-and-waivers/first-home-buyers/first-home-buyer-duty-exemption-or-concession
-export const VIC_FIRST_HOME = { exemptTo: 600_000, concessionTo: 750_000, from: "1 July 2017" } as const;
+const VIC_RULE = currentMethod("VIC", "established", "linear");
+export const VIC_FIRST_HOME = { exemptTo: VIC_RULE.exemptTo, concessionTo: VIC_RULE.concessionTo, from: fromLabel(currentVersion("VIC", "established")) } as const;
 
 // SRO Victoria, foreign purchaser additional duty: 8% for contracts on or
 // after 1 July 2019 (State Budget 2019-20).
 // https://www.sro.vic.gov.au/about-us/rates-and-statistics/current-rates/foreign-purchaser-additional-duty-current-rates
 export const VIC_FOREIGN_SURCHARGE = 0.08;
 
-function calcVIC(price: number, isFirstHome: boolean, isForeign: boolean, isInvestment: boolean): StampDutyResult {
+function calcVIC(price: number, c: Ctx): StampDutyResult {
   const standardDuty = calcFromBrackets(price, VIC_BRACKETS, false);
   const notes: string[] = [];
   let transferDuty = standardDuty;
-  if (!isInvestment && price <= VIC_PPR_MAX) {
+  if (!c.isInvestment && price <= VIC_PPR_MAX) {
     transferDuty = calcFromBrackets(price, VIC_PPR_BRACKETS, false);
     if (transferDuty < standardDuty) notes.push("Victorian principal place of residence rate applied (owner-occupiers up to $550,000, SRO Victoria).");
   }
 
-  let concessionAmount = 0;
-  if (isFirstHome && !isForeign && !isInvestment) {
-    if (price <= VIC_FIRST_HOME.exemptTo) {
-      concessionAmount = transferDuty;
-      notes.push("Victorian first home buyer duty exemption: no duty on a home up to $600,000 (SRO Victoria).");
-    } else if (price <= VIC_FIRST_HOME.concessionTo) {
-      const payable = transferDuty * ((price - VIC_FIRST_HOME.exemptTo) / (VIC_FIRST_HOME.concessionTo - VIC_FIRST_HOME.exemptTo));
-      concessionAmount = transferDuty - payable;
-      notes.push("Victorian first home buyer duty concession: reduced duty on a sliding scale from $600,001 to $750,000 (SRO Victoria).");
-    }
-  }
+  const fh = applyFirstHome("VIC", c, price, transferDuty, (v) => calcFromBrackets(v, VIC_BRACKETS, false));
+  notes.push(...fh.notes);
 
-  const foreignSurcharge = isForeign ? price * VIC_FOREIGN_SURCHARGE : 0;
-  if (isForeign) notes.push("Victorian foreign purchaser additional duty of 8% applies (SRO Victoria, contracts from 1 July 2019).");
+  const foreignSurcharge = c.isForeign ? price * VIC_FOREIGN_SURCHARGE : 0;
+  if (c.isForeign) notes.push("Victorian foreign purchaser additional duty of 8% applies (SRO Victoria, contracts from 1 July 2019).");
 
-  return finish(price, transferDuty, standardDuty, concessionAmount, foreignSurcharge, notes);
+  return finish(price, transferDuty, standardDuty, fh.concession, foreignSurcharge, notes, fh.rule);
 }
 
 // ─── QLD ─────────────────────────────────────────────────────────────────────
@@ -235,23 +470,16 @@ export const QLD_HOME_BRACKETS: Bracket[] = [
   { min: 1_000_000, max: Infinity,  base: 30_850, rate: 0.0575 },
 ];
 
-// QRO, first home concession, contracts signed on or after 9 June 2024: a
-// fixed amount deducted from the home concession duty, by price band. $17,350
-// clears the whole bill up to $700,000; nil from $800,000.
+// QRO, first home concession on an established home, contracts signed on or
+// after 9 June 2024: a fixed amount deducted from the home concession duty, by
+// price band. $17,350 clears the whole bill up to $700,000; nil from $800,000.
+// A new home, or vacant land to build one, pays no duty for contracts from
+// 1 May 2025, at any value. The table and the versions are in
+// src/lib/policy/first-home.ts.
 // https://qro.qld.gov.au/duties/transfer-duty/calculate/concession-rates/
-export const QLD_FIRST_HOME_DEDUCTION: ReadonlyArray<{ below: number; amount: number }> = [
-  { below: 710_000, amount: 17_350 },
-  { below: 720_000, amount: 15_615 },
-  { below: 730_000, amount: 13_880 },
-  { below: 740_000, amount: 12_145 },
-  { below: 750_000, amount: 10_410 },
-  { below: 760_000, amount: 8_675 },
-  { below: 770_000, amount: 6_940 },
-  { below: 780_000, amount: 5_205 },
-  { below: 790_000, amount: 3_470 },
-  { below: 800_000, amount: 1_735 },
-];
-export const QLD_FIRST_HOME = { exemptTo: 700_000, concessionTo: 800_000, from: "9 June 2024" } as const;
+export const QLD_FIRST_HOME_DEDUCTION = POLICY_QLD_DEDUCTION;
+const QLD_RULE = currentMethod("QLD", "established", "deduction-table");
+export const QLD_FIRST_HOME = { exemptTo: QLD_RULE.exemptTo, concessionTo: QLD_RULE.concessionTo, from: fromLabel(currentVersion("QLD", "established")) } as const;
 
 export function qldFirstHomeDeduction(price: number): number {
   for (const row of QLD_FIRST_HOME_DEDUCTION) if (price < row.below) return row.amount;
@@ -262,27 +490,23 @@ export function qldFirstHomeDeduction(price: number): number {
 // https://qro.qld.gov.au/duties/investors/afad/
 export const QLD_FOREIGN_SURCHARGE = 0.08;
 
-function calcQLD(price: number, isFirstHome: boolean, isForeign: boolean, isInvestment: boolean): StampDutyResult {
+function calcQLD(price: number, c: Ctx): StampDutyResult {
   const standardDuty = calcFromBrackets(price, QLD_BRACKETS, true);
   const notes: string[] = [];
   let transferDuty = standardDuty;
-  if (!isInvestment) {
+  // The home concession rate is for a home you live in; vacant land pays the general rate.
+  if (!c.isInvestment && c.kind !== "vacant-land") {
     transferDuty = calcFromBrackets(price, QLD_HOME_BRACKETS, true);
     notes.push("Queensland home concession rate applied (owner-occupiers who move in within one year, Queensland Revenue Office).");
   }
 
-  let concessionAmount = 0;
-  if (isFirstHome && !isForeign && !isInvestment) {
-    concessionAmount = Math.min(transferDuty, qldFirstHomeDeduction(price));
-    if (concessionAmount > 0) {
-      notes.push("Queensland first home concession applied: no duty up to $700,000, phasing out to $800,000 (Queensland Revenue Office, contracts from 9 June 2024).");
-    }
-  }
+  const fh = applyFirstHome("QLD", c, price, transferDuty, (v) => calcFromBrackets(v, QLD_HOME_BRACKETS, true));
+  notes.push(...fh.notes);
 
-  const foreignSurcharge = isForeign ? price * QLD_FOREIGN_SURCHARGE : 0;
-  if (isForeign) notes.push("Queensland additional foreign acquirer duty of 8% applies (Queensland Revenue Office).");
+  const foreignSurcharge = c.isForeign ? price * QLD_FOREIGN_SURCHARGE : 0;
+  if (c.isForeign) notes.push("Queensland additional foreign acquirer duty of 8% applies (Queensland Revenue Office).");
 
-  return finish(price, transferDuty, standardDuty, concessionAmount, foreignSurcharge, notes);
+  return finish(price, transferDuty, standardDuty, fh.concession, foreignSurcharge, notes, fh.rule);
 }
 
 // ─── WA ──────────────────────────────────────────────────────────────────────
@@ -298,41 +522,55 @@ export const WA_BRACKETS: Bracket[] = [
   { min: 725_000, max: Infinity, base: 28_453, rate: 0.0515 },
 ];
 
-// RevenueWA, first home owner rate of duty, transactions on or after 7 May
-// 2026 (2026-27 Housing Taxation Package): no duty up to $600,000, then
-// $16.15 per $100 of the value over $600,000 up to $800,000. Vacant land:
-// nil to $450,000, $20.14 per $100 over $450,000 to $550,000 (not modelled).
+// RevenueWA, first home owner rate of duty, by the date of the agreement (not
+// settlement). Agreements on or after 7 May 2026 (2026-27 Housing Taxation
+// Package): no duty up to $600,000, then $16.15 per $100 of the value over
+// $600,000 up to $800,000; vacant land nil to $450,000, $20.14 per $100 to
+// $550,000. The earlier bands (21 March 2025, 9 May 2024 and before) are in
+// src/lib/policy/first-home.ts and the engine applies them by date.
 // https://www.wa.gov.au/government/publications/duties-fact-sheet-first-home-owner-rate
-export const WA_FIRST_HOME = { exemptTo: 600_000, concessionTo: 800_000, ratePer100: 16.15, from: "7 May 2026" } as const;
-export const WA_FIRST_HOME_LAND = { exemptTo: 450_000, concessionTo: 550_000, ratePer100: 20.14 } as const;
+const WA_HOME_RULE = currentMethod("WA", "established", "rate-per-100");
+const WA_LAND_RULE = currentMethod("WA", "vacant-land", "rate-per-100");
+const WA_PREVIOUS_VERSION = dutyReliefFor("WA", "established", "2026-05-06").version as DutyReliefVersion;
+const WA_PREVIOUS_RULE = WA_PREVIOUS_VERSION.method as Extract<ReliefMethod, { type: "rate-per-100" }>;
+export const WA_FIRST_HOME = {
+  exemptTo: WA_HOME_RULE.exemptTo,
+  concessionTo: WA_HOME_RULE.bands[0].concessionTo,
+  ratePer100: WA_HOME_RULE.bands[0].ratePer100,
+  from: fromLabel(currentVersion("WA", "established")),
+} as const;
+export const WA_FIRST_HOME_LAND = {
+  exemptTo: WA_LAND_RULE.exemptTo,
+  concessionTo: WA_LAND_RULE.bands[0].concessionTo,
+  ratePer100: WA_LAND_RULE.bands[0].ratePer100,
+} as const;
 /** Before 7 May 2026 (from 21 March 2025): nil to $500,000, concession to $700,000 in Perth and Peel ($13.63 per $100) or $750,000 elsewhere ($11.89 per $100). */
-export const WA_FIRST_HOME_PREVIOUS = { exemptTo: 500_000, metroTo: 700_000, regionalTo: 750_000, from: "21 March 2025", to: "6 May 2026" } as const;
+export const WA_FIRST_HOME_PREVIOUS = {
+  exemptTo: WA_PREVIOUS_RULE.exemptTo,
+  metroTo: WA_PREVIOUS_RULE.bands.find((b) => b.area === "metro")!.concessionTo,
+  regionalTo: WA_PREVIOUS_RULE.bands.find((b) => b.area === "regional")!.concessionTo,
+  from: fromLabel(WA_PREVIOUS_VERSION),
+  to: formatPolicyDate(WA_PREVIOUS_VERSION.effectiveTo as string),
+} as const;
 
 // RevenueWA, foreign buyers duty: additional duty of 7% on the dutiable value.
 // https://www.wa.gov.au/organisation/department-of-treasury-and-finance/foreign-buyers-duty
 export const WA_FOREIGN_SURCHARGE = 0.07;
 
-function calcWA(price: number, isFirstHome: boolean, isForeign: boolean, isInvestment: boolean): StampDutyResult {
+function calcWA(price: number, c: Ctx): StampDutyResult {
   const transferDuty = calcFromBrackets(price, WA_BRACKETS, true);
   const notes: string[] = [];
-  let concessionAmount = 0;
-
-  if (isFirstHome && !isForeign && !isInvestment) {
-    if (price <= WA_FIRST_HOME.exemptTo) {
-      concessionAmount = transferDuty;
-      notes.push("WA first home owner rate: no duty on a home up to $600,000 (RevenueWA, transactions from 7 May 2026).");
-    } else if (price <= WA_FIRST_HOME.concessionTo) {
-      const v = Math.ceil(price / 100) * 100;
-      const payable = ((v - WA_FIRST_HOME.exemptTo) / 100) * WA_FIRST_HOME.ratePer100;
-      concessionAmount = Math.max(0, transferDuty - payable);
-      notes.push("WA first home owner rate: $16.15 per $100 of the value over $600,000, up to $800,000 (RevenueWA, from 7 May 2026).");
-    }
+  const fh = applyFirstHome("WA", c, price, transferDuty, (v) => calcFromBrackets(v, WA_BRACKETS, true));
+  notes.push(...fh.notes);
+  const v = fh.rule && dutyReliefFor("WA", c.kind, fh.rule.dateUsed).version;
+  if (v && v.method.type === "rate-per-100" && v.method.bands.length > 1) {
+    notes.push(`For this agreement date the concession cap depended on where the home is; we used ${c.region === "regional" ? "the cap outside Perth and Peel" : "the Perth and Peel cap"}.`);
   }
 
-  const foreignSurcharge = isForeign ? price * WA_FOREIGN_SURCHARGE : 0;
-  if (isForeign) notes.push("WA foreign buyers duty of 7% applies (RevenueWA).");
+  const foreignSurcharge = c.isForeign ? price * WA_FOREIGN_SURCHARGE : 0;
+  if (c.isForeign) notes.push("WA foreign buyers duty of 7% applies (RevenueWA).");
 
-  return finish(price, transferDuty, transferDuty, concessionAmount, foreignSurcharge, notes);
+  return finish(price, transferDuty, transferDuty, fh.concession, foreignSurcharge, notes, fh.rule);
 }
 
 // ─── SA ──────────────────────────────────────────────────────────────────────
@@ -359,15 +597,20 @@ export const SA_BRACKETS: Bracket[] = [
 // from 1 January 2018. https://www.revenuesa.sa.gov.au/stamp-duty-land/FOS
 export const SA_FOREIGN_SURCHARGE = 0.07;
 
-function calcSA(price: number, isFirstHome: boolean, isForeign: boolean, _isInvestment: boolean): StampDutyResult {
+function calcSA(price: number, c: Ctx): StampDutyResult {
   const transferDuty = calcFromBrackets(price, SA_BRACKETS, true);
   const notes: string[] = [];
-  if (isFirstHome) {
-    notes.push("SA has no duty relief on an established home. First home buyers of a new home, off-the-plan apartment or vacant land pay no duty, with no value cap (RevenueSA, contracts from 6 June 2024).");
+  const fh = applyFirstHome("SA", c, price, transferDuty, (v) => calcFromBrackets(v, SA_BRACKETS, true));
+  notes.push(...fh.notes);
+  if (c.isFirstHome && c.kind === "established") {
+    const newHome = dutyReliefFor("SA", "new", c.contract).version;
+    if (newHome && newHome.method.type !== "none") {
+      notes.push(`A new home, an off-the-plan apartment or vacant land to build is different for a first home buyer: ${lowerFirst(summariseRelief(newHome))} (RevenueSA, contracts ${periodLabel(newHome)}).`);
+    }
   }
-  const foreignSurcharge = isForeign ? price * SA_FOREIGN_SURCHARGE : 0;
-  if (isForeign) notes.push("SA foreign ownership surcharge of 7% applies (RevenueSA, from 1 January 2018).");
-  return finish(price, transferDuty, transferDuty, 0, foreignSurcharge, notes);
+  const foreignSurcharge = c.isForeign ? price * SA_FOREIGN_SURCHARGE : 0;
+  if (c.isForeign) notes.push("SA foreign ownership surcharge of 7% applies (RevenueSA, from 1 January 2018).");
+  return finish(price, transferDuty, transferDuty, fh.concession, foreignSurcharge, notes, fh.rule);
 }
 
 // ─── TAS ─────────────────────────────────────────────────────────────────────
@@ -396,15 +639,16 @@ export const TAS_BRACKETS: Bracket[] = [
 // https://sro.tas.gov.au/property-transfer-duties/foreign-investor-duty-surcharge/rates-of-surcharge
 export const TAS_FOREIGN_SURCHARGE = 0.08;
 
-function calcTAS(price: number, isFirstHome: boolean, isForeign: boolean, _isInvestment: boolean): StampDutyResult {
-  const transferDuty = price <= 0 ? 0 : price <= 3_000 ? 50 : calcFromBrackets(price, TAS_BRACKETS, true);
+function calcTAS(price: number, c: Ctx): StampDutyResult {
+  const tasDuty = (v: number) => (v <= 0 ? 0 : v <= 3_000 ? 50 : calcFromBrackets(v, TAS_BRACKETS, true));
+  const transferDuty = tasDuty(price);
   const notes: string[] = [];
-  if (isFirstHome) {
-    notes.push("Tasmania's first home buyer duty exemption on established homes ended for transfers settling after 30 June 2026 (State Revenue Office Tasmania). A $20,000 First Home Owner Grant applies to new homes from 1 July 2026 to 30 June 2027.");
-  }
-  const foreignSurcharge = isForeign ? price * TAS_FOREIGN_SURCHARGE : 0;
-  if (isForeign) notes.push("Tasmanian foreign investor duty surcharge of 8% applies (State Revenue Office Tasmania, from 1 April 2020).");
-  return finish(price, transferDuty, transferDuty, 0, foreignSurcharge, notes);
+  const fh = applyFirstHome("TAS", c, price, transferDuty, tasDuty);
+  notes.push(...fh.notes);
+  if (c.isFirstHome && c.kind !== "vacant-land") notes.push(...grantNote("TAS", c));
+  const foreignSurcharge = c.isForeign ? price * TAS_FOREIGN_SURCHARGE : 0;
+  if (c.isForeign) notes.push("Tasmanian foreign investor duty surcharge of 8% applies (State Revenue Office Tasmania, from 1 April 2020).");
+  return finish(price, transferDuty, transferDuty, fh.concession, foreignSurcharge, notes, fh.rule);
 }
 
 // ─── NT ──────────────────────────────────────────────────────────────────────
@@ -439,14 +683,14 @@ export function ntDuty(price: number): number {
   return price * 0.0595;
 }
 
-function calcNT(price: number, isFirstHome: boolean, isForeign: boolean, _isInvestment: boolean): StampDutyResult {
+function calcNT(price: number, c: Ctx): StampDutyResult {
   const transferDuty = ntDuty(price);
   const notes: string[] = [];
-  if (isFirstHome) {
-    notes.push("The NT has no first home buyer duty concession. The $50,000 HomeGrown Territory grant applies to a first new home, contracts to 30 September 2027 (Territory Revenue Office).");
-  }
-  if (isForeign) notes.push("The NT does not charge a foreign purchaser surcharge.");
-  return finish(price, transferDuty, transferDuty, 0, 0, notes);
+  const fh = applyFirstHome("NT", c, price, transferDuty, ntDuty);
+  notes.push(...fh.notes);
+  if (c.isFirstHome && c.kind !== "vacant-land") notes.push(...grantNote("NT", c));
+  if (c.isForeign) notes.push("The NT does not charge a foreign purchaser surcharge.");
+  return finish(price, transferDuty, transferDuty, fh.concession, 0, notes, fh.rule);
 }
 
 // ─── ACT ─────────────────────────────────────────────────────────────────────
@@ -477,51 +721,63 @@ export const ACT_BRACKETS: Bracket[] = [
   { min: 1_455_000, max: Infinity,  base: 66_057, rate: 0.0454, flat: true },
 ];
 
-// ACT Revenue Office, Home Buyer Concession Scheme: from 1 July 2026 the
-// income threshold and the property value limit are removed, so an eligible
-// buyer (no property owned in the last five years, lives in the home for at
-// least one year) pays no conveyance duty.
+// ACT Revenue Office, Home Buyer Concession Scheme, by transaction date: from
+// 1 July 2026 the income threshold and the property value limit are removed,
+// so an eligible buyer (no interest in any property in the last five years,
+// lives in the home for at least one year) pays no conveyance duty. From
+// 1 July 2025 to 30 June 2026: $0 to $1,020,000 and $35,238 off the
+// owner-occupier duty above that, with an income test. Data in
+// src/lib/policy/first-home.ts.
 // https://www.revenue.act.gov.au/home-buyer-assistance/home-buyer-concession-scheme/about-the-home-buyer-concession-scheme
 // https://www.revenue.act.gov.au/about-the-act-revenue-office/news/act-budget-2026-27-updates
-export const ACT_HBCS_FROM = "1 July 2026";
+export const ACT_HBCS_FROM = fromLabel(currentVersion("ACT", "established"));
 
-function calcACT(price: number, isFirstHome: boolean, isForeign: boolean, isInvestment: boolean): StampDutyResult {
+function calcACT(price: number, c: Ctx): StampDutyResult {
   const standardDuty = calcFromBrackets(price, ACT_BRACKETS, true);
   const notes: string[] = [];
   let transferDuty = standardDuty;
-  if (!isInvestment) {
+  if (!c.isInvestment) {
     transferDuty = calcFromBrackets(price, ACT_OWNER_OCCUPIER_BRACKETS, true);
     if (transferDuty < standardDuty) notes.push("ACT owner-occupier rate applied (ACT Revenue Office).");
   }
-  let concessionAmount = 0;
-  if (isFirstHome && !isForeign && !isInvestment) {
-    concessionAmount = transferDuty;
-    notes.push("ACT Home Buyer Concession Scheme: no conveyance duty for an eligible buyer who has not owned property in the last five years; the income test and price cap were removed from 1 July 2026 (ACT Revenue Office).");
-  }
-  if (isForeign) notes.push("The ACT does not charge a foreign purchaser surcharge.");
-  return finish(price, transferDuty, standardDuty, concessionAmount, 0, notes);
+  const fh = applyFirstHome("ACT", c, price, transferDuty, (v) => calcFromBrackets(v, ACT_OWNER_OCCUPIER_BRACKETS, true));
+  notes.push(...fh.notes);
+  if (c.isForeign) notes.push("The ACT does not charge a foreign purchaser surcharge.");
+  notes.push(...scheduleNote("ACT", c));
+  return finish(price, transferDuty, standardDuty, fh.concession, 0, notes, fh.rule);
 }
 
 // ─── Main export ──────────────────────────────────────────────────────────────
 
+/**
+ * Duty on a purchase. The first five arguments are unchanged from the original
+ * signature; `options` adds the contract date, settlement date and kind of
+ * property, which decide the first home relief. Without options: today's date
+ * and an established home.
+ */
 export function calculateStampDuty(
   purchasePrice: number,
   state: AustralianState,
   isFirstHomeBuyer: boolean,
   isForeignBuyer: boolean,
-  isInvestment: boolean
+  isInvestment: boolean,
+  options?: StampDutyOptions,
 ): StampDutyResult {
+  const c = makeCtx(isFirstHomeBuyer, isForeignBuyer, isInvestment, options);
   switch (state) {
-    case "QLD": return calcQLD(purchasePrice, isFirstHomeBuyer, isForeignBuyer, isInvestment);
-    case "NSW": return calcNSW(purchasePrice, isFirstHomeBuyer, isForeignBuyer, isInvestment);
-    case "VIC": return calcVIC(purchasePrice, isFirstHomeBuyer, isForeignBuyer, isInvestment);
-    case "WA":  return calcWA(purchasePrice, isFirstHomeBuyer, isForeignBuyer, isInvestment);
-    case "SA":  return calcSA(purchasePrice, isFirstHomeBuyer, isForeignBuyer, isInvestment);
-    case "TAS": return calcTAS(purchasePrice, isFirstHomeBuyer, isForeignBuyer, isInvestment);
-    case "NT":  return calcNT(purchasePrice, isFirstHomeBuyer, isForeignBuyer, isInvestment);
-    case "ACT": return calcACT(purchasePrice, isFirstHomeBuyer, isForeignBuyer, isInvestment);
+    case "QLD": return calcQLD(purchasePrice, c);
+    case "NSW": return calcNSW(purchasePrice, c);
+    case "VIC": return calcVIC(purchasePrice, c);
+    case "WA":  return calcWA(purchasePrice, c);
+    case "SA":  return calcSA(purchasePrice, c);
+    case "TAS": return calcTAS(purchasePrice, c);
+    case "NT":  return calcNT(purchasePrice, c);
+    case "ACT": return calcACT(purchasePrice, c);
   }
 }
+
+/** The date the first home rules were last checked against each revenue office. */
+export const FIRST_HOME_RULES_REVIEWED_ON = FIRST_HOME_REVIEWED_ON;
 
 // ─── Published schedule per state, for the pages' tables ─────────────────────
 

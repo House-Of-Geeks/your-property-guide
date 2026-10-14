@@ -1,8 +1,10 @@
 # BRAND.md — Your Property Guide
 
-**Status:** v4 (13 Oct 2026). Clean, sharp, human. Replaces v3 (cream, Fraunces serif, italic terracotta accents), which read as an AI-template look and positioned the site as a magazine.
+**Status:** v4.2 (14 Oct 2026; v4 13 Oct). Clean, sharp, human. Replaces v3 (cream, Fraunces serif, italic terracotta accents), which read as an AI-template look and positioned the site as a magazine.
 
-**What we are:** a guide and an introduction service. Free guides that help Australians sell and buy property, and, when a seller asks, one trusted local agent for a free appraisal. We are not a data tool: suburb data supports the guides, it is not the headline.
+**What we are:** a property education service that introduces people to a suitable professional when they ask. Free guides, tools and next-step plans for buying, selling or both; with permission, one participating selling agent or buyer's agent. We are not a portal or a data tool: suburb data supports the guides, it is not the headline.
+
+**Promise:** *Make your next property move with confidence.*
 
 **Line:** *Property, explained by people.*
 
@@ -18,7 +20,7 @@
 
 ## 2. Logo
 
-**The house bubble.** A house drawn as a speech bubble: property, explained by people. It also describes how we work (a person talks to you before any agent does).
+**The house bubble.** A house drawn as a speech bubble: property, explained by people. It also describes how we work: you get the explanation first, and an introduction only when you ask for one.
 
 - Component: `src/components/brand/Logo.tsx` exports `Logo` (mark + wordmark) and `LogoMark`. The path lives in `LOGO_MARK_PATH` and is shared by the favicon, OG cards and email.
 - Mark colour: roof tile `#C24A1C` on white or charcoal. White on roof tile for app tiles.
@@ -83,12 +85,15 @@ Rules: sentence case everywhere. No italics for emphasis. No full stop at the en
 - Banned: three-beat slogans, "no X, no Y, no Z" lists, "unlock", "journey", "seamless", "obviously", "simply", "just" before an instruction.
 - Promises must be true today. If we don't have an agent in an area, we say so.
 
-## 8. Conversion
+## 8. Conversion (rewritten 14 Oct 2026, "confident moves")
 
-- The selling guide funnel (`SellingGuideFunnel`) is the main lead engine: questions first, then first name, email and a **required mobile**, with the reason shown under the field. Agent contact is a separate yes (thanks-page call card), never implied by a download.
-- Every page offers one next step that fits why people came: sellers get the guide or an appraisal; buyers get the buying guide.
-- Phones: the header shows the guide button at every width; the bottom bar carries the guide, the appraisal and a call button.
-- Disclosure sits beside every form: agents pay us for introductions; it costs the seller nothing and doesn't change what they pay the agent.
+Two paths, never mixed. The organising question for every page: *what should I do next, and who can help me do it well?*
+
+- **Learning path** (guides, plans, calculators, the tips series): useful before any contact details. Calculators and guides need no sign-up; a plan is built from a few questions with no personal data; email delivery is offered after the value. Email only, phone optional (and only for a call from our team). The tips series is its own unticked box. A learning request never reaches an agent.
+- **Introduction path** (`/get-help`, the appraisal and agent pages, the suburb appraisal box): says who they'd meet and what that professional charges, shows coverage before anything is sent, asks how to make contact, and takes a separate permission tick for each introduction (buying and selling are separate yeses). The marketing box is separate and unticked. The result screen and email say what really happened (sent, with our team, or not introduced).
+- Promises come from `src/lib/service-model.ts` only. Don't write "best agents", "top local agent", fee negotiation, settlement support or "anywhere in Australia" anywhere.
+- The fee disclosure (`FEE_DISCLOSURE`) sits beside every introduction form, with a link to how we're paid.
+- Phones: the bottom bar carries a plan for the page's move and the matching help; it hides on form pages and while a field has focus.
 
 ## 9. Components to reuse
 
@@ -121,7 +126,11 @@ Rules: sentence case everywhere. No italics for emphasis. No full stop at the en
 | Header / footer / phone bar | `src/components/layout/` |
 | Share cards | `src/lib/og/render.tsx`, `public/og-image.jpg` |
 | Email shell | `src/lib/email-theme.ts` |
-| Lead engine | `src/components/journey/SellingGuideFunnel.tsx` |
+| Promises, fees, partner checks | `src/lib/service-model.ts` |
+| Introduction rules and coverage | `src/lib/introductions/rules.ts` |
+| Plans | `src/lib/plans/` |
+| Journey components (forms, route chooser, service sections) | `src/components/journeys/` |
+| Guide funnels (learning path) | `src/components/journey/SellingGuideFunnel.tsx`, `BuyingGuideFunnel.tsx` |
 
 
 ## 11. Premium bands (v4.1, 13 Oct 2026)
@@ -137,4 +146,11 @@ Andy, after v4 shipped: "too plain, not premium". v4.1 keeps every v4 rule (one 
 - **Tone scopes.** Dark surfaces carry `.tone-dark` (globals.css), which flips `text-ink`, `text-ink-muted`, `border-line` and `text-primary` to light values. Write components with those tokens, never `text-gray-*` or `text-white`, and they work on both. A white card on a dark band (a form, the funnel) carries `.tone-light`.
 - **Buttons.** `BUTTON_PRIMARY` (roof tile, the one solid button on a screen) and `BUTTON_SECONDARY` (outlined in the current ink).
 
-*End of BRAND.md v4.1.*
+## 12. Journeys (v4.2, 14 Oct 2026)
+
+- **The homepage opens on the promise and the three ways in** (buying, selling, both) in `RouteChooser`, on a compact `PhotoHero` (`size="md"`), so a phone sees the choices on the first screen. Photography stays behind type; never a full-height image above the choices.
+- **Forms** use `src/components/journeys/fields.tsx`: visible labels, native radios styled as cards (`ChoiceGroup`, arrow keys work), errors tied to fields, consent boxes with the full statement as the label, one in-flight request at a time.
+- **Next steps** after priority guides and calculators come from `src/lib/next-steps.ts` via `NextStepCard`: one learning action first, personal help as a quiet optional line.
+- **Measurement** goes through `src/lib/analytics.ts` (an allow-list; nothing personal). Outcomes after a request are database events, recorded at `/dashboard/admin/leads`.
+
+*End of BRAND.md v4.2.*

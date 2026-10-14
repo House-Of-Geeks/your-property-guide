@@ -126,17 +126,19 @@ export function labelFor(type: string, guideType?: string): string {
 
 // Public URL of the selling guide PDF. Lives in /public/downloads/ and is
 // excluded from robots so the funnel stays the front door.
-export const GUIDE_PDF_PATH = "/downloads/your-property-guide-selling-a-home-australia.pdf";
+import { GUIDE_PDF_PATH, BUYING_GUIDE_PDF_PATH } from "@/lib/guide-pdfs";
+export { GUIDE_PDF_PATH, BUYING_GUIDE_PDF_PATH };
 export const GUIDE_PDF_URL = `https://www.yourpropertyguide.com.au${GUIDE_PDF_PATH}`;
 // Cover art rendered from scripts/guide-pdf/cover-art.html. The email
 // variant is a ~70KB JPEG so it loads fast on mobile data.
 export const GUIDE_COVER_URL = "https://www.yourpropertyguide.com.au/images/guide/selling-guide-cover-email.jpg";
-export const BUYING_GUIDE_PDF_PATH = "/downloads/your-property-guide-buying-property-australia.pdf";
 export const BUYING_GUIDE_PDF_URL = `https://www.yourpropertyguide.com.au${BUYING_GUIDE_PDF_PATH}`;
 export const BUYING_GUIDE_COVER_URL = "https://www.yourpropertyguide.com.au/images/guide/buying-guide-cover-email.jpg";
-const APPRAISAL_URL = "https://www.yourpropertyguide.com.au/appraisal";
+// A guide is a learning request (Oct 2026): its email teaches, and only points
+// to the introduction form for anyone who later wants personal help.
+const APPRAISAL_URL = "https://www.yourpropertyguide.com.au/get-help?service=selling-agent&from=guide-email";
 const BORROWING_URL = "https://www.yourpropertyguide.com.au/borrowing-power-calculator";
-const BUYERS_AGENT_URL = "https://www.yourpropertyguide.com.au/find-an-expert?intent=buying#match";
+const BUYERS_AGENT_URL = "https://www.yourpropertyguide.com.au/buyers-agents";
 
 // Lead fields are attacker-controlled free text (any bot can POST
 // /api/leads). Escape them before they land inside an email template:
@@ -244,8 +246,8 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
       if (lead.callKind === "agent") {
         return {
           subject: "Your free appraisal call is booked",
-          intro: `Thanks ${firstName}. We've passed your request to one top local agent.`,
-          next: "They'll call you within one business day to arrange your free appraisal. No obligation: nothing happens unless you decide to go ahead.",
+          intro: `Thanks ${firstName}. We've passed your request to one participating local agent.`,
+          next: "They should call you within one business day to arrange your free appraisal. If you haven't heard by then, reply to this email and we'll follow up. No obligation: nothing happens unless you decide to go ahead.",
         };
       }
       if (lead.callKind === "ypg") {
@@ -276,9 +278,9 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
       // is worth money, in their situation, not generic reassurance.
       const next =
         score === "HOT"
-          ? "You said you're selling within three months. That's the window where the right moves still pay: pricing, presentation and agent choice are all open. Tonight, read chapter 3, it takes ten minutes and tells you where every dollar of your 3 to 5 percent selling cost goes. This week, put a real number on your place: book a free appraisal with a top local agent (the button below), so you walk into every conversation knowing exactly what it's worth. Nothing leaves our hands until you ask."
+          ? "You said you're selling within three months, so pricing, presentation and agent choice are all still open. Start with chapter 3: it shows where your selling costs go. Then read chapter 5 before you meet agents, so you can test every appraisal. If you'd like one appraisal arranged, the button below explains how our introductions work. Nothing leaves our hands unless you ask."
           : score === "WARM"
-            ? "Three to six months out is the sweet spot. You have time to prepare properly, and preparation is where the money is: sellers who fix the right things and interview three agents routinely walk away with thousands more. Start with chapter 3 (the costs) and chapter 5 (the agent questions). When you're closer, one click lines up a free appraisal."
+            ? "Three to six months out gives you time to prepare properly: fix the right things, know your costs, and meet more than one agent. Start with chapter 3 (the costs) and chapter 5 (the questions to ask agents). When you're closer, you can ask us to arrange an appraisal."
             : score === "DO-NOT-CONTACT"
               ? "Since you're already listed, skip straight to chapter 7 (marketing that sells) and chapter 8 (offers and negotiation), the two chapters that matter mid-campaign. And as promised, your details stay with us and go to no one."
               : "No deadline means you get to do this the smart way. Chapter 1 shows you how to read your market and pick your moment. Keep the guide handy. The numbers in it will still be true when you're ready.";
@@ -287,7 +289,7 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
         intro: `Thanks ${firstName}. Your copy is ready, all ten chapters, personalised pointers included.`,
         next,
         cta: { label: "Download your guide (PDF)", url: GUIDE_PDF_URL },
-        preheader: "Ten chapters that pay for themselves. Start with the 10 questions that expose an average agent.",
+        preheader: "Ten chapters, in order. Start with the costs and the questions to ask agents.",
       };
     }
     case "appraisal-request":
@@ -409,10 +411,11 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
   if (lead.type === "guide-download" && !lead.callKind) {
     const score = scoreGuideLead(lead);
     const buying = lead.guideType === "buying";
-    // The dark call-to-action panel. Every guide email pushes towards an
-    // agent (Jos, 9 Oct 2026): sellers who aren't listed get the appraisal
-    // with one top local agent, every buyer a buyer's agent match. Listed
-    // sellers were promised no agent contact, so they get neither.
+    // The dark panel (Oct 2026): a guide is a learning request, so the email
+    // teaches and then points, quietly, to personal help for anyone who wants
+    // it later. Sellers who aren't listed see how an appraisal introduction
+    // works; buyers see what a buyer's agent does. Listed sellers were
+    // promised no agent contact, so they get neither.
     const panel = (eyebrow: string, text: string, button: string) => `
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:${C.ink};border-radius:10px;">
         <tr><td style="padding:20px 22px;">
@@ -426,17 +429,17 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
         ? panel("Know your number", `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">Every good buying decision starts with one number: what a lender will actually approve, after the serviceability buffer. The borrowing power calculator runs it in 60 seconds, no sign-up.</p>`, emailButton("Run my borrowing power", BORROWING_URL))
         : "") +
         panel(
-          "Get a buyer's agent",
-          `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">A buyer's agent works for you, not the seller. They know what homes in your suburbs really sell for, check the property over and can negotiate or bid for you. Getting matched with one is free, with no commitment.</p>`,
-          emailButton("Get matched with a buyer's agent", BUYERS_AGENT_URL),
+          "Thinking about a buyer's agent?",
+          `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">A buyer's agent works for you, not the seller, and charges you a fee for it. Most people buy without one. If you're weighing it up, here's what they do, what they cost and when they're worth it.</p>`,
+          emailButton("What a buyer's agent does", BUYERS_AGENT_URL),
         )
       : score !== "DO-NOT-CONTACT"
-        ? panel("Put a number on it", `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">Medians tell you about the suburb. An appraisal tells you about <em style="color:#ffffff;font-style:normal;font-weight:600;">your place</em>: a defensible price range, the comparable sales behind it, and what to fix first. Thirty minutes with a top local agent, free, no listing agreement, and you control who contacts you.</p>`, emailButton("Book my free appraisal", APPRAISAL_URL))
+        ? panel("Put a number on it", `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">Medians tell you about the suburb. An appraisal tells you about <em style="color:#ffffff;font-style:normal;font-weight:600;">your place</em>: a defensible price range, the comparable sales behind it, and what to fix first. When you're ready for one, we can introduce one participating local agent for a free appraisal. Only if you ask, with no obligation to list.</p>`, emailButton("How introductions work", APPRAISAL_URL))
         : "";
 
     const psLine =
       score === "HOT" && !buying
-        ? `<p style="margin:18px 0 0;font-size:13.5px;line-height:1.6;color:${C.inkMuted};"><strong style="color:${C.ink};">P.S.</strong> In a hurry? Reply to this email with your street address and the word <strong style="color:${C.terracottaDark};">appraisal</strong> and we'll fast-track it today.</p>`
+        ? `<p style="margin:18px 0 0;font-size:13.5px;line-height:1.6;color:${C.inkMuted};"><strong style="color:${C.ink};">P.S.</strong> Selling soon and stuck on something? Reply with your question and a person will answer it.</p>`
         : score === "HOT" && buying
           ? `<p style="margin:18px 0 0;font-size:13.5px;line-height:1.6;color:${C.inkMuted};"><strong style="color:${C.ink};">P.S.</strong> Want a second pair of eyes on a property you're circling? Reply with the listing link and we'll tell you what we'd check first.</p>`
           : "";
@@ -444,7 +447,7 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
     return emailLayout({
       preheader,
       body: `
-      ${emailCoverHero(buying ? BUYING_GUIDE_COVER_URL : GUIDE_COVER_URL, `Your guide is ready, ${escapeHtml(lead.firstName)}.`, buying ? "Ten chapters that keep buyers from overpaying. Free, and yours to keep." : "Ten chapters that routinely save sellers thousands. Free, and yours to keep.")}
+      ${emailCoverHero(buying ? BUYING_GUIDE_COVER_URL : GUIDE_COVER_URL, `Your guide is ready, ${escapeHtml(lead.firstName)}.`, buying ? "Ten chapters on buying well, from budget to settlement. Free, and yours to keep." : "Ten chapters on selling well, from costs to settlement. Free, and yours to keep.")}
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         <tr><td align="center" style="padding:26px 28px 6px;">
           ${emailButton("Download your guide (PDF)", buying ? BUYING_GUIDE_PDF_URL : GUIDE_PDF_URL)}

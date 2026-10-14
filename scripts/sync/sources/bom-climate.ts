@@ -1,29 +1,38 @@
 /**
  * BOM Climate Averages Sync (BOM CDO)
  *
- * For each suburb with a known centroid, finds the nearest BOM weather station
- * within 100 km using the Haversine formula, then fetches the climate normals
- * CSVs from BOM's CDO (Climate Data Online) service:
+ * Writes one SuburbClimate row per suburb with a known centroid: monthly mean
+ * max and min temperature and mean rainfall from a single Bureau of
+ * Meteorology station, with that station's name and its distance from the
+ * suburb centroid.
  *
- *   mean max temp     — p_nccObsCode=122
- *   mean min temp     — p_nccObsCode=123
- *   mean rainfall     — p_nccObsCode=139
- *   mean 9am humidity — p_nccObsCode=35
- *   mean sunshine hrs — p_nccObsCode=193
+ * Which station:
+ *   1. Rank every station within MAX_STATION_DISTANCE_KM (100 km) of the
+ *      centroid by Haversine distance, nearest first.
+ *   2. Walk that list (at most MAX_STATIONS_TRIED) and take the first station
+ *      whose max AND min temperature series are real (12 numbers, not all
+ *      zero). Rainfall-only stations are skipped for temperature.
+ *   3. If none of them has temperature, fall back to the nearest one with
+ *      real rainfall and store its temperature series as empty arrays. The
+ *      page then says temperature isn't available from the nearest station.
+ *   4. Rainfall always comes from the same station as temperature, so the
+ *      stored station name and distance describe every figure on the page.
+ *   Missing series are stored as [] (never twelve zeros); humidity and
+ *   sunshine are always [] (see OBS_CODES).
  *
- * The station list is fetched from:
- *   https://reg.bom.gov.au/climate/data/lists_of_climate_data/stations/stations_db.txt
- * If that request fails, a minimal hardcoded fallback list of major stations
- * is used so the script can still produce data for capital cities.
+ * Climate normals come from BOM's CDO averages page for each obsCode in
+ * OBS_CODES. The page embeds the normals as JavaScript arrays; we take the
+ * 30-year normal (`mean_30`) where BoM publishes one, else the all-years
+ * mean (`mean`). See parseCdoMonthlyNormals in bom-climate-rules.ts.
+ * annualRainfallMm is the sum of the 12 monthly rainfall means.
  *
- * BOM CDO CSV format:
- *   Several header lines starting with "Station"
- *   A header row with "Year", "Jan", "Feb", ..., "Dec", "Ann" columns
- *   Data rows with one year per row
- *   Monthly averages are computed from the last 10 available years.
- *   The "Ann" column (or last numeric column) is used for annualRainfallMm.
+ * The station list is fetched from STATION_LIST_URL. If that request fails,
+ * the hardcoded FALLBACK_STATIONS (20 major stations) are used, so the script
+ * still produces data near capital and large regional cities. Note: STATION_LIST_URL returned HTTP 404 on 14 Oct 2026, so until
+ * it is replaced every run uses the fallback list.
  *
- * Requests are paced at 200 ms between station fetches to respect BOM CDO.
+ * Each station is fetched at most once per run (cached) and fetches are
+ * paced STATION_DELAY_MS apart to respect BOM CDO.
  *
  * Data source: http://www.bom.gov.au/climate/data/
  * Schedule: Annual
@@ -31,6 +40,14 @@
 import "dotenv/config";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
+import {
+  type BomStation,
+  type StationReadings,
+  chooseStation,
+  parseCdoMonthlyNormals,
+  stationsWithin,
+  toStoredClimate,
+} from "./bom-climate-rules";
 
 const SOURCE_ID = "bom-climate";
 
@@ -54,8 +71,11 @@ const OBS_CODES = {
 } as const;
 
 const MAX_STATION_DISTANCE_KM = 100;
+// Upper bound on stations checked per suburb before falling back to rainfall
+// only. The full BoM list is mostly rainfall-only stations, so this bounds
+// the requests made for a suburb in a dense rain-gauge area.
+const MAX_STATIONS_TRIED = 30;
 const STATION_DELAY_MS = 200;
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 // ── Minimal fallback station list (major Australian stations) ────────────────
 // Columns: siteId, name, lat, lon
@@ -82,41 +102,10 @@ const FALLBACK_STATIONS: Array<{ siteId: string; name: string; lat: number; lon:
   { siteId: "009225", name: "Mandurah",                  lat: -32.5275, lon: 115.7239 },
 ];
 
-// ── Types ────────────────────────────────────────────────────────────────────
-
-interface BomStation {
-  siteId: string;
-  name:   string;
-  lat:    number;
-  lon:    number;
-}
-
-interface ClimateNormals {
-  meanMaxTemp:      number[]; // 12 monthly values
-  meanMinTemp:      number[];
-  meanRainfall:     number[];
-  meanHumidity9am:  number[];
-  meanSunshineHrs:  number[];
-  annualRainfallMm: number | null;
-}
-
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-/** Haversine distance in km between two lat/lon pairs. */
-function haversineKm(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const R = 6371;
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) ** 2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
 /** Fetch and parse the BOM station list text file. */
@@ -148,38 +137,8 @@ async function fetchStationList(): Promise<BomStation[]> {
   return stations;
 }
 
-/** Find the nearest station within MAX_STATION_DISTANCE_KM; returns null if none. */
-function nearestStation(
-  lat: number,
-  lng: number,
-  stations: BomStation[]
-): (BomStation & { distanceKm: number }) | null {
-  let best: (BomStation & { distanceKm: number }) | null = null;
-  for (const s of stations) {
-    const d = haversineKm(lat, lng, s.lat, s.lon);
-    if (d <= MAX_STATION_DISTANCE_KM && (!best || d < best.distanceKm)) {
-      best = { ...s, distanceKm: d };
-    }
-  }
-  return best;
-}
-
-/** Fetch one BOM CDO page and return 12-element monthly normals.
- *
- *  BOM's CDO endpoint historically returned CSV under
- *  `p_display_type=dataFile`. As of 2026 it returns an HTML page with the
- *  computed climate normals embedded as JavaScript array literals, e.g.:
- *
- *    var mean = new Array("Mean","101.2","119.3", ... "77.1","1213.4");
- *
- *  The 13 numeric values are: Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep,
- *  Oct, Nov, Dec, Annual. We extract the 12 monthly values directly and
- *  ignore the annual (callers compute it from the months).
- *
- *  BOM publishes both `mean` (long-term, all available years) and `mean_30`
- *  (most recent 30-year normal). We prefer `mean_30` when present since it
- *  reflects current climatology; fall back to `mean` for short-record stations.
- */
+/** Fetch one BOM CDO averages page and return its 12 monthly normals, or null
+ *  when the station has no usable series for this variable. */
 async function fetchMonthlyNormals(
   stationId: string,
   obsCode: string
@@ -199,59 +158,20 @@ async function fetchMonthlyNormals(
 
   const html = await res.text();
   if (!html || html.trim().length === 0) return null;
-
-  // Match either `var mean_30 = new Array("Mean", "1.2", ...);` or `var mean = ...`
-  // Capture the comma-separated quoted values after the leading label.
-  function extractArray(varName: string): number[] | null {
-    const re = new RegExp(`var\\s+${varName}\\s*=\\s*new\\s+Array\\(\\s*"[^"]*"((?:\\s*,\\s*"[^"]*")+)\\s*\\)`);
-    const m = html.match(re);
-    if (!m) return null;
-    const raw = m[1]
-      .split(",")
-      .map((s) => s.trim().replace(/^"|"$/g, ""))
-      .filter((s) => s.length > 0);
-    // Expect 13 values (12 months + annual). Take the first 12 for monthly.
-    if (raw.length < 12) return null;
-    const monthly: number[] = [];
-    for (let i = 0; i < 12; i++) {
-      const v = parseFloat(raw[i]);
-      monthly.push(isNaN(v) ? 0 : Math.round(v * 10) / 10);
-    }
-    return monthly;
-  }
-
-  // Prefer the 30-year normal where available; fall back to all-time mean.
-  return extractArray("mean_30") ?? extractArray("mean");
+  return parseCdoMonthlyNormals(html);
 }
 
-/** Fetch all climate variables for one station. Returns null if nothing could be fetched. */
-async function fetchStationClimate(stationId: string): Promise<ClimateNormals | null> {
+/** Fetch temperature and rainfall normals for one station. Null when nothing came back. */
+async function fetchStationReadings(stationId: string): Promise<StationReadings | null> {
   const tryFetch = (code: string | null) =>
     code ? fetchMonthlyNormals(stationId, code).catch(() => null) : Promise.resolve(null);
-  const [maxTemp, minTemp, rainfall, humidity, sunshine] = await Promise.all([
+  const [maxTemp, minTemp, rainfall] = await Promise.all([
     tryFetch(OBS_CODES.meanMaxTemp),
     tryFetch(OBS_CODES.meanMinTemp),
     tryFetch(OBS_CODES.meanRainfall),
-    tryFetch(OBS_CODES.meanHumidity9am),
-    tryFetch(OBS_CODES.meanSunshineHrs),
   ]);
-
-  // Need at least temperature and rainfall to be useful
   if (!maxTemp && !minTemp && !rainfall) return null;
-
-  const annualRainfallMm =
-    rainfall && rainfall.length === 12
-      ? Math.round(rainfall.reduce((a, b) => a + b, 0) * 10) / 10
-      : null;
-
-  return {
-    meanMaxTemp:      maxTemp      ?? Array(12).fill(0),
-    meanMinTemp:      minTemp      ?? Array(12).fill(0),
-    meanRainfall:     rainfall     ?? Array(12).fill(0),
-    meanHumidity9am:  humidity     ?? Array(12).fill(0),
-    meanSunshineHrs:  sunshine     ?? Array(12).fill(0),
-    annualRainfallMm,
-  };
+  return { meanMaxTemp: maxTemp, meanMinTemp: minTemp, meanRainfall: rainfall };
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────────
@@ -274,97 +194,80 @@ export async function run(): Promise<void> {
       where: { lat: { not: null }, lng: { not: null } },
       select: { id: true, slug: true, lat: true, lng: true },
     });
-    log(SOURCE_ID, `matching ${suburbs.length} suburbs to nearest BOM station`);
+    log(SOURCE_ID, `matching ${suburbs.length} suburbs to the nearest BOM station with temperature`);
 
-    // Group suburbs by nearest station
-    type StationGroup = {
-      station: BomStation & { distanceKm: number };
-      suburbs: typeof suburbs;
-    };
-    const stationGroups = new Map<string, StationGroup>();
-
-    for (const suburb of suburbs) {
-      const nearest = nearestStation(suburb.lat as number, suburb.lng as number, stations);
-      if (!nearest) continue; // > 100 km from any station
-
-      const existing = stationGroups.get(nearest.siteId);
-      if (existing) {
-        existing.suburbs.push(suburb);
-      } else {
-        stationGroups.set(nearest.siteId, { station: nearest, suburbs: [suburb] });
+    // Each station is fetched at most once per run, paced for BOM CDO.
+    const readingsCache = new Map<string, StationReadings | null>();
+    let stationsFetched = 0;
+    const readingsFor = async (siteId: string): Promise<StationReadings | null> => {
+      if (readingsCache.has(siteId)) return readingsCache.get(siteId) ?? null;
+      let readings: StationReadings | null = null;
+      try {
+        readings = await fetchStationReadings(siteId);
+      } catch (err) {
+        log(SOURCE_ID, `warn: station ${siteId} failed — ${(err as Error).message}`);
       }
-    }
-
-    log(SOURCE_ID, `${stationGroups.size} unique BOM stations to fetch`);
+      readingsCache.set(siteId, readings);
+      stationsFetched++;
+      await sleep(STATION_DELAY_MS);
+      return readings;
+    };
 
     let totalUpserted = 0;
+    let rainfallOnly = 0;
+    let skipped = 0;
     const now = new Date();
-    let stationsDone = 0;
 
-    for (const { station, suburbs: stationSuburbs } of stationGroups.values()) {
-      log(SOURCE_ID, `fetching station ${station.siteId} (${station.name}) — ${stationSuburbs.length} suburbs`);
-
-      let climate: ClimateNormals | null = null;
-      try {
-        climate = await fetchStationClimate(station.siteId);
-      } catch (err) {
-        log(SOURCE_ID, `warn: station ${station.siteId} failed — ${(err as Error).message}`);
-      }
-
-      if (!climate) {
-        log(SOURCE_ID, `station ${station.siteId}: no climate data — skipping ${stationSuburbs.length} suburbs`);
-        stationsDone++;
-        await sleep(STATION_DELAY_MS);
+    for (const suburb of suburbs) {
+      const candidates = stationsWithin(
+        suburb.lat as number,
+        suburb.lng as number,
+        stations,
+        MAX_STATION_DISTANCE_KM,
+      );
+      const choice = await chooseStation(candidates, readingsFor, MAX_STATIONS_TRIED);
+      if (!choice) {
+        skipped++; // no station within 100 km with usable temperature or rainfall
         continue;
       }
+      if (!choice.withTemperature) rainfallOnly++;
 
-      // Upsert SuburbClimate for every suburb assigned to this station
-      for (const suburb of stationSuburbs) {
-        await prisma.suburbClimate.upsert({
-          where: { suburbSlug: suburb.slug },
-          create: {
-            suburbSlug:       suburb.slug,
-            bomStationId:     station.siteId,
-            bomStationName:   station.name,
-            distanceKm:       Math.round(station.distanceKm * 10) / 10,
-            meanMaxTemp:      climate.meanMaxTemp,
-            meanMinTemp:      climate.meanMinTemp,
-            meanRainfall:     climate.meanRainfall,
-            meanHumidity9am:  climate.meanHumidity9am,
-            meanSunshineHrs:  climate.meanSunshineHrs,
-            annualRainfallMm: climate.annualRainfallMm,
-            assessedAt:       now,
-          },
-          update: {
-            bomStationId:     station.siteId,
-            bomStationName:   station.name,
-            distanceKm:       Math.round(station.distanceKm * 10) / 10,
-            meanMaxTemp:      climate.meanMaxTemp,
-            meanMinTemp:      climate.meanMinTemp,
-            meanRainfall:     climate.meanRainfall,
-            meanHumidity9am:  climate.meanHumidity9am,
-            meanSunshineHrs:  climate.meanSunshineHrs,
-            annualRainfallMm: climate.annualRainfallMm,
-            assessedAt:       now,
-          },
-        });
+      const { station } = choice;
+      const stored = toStoredClimate(choice);
+      const row = {
+        bomStationId:     station.siteId,
+        bomStationName:   station.name,
+        distanceKm:       Math.round(station.distanceKm * 10) / 10,
+        meanMaxTemp:      stored.meanMaxTemp,
+        meanMinTemp:      stored.meanMinTemp,
+        meanRainfall:     stored.meanRainfall,
+        meanHumidity9am:  [] as number[],
+        meanSunshineHrs:  [] as number[],
+        annualRainfallMm: stored.annualRainfallMm,
+        assessedAt:       now,
+      };
+      await prisma.suburbClimate.upsert({
+        where:  { suburbSlug: suburb.slug },
+        create: { suburbSlug: suburb.slug, ...row },
+        update: row,
+      });
 
-        await prisma.suburb.update({
-          where: { id: suburb.id },
-          data:  { climateUpdatedAt: now },
-        });
+      await prisma.suburb.update({
+        where: { id: suburb.id },
+        data:  { climateUpdatedAt: now },
+      });
 
-        totalUpserted++;
+      totalUpserted++;
+      if (totalUpserted % 500 === 0) {
+        log(SOURCE_ID, `progress: ${totalUpserted} suburbs written, ${stationsFetched} stations fetched`);
       }
-
-      stationsDone++;
-      if (stationsDone % 10 === 0) {
-        log(SOURCE_ID, `progress: ${stationsDone} / ${stationGroups.size} stations, ${totalUpserted} suburbs done`);
-      }
-
-      await sleep(STATION_DELAY_MS);
     }
 
+    log(
+      SOURCE_ID,
+      `${totalUpserted} suburbs written (${rainfallOnly} rainfall only, no temperature station within ` +
+        `${MAX_STATION_DISTANCE_KM} km), ${skipped} skipped, ${stationsFetched} stations fetched`,
+    );
     await finishSync(SOURCE_ID, totalUpserted);
   } catch (err) {
     await failSync(SOURCE_ID, err);

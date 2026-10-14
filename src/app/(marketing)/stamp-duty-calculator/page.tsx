@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { StampDutyCalculator } from "@/components/calculators/StampDutyCalculator";
 import { StampDutyStateLinks } from "@/components/calculators/StampDutyStateLinks";
-import { STATE_DUTY_SCHEDULES } from "@/lib/utils/stamp-duty";
+import { STAMP_DUTY_VERIFIED_ON, STATE_DUTY_SCHEDULES } from "@/lib/utils/stamp-duty";
 import { ABBR, AUSTRALIAN_STATES, money, dutyFor } from "@/lib/data/stamp-duty-state";
+import { FIRST_HOME_REVIEWED_ON, currentExemptTo, formatPolicyDate, grantFor } from "@/lib/policy/first-home";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
@@ -11,11 +12,11 @@ import { SITE_URL } from "@/lib/constants";
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Stamp Duty Calculator",
   description:
-    "Estimate stamp duty across all eight Australian states and territories, with first home buyer concessions and foreign buyer surcharges. Rates checked against each revenue office on 30 September 2026.",
+    "Estimate stamp duty across all eight Australian states and territories, with first home buyer concessions by contract date and property type, and foreign buyer surcharges. Rates checked against each revenue office on 30 September 2026, first home rules on 14 October 2026.",
   slug: "stamp-duty-calculator",
   schemaName: "Stamp Duty Calculator Australia",
   schemaDescription: "Calculate stamp duty costs across all Australian states and territories.",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-14",
   persona: "first-home",
 };
 
@@ -37,6 +38,8 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+const FOREIGN_RATES = AUSTRALIAN_STATES.flatMap((st) => (STATE_DUTY_SCHEDULES[st].foreign ? [STATE_DUTY_SCHEDULES[st].foreign!.rate] : []));
+
 const FAQS: FaqItem[] = [
   {
     question: "How is stamp duty calculated in Australia?",
@@ -45,14 +48,13 @@ const FAQS: FaqItem[] = [
   },
   {
     question: "Do first home buyers pay stamp duty?",
-    answer:
-      "It depends on the state. On an established home, an eligible first home buyer pays no duty up to $800,000 in NSW, $700,000 in Queensland, $600,000 in Victoria and $600,000 in WA (from 7 May 2026), with a reduced amount above those lines. In the ACT, an eligible buyer who has not owned property for five years pays nothing at any price from 1 July 2026. SA gives relief only on new homes and land. Tasmania's exemption ended on 30 June 2026, and the NT pays grants instead of a duty concession. Figures checked against each revenue office on 30 September 2026.",
+    answer: `It depends on the state, the date you sign and what you buy. On an established home, an eligible first home buyer pays no duty up to ${money(currentExemptTo("NSW") ?? 0)} in NSW, ${money(currentExemptTo("QLD") ?? 0)} in Queensland, ${money(currentExemptTo("VIC") ?? 0)} in Victoria and ${money(currentExemptTo("WA") ?? 0)} in WA, with a reduced amount above those lines. Queensland and SA charge no duty at any price on a new home or vacant land to build one, and SA gives no relief on an established home. In the ACT, an eligible buyer who has held no property interest for five years pays nothing at any price from 1 July 2026. Tasmania's exemption ended for settlements after 30 June 2026, and the NT pays a ${money(grantFor("NT", FIRST_HOME_REVIEWED_ON, "new").version?.amount ?? 0)} grant on a new home instead of a duty concession. The calculator applies the rule for the contract date you enter (the settlement date in Tasmania). First home rules checked against each revenue office on ${formatPolicyDate(FIRST_HOME_REVIEWED_ON)}.`,
   },
   {
     question: "What is the foreign buyer surcharge?",
     answer: `Foreign buyers of residential property pay a surcharge on top of standard duty: ${AUSTRALIAN_STATES.filter((st) => STATE_DUTY_SCHEDULES[st].foreign)
       .map((st) => `${ABBR[st]} ${Math.round(STATE_DUTY_SCHEDULES[st].foreign!.rate * 100)}%`)
-      .join(", ")}. The ACT and the NT charge no foreign purchaser duty surcharge. On a $750,000 home in NSW the 9% surcharge adds ${money(750_000 * 0.09)} to the ${money(dutyFor("NSW", 750_000, "owner").total)} of transfer duty (rates checked 30 September 2026).`,
+      .join(", ")}. The ACT and the NT charge no foreign purchaser duty surcharge. On a $750,000 home in NSW the ${Math.round(STATE_DUTY_SCHEDULES.NSW.foreign!.rate * 100)}% surcharge adds ${money(750_000 * STATE_DUTY_SCHEDULES.NSW.foreign!.rate)} to the ${money(dutyFor("NSW", 750_000, "owner").total)} of transfer duty (rates checked ${formatPolicyDate(STAMP_DUTY_VERIFIED_ON)}).`,
   },
   {
     question: "When is stamp duty paid?",
@@ -91,7 +93,7 @@ export default function StampDutyCalculatorPage() {
             <h2 className="font-display text-2xl sm:text-3xl text-ink leading-tight mb-2">Calculate by state</h2>
             <p className="font-sans text-base text-ink-muted mb-5">
               Each state page runs this calculator locked to that state, with its full rates table, first home buyer
-              thresholds and worked examples. Figures are for an owner-occupier, rates checked 30 September 2026.
+              thresholds and worked examples. Figures are for an owner-occupier, rates checked {formatPolicyDate(STAMP_DUTY_VERIFIED_ON)}.
             </p>
             <StampDutyStateLinks />
           </section>
@@ -145,7 +147,7 @@ export default function StampDutyCalculatorPage() {
           <ul>
             <li><strong>Whether you&rsquo;re a first home buyer.</strong> Most states give first home buyers either a full or partial exemption below a threshold.</li>
             <li><strong>Whether you&rsquo;re buying as an owner-occupier or investor.</strong> Owner-occupier discounts exist in several states.</li>
-            <li><strong>Whether you&rsquo;re a foreign buyer.</strong> A surcharge of 7% to 8% applies in most states on top of standard duty.</li>
+            <li><strong>Whether you&rsquo;re a foreign buyer.</strong> A surcharge of {Math.round(Math.min(...FOREIGN_RATES) * 100)}% to {Math.round(Math.max(...FOREIGN_RATES) * 100)}% applies in every state except the ACT and the NT, on top of standard duty.</li>
           </ul>
 
           <h2>First home buyer concessions in plain English</h2>
@@ -155,14 +157,21 @@ export default function StampDutyCalculatorPage() {
             <Link href="/guides/first-home-buyer-nsw">NSW</Link>,{" "}
             <Link href="/guides/first-home-buyer-vic">VIC</Link>,{" "}
             <Link href="/guides/first-home-buyer-qld">QLD</Link>,{" "}
-            <Link href="/guides/first-home-buyer-wa">WA</Link>.
+            <Link href="/guides/first-home-buyer-wa">WA</Link>,{" "}
+            <Link href="/guides/first-home-buyer-sa">SA</Link>,{" "}
+            <Link href="/guides/first-home-buyer-tas">TAS</Link>,{" "}
+            <Link href="/guides/first-home-buyer-nt">NT</Link>,{" "}
+            <Link href="/guides/first-home-buyer-act">ACT</Link>.
           </p>
           <p>
-            Each state has a price threshold below which duty is fully exempt or
-            heavily reduced for eligible first home buyers, and usually a
-            concessional band above that where duty scales back to the full rate.
-            <strong> Even one dollar over the cap removes the concession entirely</strong>,
-            so when you&rsquo;re negotiating near a threshold, the maths matters.
+            Most states have a price threshold below which duty is fully exempt
+            for eligible first home buyers, and a concessional band above that
+            where duty scales back to the full rate. Some rules depend on what
+            you buy (Queensland and SA charge nothing on a new home or land to
+            build, with no cap) and on the date: the calculator applies the rule
+            for the contract date you enter, and in Tasmania the settlement date.
+            Above the top of the band the concession is gone, so when
+            you&rsquo;re negotiating near a threshold, the maths matters.
           </p>
 
           <Callout variant="warning" title="Verify before you settle">
@@ -179,7 +188,8 @@ export default function StampDutyCalculatorPage() {
           <ul>
             <li>Mortgage registration fee and transfer fee (small, but real, add a few hundred dollars per state).</li>
             <li>Discretionary trust or company purchases (different duty treatment in some states).</li>
-            <li>Off-the-plan stamp duty concessions where they apply (VIC notably).</li>
+            <li>Off-the-plan stamp duty concessions open to all buyers (Victoria and WA have them).</li>
+            <li>Income tests, residence rules and partial concessions a state publishes no formula for; the result says when one applies.</li>
             <li>Concessional duty for older buyers / pensioners (varies by state).</li>
           </ul>
           <p>

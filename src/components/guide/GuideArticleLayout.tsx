@@ -9,6 +9,8 @@ import { RelatedGuides, isCalculatorHref, type RelatedGuide } from "./RelatedGui
 import { AuthorBylineCard } from "./AuthorBylineCard";
 import { GuideByline } from "./GuideByline";
 import { GuideNextStep } from "./GuideNextStep";
+import { NextStepCard } from "@/components/journeys/NextStepCard";
+import { nextStepFor } from "@/lib/next-steps";
 import { GuideAudienceProvider } from "./GuideAudienceContext";
 import { GuideStartInline } from "./GuideStartInline";
 import { Sources } from "./Sources";
@@ -92,7 +94,10 @@ export function GuideArticleLayout({
   // sellers come from) start the selling-guide funnel in place: once after
   // the first section and once at the end, instead of outline buttons to
   // the landing page.
-  const sellerGuide = audience === "selling";
+  // Priority guides (src/lib/next-steps.ts) get the step that fits why
+  // people read them, instead of the guide funnel.
+  const contextual = nextStepFor(from);
+  const sellerGuide = audience === "selling" && !contextual;
 
   // The sources block moves to the foot of the article, after the questions
   // and the reading list, where a reader checking a figure expects it.
@@ -204,8 +209,14 @@ export function GuideArticleLayout({
             {/* The one end-of-article action. Sellers (and the investor or
                 renovator who sells) start the selling guide in place; buyers
                 get the buying guide. */}
-            {nextStep === "selling" && <GuideStartInline from={from} className="mt-12 mb-10" />}
-            {nextStep === "buying" && <GuideNextStep audience="buying" from={from} />}
+            {contextual ? (
+              <NextStepCard className="mt-12 mb-10" {...contextual} />
+            ) : (
+              <>
+                {nextStep === "selling" && <GuideStartInline from={from} className="mt-12 mb-10" />}
+                {nextStep === "buying" && <GuideNextStep audience="buying" from={from} />}
+              </>
+            )}
 
             <Faq items={faqs} id="faq" />
             <RelatedGuides items={relatedItems} />

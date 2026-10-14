@@ -272,7 +272,7 @@ export default function RentvestingAustraliaPage() {
       <p>
         Australian <Link href="/guides/first-home-buyer-guide">first home buyer</Link> schemes are valuable. In NSW, VIC, QLD,
         WA, SA, ACT, NT and TAS, schemes for first-time owner-occupiers
-        include grants ($10,000–$30,000 for new builds),{" "}
+        include grants ($10,000–$50,000 for new builds),{" "}
         <Link href="/stamp-duty-calculator">stamp duty</Link>{" "}
         concessions (full or partial waiver up to a threshold), and access
         to the First Home Guarantee (5% deposit, no LMI). Across these,

@@ -120,7 +120,7 @@ export default async function DataPage() {
       label: "Sales records",
       source: "State Valuer-General offices",
       context: "Historical sales used to calculate medians, growth, and recent comparables.",
-      href: "/sold",
+      href: "/suburbs",
     },
   ];
 
@@ -128,9 +128,9 @@ export default async function DataPage() {
     {
       heading: "Listings",
       rows: [
-        { value: formatCount(c.propertiesActive), label: "Active listings",   source: "Real estate agencies + manual partner uploads", context: "Properties currently for sale or rent.", href: "/buy" },
+        { value: formatCount(c.propertiesActive), label: "Active listings",   source: "Real estate agencies + manual partner uploads", context: "Properties currently for sale or rent." },
         { value: formatCount(c.propertiesSold),   label: "Recently sold",     source: "State Valuer-General + agency reports",          context: "Sales completed in the last 12 to 24 months." },
-        { value: formatCount(c.houseAndLand),     label: "House & land packages", source: "Builder partners",                          context: "New build packages from participating builders.", href: "/house-and-land" },
+        { value: formatCount(c.houseAndLand),     label: "House & land packages", source: "Builder partners",                          context: "New build packages from participating builders." },
       ],
     },
     {
@@ -138,7 +138,7 @@ export default async function DataPage() {
       rows: [
         { value: formatCount(c.suburbs),  label: "Suburbs",       source: "ABS Statistical Areas + Australia Post", context: "Every Australian suburb with median, growth, and demographic data." },
         { value: formatCount(c.hazards),  label: "Hazard records", source: "Geoscience Australia + state hazard mapping",  context: "Flood class and bushfire risk classification per suburb." },
-        { value: formatCount(c.climates), label: "Climate records", source: "Bureau of Meteorology",                       context: "Mean monthly rainfall and temperature, matched to nearest BoM station." },
+        { value: formatCount(c.climates), label: "Climate records", source: "Bureau of Meteorology",                       context: "Mean monthly rainfall and temperature from the nearest BoM station that records temperature." },
       ],
     },
     {

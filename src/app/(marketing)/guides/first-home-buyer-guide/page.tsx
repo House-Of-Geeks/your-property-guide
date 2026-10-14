@@ -16,6 +16,8 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HomeGuaranteeCapsTable } from "@/components/guide/HomeGuaranteeNote";
+import { FirstHomeDutyTable, FirstHomeGrantTable } from "@/components/guide/FirstHomeTables";
+import { currentGrant, money } from "@/lib/policy/first-home";
 import {
   HG_DATES,
   HG_MIN_AGE,
@@ -30,7 +32,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Complete guide for Australian first home buyers: federal grants and schemes (FHBG, Family Home Guarantee), state grants by state, stamp duty concessions, and step-by-step buying advice.",
   slug: "first-home-buyer-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-14",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -61,8 +63,8 @@ const TLDR = [
   "Combining a federal scheme like the First Home Guarantee with a state First Home Owner Grant and stamp duty concessions can save eligible buyers $30,000 to $60,000+.",
   `The First Home Guarantee, now called the 5% Deposit Scheme, lets eligible buyers purchase with a ${HG_MIN_DEPOSIT_PCT.firstHome}% deposit and no Lenders Mortgage Insurance. Since ${HG_DATES.expanded} there's no income test and no limit on places.`,
   `The Family Home Guarantee allows single parents to buy with a ${HG_MIN_DEPOSIT_PCT.singleParent}% deposit, no LMI, and is available even if you have previously owned a home.`,
-  "First Home Owner Grants apply mostly to new homes only and vary widely by state, from no grant in ACT up to $30,000 in QLD and TAS.",
-  "Most states offer first home buyers a full or partial stamp duty exemption, with thresholds and rules differing by jurisdiction.",
+  `First home owner grants apply to new homes and vary widely by state, from no grant in the ACT to ${money(currentGrant("QLD").amount)} in Queensland and ${money(currentGrant("NT").amount)} under the NT's HomeGrown Territory Grant.`,
+  "Most states give first home buyers a full or partial stamp duty exemption, but the rules differ: SA and Queensland charge nothing on a new home at any price, Tasmania's exemption ended on 30 June 2026, and the NT has none.",
   "Always verify current eligibility, price caps and grant amounts with the relevant government agency before relying on this information.",
 ];
 
@@ -100,18 +102,18 @@ const FAQS: FaqItem[] = [
   },
   {
     question: "What happens if my purchase price exceeds the price cap by a small amount?",
-    answer: "You lose access to the scheme entirely. The price caps are firm: even one dollar over disqualifies the entire purchase from the FHBG, FHOG, or stamp duty concession. Plan well under the cap to leave room for negotiation.",
+    answer: "For the 5% Deposit Scheme and the grants with a value cap, a dollar over rules you out entirely. Stamp duty relief usually tapers above the exemption threshold instead, but above the top of the band it's gone too. Plan well under the cap to leave room for negotiation.",
   },
   {
     question: "Can I buy an established home as my first home and still get a grant?",
-    answer: "You can use the First Home Guarantee on an established home. But the First Home Owner Grant in most states applies only to new builds, off-the-plan, or substantially renovated homes. If you buy an established home, expect the FHBG and stamp duty concession in your state, but no FHOG.",
+    answer: "You can use the First Home Guarantee on an established home. But the First Home Owner Grant applies only to new builds, off-the-plan, or substantially renovated homes. If you buy an established home, expect the FHBG and, in most states, stamp duty relief, but no grant. SA, Tasmania and the NT give no first home duty relief on an established home.",
   },
 ];
 
 const RELATED: RelatedGuide[] = [
   { title: "First Home Buyer Guide, NSW",    href: "/guides/first-home-buyer-nsw", description: "State-specific schemes, stamp duty, and price caps for NSW." },
   { title: "First Home Buyer Guide, QLD",    href: "/guides/first-home-buyer-qld", description: "QLD's $30,000 First Home Owner Grant and stamp duty concession explained." },
-  { title: "First Home Buyer Guide, VIC",    href: "/guides/first-home-buyer-vic", description: "Victoria's regional grants and stamp duty exemptions." },
+  { title: "First Home Buyer Guide, VIC",    href: "/guides/first-home-buyer-vic", description: "Victoria's $10,000 grant and stamp duty exemption." },
   { title: "Lenders Mortgage Insurance",     href: "/guides/lenders-mortgage-insurance-guide", description: "What LMI costs and the schemes that waive it." },
   { title: "Conveyancing in Australia",      href: "/guides/conveyancing-guide", description: "What conveyancers do, what they cost, and what to ask before signing." },
   { title: "Stamp Duty Calculator",          href: "/stamp-duty-calculator", description: "Estimate your liability state-by-state in under a minute." },
@@ -232,26 +234,7 @@ export default function FirstHomeBuyerGuidePage() {
         (newly built, substantially renovated, or off-the-plan), not established
         properties.
       </p>
-      <table>
-        <thead>
-          <tr>
-            <th>State/Territory</th>
-            <th>Grant Amount</th>
-            <th>Eligible Property Types</th>
-            <th>Price Cap</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td><strong>QLD</strong></td><td>$30,000</td><td>New homes (never lived in)</td><td>$750,000 contract price</td></tr>
-          <tr><td><strong>NSW</strong></td><td>$10,000</td><td>New homes</td><td>$600,000 purchase price, or $750,000 for land and a building contract</td></tr>
-          <tr><td><strong>VIC</strong></td><td>$10,000</td><td>New homes</td><td>$750,000</td></tr>
-          <tr><td><strong>WA</strong></td><td>$10,000</td><td>New homes</td><td>$750,000</td></tr>
-          <tr><td><strong>SA</strong></td><td>$15,000</td><td>New homes</td><td>$650,000</td></tr>
-          <tr><td><strong>TAS</strong></td><td>$30,000</td><td>New homes (check current state offer)</td><td>No cap (check current rules)</td></tr>
-          <tr><td><strong>NT</strong></td><td>$10,000</td><td>New or substantially renovated homes</td><td>No cap</td></tr>
-          <tr><td><strong>ACT</strong></td><td>No FHOG</td><td>ACT has its own Home Buyer Concession Scheme instead</td><td></td></tr>
-        </tbody>
-      </table>
+      <FirstHomeGrantTable />
 
       <Callout variant="info" title="Always verify before relying on these figures">
         <p>
@@ -263,32 +246,16 @@ export default function FirstHomeBuyerGuidePage() {
       <h2 id="stamp-duty-concessions">First home buyer stamp duty concessions</h2>
       <p>
         Stamp duty is one of the biggest upfront costs when buying property. Most
-        states offer first home buyers either a full exemption or a reduced rate on
-        stamp duty, subject to thresholds.
+        states give first home buyers a full exemption or a reduced rate, subject
+        to thresholds, and in several the rule depends on whether the home is new
+        and on the date you sign. The calculator below applies the current rule
+        for an established home; the full calculator also takes the contract date
+        and the kind of property.
       </p>
 
       <MiniStampDutyEmbed />
 
-      <table>
-        <thead>
-          <tr>
-            <th>State</th>
-            <th>Full Exemption</th>
-            <th>Concessional Rate</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td><strong>NSW</strong></td><td>≤ $800,000</td><td>$800,001 to $1,000,000</td><td>New and established homes; buyer must occupy</td></tr>
-          <tr><td><strong>VIC</strong></td><td>≤ $600,000</td><td>$600,001 to $750,000</td><td>New and established homes</td></tr>
-          <tr><td><strong>QLD</strong></td><td>No full exemption</td><td>Concession for homes ≤ $550,000</td><td>First home concession; buyer must occupy</td></tr>
-          <tr><td><strong>WA</strong></td><td>≤ $450,000</td><td>$450,001 to $600,000</td><td>New and established homes</td></tr>
-          <tr><td><strong>SA</strong></td><td>Full exemption for new homes</td><td>N/A</td><td>Only applies to new/off-the-plan homes</td></tr>
-          <tr><td><strong>TAS</strong></td><td>50% discount on stamp duty</td><td></td><td>Applies to established and new homes ≤ $600,000</td></tr>
-          <tr><td><strong>NT</strong></td><td>Up to $18,601 off duty</td><td>Scaled reduction</td><td>First Home Owner Discount</td></tr>
-          <tr><td><strong>ACT</strong></td><td>Full exemption (income-tested)</td><td></td><td>Home Buyer Concession Scheme; income and property value limits apply</td></tr>
-        </tbody>
-      </table>
+      <FirstHomeDutyTable />
 
       <h2 id="step-by-step">Step-by-step buying process for first home buyers</h2>
       <p>

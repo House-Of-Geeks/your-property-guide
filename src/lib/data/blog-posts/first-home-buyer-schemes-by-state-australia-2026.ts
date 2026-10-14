@@ -1,5 +1,11 @@
 import type { BlogPost } from "@/types";
-import { AUSTRALIAN_STATES } from "@/lib/utils/stamp-duty";
+import { AUSTRALIAN_STATES, calculateStampDuty, type AustralianState } from "@/lib/utils/stamp-duty";
+import { currentDutyRelief, currentGrant, money, summariseRelief } from "@/lib/policy/first-home";
+
+// State figures from src/lib/policy/first-home.ts and the stamp duty engine.
+const grant = (s: AustralianState) => currentGrant(s);
+const relief = (s: AustralianState, k: "established" | "new" | "vacant-land" = "established") => summariseRelief(currentDutyRelief(s, k));
+const ownerDuty = (s: AustralianState, price: number) => money(calculateStampDuty(price, s, false, false, false).total);
 import { HG_DATES, HG_MIN_DEPOSIT_PCT, HG_NO_OWNERSHIP_YEARS, HG_PREAPPROVAL_DAYS, HG_SINGLE_PARENT_SELL_WEEKS, hgCapSentence } from "@/lib/data/home-guarantee";
 
 export const post: BlogPost = {
@@ -32,73 +38,69 @@ ${AUSTRALIAN_STATES.map((s) => `<li>${hgCapSentence(s)}</li>`).join("\n")}
 
 <h2>NSW</h2>
 <ul>
-<li><strong>FHOG:</strong> $10,000 for new homes bought for up to $600,000, or land and a building contract up to $750,000</li>
-<li><strong>Stamp duty:</strong> Full exemption up to $800,000 (new and established), concession to $1,000,000</li>
-<li><strong>First Home Buyer Choice:</strong> Optional annual property tax (0.3% of land value) instead of upfront stamp duty, properties up to $1.5M</li>
-<li><strong>Shared Equity Home Buyer Helper:</strong> Up to 40% government equity (new) or 30% (established) for eligible buyers (key workers, single parents, older singles)</li>
+<li><strong>FHOG:</strong> ${grant("NSW").summary}</li>
+<li><strong>Stamp duty:</strong> ${relief("NSW")} on a new or established home (contracts from 1 July 2023); vacant land: ${relief("NSW", "vacant-land").replace(/^No/, "no")}</li>
+<li><strong>Closed schemes:</strong> First Home Buyer Choice closed to new buyers in 2023 and the Shared Equity Home Buyer Helper on 30 June 2024; <a href="/guides/help-to-buy-scheme-nsw">Help to Buy</a> is now the shared equity option</li>
 </ul>
-<p>Maximum savings stacking: ~$45,000 to $50,000 on a new $750K home for eligible buyers.</p>
+<p>Stacking on a $750K house-and-land package: the $10,000 grant plus ${ownerDuty("NSW", 750_000)} of stamp duty you don't pay, before the LMI the 5% Deposit Scheme removes.</p>
 
 <h2>VIC</h2>
 <ul>
-<li><strong>FHOG:</strong> $10,000 metro Melbourne, $20,000 regional Victoria, on new homes up to $750,000</li>
-<li><strong>Stamp duty:</strong> Full exemption to $600,000, concession to $750,000 (new and established)</li>
+<li><strong>FHOG:</strong> ${grant("VIC").summary}. The $20,000 regional grant ended on 30 June 2021</li>
+<li><strong>Stamp duty:</strong> ${relief("VIC")} (new and established homes, and vacant land)</li>
 <li><strong>Victorian Homebuyer Fund:</strong> closed to new applications on 10 September 2025. Victoria's shared equity option is now the federal <a href="/guides/help-to-buy-scheme-victoria">Help to Buy scheme</a></li>
 <li><strong>PPR concession:</strong> Available to non-FHB owner-occupiers on properties up to $550,000</li>
 </ul>
-<p>Maximum savings stacking: ~$35,000 to $40,000 on a $600K first home.</p>
+<p>Stacking on a new $600K home: the $10,000 grant plus ${ownerDuty("VIC", 600_000)} of stamp duty you don't pay.</p>
 
 <h2>QLD</h2>
 <ul>
-<li><strong>FHOG:</strong> $30,000 for new homes up to $750,000 (one of Australia's most generous)</li>
-<li><strong>First Home Concession:</strong> Reduced transfer duty for properties up to $550,000 (new and established)</li>
-<li><strong>First Home Vacant Land Concession:</strong> Reduced duty on land up to $400,000 with concession to $500,000</li>
+<li><strong>FHOG:</strong> ${grant("QLD").summary}, kept by the 2026-27 Queensland Budget</li>
+<li><strong>First home concession:</strong> on an established home, ${relief("QLD").replace(/^No/, "no")} (contracts from 9 June 2024)</li>
+<li><strong>New homes and vacant land:</strong> no transfer duty at any price for contracts from 1 May 2025</li>
 <li><strong>Queensland Housing Finance Loan:</strong> Government home loan for low-to-moderate income earners</li>
 </ul>
-<p>Maximum savings stacking: ~$45,000 to $55,000 on a $750K new home.</p>
+<p>Stacking on a new home just under $750K: the $30,000 grant plus ${ownerDuty("QLD", 749_000)} of transfer duty you don't pay, nearly $50,000.</p>
 
 <h2>WA</h2>
 <ul>
-<li><strong>FHOG:</strong> $10,000 for new homes up to $750,000</li>
-<li><strong>Stamp duty:</strong> Full exemption to $450,000, concession to $600,000 (new and established)</li>
+<li><strong>FHOG:</strong> ${grant("WA").summary}</li>
+<li><strong>Stamp duty:</strong> ${relief("WA")} (new and established homes, agreements from 7 May 2026); vacant land: ${relief("WA", "vacant-land").replace(/^No/, "no")}</li>
 <li><strong>Keystart Home Loans:</strong> WA Government low-deposit home loans (as low as 2%) without LMI, income limits apply (unique to WA)</li>
 <li><strong>SharedStart (Keystart):</strong> State shared equity through Keystart</li>
 </ul>
-<p>Maximum savings stacking: ~$30,000 to $40,000 on a $450K new home, with Keystart adding meaningful low-deposit access not available elsewhere.</p>
+<p>Stacking on a new $600K home: the $10,000 grant plus ${ownerDuty("WA", 600_000)} of transfer duty you don't pay, with Keystart adding low-deposit access not available elsewhere.</p>
 
 <h2>SA</h2>
 <ul>
-<li><strong>FHOG:</strong> $15,000 for new homes up to $650,000</li>
-<li><strong>Stamp duty:</strong> No FHB-specific exemption on established homes (a notable gap vs. NSW/VIC)</li>
-<li><strong>HomeSeeker SA:</strong> State shared equity scheme, eligibility varies by round</li>
-<li><strong>Off-the-Plan Stamp Duty Concession:</strong> Reduces duty on off-the-plan apartment purchases (not FHB-exclusive)</li>
+<li><strong>FHOG:</strong> ${grant("SA").summary}</li>
+<li><strong>Stamp duty:</strong> none on a new home, an off-the-plan apartment or vacant land to build, with no price cap (contracts from 6 June 2024). No first home relief on an established home</li>
+<li><strong>HomeStart Shared Equity Option:</strong> HomeStart can lend 5% to 25% of the price, for net household income up to $120,000 and homes up to $750,000</li>
 </ul>
-<p>Maximum savings stacking: ~$25,000 on a $650K new home. SA's lack of an established-home stamp duty concession is a real gap.</p>
+<p>Stacking on a new $650K home: a grant of up to $15,000 plus ${ownerDuty("SA", 650_000)} of stamp duty you don't pay. On an established home there's no first home help from the state.</p>
 
 <h2>TAS</h2>
 <ul>
-<li><strong>FHOG:</strong> $30,000 for new homes (one of Australia's most generous)</li>
-<li><strong>Stamp duty:</strong> 50% concession on established homes up to $600,000</li>
-<li>Note: New home OR established home concession, not both on the same property</li>
+<li><strong>FHOG:</strong> ${grant("TAS").summary}. It was $30,000 in 2025-26</li>
+<li><strong>Stamp duty:</strong> the exemption for first home buyers of established homes ended for settlements after 30 June 2026. There's no first home duty relief on new homes or land</li>
 </ul>
-<p>Maximum savings stacking: ~$35,000 on a new home, ~$10,000 to $12,000 on an established home of $500K to $600K.</p>
+<p>Stacking: the grant is the whole Tasmanian package now, ${money(grant("TAS").amount)} on a new home. A first home buyer pays full duty, ${ownerDuty("TAS", 500_000)} on a $500K home.</p>
 
 <h2>ACT</h2>
 <ul>
-<li><strong>No FHOG.</strong> Replaced with the Home Buyer Concession Scheme</li>
-<li><strong>Home Buyer Concession Scheme (HBCS):</strong> Full stamp duty waiver for eligible FHBs (new and established). Income and property value thresholds apply</li>
-<li><strong>ACT Shared Equity Scheme:</strong> Government takes equity in property; income and asset limits apply</li>
+<li><strong>No FHOG.</strong> It ceased on 1 July 2019</li>
+<li><strong>Home Buyer Concession Scheme (HBCS):</strong> ${relief("ACT").replace(/^No/, "no")}, on new and established homes and vacant land, for transactions from 1 July 2026</li>
+<li><strong>ACT Shared Equity Scheme:</strong> for public housing tenants buying their Housing ACT home</li>
 <li><strong>Land Rent Scheme:</strong> Unique to ACT, lease the land, finance only the build</li>
 </ul>
-<p>Maximum savings stacking: ~$25,000 to $30,000 on a $700K home (HBCS waiver alone). The ACT scheme is one of the most generous when measured by total dollar value, given Canberra's high prices.</p>
+<p>Stacking on a $700K home: ${ownerDuty("ACT", 700_000)} of duty you don't pay (owner-occupier rate), and more as the price rises, since there's no cap.</p>
 
 <h2>NT</h2>
 <ul>
-<li><strong>FHOG:</strong> $10,000 for new or substantially renovated homes (more flexible than other states)</li>
-<li><strong>First Home Owner Discount:</strong> Up to $23,928.60 stamp duty relief on new and established homes</li>
-<li>Combined: ~$34,000 maximum on a new home, ~$24,000 on an established home</li>
+<li><strong>HomeGrown Territory Grant:</strong> ${grant("NT").summary}</li>
+<li><strong>Stamp duty:</strong> no first home buyer concession. The $10,000 grant for established homes covered contracts from 1 October 2024 to 30 September 2025 only</li>
 </ul>
-<p>NT's combined package is one of Australia's most generous by total dollar value.</p>
+<p>The NT's ${money(grant("NT").amount)} grant on a new home is the largest first home grant in Australia; a first home buyer pays full duty, ${ownerDuty("NT", 500_000)} on a $500K home.</p>
 
 <h2>How to maximise the stack</h2>
 <ol>
@@ -125,6 +127,6 @@ ${AUSTRALIAN_STATES.map((s) => `<li>${hgCapSentence(s)}</li>`).join("\n")}
   category: "Buying Guide",
   tags: ["first home buyer", "schemes", "fhog", "stamp duty", "2026"],
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-14",
   readingTime: 12,
 };

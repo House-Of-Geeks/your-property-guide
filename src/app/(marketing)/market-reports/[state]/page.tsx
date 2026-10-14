@@ -356,18 +356,20 @@ export default async function StateMarketReportPage({
               Ready to act on the data?
             </p>
             <h3 className="text-3xl sm:text-4xl leading-[1.1] tracking-[-0.025em] text-ink">
-              Search {data.stateName} properties for sale
+              Buying in {data.stateName}?
             </h3>
             <p className="mt-4 text-lg text-ink-muted leading-relaxed">
-              Browse listings across all suburbs in {data.stateName}.
+              Budget, schemes, inspections and offers, step by step.
             </p>
           </div>
           <div className="lg:col-span-5 flex flex-wrap gap-3 lg:justify-end">
+            {/* The buyer hub; the /buy listings were retired on 14 Oct 2026
+                (docs/portal-consolidation-2026-10-14.md). */}
             <Link
-              href={`/buy?state=${state}`}
+              href="/buying"
               className={BUTTON_PRIMARY}
             >
-              Browse {upperState} listings
+              Buying: where to start
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
             <Link

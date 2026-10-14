@@ -1,3 +1,4 @@
+import { MAX_REPRESENTATIVE_KM, stationDistanceFor } from "@/lib/climate";
 import { cache } from "react";
 import { RELIABLE_SALES_SOURCES } from "@/lib/suburb-data-quality";
 import type { Suburb, SuburbDataFreshness } from "@/types";
@@ -92,6 +93,33 @@ async function fetchFreshness(slug: string): Promise<{
     rentalRentHouse: isAllDwellingsOnly(rental) ? 0 : rental?.medianRentHouse ?? null,
     rentalRentUnit:  isAllDwellingsOnly(rental) ? 0 : rental?.medianRentUnit  ?? null,
     rentalRentAll:   allDwellingsRent(rental),
+  };
+}
+
+function climateFields(
+  s: { lat?: number | null; lng?: number | null },
+  climate: DbSuburbClimate | null,
+): Pick<Suburb, "climate" | "climateWithheld"> {
+  if (!climate || !climate.bomStationId || !climate.bomStationName || climate.distanceKm === null) {
+    return { climate: null, climateWithheld: null };
+  }
+  const distanceKm = stationDistanceFor(climate.bomStationId, climate.distanceKm, s);
+  if (distanceKm > MAX_REPRESENTATIVE_KM) {
+    return { climate: null, climateWithheld: { stationName: climate.bomStationName, distanceKm } };
+  }
+  return {
+    climateWithheld: null,
+    climate: {
+      bomStationId:   climate.bomStationId,
+      bomStationName: climate.bomStationName,
+      distanceKm,
+      meanMaxTemp:    climate.meanMaxTemp    ?? [],
+      meanMinTemp:    climate.meanMinTemp    ?? [],
+      meanRainfall:   climate.meanRainfall   ?? [],
+      meanHumidity9am: climate.meanHumidity9am ?? [],
+      meanSunshineHrs: climate.meanSunshineHrs ?? [],
+      annualRainfallMm: climate.annualRainfallMm ?? null,
+    },
   };
 }
 
@@ -203,20 +231,11 @@ function toSuburb(
           bushfireSource: hazard.bushfireSource ?? null,
         }
       : null,
-    climate:
-      climate && climate.bomStationId && climate.bomStationName && climate.distanceKm !== null
-        ? {
-            bomStationId:   climate.bomStationId,
-            bomStationName: climate.bomStationName,
-            distanceKm:     climate.distanceKm,
-            meanMaxTemp:    climate.meanMaxTemp    ?? [],
-            meanMinTemp:    climate.meanMinTemp    ?? [],
-            meanRainfall:   climate.meanRainfall   ?? [],
-            meanHumidity9am: climate.meanHumidity9am ?? [],
-            meanSunshineHrs: climate.meanSunshineHrs ?? [],
-            annualRainfallMm: climate.annualRainfallMm ?? null,
-          }
-        : null,
+    // The station's distance is rechecked against the suburb's coordinates
+    // (older syncs stored one suburb's distance for every suburb on a
+    // station), and a station too far away to describe the suburb isn't
+    // shown as its climate (src/lib/climate.ts).
+    ...climateFields(s, climate),
   };
 }
 

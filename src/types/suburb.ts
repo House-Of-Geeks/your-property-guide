@@ -68,6 +68,8 @@ export interface Suburb {
     bushfireRisk: string | null;
     bushfireSource: string | null;
   } | null;
+  /** Set when the only station on file is too far away to describe the suburb (src/lib/climate.ts). */
+  climateWithheld?: { stationName: string; distanceKm: number } | null;
   climate?: {
     bomStationId: string;
     bomStationName: string;

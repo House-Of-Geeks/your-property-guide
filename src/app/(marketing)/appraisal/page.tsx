@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { FaqAccordion } from "@/components/guide";
-import { AppraisalForm } from "@/components/forms/AppraisalForm";
+import { IntroductionForm } from "@/components/journeys/IntroductionForm";
+import { FEE_DISCLOSURE, HOW_WE_ARE_PAID_HREF, RESPONSE_WINDOW } from "@/lib/service-model";
 import { SuburbValueRange } from "@/components/journey/SuburbValueRange";
 import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
 import Link from "next/link";
@@ -18,16 +19,16 @@ import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, PhotoPanel, Secti
 
 export const metadata: Metadata = {
   title: "Free Property Appraisal from a Local Agent | No Obligation",
-  description: "Get a free property appraisal from a vetted agent who sells in your suburb: what an appraisal is, how it differs from a bank valuation or online estimate, what to have ready, and what happens after you ask.",
+  description: "Ask for a free property appraisal from one participating agent who sells in your suburb: what an appraisal is, how it differs from a bank valuation or online estimate, what to have ready, and exactly what happens after you ask.",
   alternates: { canonical: `${SITE_URL}/appraisal` },
-  openGraph: { url: `${SITE_URL}/appraisal`, title: "Free Property Appraisal from a Local Agent | No Obligation", description: "Request a free property appraisal from a vetted local real estate agent.", type: "website" },
+  openGraph: { url: `${SITE_URL}/appraisal`, title: "Free Property Appraisal from a Local Agent | No Obligation", description: "Ask for a free property appraisal from one participating local agent, only with your permission.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
 const TRUST_POINTS = [
-  "Vetted local agent, not a call centre",
-  "Honest comparable-sales evidence",
-  "Response within one business day",
+  "One participating local agent, checked before they join",
+  "Only with your permission, and no obligation to list",
+  `They contact you the way you choose, normally ${RESPONSE_WINDOW}`,
 ];
 
 // Valuation plan item 5. The page was a form with no indexable content:
@@ -104,13 +105,9 @@ export default function AppraisalPage() {
         breadcrumbs={[{ label: "Free Appraisal" }]}
         aside={
           <>
-            <div id="appraisal-form" className="tone-light scroll-mt-24 rounded-xl border border-line bg-white p-5 sm:p-8 shadow-[0_12px_40px_-14px_rgb(22_25_29/0.22)]">
-              <h2 className="font-display text-ink tracking-[-0.02em] text-xl sm:text-2xl font-bold leading-tight mb-1">
-                Two minutes, then we take it from there
-              </h2>
-              <p className="text-sm text-ink-muted mb-5">Tell us about the property.</p>
+            <div id="appraisal-form" className="scroll-mt-24">
               <Suspense fallback={<div className="h-96" aria-busy="true" />}>
-                <AppraisalForm />
+                <IntroductionForm defaultService="selling-agent" source="appraisal" compact />
               </Suspense>
             </div>
             <div className="lg:hidden mt-8">
@@ -122,8 +119,8 @@ export default function AppraisalPage() {
         <HeroTitle>Free property appraisal from a local agent</HeroTitle>
         {/* Phone-sized lede, as before: the form stays on the first screen. */}
         <HeroLead className="max-sm:mt-4 max-sm:text-base">
-          An honest appraisal from a vetted local agent. No call centre,
-          no auto-routing, no commitment to list with them.
+          We introduce one participating agent who sells in your area, only
+          with your permission. No obligation to list with them.
         </HeroLead>
         <a
           href="#value-range"
@@ -195,13 +192,14 @@ export default function AppraisalPage() {
                 What happens after you ask
               </h2>
               <ol className="space-y-3 text-base text-ink-muted leading-relaxed list-decimal pl-5 marker:text-ink-subtle">
-                <li>Our team calls you within one business day and introduces you to one local agent who sells in your area. If we don&rsquo;t have one yet, we&rsquo;ll tell you.</li>
-                <li>The agent arranges a time to see the property, by phone or email as you prefer.</li>
+                <li>If a participating agent covers your suburb, we pass your request to that one agent and email you to confirm. If none does, or we need to check something, our team tells you {RESPONSE_WINDOW}.</li>
+                <li>The agent contacts you the way you chose to arrange a time to see the property.</li>
                 <li>They inspect and give you a figure or a range, most often as a short written appraisal with the comparable sales listed.</li>
-                <li>You decide what to do with it. Sell now, sell later, get a second appraisal, or file it away. There is no obligation at any step.</li>
+                <li>You decide what to do with it. Sell now, sell later, get a second appraisal, or file it away. There is no obligation at any step. A week or two later we ask whether it was useful.</li>
               </ol>
               <p className="mt-4 text-sm text-ink-muted leading-relaxed">
-                Every request is read by our team. The agent we introduce you to pays us a fee for the introduction, whether or not you list with them. You pay nothing, and your details go to no one else.
+                {FEE_DISCLOSURE} Your details go to no one else.{" "}
+                <Link href={HOW_WE_ARE_PAID_HREF} className="underline underline-offset-4">How we&rsquo;re paid</Link>
               </p>
             </div>
           </div>
@@ -219,7 +217,8 @@ export default function AppraisalPage() {
                 ))}
               </dl>
               <p className="mt-4 text-xs text-ink-subtle leading-relaxed">
-                Coverage depends on having a vetted agent in your area. Where we do not yet have one, we tell you rather than pass your details on.
+                Coverage depends on having a participating agent in your area. Where we don&rsquo;t, we tell you rather than pass your details on.{" "}
+                <Link href="/get-help#how-we-choose" className="underline underline-offset-4">How we choose agents</Link>
               </p>
             </div>
             <div className="rounded-xl border border-line p-5 sm:p-6">
@@ -257,7 +256,7 @@ export default function AppraisalPage() {
             <FaqAccordion items={APPRAISAL_FAQS} />
           </div>
           <a href="#appraisal-form" className={`mt-12 ${BUTTON_PRIMARY} justify-center`}>
-            Get my free appraisal
+            Ask for an appraisal introduction
           </a>
         </div>
       </Band>

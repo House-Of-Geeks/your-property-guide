@@ -16,6 +16,12 @@ import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { HomeGuaranteeNote } from "@/components/guide/HomeGuaranteeNote";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
+import { NSW_FIRST_HOME, NSW_FIRST_HOME_LAND, calculateStampDuty } from "@/lib/utils/stamp-duty";
+import { FIRST_HOME_REVIEWED_ON, formatPolicyDate, money } from "@/lib/policy/first-home";
+
+// Figures from src/lib/policy/first-home.ts and the stamp duty engine.
+const duty = (price: number) => calculateStampDuty(price, "NSW", false, false, false).total;
+const firstHomeDuty = (price: number) => calculateStampDuty(price, "NSW", true, false, false).total;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "First Home Buyer Guide NSW: Grants, Stamp Duty & Schemes (2026)",
@@ -23,7 +29,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "NSW first home buyer guide: $10,000 FHOG for new homes, stamp duty exemption up to $800K, concession to $1M, federal schemes, and step-by-step NSW buying advice.",
   slug: "first-home-buyer-nsw",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-14",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -52,10 +58,10 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "NSW offers a $10,000 First Home Owner Grant on new homes only: up to $600,000 for a home you buy, or $750,000 for land plus a contract to build.",
-  "Full stamp duty exemption applies on any home (new or established) up to $800,000, with a scaled concession up to $1,000,000.",
+  `For contracts exchanged from ${NSW_FIRST_HOME.from}, there's no stamp duty on any home (new or established) up to ${money(NSW_FIRST_HOME.exemptTo)}, and a reduced amount below ${money(NSW_FIRST_HOME.concessionTo)}. Vacant land to build on is duty free to ${money(NSW_FIRST_HOME_LAND.exemptTo)}.`,
   `Federal schemes work in NSW. The 5% Deposit Scheme has had no income test or limit on places since ${HG_DATES.expanded}; its price cap is ${fmtCap(HG_PRICE_CAPS.NSW.capital)} in Greater Sydney and NSW's regional centres and ${fmtCap(HG_PRICE_CAPS.NSW.rest)} elsewhere.`,
-  "On a $750,000 home, an eligible NSW first home buyer pays $0 stamp duty, saving roughly $29,000 versus a standard buyer.",
-  "First Home Buyer Choice (annual property tax instead of upfront stamp duty) remains available for properties up to $1.5M for eligible buyers.",
+  `On a $750,000 home, an eligible NSW first home buyer pays $0 stamp duty, saving ${money(duty(750_000))} against any other buyer.`,
+  "First Home Buyer Choice (an annual property tax instead of duty) closed to new buyers in 2023, and the Shared Equity Home Buyer Helper closed on 30 June 2024. Help to Buy is now NSW's shared equity option.",
   "Rules and price caps change. Verify with Revenue NSW or a licensed conveyancer before relying on these figures.",
 ];
 
@@ -83,12 +89,12 @@ const FAQS: FaqItem[] = [
   {
     question: "Is stamp duty really $0 in NSW for first home buyers?",
     answer:
-      "Yes, on any home (new or established) up to $800,000 contract price, an eligible first home buyer in NSW pays no stamp duty. Between $800,001 and $1,000,000 a scaled concession applies. Above $1,000,000 the standard rate kicks in.",
+      `Yes, on any home (new or established) up to ${money(NSW_FIRST_HOME.exemptTo)}, for contracts exchanged from ${NSW_FIRST_HOME.from}. Above that the duty rises in a straight line to the full rate at ${money(NSW_FIRST_HOME.concessionTo)}: a $900,000 home pays ${money(firstHomeDuty(900_000))} instead of ${money(duty(900_000))}. Vacant land to build on is duty free to ${money(NSW_FIRST_HOME_LAND.exemptTo)}, with a concession below ${money(NSW_FIRST_HOME_LAND.concessionTo)}.`,
   },
   {
-    question: "Should I take stamp duty upfront or use First Home Buyer Choice?",
+    question: "Can I still pay an annual property tax instead of stamp duty?",
     answer:
-      "First Home Buyer Choice lets eligible buyers pay an annual 0.3% land-value property tax instead of stamp duty upfront, on properties up to $1.5M. It improves cash flow at settlement but costs more long-term if you stay 10+ years. Most owner-occupiers planning to hold long-term are better off with the upfront duty (or exemption). Get advice based on your specific numbers.",
+      `No. First Home Buyer Choice, which let first home buyers pay an annual property tax instead of upfront duty, closed to new buyers in 2023. Contracts exchanged from ${NSW_FIRST_HOME.from} use the First Home Buyers Assistance Scheme instead: no duty up to ${money(NSW_FIRST_HOME.exemptTo)} and a reduced amount below ${money(NSW_FIRST_HOME.concessionTo)}.`,
   },
   {
     question: "Can I combine the FHOG with the First Home Guarantee in NSW?",
@@ -177,7 +183,7 @@ export default function FirstHomeBuyerNSWPage() {
         <a href="https://www.revenue.nsw.gov.au/grants-schemes/first-home-owner-new-homes-grant" target="_blank" rel="noopener noreferrer">
           Revenue NSW: First Home Owner (New Homes) Grant
         </a>
-        , checked 7 October 2026.
+        , checked {formatPolicyDate(FIRST_HOME_REVIEWED_ON)}.
       </p>
 
       <h3>How and when the grant is paid</h3>
@@ -189,9 +195,10 @@ export default function FirstHomeBuyerNSWPage() {
 
       <h2 id="stamp-duty-nsw">Stamp duty exemption and concession</h2>
       <p>
-        NSW offers significant stamp duty relief for first home buyers on both new
-        and established properties. Since September 2023, concessions apply to
-        eligible buyers purchasing any home, new or established.
+        Under the First Home Buyers Assistance Scheme, NSW gives first home
+        buyers stamp duty relief on new and established homes alike. These
+        thresholds apply to contracts exchanged from {NSW_FIRST_HOME.from}; before
+        that the exemption stopped at $650,000.
       </p>
 
       <table>
@@ -202,18 +209,17 @@ export default function FirstHomeBuyerNSWPage() {
           </tr>
         </thead>
         <tbody>
-          <tr><td>Up to $800,000</td><td>$0 (full exemption)</td></tr>
-          <tr><td>$800,001 to $1,000,000</td><td>Concession (scaled, reduced rate)</td></tr>
-          <tr><td>Over $1,000,000</td><td>Full stamp duty applies</td></tr>
+          <tr><td>Up to {money(NSW_FIRST_HOME.exemptTo)}</td><td>$0 (full exemption)</td></tr>
+          <tr><td>Above {money(NSW_FIRST_HOME.exemptTo)} and below {money(NSW_FIRST_HOME.concessionTo)}</td><td>Concession: rises in a straight line to full duty</td></tr>
+          <tr><td>{money(NSW_FIRST_HOME.concessionTo)} or more</td><td>Full stamp duty</td></tr>
+          <tr><td>Vacant land up to {money(NSW_FIRST_HOME_LAND.exemptTo)}</td><td>$0, with a concession below {money(NSW_FIRST_HOME_LAND.concessionTo)}</td></tr>
         </tbody>
       </table>
 
       <p>
-        On a $750,000 home, an eligible first home buyer in NSW pays{" "}
-        <strong>$0</strong> in stamp duty. A standard buyer would pay roughly
-        $29,000. Use our{" "}
-        <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link> to estimate
-        your exact saving.
+        {`On a $750,000 home, an eligible first home buyer in NSW pays $0 in stamp duty, where any other buyer pays ${money(duty(750_000))}. At $900,000 a first home buyer pays ${money(firstHomeDuty(900_000))} instead of ${money(duty(900_000))}. `}
+        Use our <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link>{" "}
+        to estimate your exact saving; it applies the rules for your contract date.
       </p>
 
       <h3>Eligibility for the concession</h3>
@@ -223,14 +229,12 @@ export default function FirstHomeBuyerNSWPage() {
         <li>Both new and established homes are eligible (unlike the FHOG, which is new homes only)</li>
       </ul>
 
-      <h3>First Home Buyer Choice (optional annual property tax)</h3>
+      <h3>First Home Buyer Choice has closed</h3>
       <p>
-        NSW introduced First Home Buyer Choice in 2023, giving buyers the option to
-        pay an annual property tax instead of upfront stamp duty. It's available for
-        properties up to $1.5M and is calculated as 0.3% of land value for
-        owner-occupiers. The option improves cash flow at settlement but adds an
-        ongoing cost. Get advice on which option suits your specific situation
-        before opting in.
+        First Home Buyer Choice, which let first home buyers pay an annual
+        property tax instead of upfront stamp duty, closed to new buyers in 2023.
+        The First Home Buyers Assistance Scheme above is the help that applies
+        now.
       </p>
 
       <h2 id="federal-schemes">Federal schemes available in NSW</h2>
@@ -249,16 +253,13 @@ export default function FirstHomeBuyerNSWPage() {
       <h2 id="nsw-specific">NSW-specific schemes and resources</h2>
       <ul>
         <li>
-          <strong>Shared Equity Home Buyer Helper (NSW):</strong> The NSW
-          Government's own shared equity scheme. Eligible buyers can purchase with
-          the state co-investing up to 40% (new homes) or 30% (existing). Income
-          caps $90K single / $120K couple. Available for key workers, single
-          parents, and older singles (50+) in certain circumstances. Check
-          eligibility at Service NSW.
+          <strong>Shared Equity Home Buyer Helper:</strong>{" "}closed on 30 June
+          2024. NSW&rsquo;s shared equity option is now the federal{" "}
+          <Link href="/guides/help-to-buy-scheme-nsw">Help to Buy scheme</Link>.
         </li>
         <li>
-          <strong>Revenue NSW First Home Buyer Assistance Scheme:</strong> Single
-          place to apply for the stamp duty exemption/concession and FHOG at
+          <strong>Revenue NSW, First Home Buyers Assistance Scheme:</strong> where
+          you apply for the stamp duty exemption or concession, and the FHOG, at
           revenue.nsw.gov.au.
         </li>
       </ul>

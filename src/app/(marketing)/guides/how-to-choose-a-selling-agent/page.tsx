@@ -106,7 +106,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Commission Calculator",               href: "/real-estate-commission-calculator",       description: "What an agent costs on your sale price, by state." },
   { title: "Real Estate Agent Fees in Australia", href: "/guides/real-estate-agent-fees-australia", description: "Detailed breakdown of commission structures across states." },
   { title: "Property Auction Guide",              href: "/guides/property-auction-guide",            description: "How auctions actually run, and what to expect from your agent on auction day." },
-  { title: "Free Property Appraisal",             href: "/appraisal",                                description: "An independent appraisal from a vetted local agent, no commitment." },
+  { title: "Free Property Appraisal",             href: "/appraisal",                                description: "An appraisal from one participating local agent, only if you ask. No commitment." },
   { title: "Sell First or Buy First?",            href: "/guides/sell-first-or-buy-first",           description: "The decision tree before you commit to either a sale or a purchase." },
   { title: "Conveyancing in Australia",           href: "/guides/conveyancing-guide",                description: "What your conveyancer does on the sell side." },
 ];

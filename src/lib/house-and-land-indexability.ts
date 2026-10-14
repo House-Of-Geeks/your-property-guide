@@ -1,3 +1,10 @@
+// Retired 14 Oct 2026: /house-and-land and its package pages, its sitemap
+// and its sitemap-index entry are gone, and the paths 308 to /buying
+// (next.config.ts, docs/portal-consolidation-2026-10-14.md). Only the cache
+// window and tag below are still read (house-and-land-service.ts); the
+// HouseAndLandPackage table and its rows are kept. What follows is the rule
+// as it stood.
+//
 // Whether /house-and-land and its package pages are indexable, and whether
 // the sitemaps submit them. One rule, hasHouseAndLandStock, read from one
 // cached count (getLiveHouseAndLandPackageCount in
@@ -43,9 +50,6 @@ export function houseAndLandRobots(livePackages: number): typeof NO_STOCK_ROBOTS
 /** The hub's meta description while nothing is listed: says so, and names what the page links to instead. */
 export const NO_STOCK_DESCRIPTION =
   "No house and land packages are listed right now. Guides to buying a package, checking a builder, the First Home Owner Grant and stamp duty on a new home.";
-
-/** The house-and-land sitemap, listed in the sitemap index only while there is stock. */
-export const HOUSE_AND_LAND_SITEMAP_PATH = "/house-and-land/sitemap.xml";
 
 /**
  * Cache window for the count, and its tag. An hour, so the first package

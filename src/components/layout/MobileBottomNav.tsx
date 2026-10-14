@@ -3,41 +3,39 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Phone } from "lucide-react";
-import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
-import { guideFunnelHref, type GuideAudience } from "@/lib/guide-funnel";
+import { moveForPath } from "@/lib/journey-paths";
 
-// Brand v4 (Oct 2026): the phone bar carries the two actions the business
-// runs on, the free guide and a free appraisal, plus a call button. Phones
-// carry most visits, and the old bar (Guides, Quiz, Compare, Tools) had no
-// way to ask for help.
+// The phone bar (Oct 2026, "confident moves"): two actions that fit the page's
+// move. The first is always the learning step (a plan for that move); the
+// second is personal help for that move. It hides where the page is itself a
+// form, and while any field has focus, so it never sits over what someone is
+// typing or over the keyboard.
 
-// Hidden where the page itself is the form, so the bar never competes with it.
 const HIDE_ON = [
-  "/selling-guide", "/buying-guide", "/appraisal", "/find-an-expert",
-  "/get-connected", "/contact", "/dashboard",
-];
-
-const BUYER_PATHS = [
-  "/first-home-buyers", "/investing", "/upgrading", "/buy",
-  "/stamp-duty-calculator", "/borrowing-power-calculator", "/mortgage-calculator",
-  "/affordability-calculator", "/lmi-calculator", "/help-to-buy-calculator", "/fhss-calculator",
+  "/plan", "/get-help", "/selling-guide", "/buying-guide", "/appraisal", "/find-an-expert",
+  "/get-connected", "/contact", "/dashboard", "/feedback", "/tools/agent-proposal-worksheet",
 ];
 
 const matches = (pathname: string, p: string) => pathname === p || pathname.startsWith(`${p}/`);
 
-// The page the bar was tapped on, for Lead.attribution.entry: "bar-" plus the
-// path ("bar-guides-stamp-duty-nsw", "bar-home").
+// The page the bar was tapped on, for Lead.attribution.entry ("bar-guides-stamp-duty-nsw").
 const barEntry = (pathname: string) =>
   `bar-${pathname.replace(/^\/+|\/+$/g, "").replace(/[^a-z0-9]+/gi, "-").toLowerCase() || "home"}`.slice(0, 100);
 
+const ACTIONS = {
+  buying: { plan: "Buying plan", help: "Buyer’s agent?", helpHref: "/buyers-agents" },
+  selling: { plan: "Selling plan", help: "Get an appraisal", helpHref: "/get-help?service=selling-agent" },
+  "buying-and-selling": { plan: "Moving plan", help: "Get help", helpHref: "/get-help?service=both" },
+  none: { plan: "Make a plan", help: "Get help", helpHref: "/get-help" },
+} as const;
+
 export function MobileBottomNav() {
   const pathname = usePathname();
-  // Guides and posts know their reader (GuideArticleLayout and the post page
-  // render a hidden [data-guide-audience] marker); a buyer guide gets the
-  // buying guide here too. Read on the frame after each navigation commits,
-  // so the server HTML still matches and the new page's marker is in place.
-  const [pageAudience, setPageAudience] = useState<GuideAudience | null>(null);
+  // Guides and posts mark their reader ([data-guide-audience]); read it once
+  // the new page has committed so the server HTML still matches.
+  const [pageAudience, setPageAudience] = useState<"buying" | "selling" | null>(null);
+  const [typing, setTyping] = useState(false);
+
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
       const value = document.querySelector<HTMLElement>("[data-guide-audience]")?.dataset.guideAudience;
@@ -46,36 +44,42 @@ export function MobileBottomNav() {
     return () => cancelAnimationFrame(frame);
   }, [pathname]);
 
+  useEffect(() => {
+    const isField = (el: EventTarget | null) =>
+      el instanceof HTMLElement && (el.matches("input, textarea, select") || el.isContentEditable);
+    const onIn = (e: FocusEvent) => setTyping(isField(e.target));
+    const onOut = () => setTyping(false);
+    document.addEventListener("focusin", onIn);
+    document.addEventListener("focusout", onOut);
+    return () => {
+      document.removeEventListener("focusin", onIn);
+      document.removeEventListener("focusout", onOut);
+    };
+  }, []);
+
   if (HIDE_ON.some((p) => matches(pathname, p))) return null;
 
-  const buyer = pageAudience ? pageAudience === "buying" : BUYER_PATHS.some((p) => matches(pathname, p));
+  const move = moveForPath(pathname) ?? pageAudience;
+  const a = ACTIONS[move ?? "none"];
+  const from = barEntry(pathname);
+  const planHref = move ? `/plan?j=${move}` : "/plan";
+  const helpHref = a.helpHref.includes("?") ? `${a.helpHref}&from=${from}` : a.helpHref;
 
   return (
     <nav
-      className="fixed bottom-0 inset-x-0 z-40 border-t border-line bg-white/95 backdrop-blur-md sm:hidden"
+      className={`fixed bottom-0 inset-x-0 z-40 border-t border-line bg-white/95 backdrop-blur-md sm:hidden print:hidden transition-transform duration-200 ${typing ? "translate-y-full" : ""}`}
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
-      aria-label="Get help"
+      aria-label="Next steps"
+      aria-hidden={typing || undefined}
+      inert={typing || undefined}
     >
-      <div className="grid grid-cols-[1.35fr_1fr_auto] gap-2 px-3 py-2">
-        <Link
-          href={guideFunnelHref(buyer ? "buying" : "selling", { from: barEntry(pathname) })}
-          className="flex items-center justify-center rounded-md bg-cta hover:bg-cta-hover text-white px-2 py-2.5 text-sm font-semibold"
-        >
-          {buyer ? "Free buying guide" : "Free selling guide"}
+      <div className="grid grid-cols-2 gap-2 px-3 py-2">
+        <Link href={planHref} className="flex items-center justify-center rounded-md bg-cta hover:bg-cta-hover text-white px-2 py-2.5 text-sm font-semibold">
+          {a.plan}
         </Link>
-        <Link
-          href="/appraisal"
-          className="flex items-center justify-center rounded-md border border-ink text-ink px-2 py-2.5 text-sm font-semibold"
-        >
-          Free appraisal
+        <Link href={helpHref} className="flex items-center justify-center rounded-md border border-ink text-ink px-2 py-2.5 text-sm font-semibold">
+          {a.help}
         </Link>
-        <a
-          href={`tel:${CONTACT_PHONE_E164}`}
-          className="flex items-center justify-center rounded-md border border-line text-ink w-11"
-          aria-label={`Call us on ${CONTACT_PHONE_DISPLAY}`}
-        >
-          <Phone className="w-5 h-5" aria-hidden="true" />
-        </a>
       </div>
     </nav>
   );

@@ -10,9 +10,23 @@ interface PropertyCardProps {
   variant?: "grid" | "list" | "featured";
 }
 
+/**
+ * Where a listing card links. The listing pages (/buy/[slug], /rent/[slug],
+ * /sold/[slug]) were retired on 14 Oct 2026 and 308 elsewhere (next.config.ts,
+ * docs/portal-consolidation-2026-10-14.md), so a card links straight to the
+ * page that serves its reader, without the hop: a rental to the guides, a
+ * sold record to its suburb's profile (where sale prices live), anything else
+ * to the buyer hub.
+ */
+export function listingCardHref(property: Pick<Property, "listingType" | "suburbSlug">): string {
+  if (property.listingType === "rent") return "/guides";
+  if (property.listingType === "sold") return property.suburbSlug ? `/suburbs/${property.suburbSlug}` : "/suburbs";
+  return "/buying";
+}
+
 export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) {
   const { address, price, features, images, listingType, propertyType, status } = property;
-  const href = listingType === "rent" ? `/rent/${property.slug}` : listingType === "sold" ? `/sold/${property.slug}` : `/buy/${property.slug}`;
+  const href = listingCardHref(property);
 
   if (variant === "list") {
     return (

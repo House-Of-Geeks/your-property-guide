@@ -10,6 +10,7 @@ import { PERSONAS, getPersonaById, type PersonaId } from "@/lib/constants/journe
 import { PERSONA_HUB_CONTENT } from "@/lib/persona-hub-content";
 import { hubGuideGroups, hubGuideList } from "@/lib/guides/hub-guides";
 import { guideFunnelHref } from "@/lib/guide-funnel";
+import { HelpBand } from "@/components/journeys/ServiceSections";
 import {
   BUTTON_PRIMARY,
   BUTTON_SECONDARY,
@@ -173,19 +174,16 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
         <HeroTitle>{persona.hubHeading}</HeroTitle>
         <HeroLead>{answer}</HeroLead>
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3">
-          <Link href={guideHref} className={`${BUTTON_PRIMARY} justify-center`}>
-            {isBuyingHub ? "Get the free buying guide" : "Get the free selling guide"}
+          <Link href={`/plan?j=${isBuyingHub ? "buying" : "selling"}`} className={`${BUTTON_PRIMARY} justify-center`}>
+            {isBuyingHub ? "Make a buying plan" : "Make a selling plan"}
           </Link>
-          {personaId === "selling" && (
-            <Link href="/appraisal" className={`${BUTTON_SECONDARY} justify-center`}>
-              Free appraisal
-            </Link>
-          )}
+          <Link href={guideHref} className={`${BUTTON_SECONDARY} justify-center`}>
+            {isBuyingHub ? "Free buying guide (PDF)" : "Free selling guide (PDF)"}
+          </Link>
         </div>
         <p className="mt-4 text-sm text-ink-muted">
-          {isBuyingHub
-            ? "Free PDF in 60 seconds. Never passed to selling agents."
-            : "Free PDF in 60 seconds. Agents pay us for introductions; it costs you nothing."}
+          {"Free to read and use, no sign-up. We only introduce an agent if you ask. "}
+          <Link href="/about#ownership-funding" className="underline underline-offset-4">How we’re paid</Link>
         </p>
       </PhotoHero>
 
@@ -260,8 +258,8 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
             />
             <p className="mt-6 text-lg text-ink-muted leading-relaxed max-w-md">
               {isBuyingHub
-                ? "Ten chapters written for the buyer you actually are. Schemes, finance, inspections, the offer. Free, personalised, 60 seconds."
-                : "Selling costs 3 to 5 percent of your price. The right moves claw thousands of it back. Ten chapters, personalised to your suburb, free."}
+                ? "Ten chapters for buyers: schemes, finance, inspections and the offer, in order. Free. Tell us where to send it; nothing else is sent unless you ask."
+                : "Ten chapters on selling well, in order: costs, preparation, choosing an agent, the campaign and the contract. Free. Tell us where to send it; nothing else is sent unless you ask."}
             </p>
           </div>
           <div className="lg:col-span-7">
@@ -275,6 +273,9 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
           </div>
         </div>
       </Band>
+
+      {/* Personal help, honestly: who, what they charge, where we can help. */}
+      <HelpBand service={isBuyingHub ? "buyers-agent" : "selling-agent"} from={`hub-${personaId}`} />
 
       {/* Other personas */}
       <Band spacing="compact">

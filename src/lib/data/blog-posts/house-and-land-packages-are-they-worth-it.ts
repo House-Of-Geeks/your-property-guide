@@ -23,7 +23,7 @@ export const post: BlogPost = {
 <li>Understand the estate covenants and any restrictions on modifications or landscaping</li>
 </ul>
 
-<p>House and land packages can represent excellent value when approached with realistic expectations and thorough due diligence. The key is to look beyond the headline price, understand the full cost of completion, and work with reputable builders who deliver quality homes on time and on budget. For many buyers in the Moreton Bay Region, a well-chosen house and land package remains one of the smartest paths to homeownership. Browse current <a href="/house-and-land">house-and-land options</a>, and see our guide on <a href="/guides/how-to-find-a-builder-australia">how to find a builder</a> before you sign anything.</p>`,
+<p>House and land packages can represent excellent value when approached with realistic expectations and thorough due diligence. The key is to look beyond the headline price, understand the full cost of completion, and work with reputable builders who deliver quality homes on time and on budget. For many buyers in the Moreton Bay Region, a well-chosen house and land package remains one of the smartest paths to homeownership. Our <a href="/buying">buyer's hub</a> covers the steps from budget to settlement, and our guide on <a href="/guides/how-to-find-a-builder-australia">how to find a builder</a> covers what to check before you sign anything.</p>`,
   coverImage: "/images/blog/cover-house-and-land-packages-are-they-worth-it.jpg",
   author: {
     name: "Ellie Johnston",

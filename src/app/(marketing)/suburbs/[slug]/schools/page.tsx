@@ -77,9 +77,7 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
   const suburb = await getSuburbBySlug(slug);
   if (!suburb) notFound();
 
-  // Links to the listings only when there are any; otherwise to the profile.
   const availability = await getSuburbSubpageAvailability(suburb);
-  const hasListings = availability.buy;
   const nearby = await getNearbySubpages(suburb.nearbySuburbs);
 
   const schools = [...suburb.schools].sort((a, b) => {
@@ -309,10 +307,10 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
             </p>
             <p className="mt-3 font-sans text-[15px]">
               <Link
-                href={hasListings ? `/suburbs/${slug}/buy` : `/suburbs/${slug}`}
+                href={`/suburbs/${slug}`}
                 className="inline-flex items-center gap-2 font-medium text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary"
               >
-                {hasListings ? `Homes for sale in ${name}` : `Living in ${name}: prices, rents and who lives there`}
+                {`Living in ${name}: prices, rents and who lives there`}
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
             </p>

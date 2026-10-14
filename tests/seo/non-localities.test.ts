@@ -211,7 +211,9 @@ describe("redirects", () => {
   });
   it("next.config.ts serves exactly those rules, and the total stays well inside the platform limit", async () => {
     const all = await nextConfig.redirects!();
-    const ours = all.filter((r) => r.source.startsWith("/suburbs/"));
+    // The one generic /suburbs/:slug/... rule is the listing sub-page
+    // retirement (tests/seo/portal-redirects.test.ts); the rest are ours.
+    const ours = all.filter((r) => r.source.startsWith("/suburbs/") && !r.source.startsWith("/suburbs/:slug/"));
     expect(ours).toEqual(nonLocalityRedirects());
     expect(all.length).toBeLessThan(1000);
   });

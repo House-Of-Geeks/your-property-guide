@@ -18,6 +18,13 @@
 
 import type { PersonaId } from "@/lib/constants/journey";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
+import { currentExemptTo, currentConcessionTo, currentGrant, money } from "@/lib/policy/first-home";
+import { calculateStampDuty } from "@/lib/utils/stamp-duty";
+
+// First home figures for the FAQ answers, from src/lib/policy/first-home.ts.
+const fhGrant = (s: Parameters<typeof currentGrant>[0]) => money(currentGrant(s).amount);
+const fhExempt = (s: Parameters<typeof currentExemptTo>[0]) => money(currentExemptTo(s) ?? 0);
+const fhTo = (s: Parameters<typeof currentConcessionTo>[0]) => money(currentConcessionTo(s) ?? 0);
 
 export interface HubCalculatorCard {
   label: string;
@@ -74,8 +81,8 @@ const FIRST_HOME: PersonaHubContent = {
     paragraphs: [
       "Buying a first home in Australia is mostly three problems running in parallel: how much deposit you actually need, which federal or state schemes you qualify for, and how much stamp duty you can avoid paying. Get those three right and the rest is paperwork.",
       `On deposit: most lenders will accept a 5% deposit if you can qualify for the First Home Guarantee (FHBG), which waives Lenders Mortgage Insurance on a 5% deposit. Without the FHBG, expect to need 20% to avoid LMI, or pay LMI of roughly 2-4% of the loan to get in on 5-10%. Since ${HG_DATES.expanded} the FHBG, now the 5% Deposit Scheme, has no income test and no limit on places; what still applies is the price cap for the area you buy in.`,
-      "On schemes: the First Home Owner Grant (FHOG) is state-administered and varies by state: $30k in QLD and $10k in NSW and VIC, all for new homes only, under each state's price cap (Victoria's $20k regional grant ended in June 2021). The First Home Super Saver Scheme (FHSSS) lets you withdraw up to $50k of voluntary super contributions, plus deemed earnings, for a deposit, a useful top-up that most first home buyers don't know about.",
-      "On stamp duty: this is where the biggest dollar saving usually sits. NSW first home buyers pay no stamp duty under $800k, partial concession to $1M. VIC offers full exemption under $600k, sliding scale to $750k. QLD has its own First Home Concession with a $700k cap. WA is generous under $450k. Calculate before you make an offer, not after — the gap between qualifying and not qualifying can be tens of thousands of dollars.",
+      `On schemes: the First Home Owner Grant (FHOG) is state-administered and varies by state: ${fhGrant("QLD")} in QLD and ${fhGrant("NSW")} in NSW and VIC, all for new homes only, under each state's price cap (Victoria's $20k regional grant ended in June 2021). The First Home Super Saver Scheme (FHSSS) lets you withdraw up to $50k of voluntary super contributions, plus deemed earnings, for a deposit, a useful top-up that most first home buyers don't know about.`,
+      `On stamp duty: this is where the biggest dollar saving usually sits. On an established home, NSW first home buyers pay no stamp duty up to ${fhExempt("NSW")}, with a partial concession below ${fhTo("NSW")}. VIC: no duty up to ${fhExempt("VIC")}, sliding scale to ${fhTo("VIC")}. QLD: none up to ${fhExempt("QLD")}, phasing out to ${fhTo("QLD")}, and nothing on a new home at any price. WA: none up to ${fhExempt("WA")}, a concessional rate to ${fhTo("WA")}. Calculate before you make an offer, not after — the gap between qualifying and not qualifying can be tens of thousands of dollars.`,
       "Pre-approval before you bid. Conditional approval (sometimes called 'pre-approval') tells you what a lender will lend you on your current income and expenses, subject to property valuation. It's not a guarantee, but going to an auction without one is gambling with your deposit.",
     ],
   },
@@ -97,12 +104,12 @@ const FIRST_HOME: PersonaHubContent = {
     {
       question: "What is the First Home Owner Grant in 2026?",
       answer:
-        "The FHOG is administered by each state and territory. NSW: $10,000 for new homes up to $600,000 (or $750,000 for land and a building contract). VIC: $10,000 for new homes up to $750,000. QLD: $30,000 (boosted) for new homes only. WA: $10,000 for new homes under $750,000 metro / $1m regional. SA: $15,000 for new homes under $650,000. TAS: $30,000 for new homes. The grant only covers newly built homes in most states.",
+        `The FHOG is administered by each state and territory, for new homes only. NSW: ${currentGrant("NSW").summary}. VIC: ${currentGrant("VIC").summary}. QLD: ${currentGrant("QLD").summary}. WA: ${currentGrant("WA").summary}. SA: ${currentGrant("SA").summary.replace(/^Up/, "up")}. TAS: ${currentGrant("TAS").summary}. NT: the HomeGrown Territory Grant, ${currentGrant("NT").summary}. The ACT has no grant.`,
     },
     {
       question: "Do first home buyers pay stamp duty?",
       answer:
-        "Often no, or much less than other buyers. NSW abolishes stamp duty for first home buyers under $800,000 with a sliding concession to $1m. VIC waives it under $600,000, sliding to $750,000. QLD has a First Home Concession with thresholds up to $700,000 (full exemption typically under $550,000). WA exempts up to $450,000. Always check current thresholds with the state revenue office before you make an offer.",
+        `Often no, or much less than other buyers. On an established home, NSW charges first home buyers nothing up to ${fhExempt("NSW")}, with a sliding concession below ${fhTo("NSW")}. VIC waives it up to ${fhExempt("VIC")}, sliding to ${fhTo("VIC")}. QLD charges nothing up to ${fhExempt("QLD")}, phasing out to ${fhTo("QLD")}, and nothing on a new home at any price. WA exempts up to ${fhExempt("WA")}. SA charges nothing on a new home or land to build but full duty on an established home, and the ACT nothing at any price from 1 July 2026. Tasmania's exemption ended for settlements after 30 June 2026. Always check current thresholds with the state revenue office before you make an offer.`,
     },
     {
       question: "What is Lenders Mortgage Insurance (LMI) and when does it apply?",
@@ -280,14 +287,14 @@ const UPGRADING: PersonaHubContent = {
       "Sell first means you list and sell your current home, then go house-hunting with a known budget. You'll either need short-term rental accommodation between settlements or to negotiate a long settlement on the sale (60-90 days isn't unusual) so you can buy in parallel. Cleanest financially because there's no double mortgage and no bridging fees, but the risk is finding the right next home in the available window.",
       "Buy first means you find the next home, exchange contracts subject to finance, then list your current home. This works in slow markets where you can negotiate a long settlement on the purchase (often 90-120 days). The risk: if your current home doesn't sell quickly, you're carrying two mortgages and possibly paying penalty interest. Have a serviceability buffer in mind before going down this path.",
       "Bridging finance is a short-term loan that covers the gap between buying the new home and selling the old one. Bridging lasts 6-12 months typically, the rate is usually 1-2% above standard variable, and you'll pay interest on the 'peak debt' (combined value of both loans) for the bridging period. Useful when the timing genuinely won't line up, expensive if you treat it as an alternative to selling fast.",
-      "Stamp duty on the next home is the line item most upgraders underestimate. A $1.5m purchase in NSW carries around $66,000 in stamp duty for a non-first-home buyer; a $1m purchase in VIC is roughly $55,000. Build the duty into your true cost of moving, not the headline price difference.",
+      `Stamp duty on the next home is the line item most upgraders underestimate. A $1.5m purchase in NSW carries ${money(calculateStampDuty(1_500_000, "NSW", false, false, false).total)} in stamp duty for a non-first-home buyer; a $1m purchase in VIC is ${money(calculateStampDuty(1_000_000, "VIC", false, false, false).total)}. Build the duty into your true cost of moving, not the headline price difference.`,
     ],
   },
   calculatorsHeading: "The numbers an upgrader has to run",
   calculatorsBlurb:
     "Two transactions, two sets of math. Get the stamp duty, repayment and borrowing-power numbers before you sign either.",
   calculators: [
-    { label: "Stamp duty (your next home)",   href: "/stamp-duty-calculator",      blurb: "The single biggest line item when moving. By state, with current 2025/26 rates." },
+    { label: "Stamp duty (your next home)",   href: "/stamp-duty-calculator",      blurb: "The single biggest line item when moving. By state, with current rates." },
     { label: "Mortgage repayment calculator", href: "/mortgage-calculator",        blurb: "What the new loan will actually cost each month, weekly or fortnightly." },
     { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "What a lender will approve on your current income and equity position." },
     { label: "Free property appraisal",       href: "/appraisal",                  blurb: "Independent estimate of your current home from a vetted local agent." },

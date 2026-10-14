@@ -65,6 +65,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
               <NavLink href="/dashboard/admin" icon={<ShieldCheck className="w-4 h-4" />} label="Site Overview" />
               <NavLink href="/dashboard/admin/agencies" icon={<Building2 className="w-4 h-4" />} label="All Agencies" />
               <NavLink href="/dashboard/admin/users" icon={<Users className="w-4 h-4" />} label="Users & Roles" />
+              <NavLink href="/dashboard/admin/leads" icon={<List className="w-4 h-4" />} label="Leads and outcomes" />
             </div>
           )}
           <NavLink href="/" icon={<Home className="w-4 h-4" />} label="View Site" />

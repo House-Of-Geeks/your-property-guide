@@ -46,7 +46,7 @@ export async function AgentsResults({ searchParams }: AgentsResultsProps) {
             </div>
           </Link>
           <Link
-            href="/sold"
+            href="/suburbs"
             className="flex items-center gap-5 p-6 rounded-xl bg-surface-raised border border-line hover:border-ink transition-colors group"
           >
             <Image
@@ -62,7 +62,7 @@ export async function AgentsResults({ searchParams }: AgentsResultsProps) {
                 Market activity
               </p>
               <p className="text-lg font-semibold text-ink group-hover:text-primary transition-colors leading-tight">
-                See recently sold properties
+                See suburb sale prices
               </p>
             </div>
           </Link>

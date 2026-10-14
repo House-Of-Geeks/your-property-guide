@@ -54,7 +54,7 @@ const FAQS = [
   {
     question: "Is the buying guide really free?",
     answer:
-      "Yes. The guide is a free PDF and there's no charge for anything on Your Property Guide. Your details are never sold and never passed to selling agents. If you ask us to, we can introduce you to a vetted mortgage broker or buyer's agent, and they pay us for that introduction, never you.",
+      "Yes. The guide is a free PDF and there's no charge for anything on Your Property Guide. Requesting it never passes your details to any agent, and we never sell them. If you later want a buyer's agent, that's a separate request with its own permission box; we're still building that network, so we'll tell you honestly whether we can introduce one. We don't introduce mortgage brokers.",
   },
   {
     question: "Which first home buyer schemes apply in 2026?",
@@ -88,7 +88,7 @@ function GuidePitch() {
         />
         <ul className="space-y-3">
           {[
-            "2026 schemes state by state, worth tens of thousands",
+            "2026 schemes, grants and concessions, state by state",
             "What a lender may lend you, buffer included",
             "Underquoting and auction psychology, decoded",
             "A printable 12-week buying timeline",
@@ -169,12 +169,12 @@ export default function BuyingGuidePage() {
               <div className="mt-6 px-1">
                 <p className="text-sm font-semibold text-ink mb-2">What happens next</p>
                 <ol className="space-y-1.5 text-sm text-ink-muted leading-snug list-decimal pl-5 marker:text-ink-subtle">
-                  <li>Answer six quick questions, about 60 seconds</li>
-                  <li>Download instantly, plus a copy lands in your inbox</li>
+                  <li>Answer three quick questions</li>
+                  <li>Download it straight away, or have it emailed</li>
                   <li>We point you at the chapters for your situation</li>
                 </ol>
                 <p className="mt-3 text-xs text-ink-subtle leading-relaxed">
-                  Free. Your details are never sold and never passed to selling agents.
+                  Free. Requesting the guide never passes your details to any agent.
                 </p>
               </div>
 
@@ -187,14 +187,13 @@ export default function BuyingGuidePage() {
           <p className="text-sm font-semibold text-ink-muted mb-3 sm:mb-5">
             Free PDF, 2026 edition
           </p>
-          <HeroTitle>Overpaying is the default. This is the fix</HeroTitle>
+          <HeroTitle>The free guide to buying property</HeroTitle>
           {/* Phone-sized lede, as before: the funnel stays on the first screen. */}
           <HeroLead className="max-sm:mt-4 max-sm:text-base">
-            The complete guide to buying property in Australia, written
-            for the buyer you actually are: first home, upgrading,
-            investing or downsizing. What you can really spend, the
-            schemes worth tens of thousands, and how the selling side
-            plays you. Free, in your inbox in 60 seconds.
+            Ten chapters for buyers in Australia, whether it&rsquo;s your
+            first home, your next one, an investment or a downsize: what
+            you can really spend, the schemes in your state, inspecting,
+            how the selling side works, and making the offer.
           </HeroLead>
           <div className="hidden lg:block mt-12">
             <GuidePitch />

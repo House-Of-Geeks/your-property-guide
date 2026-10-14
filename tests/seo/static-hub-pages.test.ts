@@ -5,7 +5,9 @@
 // until its ISR window passed, a day for most of them. The post-deploy warm
 // job cannot help: a GET inside the window serves the cached placeholder.
 // They now render on request from cached data, as /regions does. Source-text
-// checks, so the test needs no Next runtime or database.
+// checks, so the test needs no Next runtime or database. /off-market was
+// retired on 14 Oct 2026 (docs/portal-consolidation-2026-10-14.md) and 308s
+// to /selling, so it is no longer among them.
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
@@ -25,10 +27,6 @@ const HUBS: Record<string, { key: string; read: string }> = {
   "compare/page.tsx": {
     key: `["compare-hub:v1", NOT_PLACES_VERSION, ${DEPLOYMENT}]`,
     read: "const { topNSW, topVIC, topQLD, pairsByState } = await getCachedRails();",
-  },
-  "off-market/page.tsx": {
-    key: `["off-market:v1", ${DEPLOYMENT}]`,
-    read: "const offMarketProperties = await getCachedOffMarket();",
   },
   "data/page.tsx": {
     key: `["data-counts:v1", NOT_PLACES_VERSION, ${DEPLOYMENT}]`,
@@ -76,7 +74,7 @@ describe("no static page renders a build-phase placeholder", () => {
     .map((f) => f.split("\\").join("/"))
     .filter((f) => f.endsWith("/page.tsx") && !f.includes("["));
 
-  it("finds the static pages, the five hubs among them", () => {
+  it("finds the static pages, the four hubs among them", () => {
     expect(pages.length).toBeGreaterThan(100);
     for (const file of Object.keys(HUBS)) expect(pages).toContain(`(marketing)/${file}`);
   });

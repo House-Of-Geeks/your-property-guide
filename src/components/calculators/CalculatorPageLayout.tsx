@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 import { BUYING_GUIDE_CTA, ExpertCTA } from "@/components/journey";
+import { NextStepCard } from "@/components/journeys/NextStepCard";
+import { nextStepFor } from "@/lib/next-steps";
 import { Faq, type FaqItem, GuideStartInline, RelatedGuides, type RelatedGuide } from "@/components/guide";
 import { BreadcrumbJsonLd, WebApplicationJsonLd } from "@/components/seo";
 import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
@@ -53,6 +55,8 @@ export function CalculatorPageLayout({
   // funnel right under the result, where the reader has just seen what
   // selling will cost them.
   const sellerCalculator = guideAudienceForPersona(frontmatter.persona) === "selling";
+  // The priority calculators' own next step (src/lib/next-steps.ts).
+  const contextual = nextStepFor(frontmatter.slug);
 
   return (
     <>
@@ -97,13 +101,15 @@ export function CalculatorPageLayout({
       <section className="border-b border-line">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 pb-14 sm:pt-12 sm:pb-20">
           {calculator}
-          {sellerCalculator ? (
+          {contextual ? (
+            <NextStepCard className="mt-8" {...contextual} />
+          ) : sellerCalculator ? (
             <>
               <GuideStartInline from={frontmatter.slug} className="mt-8" />
               <p className="mt-3 text-sm text-ink-muted">
                 Rather talk to someone who sells in your suburb?{" "}
-                <Link href="/appraisal" className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
-                  Get a free appraisal
+                <Link href={`/get-help?service=selling-agent&from=${frontmatter.slug}`} className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+                  Ask for an appraisal introduction
                 </Link>
               </p>
             </>

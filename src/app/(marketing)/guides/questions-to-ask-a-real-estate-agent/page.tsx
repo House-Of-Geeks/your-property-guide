@@ -111,7 +111,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The Cost of Selling a House",         href: "/guides/cost-of-selling-a-house-australia",   description: "Every fee from commission to conveyancing, with a worked example." },
   { title: "Property Auction Guide",              href: "/guides/property-auction-guide",              description: "How auctions actually run, and what to expect from your agent on auction day." },
   { title: "Free Selling Guide (PDF)",            href: "/selling-guide",                              description: "The agent interview questions and nine more chapters, personalised to your suburb." },
-  { title: "Free Property Appraisal",             href: "/appraisal",                                  description: "An independent appraisal from a vetted local agent, no commitment." },
+  { title: "Free Property Appraisal",             href: "/appraisal",                                  description: "An appraisal from one participating local agent, only if you ask. No commitment." },
 ];
 
 export default function QuestionsToAskARealEstateAgentPage() {

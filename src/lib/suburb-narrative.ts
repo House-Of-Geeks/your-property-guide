@@ -13,6 +13,13 @@
 import type { Suburb } from "@/types";
 import { hasReliablePrice } from "./suburb-data-quality";
 import { describeSalesProvenance } from "@/lib/sales-provenance";
+import {
+  TEMPERATURE_UNAVAILABLE,
+  formatStationDistance,
+  hasRealTemperatureSeries,
+  realAnnualRainfallMm,
+  stationDistanceCaveat,
+} from "@/lib/climate";
 
 // ─── State-level reference baselines ──────────────────────────────────
 // Indicative all-suburb medians per state, as of 2026.  Used for
@@ -294,6 +301,48 @@ export function buildDemographicsSummary(suburb: Suburb): string {
   return parts.join(" ");
 }
 
+/**
+ * Climate paragraph for the lifestyle section, or "" when the station gives
+ * us nothing real. A rainfall-only station has no temperature series (older
+ * syncs stored twelve zeros): we say temperature isn't available rather than
+ * writing "around 0°C". January stands in for summer, July for winter.
+ */
+export function buildClimateSentence(c: Suburb["climate"]): string {
+  if (!c) return "";
+  const maxOk = hasRealTemperatureSeries(c.meanMaxTemp);
+  const minOk = hasRealTemperatureSeries(c.meanMinTemp);
+  const rainfall = realAnnualRainfallMm(c);
+  if (!maxOk && !minOk && rainfall === null) return "";
+
+  const parts: string[] = [];
+  const summer = maxOk ? c.meanMaxTemp[0] : null;
+  const winter = minOk ? c.meanMinTemp[6] : null;
+  const summerPhrase = summer !== null
+    ? `around ${Math.round(summer)}°C (${summer >= 32 ? "hot" : summer >= 27 ? "warm" : "mild"})`
+    : null;
+  const winterPhrase = winter !== null
+    ? `around ${Math.round(winter)}°C (${winter <= 4 ? "cold" : winter <= 8 ? "cool" : "mild"})`
+    : null;
+  if (summerPhrase && winterPhrase) {
+    parts.push(`Summer days here average ${summerPhrase}, winter mornings ${winterPhrase}.`);
+  } else if (summerPhrase) {
+    parts.push(`Summer days here average ${summerPhrase}. Minimum temperatures aren't available from the nearest station.`);
+  } else if (winterPhrase) {
+    parts.push(`Winter mornings here average ${winterPhrase}. Maximum temperatures aren't available from the nearest station.`);
+  } else {
+    parts.push(TEMPERATURE_UNAVAILABLE);
+  }
+  if (rainfall !== null) {
+    parts.push(`Annual rainfall lands at about ${Math.round(rainfall).toLocaleString("en-AU")} mm.`);
+  }
+  parts.push(
+    `Figures are long-term averages from the Bureau of Meteorology's ${c.bomStationName} station, ${formatStationDistance(c.distanceKm)} away.`,
+  );
+  const caveat = stationDistanceCaveat(c.distanceKm);
+  if (caveat) parts.push(caveat);
+  return parts.join(" ");
+}
+
 /** "What it's like to live here" — climate, walkability, lifestyle. */
 export function buildLifestyleSummary(suburb: Suburb): string[] {
   const s = suburb.stats;
@@ -319,19 +368,8 @@ export function buildLifestyleSummary(suburb: Suburb): string[] {
   }
 
   // Climate paragraph (only when BoM data is loaded)
-  if (suburb.climate) {
-    const c = suburb.climate;
-    const summerMax = c.meanMaxTemp[0] ?? c.meanMaxTemp[1] ?? null;
-    const winterMin = c.meanMinTemp[6] ?? c.meanMinTemp[5] ?? null;
-    const rainfall = c.annualRainfallMm;
-    if (summerMax !== null && winterMin !== null) {
-      const summerWord = summerMax >= 32 ? "hot" : summerMax >= 27 ? "warm" : "mild";
-      const winterWord = winterMin <= 4 ? "cold" : winterMin <= 8 ? "cool" : "mild";
-      parts.push(
-        `Summer days here average around ${Math.round(summerMax)}°C (${summerWord}), winter mornings around ${Math.round(winterMin)}°C (${winterWord}).${rainfall ? ` Annual rainfall lands at about ${Math.round(rainfall)}mm.` : ""} Data comes from the Bureau of Meteorology's ${c.bomStationName} station, ${c.distanceKm.toFixed(1)}km away.`,
-      );
-    }
-  }
+  const climate = buildClimateSentence(suburb.climate);
+  if (climate) parts.push(climate);
 
   // Schools paragraph
   if (suburb.schools && suburb.schools.length > 0) {

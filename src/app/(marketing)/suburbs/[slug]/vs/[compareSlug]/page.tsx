@@ -12,6 +12,7 @@ import { nonLocalityBySlug } from "@/lib/non-localities";
 import { canonicalComparePath } from "@/lib/suburb-indexability";
 import { publishedGrowthFor } from "@/lib/published-medians";
 import { hasReliablePrice } from "@/lib/suburb-data-quality";
+import { januaryMeanMax } from "@/lib/climate";
 import { guideFunnelHref } from "@/lib/guide-funnel";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
@@ -303,8 +304,8 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
           suburbA.climate?.annualRainfallMm != null ? `${Math.round(suburbA.climate.annualRainfallMm)} mm` : "–",
           suburbB.climate?.annualRainfallMm != null ? `${Math.round(suburbB.climate.annualRainfallMm)} mm` : "–"),
         row("Mean max, January",
-          suburbA.climate?.meanMaxTemp?.[0] != null ? `${fmtFloat(suburbA.climate.meanMaxTemp[0])}°C` : "–",
-          suburbB.climate?.meanMaxTemp?.[0] != null ? `${fmtFloat(suburbB.climate.meanMaxTemp[0])}°C` : "–"),
+          januaryMeanMax(suburbA.climate) != null ? `${fmtFloat(januaryMeanMax(suburbA.climate))}°C` : "–",
+          januaryMeanMax(suburbB.climate) != null ? `${fmtFloat(januaryMeanMax(suburbB.climate))}°C` : "–"),
       ],
     },
   ]

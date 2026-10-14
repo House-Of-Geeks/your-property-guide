@@ -7,7 +7,7 @@ import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 export const metadata: Metadata = {
   title: "Site Map",
   description:
-    "Browse every section of Your Property Guide on a single page. Listings, suburb data, calculators, guides, and tools.",
+    "Browse every section of Your Property Guide on a single page. Suburb data, calculators, guides, and tools.",
   alternates: { canonical: `${SITE_URL}/site-map` },
   openGraph: {
     url: `${SITE_URL}/site-map`,
@@ -23,18 +23,9 @@ interface Section {
   links: { label: string; href: string }[];
 }
 
+// The Listings section (/buy, /rent, /sold, /off-market, /house-and-land)
+// went with those routes on 14 Oct 2026 (docs/portal-consolidation-2026-10-14.md).
 const SECTIONS: Section[] = [
-  {
-    title: "Listings",
-    blurb: "Search properties for sale, for rent, recently sold, off-market, and house & land packages.",
-    links: [
-      { label: "Properties for sale",     href: "/buy" },
-      { label: "Properties for rent",     href: "/rent" },
-      { label: "Recently sold",           href: "/sold" },
-      { label: "Off-market properties",   href: "/off-market" },
-      { label: "House & land packages",   href: "/house-and-land" },
-    ],
-  },
   {
     title: "Suburb &amp; market data",
     blurb: "Browse and compare Australian suburbs, postcodes, regions, and states.",
@@ -119,6 +110,7 @@ const SECTIONS: Section[] = [
     title: "Persona hubs",
     blurb: "Whatever your stage, jump straight to the section that fits.",
     links: [
+      { label: "Buying: where to start", href: "/buying" },
       { label: "First home buyers",  href: "/first-home-buyers" },
       { label: "Selling your home",  href: "/selling" },
       { label: "Upgrading or downsizing", href: "/upgrading" },

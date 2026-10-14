@@ -51,17 +51,17 @@ const FAQS = [
   {
     question: "How does a free guide save me money?",
     answer:
-      "Three ways, all covered with real numbers. Agent selection: the gap between a strong and average agent on a typical sale runs five figures, and chapter 5 gives you the 10 questions that reveal which one you're talking to. Fee negotiation: commission is negotiable in every state, and 0.2 to 0.4 percent off a typical sale is $1,700 to $3,400. Preparation: the right pre-sale fixes return 3 to 10 times their cost, and chapter 4 tells you which ones they are.",
+      "By helping you make the big decisions with evidence. Chapter 3 lists every cost of selling in your state, so you can see what's negotiable. Chapter 5 gives you the questions to ask every agent, so you can compare them on their sales evidence, their fee and their plan rather than on the highest price estimate. Chapter 4 covers which repairs and presentation jobs tend to be worth doing, and which usually aren't. What it saves you depends on your sale.",
   },
   {
     question: "Is the selling guide really free?",
     answer:
-      "Yes. The guide is a free PDF, and there's no charge for anything on Your Property Guide. Unless you tell us you're already listed, we may also pass your details to one local agent when you request it. The agent pays us for that introduction, you never do, and the form tells you this before you submit.",
+      "Yes. The guide is a free PDF, and there's no charge for anything on Your Property Guide. Requesting the guide never passes your details to an agent. If you later want an appraisal, that's a separate request with its own permission box; the agent we introduce pays us for the introduction, and you never do.",
   },
   {
     question: "Will I get spammed by agents if I download it?",
     answer:
-      "No. Your details only go to an agent if you're a genuine seller and you've agreed to it on the form. They go to one local agent only, and we never sell them to anyone else. If you're already listed with an agent, we don't share your details at all.",
+      "No. Downloading the guide doesn't pass your details to any agent. We email you the guide and nothing else, unless you tick the box for a short series of tips. An introduction only happens if you ask for one separately and tick the permission box, and then it goes to one agent only. If you're already listed with an agent, we won't introduce another.",
   },
   {
     question: "What does it cost to sell a house in Australia?",
@@ -71,7 +71,7 @@ const FAQS = [
   {
     question: "Do I need an agent to sell my house?",
     answer:
-      "No, private sales are legal in every state. About 90 percent of Australian sellers still use an agent, mostly for pricing evidence, buyer reach and negotiation. The guide covers both routes honestly, including when DIY makes sense.",
+      "No, private sales are legal in every state. Most Australian sellers use an agent, mostly for pricing evidence, buyer reach and negotiation. The guide covers both routes, including when selling it yourself makes sense.",
   },
 ];
 
@@ -90,10 +90,10 @@ function GuidePitch() {
         />
         <ul className="space-y-3">
           {[
-            "The 10 questions that expose an average agent before you sign",
-            "Fee negotiation that typically saves $1,700 to $3,400",
-            "Presentation moves that return 3 to 10 times their cost",
-            "The 60-day trap that quietly discounts stale listings",
+            "The questions to ask every agent before you sign",
+            "Commission by state, and how to negotiate it",
+            "Which repairs and presentation jobs are worth paying for",
+            "A 12-week timeline you can print",
           ].map((line) => (
             <li key={line} className="flex items-start gap-2.5">
               <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" aria-hidden="true" />
@@ -103,10 +103,10 @@ function GuidePitch() {
         </ul>
       </div>
       <p className="mt-6 text-sm text-ink-muted">
-        10 chapters · 60-second form · One agent, never a list
+        10 chapters · Three quick questions · Download straight away or by email
       </p>
       <p className="mt-1 text-xs text-ink-subtle">
-        Figures are typical ranges from the guide, chapters 3 to 5. Your sale will vary.
+        General information, not advice. Costs and rules are by state, with sources.
       </p>
     </>
   );
@@ -172,9 +172,9 @@ export default function SellingGuidePage() {
               <div className="mt-6 px-1">
                 <p className="text-sm font-semibold text-ink mb-2">What happens next</p>
                 <ol className="space-y-1.5 text-sm text-ink-muted leading-snug list-decimal pl-5 marker:text-ink-subtle">
-                  <li>Answer seven quick questions, about 60 seconds</li>
-                  <li>Download instantly, plus a copy lands in your inbox</li>
-                  <li>Selling soon? A free local appraisal, only if you want one</li>
+                  <li>Answer three quick questions about where and when</li>
+                  <li>Download it straight away, or have it emailed</li>
+                  <li>Want an appraisal later? That&rsquo;s a separate request, only if you ask</li>
                 </ol>
                 <p className="mt-3 text-xs text-ink-subtle leading-relaxed">
                   The guide is free. If you later ask for an agent, they pay us
@@ -191,14 +191,14 @@ export default function SellingGuidePage() {
           <p className="text-sm font-semibold text-ink-muted mb-3 sm:mb-5">
             Free PDF, 2026 edition
           </p>
-          <HeroTitle>The agent you pick is a $20,000 decision</HeroTitle>
+          <HeroTitle>The free guide to selling your property</HeroTitle>
           {/* Phone-sized lede, as before: the funnel stays on the first screen. */}
           <HeroLead className="max-sm:mt-4 max-sm:text-base">
-            On a typical sale, the gap between a strong agent and an
-            average one runs five figures. This free guide shows you how
-            to tell them apart, what selling really costs, and where to
-            claw thousands back. Ten chapters, personalised to your
-            suburb, in your inbox in 60 seconds.
+            Ten chapters, in order: whether and when to sell, what your
+            property is worth, the real costs in your state, preparing it,
+            choosing an agent, and the campaign through to settlement.
+            Answer three questions and we&rsquo;ll point you to the
+            chapters for your stage.
           </HeroLead>
           <div className="hidden lg:block mt-12">
             <GuidePitch />

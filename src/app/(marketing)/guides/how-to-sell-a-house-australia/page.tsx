@@ -123,7 +123,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Real Estate Agent Fees in Australia", href: "/guides/real-estate-agent-fees-australia",   description: "Commission ranges by state, marketing budgets, and what's negotiable." },
   { title: "Property Auction Guide",              href: "/guides/property-auction-guide",             description: "How auctions actually run from a seller's perspective." },
   { title: "Sell First or Buy First?",            href: "/guides/sell-first-or-buy-first",            description: "The sequencing decision when you're moving home, with worked examples." },
-  { title: "Free Property Appraisal",             href: "/appraisal",                                 description: "An independent appraisal from a vetted local agent, no commitment." },
+  { title: "Free Property Appraisal",             href: "/appraisal",                                 description: "An appraisal from one participating local agent, only if you ask. No commitment." },
   { title: "Conveyancing Guide",                  href: "/guides/conveyancing-guide",                 description: "What your conveyancer does for the sell side." },
 ];
 
@@ -324,7 +324,7 @@ export default function HowToSellAHouseAustraliaPage() {
         <strong>Off-market</strong>{" "}sales happen entirely without a public
         listing: agents shop the property to their database. Suits sellers
         who want discretion (and who don&rsquo;t mind the smaller buyer pool).
-        See our <Link href="/off-market">off-market property page</Link>.
+        Our <Link href="/guides/auction-vs-private-treaty#hybrids">auction vs private treaty guide</Link> sets it beside the other methods.
       </p>
 
       <h2 id="setting-price">Setting the price</h2>
