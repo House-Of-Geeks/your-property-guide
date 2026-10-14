@@ -9,7 +9,9 @@
  * How:
  *   - Suburbs are grouped by grid cell; each cell is one DataDrill request
  *     (format=monthly, 1991-01-01 to 2020-12-31), so ~18k suburbs need ~12k
- *     requests. They run one at a time, REQUEST_GAP_MS apart (~3.5 hours).
+ *     requests. A request takes ~2.5 s, so WORKERS run side by side while
+ *     request starts stay START_GAP_MS apart: about one a second overall
+ *     (~3.5 hours), the same load as one at a time with a pause.
  *   - A cell without temperatures (sea, for a coastal or island suburb; SILO
  *     returns zeros there) falls back to the nearest neighbouring cell that
  *     has the full set.
@@ -53,7 +55,8 @@ import {
 
 const SOURCE_ID = "silo-climate";
 const ENDPOINT = "https://www.longpaddock.qld.gov.au/cgi-bin/silo/DataDrillDataset.php";
-const REQUEST_GAP_MS = 1000;
+const WORKERS = 3;
+const START_GAP_MS = 1000;
 const RETRY_DELAYS_MS = [5_000, 20_000, 60_000];
 const FRESH_DAYS = 30;
 const MAX_CONSECUTIVE_FAILURES = 25;
@@ -135,14 +138,22 @@ export async function run(): Promise<void> {
     }
     log(SOURCE_ID, `${suburbs.length} suburbs, ${fresh.size} already done, ${byCell.size} grid cells to fetch`);
 
-    // Each cell fetched at most once per run, paced for SILO.
-    const cache = new Map<string, Normals | null>();
-    const normalsFor = async (c: GridCell): Promise<Normals | null> => {
-      if (cache.has(c.key)) return cache.get(c.key) ?? null;
-      const n = await fetchCell(c, email);
-      cache.set(c.key, n);
-      await sleep(REQUEST_GAP_MS);
-      return n;
+    // Each cell fetched at most once per run (in-flight requests shared),
+    // and request starts paced START_GAP_MS apart across all workers.
+    const cache = new Map<string, Promise<Normals | null>>();
+    let nextStart = 0;
+    const paced = async () => {
+      const at = Math.max(Date.now(), nextStart);
+      nextStart = at + START_GAP_MS;
+      if (at > Date.now()) await sleep(at - Date.now());
+    };
+    const normalsFor = (c: GridCell): Promise<Normals | null> => {
+      let p = cache.get(c.key);
+      if (!p) {
+        p = paced().then(() => fetchCell(c, email));
+        cache.set(c.key, p);
+      }
+      return p;
     };
 
     let written = 0;
@@ -150,9 +161,10 @@ export async function run(): Promise<void> {
     let usedNeighbour = 0;
     let failedInARow = 0;
     let cellsDone = 0;
+    let fatal: Error | null = null;
     const now = new Date();
 
-    for (const { cell: home, suburbs: group } of byCell.values()) {
+    const processCell = async (home: GridCell, group: typeof suburbs): Promise<void> => {
       let source: GridCell | null = null;
       let normals: Normals | null = null;
       try {
@@ -182,13 +194,13 @@ export async function run(): Promise<void> {
         failedInARow++;
         log(SOURCE_ID, `warn: cell ${home.key} failed: ${(err as Error).message}`);
         if (failedInARow >= MAX_CONSECUTIVE_FAILURES) {
-          throw new Error(`${failedInARow} cells failed in a row (last: ${(err as Error).message}); stopped, existing data kept`);
+          fatal ??= new Error(`${failedInARow} cells failed in a row (last: ${(err as Error).message}); stopped, existing data kept`);
         }
-        continue;
+        return;
       }
       if (!normals || !source) {
         noData += group.length;
-        continue;
+        return;
       }
 
       const stored = toStoredClimate(normals);
@@ -214,7 +226,17 @@ export async function run(): Promise<void> {
         written++;
       }
       if (++cellsDone % 250 === 0) log(SOURCE_ID, `progress: ${cellsDone} of ${byCell.size} cells, ${written} suburbs written`);
-    }
+    };
+
+    const queue = [...byCell.values()];
+    await Promise.all(
+      Array.from({ length: WORKERS }, async () => {
+        for (let next = queue.shift(); next && !fatal; next = queue.shift()) {
+          await processCell(next.cell, next.suburbs);
+        }
+      }),
+    );
+    if (fatal) throw fatal;
 
     log(
       SOURCE_ID,
