@@ -20,6 +20,7 @@
  *     stopped when run again.
  *   - It stops (and keeps the existing data) after MAX_CONSECUTIVE_FAILURES
  *     failed cells in a row, rather than writing gaps for every suburb.
+ *     Database writes retry through a dropped connection (withDbRetry).
  *
  * Rows keep the BoM-era column names: bomStationId = "silo:<lat>,<lon>",
  * bomStationName = "SILO grid point <lat>, <lon>", distanceKm = suburb
@@ -62,6 +63,25 @@ const FRESH_DAYS = 30;
 const MAX_CONSECUTIVE_FAILURES = 25;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+// The production database sits behind Railway's TCP proxy, which drops a
+// connection now and then over a multi-hour run ("Server has closed the
+// connection"). Prisma reconnects on the next query, so a dropped
+// connection is retried rather than ending the run.
+const DB_RETRY_DELAYS_MS = [2_000, 10_000, 30_000];
+const isConnectionError = (err: unknown) =>
+  /closed the connection|connection terminated|ECONNRESET|ETIMEDOUT|P1001|P1017|Can't reach database/i.test(String((err as Error)?.message ?? err));
+
+async function withDbRetry<T>(fn: () => Promise<T>): Promise<T> {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (attempt >= DB_RETRY_DELAYS_MS.length || !isConnectionError(err)) throw err;
+      await sleep(DB_RETRY_DELAYS_MS[attempt]);
+    }
+  }
+}
 
 /** One DataDrill request, retried on network errors and 5xx/429. Null when SILO has no data there. */
 async function fetchCell(c: GridCell, email: string): Promise<Normals | null> {
@@ -217,12 +237,14 @@ export async function run(): Promise<void> {
           annualRainfallMm: stored.annualRainfallMm,
           assessedAt: now,
         };
-        await prisma.suburbClimate.upsert({
-          where: { suburbSlug: s.slug },
-          create: { suburbSlug: s.slug, ...row },
-          update: row,
-        });
-        await prisma.suburb.update({ where: { id: s.id }, data: { climateUpdatedAt: now } });
+        await withDbRetry(() =>
+          prisma.suburbClimate.upsert({
+            where: { suburbSlug: s.slug },
+            create: { suburbSlug: s.slug, ...row },
+            update: row,
+          }),
+        );
+        await withDbRetry(() => prisma.suburb.update({ where: { id: s.id }, data: { climateUpdatedAt: now } }));
         written++;
       }
       if (++cellsDone % 250 === 0) log(SOURCE_ID, `progress: ${cellsDone} of ${byCell.size} cells, ${written} suburbs written`);
