@@ -20,7 +20,8 @@
  *     stopped when run again.
  *   - It stops (and keeps the existing data) after MAX_CONSECUTIVE_FAILURES
  *     failed cells in a row, rather than writing gaps for every suburb.
- *     Database writes retry through a dropped connection (withDbRetry); for
+ *     Rows are written BATCH suburbs at a time (two statements a batch), and
+ *     writes retry through a dropped connection (withDbRetry); for
  *     a run from outside Railway set SYNC_QUERY_TIMEOUT_MS (see ../db.ts) so a
  *     silently dropped connection errors instead of hanging.
  *
@@ -37,6 +38,8 @@
  * Schedule: Annual (the normals only change when the period does)
  */
 import "dotenv/config";
+import { randomUUID } from "node:crypto";
+import { Prisma } from "../../../src/generated/prisma/client";
 import { prisma } from "../db";
 import { startSync, finishSync, failSync, log } from "../logger";
 import {
@@ -59,6 +62,8 @@ import {
 const SOURCE_ID = "silo-climate";
 const ENDPOINT = "https://www.longpaddock.qld.gov.au/cgi-bin/silo/DataDrillDataset.php";
 const WORKERS = 3;
+/** Suburbs per database write. A run from outside Railway pays the TCP proxy's latency per round trip, so rows go in batches. */
+const BATCH = 200;
 const START_GAP_MS = 1000;
 const RETRY_DELAYS_MS = [5_000, 20_000, 60_000];
 const FRESH_DAYS = 30;
@@ -111,6 +116,49 @@ async function fetchCell(c: GridCell, email: string): Promise<Normals | null> {
       await sleep(RETRY_DELAYS_MS[attempt]);
     }
   }
+}
+
+interface PendingRow {
+  suburbId: string;
+  slug: string;
+  stationId: string;
+  stationName: string;
+  distanceKm: number;
+  meanMaxTemp: number[];
+  meanMinTemp: number[];
+  meanRainfall: number[];
+  annualRainfallMm: number | null;
+}
+
+/**
+ * Upsert a batch of SuburbClimate rows and stamp their suburbs, in two
+ * statements. Both are idempotent, so a retry after a dropped connection is
+ * safe. Timestamps are written as UTC wall-clock time, as Prisma does.
+ */
+async function writeBatch(rows: PendingRow[], now: Date): Promise<void> {
+  const ts = now.toISOString().replace("Z", "");
+  const values = rows.map(
+    (r) => Prisma.sql`(${randomUUID()}, ${r.slug}, ${r.stationId}, ${r.stationName}, ${r.distanceKm},
+      ${r.meanMaxTemp}::double precision[], ${r.meanMinTemp}::double precision[], ${r.meanRainfall}::double precision[],
+      '{}'::double precision[], '{}'::double precision[], ${r.annualRainfallMm}::double precision,
+      ${ts}::timestamp(3), ${ts}::timestamp(3), ${ts}::timestamp(3))`,
+  );
+  await prisma.$executeRaw`
+    INSERT INTO "SuburbClimate" ("id", "suburbSlug", "bomStationId", "bomStationName", "distanceKm",
+      "meanMaxTemp", "meanMinTemp", "meanRainfall", "meanHumidity9am", "meanSunshineHrs", "annualRainfallMm",
+      "assessedAt", "createdAt", "updatedAt")
+    VALUES ${Prisma.join(values)}
+    ON CONFLICT ("suburbSlug") DO UPDATE SET
+      "bomStationId" = EXCLUDED."bomStationId", "bomStationName" = EXCLUDED."bomStationName",
+      "distanceKm" = EXCLUDED."distanceKm", "meanMaxTemp" = EXCLUDED."meanMaxTemp",
+      "meanMinTemp" = EXCLUDED."meanMinTemp", "meanRainfall" = EXCLUDED."meanRainfall",
+      "meanHumidity9am" = EXCLUDED."meanHumidity9am", "meanSunshineHrs" = EXCLUDED."meanSunshineHrs",
+      "annualRainfallMm" = EXCLUDED."annualRainfallMm", "assessedAt" = EXCLUDED."assessedAt",
+      "updatedAt" = EXCLUDED."updatedAt"`;
+  const ids = rows.map((r) => r.suburbId);
+  await prisma.$executeRaw`
+    UPDATE "Suburb" SET "climateUpdatedAt" = ${ts}::timestamp(3), "updatedAt" = ${ts}::timestamp(3)
+    WHERE "id" = ANY(${ids}::text[])`;
 }
 
 /** Keep the DataSource row (read by /data and the sync logger) in place. */
@@ -186,6 +234,24 @@ export async function run(): Promise<void> {
     let fatal: Error | null = null;
     const now = new Date();
 
+    // Rows wait here and go to the database BATCH at a time; flushes run one
+    // after another even with several workers.
+    const pending: PendingRow[] = [];
+    let flushing: Promise<void> = Promise.resolve();
+    const flush = (): Promise<void> => {
+      flushing = flushing.then(async () => {
+        const batch = pending.splice(0, pending.length);
+        if (batch.length === 0 || fatal) return;
+        try {
+          await withDbRetry(() => writeBatch(batch, now));
+          written += batch.length;
+        } catch (err) {
+          fatal ??= new Error(`database write failed: ${(err as Error).message}; stopped, rows written so far are kept`);
+        }
+      });
+      return flushing;
+    };
+
     const processCell = async (home: GridCell, group: typeof suburbs): Promise<void> => {
       let source: GridCell | null = null;
       let normals: Normals | null = null;
@@ -226,29 +292,20 @@ export async function run(): Promise<void> {
       }
 
       const stored = toStoredClimate(normals);
-      for (const s of group) {
-        const row = {
-          bomStationId: siloStationId(source),
-          bomStationName: siloStationName(source),
-          distanceKm: Math.round(haversineKm(s.lat as number, s.lng as number, source.lat, source.lon) * 10) / 10,
+      for (const sub of group) {
+        pending.push({
+          suburbId: sub.id,
+          slug: sub.slug,
+          stationId: siloStationId(source),
+          stationName: siloStationName(source),
+          distanceKm: Math.round(haversineKm(sub.lat as number, sub.lng as number, source.lat, source.lon) * 10) / 10,
           meanMaxTemp: stored.meanMaxTemp,
           meanMinTemp: stored.meanMinTemp,
           meanRainfall: stored.meanRainfall,
-          meanHumidity9am: [] as number[],
-          meanSunshineHrs: [] as number[],
           annualRainfallMm: stored.annualRainfallMm,
-          assessedAt: now,
-        };
-        await withDbRetry(() =>
-          prisma.suburbClimate.upsert({
-            where: { suburbSlug: s.slug },
-            create: { suburbSlug: s.slug, ...row },
-            update: row,
-          }),
-        );
-        await withDbRetry(() => prisma.suburb.update({ where: { id: s.id }, data: { climateUpdatedAt: now } }));
-        written++;
+        });
       }
+      if (pending.length >= BATCH) await flush();
       if (++cellsDone % 250 === 0) log(SOURCE_ID, `progress: ${cellsDone} of ${byCell.size} cells, ${written} suburbs written`);
     };
 
@@ -260,6 +317,7 @@ export async function run(): Promise<void> {
         }
       }),
     );
+    await flush();
     if (fatal) throw fatal;
 
     log(
