@@ -210,7 +210,7 @@ export default function RealEstateCommissionWaPage() {
       <h2 id="how-structured">How commission is structured in WA</h2>
       <p>
         Most WA agents quote a single flat percentage of the sale price, so a
-        2.4% rate on a $700,000 sale is simply $16,800 before GST. Some agents
+        2.4% rate on a $700,000 sale is $16,800 before GST. Some agents
         instead offer a tiered or performance-based structure, where the rate
         steps up on the amount achieved above an agreed target price. A
         performance clause can be worth asking about, because it ties the

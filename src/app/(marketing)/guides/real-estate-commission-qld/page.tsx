@@ -273,8 +273,8 @@ export default function RealEstateCommissionQldPage() {
         </li>
         <li>
           <strong>Ask about a performance clause.</strong> A tiered structure that
-          rewards the agent above a target price can be a better deal than simply
-          shaving the base rate, because it ties their upside to yours.
+          rewards the agent above a target price can be a better deal than shaving
+          the base rate, because it ties their upside to yours.
         </li>
         <li>
           <strong>Be wary of the cheapest quote.</strong> The lowest rate is not

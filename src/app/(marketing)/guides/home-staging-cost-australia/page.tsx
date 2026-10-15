@@ -188,7 +188,7 @@ export default function HomeStagingCostAustraliaPage() {
       </ul>
       <p>
         Because the bill scales with rooms and truck space, the biggest single
-        driver of price is simply the size of the home. A one-bedroom
+        driver of price is the size of the home. A one-bedroom
         apartment might need a dozen pieces; a two-storey four-bedroom house
         with multiple living areas needs several truckloads, and quotes scale
         accordingly. Access matters too: stairs, lifts and tight sites add
@@ -336,8 +336,8 @@ export default function HomeStagingCostAustraliaPage() {
         A useful sanity check: staging at $4,000 to $6,000 on a median-priced
         capital-city home is roughly half a per cent of the sale price. It
         only needs to nudge the result by that much to break even, which is
-        why most agents recommend it for vacant homes without hesitation. Just
-        make the decision with your own numbers, alongside{" "}
+        why most agents recommend it for vacant homes without hesitation.
+        Make the decision with your own numbers, alongside{" "}
         <Link href="/real-estate-commission-calculator">what you&rsquo;ll pay in commission</Link>{" "}
         and the rest of the campaign budget.
       </p>

@@ -161,7 +161,7 @@ export default function RealEstateCommissionACTPage() {
       </p>
       <p>
         Because commission is a percentage, the dollar amount scales with your
-        sale price. At the same 2.1% rate, a higher sale price simply means a
+        sale price. At the same 2.1% rate, a higher sale price means a
         higher fee in dollars, which is why the absolute figure matters more than
         the headline rate when you compare agents.
       </p>
@@ -312,7 +312,7 @@ export default function RealEstateCommissionACTPage() {
       <p>
         The cheapest commission rarely produces the best result. The agent who
         prices your home accurately and negotiates hardest usually nets you more
-        than the one who simply quotes the lowest fee. So before you fixate on
+        than the one who quotes the lowest fee. So before you fixate on
         the rate, get a real appraisal and choose the right agent, then negotiate
         the commission with that agent.
       </p>

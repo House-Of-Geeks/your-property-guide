@@ -118,3 +118,35 @@ Raised while the articles were reviewed for their campaign hooks, batch by batch
 | Likely wrong | `cheapest-suburbs-buy-house-australia-2026.ts:14` | Lithgow and Bathurst "provide commuter-distance value to the Central Coast and Blue Mountains" | They're west of the Blue Mountains, nowhere near commuting distance to the Central Coast. |
 | Check | `cheapest-suburbs-buy-house-australia-2026.ts:14–32` | Medians ("Toowoomba at $560K … Albany at $560K") | Unsourced and undated, and these two sit above the post's sub-$500K frame. |
 | Check | house-price-forecasts-2026-2027-by-capital-city | The next updates are "the NAB quarterly survey in October and the banks' post-RBA notes in November" | Goes stale within weeks. |
+
+### Batch 1: commission, fees and selling
+
+Several of these are contradictions between articles in this batch (agency cooling-off, Queensland exits, sole agency, state rate ranges). Settle each once, then align every page.
+
+| Severity | Where | Claim | Why it's flagged |
+|---|---|---|---|
+| Conflict | real-estate-agent-fees-australia `page.tsx:336` | "In most states, you have a short cooling-off period (often 1 to 3 days) after signing an agency agreement" | The agency-agreements post and the negotiate and questions guides say only NSW has one (one business day). |
+| Conflict | real-estate-agent-fees-australia `page.tsx:73` | "2.5% to 3.0% in QLD, WA, TAS and NT" | The page's own table has WA about 2.4% and NT 2.4% to 2.7%. |
+| Conflict | real-estate-commission-vic `page.tsx:158` | "the 2.5% to 3% more common in states like Queensland and Western Australia" | The WA guide says 2% to 2.8%, typically 2.4%. |
+| Likely wrong | how-to-choose-a-selling-agent `page.tsx:90` | "Sole agency … They get paid even if you find the buyer yourself." | That describes exclusive agency. The agency-agreements post and selling guide chapter 5 say a sole agent is paid nothing if you find the buyer. |
+| Conflict | how-to-choose-a-selling-agent `page.tsx:278` (and :280) | "Sydney metro: 1.5% to 2.2%"; Brisbane, Perth, Adelaide 2% to 2.8% | The NSW guide says 1.8% to 2.5%, and the SA guide's typical rate is 2%. |
+| Conflict | how-to-negotiate-real-estate-agent-commission `page.tsx:497`; questions-to-ask-a-real-estate-agent `page.tsx:416` | Queensland: either party can end a 60-day-plus appointment with 30 days' written notice | The agency-agreements post says the s 114 30-day exit doesn't apply to sole or exclusive appointments. Property Occupations Act 2014 (Qld). |
+| Check | `real-estate-agency-agreements-by-state.ts:74` | SA: "if you do nothing, it is extended by force of the Act for 180 days" | An automatic extension twice the 90-day maximum looks odd. SA Land and Business (Sale and Conveyancing) Regulations, reg 18. |
+| Conflict | `real-estate-agency-agreements-by-state.ts:102` | "In Victoria and SA the agent must disclose rebates" | Line 89 of the same post says NSW, Queensland and SA. |
+| Conflict | auction-vs-private-treaty `page.tsx:420` | Victorian underquoting "penalties above $48,000" | The underquoting post gives 200 penalty units, or $41,820 at 2026-27 rates. |
+| Check | auction-vs-private-treaty `page.tsx:288` | "the cash rate at 4.35% and the RBA still flagging possible further rises" | A 3 July 2026 snapshot; now stale. |
+| Check | auction-vs-private-treaty `page.tsx:281` | "Sydney 47.4%, Melbourne 50.6% the same week" | Sydney matches the combined 47.4% (line 56) exactly; possibly a copy error. Cotality, week ending 22 June 2026. |
+| Likely wrong | auction-vs-private-treaty `page.tsx:409` | "in March 2026 the NSW Government announced legislation to lift fines to $110,000" | The underquoting post says the Act passed, with stage 1 from 29 June 2026, and Victoria's published-reserve rule from 16 October 2026 isn't mentioned. |
+| Check | `underquoting-laws-by-state.ts:18` (and :23) | NSW reforms expected "towards the end of 2026"; Victorian rules from 1 and 16 October 2026 | Confirm the dates now they've arrived. |
+| Check | real-estate-commission-wa `page.tsx:297` (source URL :363) | "Department of Energy, Mines, Industry Regulation and Safety" | Restructured on 1 July 2025; the source link uses the old commerce.wa.gov.au domain. |
+| Check | how-to-sell-a-house-australia `page.tsx:100` | Experienced agents "typically achieve 5 to 15% higher sale prices than FSBO sellers" | No source. |
+| Check | how-to-sell-a-house-australia `page.tsx:59` (also :230, "5× to 15×" at :244) | "Cosmetic presentation … returns 3 to 10× its cost." | No source; the staging guide calls such figures industry claims. |
+| Check | how-to-sell-a-house-australia `page.tsx:462` | "CoreLogic Australia" | Now Cotality; other guides say "Cotality (formerly CoreLogic)". |
+| Check | `selling-your-home-tips-for-maximum-value.ts:12` | Styled homes "consistently sell for 5% to 10% more" | Stated as fact with no source. |
+| Check | `selling-your-home-tips-for-maximum-value.ts:15` (also :19, :26) | Multiple offers "within the first two weeks"; "over 90% of buyers" | 2024 market claims with no source. |
+| Conflict | home-staging-cost-australia `page.tsx:201` | Ranges "drawn from published 2026 price guides" | The Brisbane source at :456 is a 2025 guide. |
+| Conflict | how-to-negotiate-real-estate-agent-commission `page.tsx:333` | "you need four sentences" | Five scripts follow. |
+| Likely wrong | how-to-negotiate-real-estate-agent-commission `page.tsx:433` | "$11,200" | Ignores the 2.2% fee on the extra $16,000; the net gain is about $10,850. |
+| Check | `fixed-fee-vs-commission-real-estate-agents.ts:59` (and :38) | "better deal by almost $15,000" | The maths gives about $15,225 ("about", not "almost"); "a downturn … as this is written" is time-sensitive. |
+| Review | sell-first-or-buy-first `page.tsx:416` | "Get an independent appraisal… Free appraisal here" | Our appraisal comes from one participating agent, so it isn't independent. Suggest "a realistic appraisal". |
+| Check | cost-of-selling-a-house-australia `page.tsx:350–373` | The $800,000 worked example | The table has no dollar figures. |
