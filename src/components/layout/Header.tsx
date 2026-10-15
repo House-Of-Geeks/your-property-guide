@@ -111,6 +111,19 @@ export function Header() {
 
   const toggle = (label: string) => setOpenMenu((o) => (o === label ? null : label));
 
+  // The homepage (v6) opens on a full-bleed photo, so there the header sits
+  // over it, clear with light text, until the page scrolls or a menu opens.
+  const overlay = pathname === "/";
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    if (!overlay) return;
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [overlay]);
+  const clear = overlay && !scrolled && !mobileOpen && !openMenu;
+
   // Escape closes whichever menu is open; a navigation closes both.
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -139,7 +152,11 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-line">
+    <header
+      className={`sticky top-0 z-50 border-b transition-colors duration-300 ${overlay ? "-mb-16 sm:-mb-[72px]" : ""} ${
+        clear ? "tone-dark border-transparent bg-transparent" : "border-line bg-cream/95 backdrop-blur"
+      }`}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 sm:h-[72px] items-center justify-between gap-3">
           <Link href="/" className="shrink-0" aria-label="Your Property Guide, home">
@@ -202,7 +219,7 @@ export function Header() {
                 so the header doesn't repeat the same solid button. */}
             <Link
               href={guideHref}
-              className="hidden sm:inline-flex items-center rounded-md bg-cta hover:bg-cta-hover text-white px-4 py-2 text-sm font-semibold whitespace-nowrap transition-colors"
+              className="hidden sm:inline-flex items-center rounded-full bg-cta hover:bg-cta-hover text-white px-5 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors"
             >
               {guideLabel}
             </Link>
@@ -222,7 +239,7 @@ export function Header() {
       {/* Mobile menu: the three moves first, then the plan and help, then
           short groups. */}
       {mobileOpen && (
-        <div id="mobile-menu" className="min-[67.5rem]:hidden border-t border-line bg-white max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain">
+        <div id="mobile-menu" className="min-[67.5rem]:hidden border-t border-line bg-cream max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain">
           <nav className="mx-auto max-w-7xl px-4 pt-4 pb-6" aria-label="Main">
             <div className="grid grid-cols-3 gap-2 mb-3">
               {[
@@ -314,7 +331,7 @@ function GroupedMenu({ link, open, onClose }: MenuProps) {
   const groups = Array.from(new Set(link.children!.map((c) => c.group ?? "")));
   return (
     <div
-      className={`${open ? "" : "hidden "}absolute top-full left-0 mt-2 bg-white rounded-lg shadow-[0_8px_30px_rgb(22_25_29/0.10)] border border-line p-3 z-50 w-[480px]`}
+      className={`${open ? "" : "hidden "}absolute top-full left-0 mt-2 bg-white rounded-lg shadow-[0_8px_30px_rgb(20_32_27/0.12)] border border-line p-3 z-50 w-[480px]`}
     >
       <div className="grid grid-cols-2 gap-x-3">
         {groups.map((group) => {
@@ -343,7 +360,7 @@ function GroupedMenu({ link, open, onClose }: MenuProps) {
 function ListMenu({ link, open, onClose }: MenuProps) {
   return (
     <div
-      className={`${open ? "" : "hidden "}absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-[0_8px_30px_rgb(22_25_29/0.10)] border border-line p-2 z-50`}
+      className={`${open ? "" : "hidden "}absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-[0_8px_30px_rgb(20_32_27/0.12)] border border-line p-2 z-50`}
     >
       {link.children!.map((child) => (
         <Link

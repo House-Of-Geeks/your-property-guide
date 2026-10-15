@@ -1,17 +1,26 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk } from "next/font/google";
+import { Schibsted_Grotesk, Source_Serif_4 } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 import { Providers } from "@/components/analytics/Providers";
 
-// One typeface for the whole brand (v4, Oct 2026): Schibsted Grotesk, a
-// newsroom grotesk that stays sharp at headline sizes and reads cleanly at
-// body sizes. --font-display points at the same face in globals.css, so
-// every heading and body style shares one family.
+// Two faces (v6, 15 Oct 2026): Schibsted Grotesk for body text, labels and
+// h3 down, and Source Serif 4 for h1, h2, the wordmark and big figures
+// (--font-display points at it in globals.css). The serif's optical-size
+// axis keeps it fine at display sizes; the italic is for the one accent
+// phrase a headline may carry.
 const brandFont = Schibsted_Grotesk({
   variable: "--font-sans",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const displayFont = Source_Serif_4({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["opsz"],
   display: "swap",
 });
 
@@ -66,7 +75,7 @@ export default function RootLayout({
     <html
       suppressHydrationWarning
       lang="en"
-      className={`${brandFont.variable} h-full antialiased`}
+      className={`${brandFont.variable} ${displayFont.variable} h-full antialiased`}
     >
       <head>
         {/* Preconnect to high-priority third-party origins. dns-prefetch is a
@@ -87,8 +96,8 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.clarity.ms" />
         <link rel="dns-prefetch" href="https://secure.quantserve.com" />
 
-        {/* Theme colour for the address bar on mobile browsers: the white page. */}
-        <meta name="theme-color" content="#ffffff" />
+        {/* Theme colour for the address bar on mobile browsers: the cream page. */}
+        <meta name="theme-color" content="#fbf8f3" />
       </head>
       <body className="min-h-full flex flex-col">
         {/* Pre-paint motion gate: reveal styles only apply under

@@ -12,16 +12,61 @@
 //     participating agent (the Sent 24/7 vendor campaign). Our team reviews
 //     anything outside that by hand before anyone is introduced.
 //   - Afterwards we ask whether the introduction was useful.
+//   - The agreement check (15 Oct 2026): a free 15-minute call with our team
+//     before someone signs an agency agreement, going through commission,
+//     marketing spend, term and the exit clause. It's general information,
+//     not legal advice, and it never sends anyone to an agent.
 //
 // What it does NOT do (the agent terms say "We do not give real estate advice
 // or act for buyers or sellers"): compare the whole market, negotiate fees,
-// review proposals for you, or manage a sale through to settlement. If any of
-// that becomes a real, staffed service, change it here first.
+// act for you, or manage a sale through to settlement. If any of that becomes
+// a real, staffed service, change it here first.
 
-/** The page-one promise (Concierge homepage, 14 Oct 2026). */
+/**
+ * The page-one promise (v6, 15 Oct 2026, "It's the campaign that wins").
+ * `lead` and `accent` are the headline's two halves; the accent is set in the
+ * serif italic in light copper.
+ */
 export const PROMISE = {
-  headline: "Buy or sell property with confidence",
-  support: "Free guides and tools for every step. And when you’re ready, a proven local agent, checked by us.",
+  headline: "It’s the campaign that wins. Not the market.",
+  lead: "It’s the campaign that wins.",
+  accent: "Not the market.",
+  eyebrow: "The $20 million playbook, for every home",
+  support:
+    "I learnt to sell Australia’s $10 to $20 million homes. The campaign that gets top dollar there is the same one that gets it for yours. Learn it free, then meet one agent who runs it in your suburb.",
+  closing: "Every home deserves a $20 million campaign.",
+} as const;
+
+/**
+ * How many agents we introduce, said the same way everywhere (v6). Buying
+ * and selling are separate jobs with separate yeses, so "both" can mean a
+ * selling agent and a buyer's agent, never two of either.
+ */
+export const ONE_AGENT = "One agent for each job you ask us to help with. Never a list.";
+
+/**
+ * What we take from an agent's commission (nothing), and the contrast with
+ * agent-finder sites. Keep the contrast general: we hold no published source
+ * for a competitor's percentage, so we don't quote one.
+ */
+export const COMMISSION_STANCE = {
+  ours: "We take 0% of the agent’s commission. Agents pay us a flat fee for each introduction, whether or not you go ahead with them.",
+  theirs: "Many agent-finder sites are paid a share of the agent’s commission.",
+  /** The two sides of the homepage comparison box. */
+  theirsLabel: "Paid a share of the agent’s commission",
+  oursFigure: "0%",
+  oursLabel: "of the agent’s commission",
+  short: "Many agent-finder sites are paid a share of the agent’s commission. We take none of it.",
+} as const;
+
+/** The free agency agreement check (15 Oct 2026). A call with our team; general information, not legal advice. */
+export const AGREEMENT_CHECK = {
+  href: "/agreement-check",
+  headline: "Before you sign anything, call us. It’s free.",
+  minutes: 15,
+  covers: ["Commission", "Marketing spend", "Term", "Exit clause"],
+  summary: "A 15-minute check of the agency agreement you’ve been handed: the commission, the marketing spend, the term and the exit clause.",
+  notAdvice: "It’s general information, not legal advice. For advice on your contract, speak to a solicitor or conveyancer.",
 } as const;
 
 /**
@@ -33,7 +78,7 @@ export const RESPONSE_WINDOW = "within one business day";
 
 /** The fee disclosure beside every introduction form (BRAND.md §8). */
 export const FEE_DISCLOSURE =
-  "Our introductions are free for you. The agent we introduce you to pays us a fee for the introduction, whether or not you go ahead with them. It doesn’t change what you pay them, and you’re never obliged to use them.";
+  "Our introductions are free for you. The agent we introduce you to pays us a flat fee for the introduction, whether or not you go ahead with them. We take no share of their commission. It doesn’t change what you pay them, and you’re never obliged to use them.";
 
 /** The difference between our free service and what a professional charges. */
 export const FEE_DISTINCTION =
@@ -94,7 +139,7 @@ export const WHAT_WE_DONT_DO = [
   "We don’t compare every agent in your area. We introduce agents from our participating network only.",
   "We don’t act for you, give real estate or financial advice, or negotiate fees on your behalf. Our guides and worksheets help you do that well.",
   "We don’t cover every suburb. If no participating agent covers yours, we say so before you send anything.",
-  "We never sell your details or pass them to a second agent without asking.",
+  "We never sell your details, and we never pass your request to a second agent.",
 ] as const;
 
 /** State licence registers, for checking any agent yourself. */

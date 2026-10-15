@@ -131,9 +131,9 @@ export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside
 export function HeroTitle({ children, size = "md" }: { children: ReactNode; size?: "lg" | "md" }) {
   const cls =
     size === "lg"
-      ? "text-[42px] leading-[1.02] sm:text-6xl lg:text-[76px] tracking-[-0.04em]"
-      : "text-[34px] leading-[1.06] sm:text-5xl lg:text-[60px] tracking-[-0.035em]";
-  return <h1 className={`${cls} font-bold text-ink max-w-3xl`}>{children}</h1>;
+      ? "text-[44px] leading-[1.02] sm:text-6xl lg:text-[80px] tracking-[-0.02em]"
+      : "text-[36px] leading-[1.06] sm:text-5xl lg:text-[62px] tracking-[-0.02em]";
+  return <h1 className={`${cls} text-ink max-w-3xl`}>{children}</h1>;
 }
 
 /** The standfirst under the hero's H1. Other attributes (data-speakable-summary) pass through; a max-w- class replaces the default width. */
@@ -172,8 +172,8 @@ export function Band({ tone = "light", spacing = "default", id, className = "", 
 export function SectionHeading({ title, intro, size = "lg" }: { title: ReactNode; intro?: ReactNode; size?: "lg" | "md" }) {
   const h2 =
     size === "lg"
-      ? "text-4xl sm:text-5xl leading-[1.05] tracking-[-0.03em]"
-      : "text-3xl sm:text-4xl leading-[1.1] tracking-[-0.025em]";
+      ? "text-[38px] sm:text-[52px] leading-[1.05] tracking-[-0.02em]"
+      : "text-3xl sm:text-[40px] leading-[1.1] tracking-[-0.015em]";
   if (!intro) return <h2 className={`${h2} text-ink max-w-3xl`}>{title}</h2>;
   return (
     <div className="grid lg:grid-cols-12 gap-6 lg:gap-16 items-end">

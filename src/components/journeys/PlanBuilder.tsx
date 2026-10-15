@@ -13,6 +13,8 @@ import {
   SELL_STAGES,
   STATE_OPTIONS,
   TIMEFRAMES,
+  stateParam,
+  suburbParam,
   type PlanAnswers,
 } from "@/lib/plans/questions";
 import { planHref } from "@/lib/plans/engine";
@@ -42,14 +44,19 @@ export function PlanBuilder({ placement = "plan-page" }: { placement?: string })
   const params = useSearchParams();
   const preset = params.get("j");
   const initialJourney: Journey | null = isJourney(preset) ? preset : null;
+  // The homepage field presets the state (and the suburb, for the agent
+  // step); with both the move and the state known, the plan starts at the
+  // third question and Back still reaches the first two.
+  const presetState = stateParam(params.get("s"));
 
   const [answers, setAnswers] = useState<PlanAnswers>({
     journey: initialJourney ?? "selling",
-    state: null,
+    state: presetState,
     timeframe: null,
+    suburb: suburbParam(params.get("sub")),
   });
   const [journeyChosen, setJourneyChosen] = useState<boolean>(initialJourney !== null);
-  const [step, setStep] = useState(initialJourney ? 1 : 0);
+  const [step, setStep] = useState(initialJourney ? (presetState ? 2 : 1) : 0);
   const [error, setError] = useState<string | null>(null);
   const [going, setGoing] = useState(false);
   const started = useRef(false);

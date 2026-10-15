@@ -22,7 +22,12 @@ export interface PlanAnswers {
   buyerType?: BuyerType | null;
   help?: HelpPreference | null;
   order?: MoveOrder | null;
+  /** A suburb slug ("paddington-qld-4064") from the homepage field, passed on to the agent step. Not personal data. */
+  suburb?: string | null;
 }
+
+/** A suburb slug as the suburb pages and /get-help use it: name, state, postcode. */
+export const SUBURB_SLUG = /^[a-z0-9-]+-[a-z]{2,3}-\d{4}$/;
 
 export interface Option<T extends string> {
   id: T;
@@ -87,6 +92,16 @@ export const TIMEFRAMES: Option<Timeframe>[] = [
 const pick = <T extends string>(opts: Option<T>[], v: string | null | undefined): T | null =>
   v && opts.some((o) => o.id === v) ? (v as T) : null;
 
+/** A suburb slug from the URL, or null if it isn't one. */
+export function suburbParam(v: string | null | undefined): string | null {
+  return v && v.length <= 80 && SUBURB_SLUG.test(v) ? v : null;
+}
+
+/** A state from the URL ("qld"), or null. */
+export function stateParam(v: string | null | undefined): AustralianState | null {
+  return pick(STATE_OPTIONS, v?.toUpperCase());
+}
+
 /** Answers from URL search params (the plan result page is shareable, with no personal data). */
 export function answersFromParams(get: (key: string) => string | null | undefined): PlanAnswers | null {
   const j = get("j");
@@ -94,13 +109,14 @@ export function answersFromParams(get: (key: string) => string | null | undefine
   if (!journey) return null;
   return {
     journey,
-    state: pick(STATE_OPTIONS, get("s")?.toUpperCase()),
+    state: stateParam(get("s")),
     timeframe: pick(TIMEFRAMES, get("t")),
     sellStage: pick(SELL_STAGES, get("ss")),
     buyStage: pick(BUY_STAGES, get("bs")),
     buyerType: pick(BUYER_TYPES, get("bt")),
     help: pick(HELP_PREFERENCES, get("h")),
     order: pick(MOVE_ORDERS, get("o")),
+    suburb: suburbParam(get("sub")),
   };
 }
 
@@ -114,6 +130,7 @@ export function answersToParams(a: PlanAnswers): URLSearchParams {
   if (a.buyerType) qs.set("bt", a.buyerType);
   if (a.help) qs.set("h", a.help);
   if (a.order) qs.set("o", a.order);
+  if (a.suburb) qs.set("sub", a.suburb);
   return qs;
 }
 

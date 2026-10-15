@@ -123,6 +123,7 @@ export function helpHref(services: IntroService[], a: PlanAnswers): string {
   qs.set("service", services.length > 1 ? "both" : services[0]);
   if (a.state) qs.set("state", a.state);
   if (a.timeframe) qs.set("timeframe", a.timeframe);
+  if (a.suburb) qs.set("suburb", a.suburb);
   return `/get-help?${qs.toString()}`;
 }
 

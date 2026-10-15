@@ -37,11 +37,12 @@ export function GuideContents({ guide }: { guide: GuideBookId }) {
         {book.chapters.map((c, i) => (
           <li
             key={c.title}
+            id={`chapter-${i + 1}`}
             onMouseEnter={() => {
               setOn(i);
               setOpen(true);
             }}
-            className={`flex items-start gap-4 border-t border-line px-2 py-4 transition-colors duration-200 ${on === i ? "bg-surface-warm" : ""}`}
+            className={`flex scroll-mt-28 items-start gap-4 border-t border-line px-2 py-4 transition-colors duration-200 target:bg-surface-warm ${on === i ? "bg-surface-warm" : ""}`}
           >
             <span className={`w-6 shrink-0 text-base font-semibold leading-6 transition-colors ${on === i ? "text-primary" : "text-ink-subtle"}`}>{i + 1}</span>
             <div>

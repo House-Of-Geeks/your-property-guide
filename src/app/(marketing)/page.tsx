@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Homepage } from "@/components/homepage/Homepage";
+import { CampaignHomepage } from "@/components/campaign/CampaignHomepage";
 import { ALL_GUIDES } from "@/lib/guides/registry";
+import { TOOLS } from "@/lib/tools";
 import { SITE_URL } from "@/lib/constants";
 
-// Homepage (Concierge, chosen 14 Oct 2026): src/components/homepage.
+// Homepage (v6, "It's the campaign that wins", 15 Oct 2026): src/components/campaign.
 export const revalidate = 86400;
 
 const META_TITLE = "Buy or sell property with confidence";
@@ -19,5 +20,5 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  return <Homepage guideCount={ALL_GUIDES.length} />;
+  return <CampaignHomepage guidesAndTools={ALL_GUIDES.length + TOOLS.length} />;
 }
