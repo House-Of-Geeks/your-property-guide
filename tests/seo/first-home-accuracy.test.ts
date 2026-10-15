@@ -8,7 +8,6 @@
 // phrases out, and pin each page's key figures to the shared data.
 import fs from "node:fs";
 import { createElement } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { CHAPTERS } from "@/content/guides";
 import path from "node:path";
 import { renderToStaticMarkup } from "react-dom/server";

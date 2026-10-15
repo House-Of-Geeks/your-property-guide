@@ -10,6 +10,8 @@ import { AuthorBylineCard, GuideStartInline } from "@/components/guide";
 import { GuideByline } from "@/components/guide/GuideByline";
 import { GuideTOC, type GuideTOCEntry } from "@/components/guide/GuideTOC";
 import { GuideNextStep } from "@/components/guide/GuideNextStep";
+import { CampaignCta, CampaignHook } from "@/components/guide/CampaignCta";
+import { articleCampaign } from "@/content/articles";
 import { ReadingProgress } from "@/components/interactive/ReadingProgress";
 import { RelatedGuides, type RelatedGuide } from "@/components/guide/RelatedGuides";
 import articleScope from "@/components/guide/article-scope.module.css";
@@ -93,6 +95,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
   const relatedPosts = await getRelatedPosts(slug, 3);
   const { html: processedContent, toc } = processContent(post.content);
+  const campaign = articleCampaign(post.slug);
   const postUrl = `${SITE_URL}/guides/${slug}`;
   const updatedAt = post.updatedAt ?? post.publishedAt;
   // The FAQ the article already shows, as FAQPage JSON-LD (selling review P7).
@@ -199,17 +202,24 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               </div>
             )}
 
+            {campaign && (
+              <div className={`${bodyTop} prose-ypg`}>
+                <CampaignHook hook={campaign.hook} />
+              </div>
+            )}
             {sections ? (
               <>
-                <div className={`${bodyTop} prose-ypg`} dangerouslySetInnerHTML={{ __html: sections[0] }} />
+                <div className={`${campaign ? "mt-6" : bodyTop} prose-ypg`} dangerouslySetInnerHTML={{ __html: sections[0] }} />
                 <GuideStartInline from={post.slug} />
                 <div className="prose-ypg" dangerouslySetInnerHTML={{ __html: sections[1] }} />
               </>
             ) : (
-              <div className={`${bodyTop} prose-ypg`} dangerouslySetInnerHTML={{ __html: processedContent }} />
+              <div className={`${campaign ? "mt-6" : bodyTop} prose-ypg`} dangerouslySetInnerHTML={{ __html: processedContent }} />
             )}
 
-            {/* The one end-of-article action, routed by the post's category. */}
+            {campaign && <CampaignCta kind={campaign.cta} from={post.slug} className="mt-12" />}
+
+            {/* The end-of-article guide offer, routed by the post's category. */}
             {nextStep === "selling" ? (
               <GuideStartInline from={post.slug} className="mt-12 mb-10" />
             ) : (

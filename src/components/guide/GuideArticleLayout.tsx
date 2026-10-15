@@ -10,6 +10,8 @@ import { AuthorBylineCard } from "./AuthorBylineCard";
 import { GuideByline } from "./GuideByline";
 import { GuideNextStep } from "./GuideNextStep";
 import { NextStepCard } from "@/components/journeys/NextStepCard";
+import { articleCampaign } from "@/content/articles";
+import { CampaignCta, CampaignHook } from "./CampaignCta";
 import { nextStepFor } from "@/lib/next-steps";
 import { GuideAudienceProvider } from "./GuideAudienceContext";
 import { GuideStartInline } from "./GuideStartInline";
@@ -98,6 +100,10 @@ export function GuideArticleLayout({
   // Priority guides (src/lib/next-steps.ts) get the step that fits why
   // people read them, instead of the guide funnel.
   const contextual = nextStepFor(from);
+  // The campaign framing (15 Oct 2026): a hook that opens the body and one
+  // campaign call to action above the end-of-article guide offer.
+  const campaign = articleCampaign(from);
+  const hook = campaign ? <CampaignHook hook={campaign.hook} /> : null;
   const sellerGuide = audience === "selling" && !contextual;
 
   // The sources block moves to the foot of the article, after the questions
@@ -200,17 +206,27 @@ export function GuideArticleLayout({
               <GuideAudienceProvider audience={audience} from={from}>
                 {body ? (
                   <>
-                    {body.head.length > 0 && <div className="prose-ypg">{body.head}</div>}
+                    {(body.head.length > 0 || hook) && (
+                      <div className="prose-ypg">
+                        {hook}
+                        {body.head}
+                      </div>
+                    )}
                     <GuideStartInline from={from} />
                     <div className="prose-ypg">{body.tail}</div>
                   </>
                 ) : (
-                  <div className="prose-ypg">{bodyNodes}</div>
+                  <div className="prose-ypg">
+                    {hook}
+                    {bodyNodes}
+                  </div>
                 )}
               </GuideAudienceProvider>
             </div>
 
-            {/* The one end-of-article action. Sellers (and the investor or
+            {campaign && <CampaignCta kind={campaign.cta} from={from} className="mt-12" />}
+
+            {/* The end-of-article guide offer. Sellers (and the investor or
                 renovator who sells) start the selling guide in place; buyers
                 get the buying guide. */}
             {contextual ? (
