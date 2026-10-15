@@ -23,7 +23,8 @@
     "seo:audit": "tsx scripts/seo/audit.ts",
     "publish:blogs": "node scripts/publish-blogs.mjs",
     "seo:baseline": "tsx scripts/seo/baseline.ts",
-    "guides:manifest": "tsx scripts/guides/static-guide-manifest.ts"
+    "guides:manifest": "tsx scripts/guides/static-guide-manifest.ts",
+    "guides:pdf": "node scripts/guides/render-pdfs.mjs"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

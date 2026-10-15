@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
 import { categoryToSlug, getDistinctBlogCategories } from "@/lib/services/blog-service";
 import { leadTypePages } from "@/lib/data/real-estate-leads";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 
 // No lastModified here: these are hub/tool pages with no single content
 // date, and stamping `new Date()` on every request made lastmod meaningless
@@ -48,6 +49,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/selling-costs-calculator`,     changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/selling-guide`,                changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/buying-guide`,                 changeFrequency: "monthly", priority: 0.9 },
+    // The guides' chapters as pages of their own (15 Oct 2026).
+    ...(["selling", "buying"] as const).flatMap((g) =>
+      GUIDE_BOOKS[g].chapters.map((c) => ({ url: `${SITE_URL}${GUIDE_BOOKS[g].href}/${c.slug}`, changeFrequency: "monthly" as const, priority: 0.8 })),
+    ),
     { url: `${SITE_URL}/real-estate-leads`,            changeFrequency: "monthly", priority: 0.7 },
     ...leadTypePages.map((p) => ({
       url: `${SITE_URL}/real-estate-leads/${p.slug}`,

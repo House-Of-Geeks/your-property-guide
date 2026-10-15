@@ -144,7 +144,7 @@ export function labelFor(type: string, guideType?: string): string {
 import { GUIDE_PDF_PATH, BUYING_GUIDE_PDF_PATH } from "@/lib/guide-pdfs";
 export { GUIDE_PDF_PATH, BUYING_GUIDE_PDF_PATH };
 export const GUIDE_PDF_URL = `https://www.yourpropertyguide.com.au${GUIDE_PDF_PATH}`;
-// Cover art rendered from scripts/guide-pdf/cover-art.html. The email
+// Cover art printed from /print/guides/<guide> by npm run guides:pdf. The email
 // variant is a ~70KB JPEG so it loads fast on mobile data.
 export const GUIDE_COVER_URL = "https://www.yourpropertyguide.com.au/images/guide/selling-guide-cover-email.jpg";
 export const BUYING_GUIDE_PDF_URL = `https://www.yourpropertyguide.com.au${BUYING_GUIDE_PDF_PATH}`;

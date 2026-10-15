@@ -159,7 +159,8 @@ Two paths, never mixed (unchanged from 14 Oct 2026):
 | Promises, fees, partner checks, the agreement check | `src/lib/service-model.ts` |
 | Partner agents shown by name | `src/lib/partner-agents.ts` |
 | Tools list and counts | `src/lib/tools.ts` |
-| Guides as books (chapters, chapter links) | `src/lib/guide-books.ts` (`chapterHref`) |
+| Guides as books (titles, chapters, chapter links) | `src/lib/guide-books.ts` (`chapterHref`) |
+| The guides' chapters (web pages and PDF) | `src/content/guides`, rendered by `src/components/guide-book`; PDFs and covers: `npm run guides:pdf` |
 | Introduction rules and coverage | `src/lib/introductions/rules.ts` |
 | Plans | `src/lib/plans/` |
 | Journey components (forms, service sections) | `src/components/journeys/` |

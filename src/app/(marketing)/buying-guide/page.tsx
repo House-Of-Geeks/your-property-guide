@@ -16,6 +16,8 @@ import { HUB_GUIDE_LISTS, hubGuideGroups } from "@/lib/guides/hub-guides";
 import { StickyGuideBar } from "../selling-guide/StickyGuideBar";
 import { Book3D } from "@/components/interactive/Book3D";
 import { GuideContents } from "@/components/interactive/GuideContents";
+import { GuideIntroNote } from "@/components/guide-book/GuideIntroNote";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 
 const META_TITLE = "Free guide to buying property in Australia (2026)";
 const META_DESCRIPTION =
@@ -107,7 +109,7 @@ export default function BuyingGuidePage() {
         data={{
           "@context": "https://schema.org",
           "@type": "DigitalDocument",
-          name: "The Complete Guide to Buying Property in Australia (2026 Edition)",
+          name: `${GUIDE_BOOKS.buying.title} (2026 edition)`,
           description: META_DESCRIPTION,
           url: `${SITE_URL}/buying-guide`,
           image: `${SITE_URL}/images/guide/buying-guide-cover.png`,
@@ -172,13 +174,20 @@ export default function BuyingGuidePage() {
           <p className="text-sm font-semibold text-ink-muted mb-3 sm:mb-5">
             Free PDF, 2026 edition
           </p>
-          <HeroTitle>The free guide to buying property</HeroTitle>
+          <HeroTitle>
+            {GUIDE_BOOKS.buying.name}
+            <span className="mt-3 block font-sans text-[0.42em] font-semibold leading-snug tracking-[-0.01em] text-ink-muted">
+              {GUIDE_BOOKS.buying.subtitle}
+            </span>
+          </HeroTitle>
           {/* Phone-sized lede, as before: the funnel stays on the first screen. */}
           <HeroLead className="max-sm:mt-4 max-sm:text-base">
-            Ten chapters for buyers in Australia, whether it&rsquo;s your
-            first home, your next one, an investment or a downsize: what
-            you can really spend, the schemes in your state, inspecting,
-            how the selling side works, and making the offer.
+            Every seller&rsquo;s agent is running a campaign aimed at you.
+            Ten chapters show you how it works, so you can run your own,
+            whether it&rsquo;s your first home, your next one, an investment
+            or a downsize: what you can really spend, the schemes in your
+            state, inspecting, the seller&rsquo;s playbook and making the
+            offer.
           </HeroLead>
           <div className="hidden lg:block mt-12">
             <GuidePitch />
@@ -189,9 +198,13 @@ export default function BuyingGuidePage() {
       {/* Chapter contents */}
       <Band>
         <div className="max-w-5xl">
-          <SectionHeading title="Ten chapters, four buyers, no filler" />
+          <GuideIntroNote guide="buying" className="max-w-3xl" />
 
-          <div className="mt-10 sm:mt-12">
+          <div className="mt-16">
+            <SectionHeading title="Read it online, chapter by chapter" />
+          </div>
+
+          <div className="mt-10 sm:mt-12" id="contents">
             <GuideContents guide="buying" />
           </div>
 
