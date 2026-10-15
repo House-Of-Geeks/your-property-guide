@@ -240,8 +240,8 @@ export default function FirstHomeGuaranteePage() {
         first home buyer, not a fixed annual allocation. On {HG_EXPANSION_FIRST_YEAR_AS_AT},
         Housing Australia data cited by the federal government showed{" "}
         <strong>{HG_EXPANSION_FIRST_YEAR_BUYERS.toLocaleString("en-AU")} first home buyers</strong>{" "}
-        had purchased through the expanded 5% Deposit Scheme in its first year — the
-        period with no income test, no cap on places and higher property price limits.
+        had purchased through the expanded 5% Deposit Scheme in its first year (the
+        period with no income test, no cap on places and higher property price limits).
         More than 280,000 buyers have been supported since 2022 across the life of the
         Home Guarantee Scheme, and the government estimates expanded-scheme users avoided
         more than $1.4&nbsp;billion in lenders mortgage insurance in that first year alone.
@@ -271,8 +271,8 @@ export default function FirstHomeGuaranteePage() {
         2027–28.
       </p>
       <p>
-        Those projects do not replace the 5% Deposit Scheme — you can still use the
-        guarantee on an eligible purchase — but they are meant to add new stock where
+        Those projects do not replace the 5% Deposit Scheme (you can still use the
+        guarantee on an eligible purchase), but they are meant to add new stock where
         first home buyers are not only competing on established listings. See the{" "}
         <Link href="/guides/first-home-buyer-guide">national first home buyer guide</Link>{" "}
         for how supply and deposit schemes fit together.
