@@ -37,6 +37,7 @@ Severity:
 | Check | Chapter 6 | Weekly clearance rates above 60% in normal conditions in Sydney, Melbourne and Canberra | No source or date. |
 | Conflict | Chapter 10 timeline | “Settlement window (2 to 6 weeks later)” | Chapter 9 gives 30 to 90 days, with 42 days the NSW and Victorian default. Align the timeline. |
 | Check | Chapter 5 | Queensland Form 6, 90-day cap, reappointment only in the last 14 days; SA 90-day cap | Statutory details: confirm against the current Queensland and SA rules. |
+| Review | Chapter 5 | “Ignore the billboard, the awards (mostly bought or self-awarded)” | Carried over from the original guide. A sweeping claim about industry awards with no source; soften it or source it. |
 
 ## The buying guide (src/content/guides/buying)
 
