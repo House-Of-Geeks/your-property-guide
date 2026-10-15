@@ -82,7 +82,7 @@ Rules:
 
 ## 6. Imagery
 
-- **Homepage:** full-bleed, large photography is the point. It covers the hero, both homes in "same playbook" and the five steps, and lives in `src/components/campaign/photos.ts`. The homepage images are interim library picks until the mock's assets (`docs/design/ypg-homepage/assets`) land (`TODO(andy)`).
+- **Homepage:** full-bleed, large photography is the point. It covers the hero, both homes in "same playbook" and the five steps, and lives in `src/components/campaign/photos.ts`. The images were generated with ImagineArt (Nano Banana Pro, 2K) on 15 Oct 2026 to match what each band says: a sandstone home on Sydney Harbour, a harbourfront 5-bed, a Brisbane brick-veneer 3-bed, and a living room styled for sale. They're stored in `public/images/campaign/`.
 - **Under a wash:** only the homepage hero puts text over a photo. It sits under a eucalyptus gradient that is dark on the text side and opens to the photo on the right; on phones the wash is even.
 - **Everywhere else:** documentary photography of real Australian places, as v5 (`public/images/photos/`, `PHOTOS` in `src/components/premium`): soft daylight, true colours, Australian vernacular. Prestige homes may be warmer and more polished, but they must still read as Australian.
 - **Never present a generated or library image as a real sale, a real agent, our team or a customer.** The $18.5M and $640K homes are labelled "Example".
