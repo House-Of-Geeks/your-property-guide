@@ -55,7 +55,7 @@ const TLDR = [
 
 const TOC: GuideTOCEntry[] = [
   { id: "what-they-do",     label: "What buyer's agents actually do" },
-  { id: "fee-models",       label: "Fee models &amp; ranges" },
+  { id: "fee-models",       label: "Fee models & ranges" },
   { id: "by-service",       label: "Cost by service tier" },
   { id: "by-market",        label: "Cost by market" },
   { id: "is-it-worth-it",   label: "When it's worth it" },
@@ -118,7 +118,7 @@ export default function BuyersAgentCostGuide() {
         <p>
           A selling agent is paid by the vendor and acts in their interest. A
           buyer&rsquo;s agent is paid by you and acts in yours. Different role,
-          different fee structure, different incentives, don&rsquo;t confuse the two.
+          different fee structure, different incentives. Don&rsquo;t confuse the two.
         </p>
       </Callout>
 

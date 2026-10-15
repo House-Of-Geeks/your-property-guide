@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -117,7 +116,7 @@ export default function GrannyFlatGuideQLDPage() {
       <Callout variant="warning" title="Verify with your local council">
         <p>
           Secondary dwelling rules in Queensland vary by council. Brisbane City
-          Council's rules differ from Sunshine Coast, Gold Coast, and other
+          Council&rsquo;s rules differ from Sunshine Coast, Gold Coast, and other
           LGAs. Always check with your local council before committing.
         </p>
       </Callout>
@@ -125,7 +124,7 @@ export default function GrannyFlatGuideQLDPage() {
       <h2 id="overview">Secondary dwellings in Queensland</h2>
       <p className="lead">
         In Queensland, granny flats are referred to as <strong>secondary
-        dwellings</strong> (or sometimes "auxiliary units" under older planning
+        dwellings</strong>{" "}(or sometimes &ldquo;auxiliary units&rdquo; under older planning
         schemes). They must be:
       </p>
       <ul>
@@ -147,7 +146,7 @@ export default function GrannyFlatGuideQLDPage() {
         has its own planning scheme for secondary dwellings:
       </p>
       <ul>
-        <li><strong>Zoning:</strong> Allowed in Low-Medium Density Residential and some other zones; not permitted everywhere, check the Brisbane City Plan.</li>
+        <li><strong>Zoning:</strong> Allowed in Low-Medium Density Residential and some other zones; not permitted everywhere; check the Brisbane City Plan.</li>
         <li><strong>Lot size, detached:</strong> Minimum <strong>600m²</strong></li>
         <li><strong>Lot size, attached:</strong> Minimum <strong>450m²</strong></li>
         <li><strong>Maximum size:</strong> <strong>80m²</strong> gross floor area</li>
@@ -170,7 +169,7 @@ export default function GrannyFlatGuideQLDPage() {
         <li><strong>Outdoor area:</strong> Minimum private open space typically required</li>
       </ul>
       <p>
-        Engage a draftsperson or architect familiar with your council's
+        Engage a draftsperson or architect familiar with your council&rsquo;s
         requirements before preparing DA documents.
       </p>
 
@@ -183,7 +182,7 @@ export default function GrannyFlatGuideQLDPage() {
       <ol>
         <li>Confirm zoning and applicable planning codes for your site</li>
         <li>Prepare plans and application documents</li>
-        <li>Lodge the DA via the council's online portal</li>
+        <li>Lodge the DA via the council&rsquo;s online portal</li>
         <li>Council assessment, typically 25 to 30 business days for code assessable</li>
         <li>Receive approval (may include conditions)</li>
         <li>Obtain building approval before commencing construction</li>
@@ -220,7 +219,7 @@ export default function GrannyFlatGuideQLDPage() {
 
       <h2 id="rental">Rental market and returns</h2>
       <p>
-        Queensland's rental market has been extremely tight since 2022, with
+        Queensland&rsquo;s rental market has been extremely tight since 2022, with
         vacancy rates in Brisbane, Gold Coast and Sunshine Coast all below 1%
         for years. Rents have risen sharply, making secondary dwellings highly
         attractive for investors.
@@ -240,7 +239,7 @@ export default function GrannyFlatGuideQLDPage() {
       />
 
       <p>
-        Even accounting for management costs and rates, that's a compelling
+        Even after management costs and rates, that&rsquo;s a strong
         return. The strong QLD rental market continues to support granny flat
         investment in 2026.
       </p>

@@ -112,7 +112,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Should I get pre-approval before talking to an agent?",
     answer:
-      "Yes. Walking into an open home with a written pre-approval moves you up the agent's priority list. You're a buyer they can close. Without it, agents (correctly) treat you as a tyre-kicker until you can demonstrate finance is sorted. Once you've found the property, the agent will want a copy of your pre-approval letter as part of any serious negotiation.",
+      "Yes. Walking into an open home with a written pre-approval moves you up the agent's priority list. You're a buyer they can close. Without it, agents tend to treat you as a tyre-kicker until you can demonstrate finance is sorted. Once you've found the property, the agent will want a copy of your pre-approval letter as part of any serious negotiation.",
   },
 ];
 
@@ -232,7 +232,7 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         Pre-approval matters for three reasons:
       </p>
       <ul>
-        <li><strong>Credibility with agents.</strong> Selling agents have wasted years on buyers who couldn&rsquo;t finance their offers. A pre-approval letter signals you can close, and agents prioritise you on follow-ups and pre-auction offers.</li>
+        <li><strong>Credibility with agents.</strong> Selling agents see plenty of buyers who can&rsquo;t finance their offers. A pre-approval letter signals you can close, and agents prioritise you on follow-ups and pre-auction offers.</li>
         <li><strong>Real budget clarity.</strong> Pre-approval forces the lender to test your actual numbers against their actual policy. The result is more reliable than a calculator output, and it&rsquo;ll often differ. Sometimes you&rsquo;re approved for more than expected, sometimes less.</li>
         <li><strong>Auction protection.</strong> Auction contracts are unconditional. Without pre-approval, you&rsquo;re bidding speculatively. With pre-approval, you have a defensible upper-limit you can bid to.</li>
       </ul>

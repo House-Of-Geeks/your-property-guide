@@ -152,15 +152,15 @@ export default function LMIGuidePage() {
           LMI is insurance taken out by the lender (the bank) to protect <em>itself</em>{" "}
           if you default on your mortgage and the sale of the property does not cover
           the outstanding loan balance. You pay the premium, but the bank is the
-          beneficiary. If you default, the bank claims on the LMI policy, you remain
+          beneficiary. If you default, the bank claims on the LMI policy and you remain
           liable for any shortfall.
         </p>
       </Callout>
 
       <p>
         This distinction matters enormously. Many borrowers pay LMI assuming it
-        provides them with some protection, it does not. LMI provides no direct
-        benefit to the borrower; it simply enables the lender to offer higher-LVR
+        provides them with some protection. It does not. LMI provides no direct
+        benefit to the borrower; it lets the lender offer higher-LVR
         loans with reduced risk to itself.
       </p>
       <p>

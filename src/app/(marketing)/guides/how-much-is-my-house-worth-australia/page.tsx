@@ -389,8 +389,8 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
       </p>
       <ol>
         <li>
-          <strong>Book a free appraisal.</strong> An independent appraisal from
-          a local agent gives you a market-facing figure and costs nothing.{" "}
+          <strong>Book a free appraisal.</strong> An appraisal from one
+          local agent gives you a market-facing figure and costs nothing.{" "}
           <Link href="/appraisal">Start here</Link>.
         </li>
         <li>

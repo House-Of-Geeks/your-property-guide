@@ -13,7 +13,7 @@ export const post: BlogPost = {
 <p>This article unpacks exactly what's changing, the timing rules that matter, who is and isn't affected, and what investors should actually do with the information.</p>
 
 <h2>Negative gearing in plain English</h2>
-<p>Negative gearing happens when the costs of owning an investment property, interest, council rates, insurance, repairs, depreciation, are higher than the rental income. The "loss" can currently be deducted against your salary and other income, reducing the total tax you pay. For high-income earners on the 37% or 45% marginal rate, the tax saving from negative gearing has historically been substantial.</p>
+<p>Negative gearing happens when the costs of owning an investment property (interest, council rates, insurance, repairs, depreciation) are higher than the rental income. The "loss" can currently be deducted against your salary and other income, reducing the total tax you pay. For high-income earners on the 37% or 45% marginal rate, the tax saving from negative gearing has historically been substantial.</p>
 <p>Approximately 1.1 million Australians currently negatively gear an investment property, claiming roughly $11 billion in net rental losses annually against their other income. The system has been a structural feature of Australian property investment for nearly four decades.</p>
 
 <h2>What's actually changing on 1 July 2027</h2>

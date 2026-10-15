@@ -182,3 +182,43 @@ Several of these are contradictions between articles in this batch (agency cooli
 | Review | property-auction-guide (title and frontmatter) | Title "how to bid and how to sell", persona "selling" | The body is written for buyers only. The title wasn't changed. |
 | Conflict | first-home-buyer-qld `page.tsx:167` | "the largest state First Home Owner Grant" | True only if territories are excluded; the page's own FAQ says the NT pays $50,000. |
 | Check | best-time-to-buy-property-australia `page.tsx:228` | "most lenders won’t consider income on probation" | Many lenders now do. |
+
+### Batch 5: depreciation, first home (TAS, ACT), appraisals, granny flats, LMI, pre-approval, negative gearing, buyer's agents
+
+| Severity | Where | Claim | Why it's flagged |
+|---|---|---|---|
+| Conflict | property-depreciation-guide `page.tsx:202`, :316 | Blinds and curtains "6 years" / "blinds ($3,000 at DV 25%)" | A 6-year life gives about a 33% diminishing-value rate, not 25%. ATO TR 2022/1. |
+| Check | property-depreciation-guide `page.tsx:201`, :207 | Carpet "10 years", ceiling fans "15 years" | May not match ATO residential effective lives; the example's 20% carpet rate rests on 10 years. |
+| Likely wrong | `darwin-nt-property-market-2026.ts:20` | "most residential land is on Crown Lease and operates similarly to freehold" | Most established Darwin residential land appears to be freehold. NT Land Titles Office. |
+| Check | `darwin-nt-property-market-2026.ts:14`, :29 | "around $610K in mid-2026, up around 4.1%"; "vacancy at 1.2% in Q1 2026" | No source. |
+| Likely wrong | `queensland-30000-grant-locked-in-help-to-buy-expands.ts:15` | "the largest first home grant in the country, tied with Tasmania's" | The NT grant is $50,000, and Tasmania's dropped to $20,000 on 1 July 2026 (`src/lib/policy/first-home.ts`). |
+| Likely wrong | lenders-mortgage-insurance-guide `page.tsx:365` | "the additional $82,000 plus $82,000 more in stamp duty and ongoing costs" | Garbled: the extra duty on an $82,000 higher price is a few thousand dollars. |
+| Likely wrong | home-loan-pre-approval-australia `page.tsx:105` | "getting a Lender's Mortgage Insurance buffer in your pre-approval" | LMI isn't a buffer and doesn't cover a low valuation; probably meant borrowing headroom. |
+| Review | home-loan-pre-approval-australia `page.tsx:302` (pull quote attributed to Andy) | "An unconditional pre-approval is the single strongest negotiating signal" | The article itself says pre-approval is always conditional. Andy to reword. |
+| Likely wrong | home-loan-pre-approval-australia `page.tsx:345` | "the rejections stay on your file for 5 years" | The enquiry stays for 5 years, not whether it was declined. OAIC. |
+| Check | home-loan-pre-approval-australia `page.tsx:137`, :254 | "A broker submits one application across 30+ lenders"; "For 80% of borrowers" | Brokers compare many lenders but lodge each application with one; the 80% has no source. |
+| Likely wrong | buying-property-australia `page.tsx:422`, :111 | "TAS. 3 business days (penalty: 0.25%)" | Tasmania has no statutory cooling-off; the site's own TAS first home guide says so. |
+| Likely wrong | buying-property-australia `page.tsx:420` | "SA. 2 business days (penalty: 0.25% of purchase price)" | In SA the vendor can keep at most $100 of the deposit. CBS SA. |
+| Conflict | buying-property-australia `page.tsx:262` | Duty on $700,000: "around $14,175" (QLD), "approximately $26,857" (NSW) | The site's duty engine gives $17,350 for QLD and $25,687 for NSW (`src/lib/utils/stamp-duty.ts`). |
+| Check | buying-property-australia `page.tsx:497` | Records of improvements "reduce CGT when you eventually sell" a primary residence | A main residence is generally CGT-exempt; this applies only to partial exemptions. |
+| Review | buying-property-australia `page.tsx:290` | "Your Property Guide maps school catchments … across Australia." | Confirm the site has national catchment maps. |
+| Review | buying-property-australia, Editor note | "Most first-home buyers I’ve worked with" (attributed to Andy) | May not fit Andy's stated background ($10M–$20M homes). Andy to confirm. |
+| Likely wrong | rentvesting-australia `page.tsx:235` | "Tax benefit at 39c marginal rate: $4,727" | $130,000 is in the 30% bracket for 2026-27, so the saving and the "+$607" result are overstated. |
+| Conflict | rentvesting-australia `page.tsx:229` | "Mortgage interest (4-bedroom, $400,000 loan" | The example property is a 3-bedroom house (:217). |
+| Check | rentvesting-australia `page.tsx:95`, :57 | Parts of the First Home Super Saver scheme "may still be accessible" | FHSS also requires never having owned property in Australia; the TLDR's "reinstated in some" contradicts the FAQ. |
+| Likely wrong | rentvesting-australia `page.tsx:360` | "rental income is haircut by 70–80%" | Lenders usually count 70–80% of the rent (a 20–30% haircut). |
+| Conflict | rentvesting-australia, FAQ | Buyer's agent fees 1.5–2.5% | `service-model.ts` says 1.5–3% or $10,000–$18,000 fixed. |
+| Check | `top-5-suburbs-families-moreton-bay.ts:21`, :18 | "St Eugene College and Morayfield State High School"; "Good Shepherd Catholic Primary School" | St Eugene College appears to be in Burpengary; Good Shepherd's location is unconfirmed. |
+| Check | `top-5-suburbs-families-moreton-bay.ts:9` | "The Moreton Bay Region" | The council has been City of Moreton Bay since 2023. |
+| Conflict | negative-gearing-australia `page.tsx:275` | Travel to inspect is listed as deductible, with "removed from 1 July 2017" on the same line | It shouldn't be in the deductible list. |
+| Likely wrong | negative-gearing-australia `page.tsx:256` | "worth approximately $1,128,000 after 10 years, a gain of $428,000" | $700,000 at 5% for 10 years is about $1,140,000, a gain of about $440,000. |
+| Conflict | negative-gearing-australia `page.tsx:300` | Capital works "Only applies to properties built after 18 July 1985" | The depreciation guide uses 16 September 1987. |
+| Check | negative-gearing-australia `page.tsx:277` | Borrowing costs "amortised over the loan term (typically 5 years)" | Five years, or the loan term if shorter. |
+| Likely wrong | buyers-agent-cost-australia `page.tsx:91` | "NSW requires a Class 1 or Class 2 Real Estate Licence (Stock and Station)" | Buyer's agents need a real estate licence; stock and station is a separate category. |
+| Check | buyers-agent-cost-australia `page.tsx:241` | "on a contract usually capped at 6 to 12 weeks" | Most states set no legal cap. |
+| Likely wrong | granny-flat-guide-vic `page.tsx:49`, :154 (and the planning framing throughout) | "no state-wide complying-development pathway … you typically need a council planning permit" | Since December 2023 (VC253) small second dwellings up to 60m² need no planning permit in most residential zones. |
+| Check | granny-flat-guide-qld `page.tsx:138` | "Most projects require a Development Application" | A complying Brisbane secondary dwelling is often accepted development needing building approval only; check the 600m²/450m² minimums too. |
+| Check | granny-flat-guide-qld `page.tsx:50` | Vacancy "below 1% … for years" | No source. |
+| Conflict | `negative-gearing-changes-2026-budget.ts:43`, :95, :52–54 | SMSFs under the same rules; trusts and companies "never subject to personal negative gearing"; the "substantial renovation" definition | All three disagree with negative-gearing-australia (:418), which says super funds are excluded, companies and most trusts are covered, and a ministerial instrument will define "new build". The post says it "reflects the rules as legislated"; it needs a full re-check. |
+| Likely wrong | `negative-gearing-changes-2026-budget.ts:107` | Link to "/tools/negative-gearing-calculator" | No such route; the calculator is at /negative-gearing-calculator. The link 404s. |
+| Review | `negative-gearing-changes-2026-budget.ts:99` | "a clear break of a pre-election commitment, and the government has been honest about that" | A political claim with no source. |
