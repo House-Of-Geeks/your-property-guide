@@ -18,8 +18,9 @@ const PEOPLE: readonly Person[] = [
     name: "Andy McMaster",
     slug: "andy-mcmaster",
     image: "/images/agents/andy-mcmaster.jpg",
-    role: "Editor",
-    bio: "Editor and co-founder of Your Property Guide. Commissions and edits every guide, signs it off before it publishes, and writes the scheme and policy commentary. Based in Brisbane.",
+    role: "Founder and editor",
+    // The facts in src/lib/founder.ts, and his editing role. Nothing else.
+    bio: "Founder of Your Property Guide. Andy started his career selling Australia’s $10 million to $20 million homes and was head-hunted after two years to advise some of the biggest companies in property; his advice has generated over $4 billion in property sales in the past five years. He edits every guide and signs it off before it publishes.",
   },
   {
     name: "Bec Ramirez",

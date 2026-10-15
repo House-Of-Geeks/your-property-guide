@@ -56,6 +56,7 @@ const NAV_LINKS: NavLink[] = [
       { label: "Make a selling plan",     href: "/plan?j=selling",                  group: "Start here" },
       { label: "Choosing a selling agent", href: "/guides/how-to-choose-a-selling-agent", group: "Start here" },
       { label: "Agent fees and commission", href: "/guides/real-estate-agent-fees-australia", group: "Start here" },
+      { label: "Free agreement check",  href: "/agreement-check",                 group: "Start here" },
       { label: "Buying and selling",      href: "/buying-and-selling",              group: "Start here" },
       { label: "Selling costs",           href: "/selling-costs-calculator",        group: "Tools" },
       { label: "Commission calculator",   href: "/real-estate-commission-calculator", group: "Tools" },
@@ -86,7 +87,7 @@ const NAV_LINKS: NavLink[] = [
     href: "/about",
     layout: "list",
     children: [
-      { label: "About us",            href: "/about" },
+      { label: "Andy’s story",        href: "/about" },
       { label: "How we’re paid",      href: "/about#ownership-funding" },
       { label: "How we choose agents", href: "/get-help#how-we-choose" },
       { label: "Editorial standards", href: "/about#methodology" },

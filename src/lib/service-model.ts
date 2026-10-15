@@ -67,6 +67,8 @@ export const AGREEMENT_CHECK = {
   covers: ["Commission", "Marketing spend", "Term", "Exit clause"],
   summary: "A 15-minute check of the agency agreement you’ve been handed: the commission, the marketing spend, the term and the exit clause.",
   notAdvice: "It’s general information, not legal advice. For advice on your contract, speak to a solicitor or conveyancer.",
+  /** Under the form; /api/leads stores the same words with the row (Lead.consentText). */
+  collection: "We use your details only to call you about this agreement. We never pass them to an agent, and we never sell them.",
 } as const;
 
 /**

@@ -6,7 +6,7 @@ import { clarityEvent, clarityTag } from "@/lib/clarity";
 
 interface ConversionTrackerProps {
   /** Which thanks page this is. */
-  flow: "appraisal" | "get-connected" | "selling-guide" | "buying-guide";
+  flow: "appraisal" | "get-connected" | "selling-guide" | "buying-guide" | "agreement-check";
 }
 
 // Fires once when a thanks page renders. Since 14 Oct 2026 the two paths are
@@ -21,7 +21,8 @@ export function ConversionTracker({ flow }: ConversionTrackerProps) {
     const learning = flow === "selling-guide" || flow === "buying-guide";
     clarityEvent(learning ? "guide_thanks_view" : "lead_conversion");
     clarityTag("conversion_flow", flow);
-    clarityTag("lead_type", learning ? "learning" : "introduction");
+    // The agreement check (15 Oct 2026) is a call from our team, not an introduction.
+    clarityTag("lead_type", learning ? "learning" : flow === "agreement-check" ? "agreement-check" : "introduction");
     const intent = params.get("intent");
     const score = params.get("score");
     if (intent) clarityTag("conversion_intent", intent);

@@ -662,3 +662,67 @@ describe("client payload contracts", () => {
     });
   });
 });
+
+describe("agreement-check leads (15 Oct 2026)", () => {
+  const check = {
+    type: "agreement-check",
+    firstName: "Sam",
+    lastName: "Lee",
+    email: "sam@example.com",
+    phone: "0491 570 156",
+    suburb: "paddington-qld-4064",
+    agencyName: "Ray White Paddington",
+    signDate: "2026-10-20",
+    marketingConsent: false,
+    requestKey: "agreement-key-1",
+    source: "agreement-check-page",
+    website: "",
+  };
+
+  it("is stored as a team enquiry with the agency, the date and the collection statement", async () => {
+    const res = await POST(makeRequest(check));
+    expect(res.status).toBe(200);
+    const data = dbLeadCreate.mock.calls[0][0].data;
+    expect(data.type).toBe("agreement-check");
+    expect(data.kind).toBe("enquiry");
+    expect(data.journey).toBe("selling");
+    expect(data.message).toBe("Agent or agency: Ray White Paddington · Planning to sign: Tue 20 Oct 2026");
+    expect(data.consentText).toMatch(/never pass them to an agent/);
+    expect(data.phone).toBe("0491570156");
+    expect(data.status).toBeUndefined();
+    expect(data.introConsent).toBeUndefined();
+  });
+
+  it("emails the team with the sign date up front, and the reader a call confirmation", async () => {
+    await POST(makeRequest(check));
+    const [notify, confirm] = sendMailMock.mock.calls.map((c) => c[0]);
+    expect(notify.subject).toBe("[Signs Tue 20 Oct 2026] Agreement Check, Sam Lee (paddington-qld-4064)");
+    expect(notify.html).toContain("Never pass to an agent");
+    expect(notify.html).toContain("Ray White Paddington");
+    expect(confirm.subject).toBe("We'll call you about your agency agreement");
+    expect(confirm.html).toContain("before Tue 20 Oct 2026");
+    expect(confirm.html).toContain("not legal advice");
+  });
+
+  it("never reaches Sent 24/7 or an agent", async () => {
+    const fetchSpy = vi.fn();
+    vi.stubGlobal("fetch", fetchSpy);
+    try {
+      await POST(makeRequest({ ...check, call: true }));
+      expect(fetchSpy).not.toHaveBeenCalled();
+      expect(dbLeadUpdate).not.toHaveBeenCalled();
+      expect(dbLeadCreate.mock.calls[0][0].data.routedToAgent).toBeUndefined();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it("without the optional answers says so, and rejects a malformed date", async () => {
+    const res = await POST(makeRequest({ ...check, agencyName: undefined, signDate: undefined, requestKey: "agreement-key-2" }));
+    expect(res.status).toBe(200);
+    expect(dbLeadCreate.mock.calls[0][0].data.message).toBe("Agent or agency: not given · Planning to sign: not sure yet");
+    expect(sendMailMock.mock.calls[0][0].subject).toMatch(/^Agreement Check, Sam Lee/);
+    const bad = await POST(makeRequest({ ...check, signDate: "20/10/2026", requestKey: "agreement-key-3" }));
+    expect(bad.status).toBe(400);
+  });
+});
