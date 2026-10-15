@@ -23,7 +23,7 @@ export const batch9: ArticleCampaignBatch = {
     cta: "buying-plan",
   },
   "changing-real-estate-agents-mid-campaign": {
-    hook: "When a campaign stalls, the agreement decides what happens next: the term, the exit clause and the tail clause are the difference between losing a few weeks and paying a second commission. Check all three before you sign.",
+    hook: "When a campaign stalls, the agreement decides what happens next: the term, the exit clause and the tail clause are the difference between losing a few weeks and paying a second commission. Check all three now, and in any new agreement before you sign.",
     cta: "agreement-check",
   },
   "first-home-buyer-schemes-by-state-australia-2026": {
