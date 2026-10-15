@@ -89,7 +89,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can the agent legally not present my offer to the vendor?",
     answer:
-      "No. In every Australian state, real estate agents have a legal obligation to present all genuine offers to the vendor unless the vendor has given written instructions to refuse offers below a specific threshold. If you suspect an offer isn't being presented, put it in writing to the agent's principal and copy in the agency's compliance contact. Agents who block offers risk their license.",
+      "No. In every Australian state, real estate agents have a legal obligation to present all genuine offers to the vendor unless the vendor has given written instructions to refuse offers below a specific threshold. If you suspect an offer isn't being presented, put it in writing to the agent's principal and copy in the agency's compliance contact. Agents who block offers risk their licence.",
   },
   {
     question: "What does 'subject to finance' mean and should I include it?",

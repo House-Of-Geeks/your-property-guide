@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -126,7 +125,7 @@ export default function RentersRightsNSWPage() {
           </a>{" "}
           or the{" "}
           <a href="https://www.tenants.org.au" target="_blank" rel="noopener noreferrer">
-            Tenants' Union NSW
+            Tenants’ Union NSW
           </a>{" "}
           before taking action.
         </p>
@@ -156,13 +155,13 @@ export default function RentersRightsNSWPage() {
       <ul>
         <li>
           <strong>Fixed term:</strong> A lease with a defined start and end date
-          (commonly 6 or 12 months). The landlord generally can't end the
-          tenancy without grounds during this period, and the tenant can't leave
+          (commonly 6 or 12 months). The landlord generally can’t end the
+          tenancy without grounds during this period, and the tenant can’t leave
           without penalty unless an exemption applies (e.g. domestic violence,
           uninhabitable property).
         </li>
         <li>
-          <strong>Periodic:</strong> A "rolling" agreement with no fixed end
+          <strong>Periodic:</strong> A “rolling” agreement with no fixed end
           date, often what a fixed term becomes once it expires. Either party
           can end it with the correct notice.
         </li>
@@ -175,13 +174,13 @@ export default function RentersRightsNSWPage() {
 
       <h2 id="bond">Bond rules</h2>
       <ul>
-        <li><strong>Maximum bond:</strong> 4 weeks rent. A landlord can't legally ask for more.</li>
+        <li><strong>Maximum bond:</strong> 4 weeks rent. A landlord can’t legally ask for more.</li>
         <li><strong>Lodgement:</strong> The landlord or agent must lodge your bond with NSW Fair Trading via Rental Bonds Online within 10 working days. You should receive a receipt.</li>
         <li><strong>Refund:</strong> If the property is in the same condition as on move-in (allowing for fair wear and tear), the full bond must be refunded. Disputes go to NCAT.</li>
       </ul>
       <p>
         Take dated photos on move-in day and keep a copy of the condition
-        report, that's your strongest evidence in any bond dispute.
+        report, that’s your strongest evidence in any bond dispute.
       </p>
 
       <h2 id="rent-increases">Rent increases</h2>
@@ -189,7 +188,7 @@ export default function RentersRightsNSWPage() {
       <ul>
         <li>Minimum <strong>12 months</strong> between any two rent increases (both fixed-term and periodic)</li>
         <li>Minimum <strong>60 days written notice</strong> before any increase</li>
-        <li>Rent can't be increased during a fixed-term lease unless the increase is specified in the agreement</li>
+        <li>Rent can’t be increased during a fixed-term lease unless the increase is specified in the agreement</li>
       </ul>
 
       <KeyFigure
@@ -200,7 +199,7 @@ export default function RentersRightsNSWPage() {
 
       <p>
         If you believe a rent increase is excessive, you can apply to NCAT for
-        review. NCAT considers comparable rents in the area. NSW doesn't cap the
+        review. NCAT considers comparable rents in the area. NSW doesn’t cap the
         amount of an increase, only the frequency and notice.
       </p>
 
@@ -225,7 +224,7 @@ export default function RentersRightsNSWPage() {
         <li>Fault in lift or staircase</li>
       </ul>
       <p>
-        If the landlord can't be reached or fails to act, tenants may arrange
+        If the landlord can’t be reached or fails to act, tenants may arrange
         urgent repairs themselves up to $1,000 and claim reimbursement. Keep all
         receipts.
       </p>
@@ -235,7 +234,7 @@ export default function RentersRightsNSWPage() {
         For non-urgent repairs (a dripping tap, broken dishwasher), the
         landlord has <strong>14 days</strong> to respond after receiving written
         notice. Always request repairs in writing (email is fine) so you have a
-        record. If the landlord doesn't act within 14 days, apply to NCAT for a
+        record. If the landlord doesn’t act within 14 days, apply to NCAT for a
         repair order.
       </p>
 
@@ -253,7 +252,7 @@ export default function RentersRightsNSWPage() {
 
       <h2 id="ending-tenancy">Ending a tenancy</h2>
       <p>
-        Notice periods depend on the lease type and who's giving notice.
+        Notice periods depend on the lease type and who’s giving notice.
       </p>
 
       <table>
@@ -280,14 +279,14 @@ export default function RentersRightsNSWPage() {
         tenancies. The landlord must give <strong>90 days notice</strong>.
       </p>
       <p>
-        For fixed-term tenancies, the landlord can't end the tenancy without
-        grounds during the fixed term (they can't evict mid-lease just to raise
+        For fixed-term tenancies, the landlord can’t end the tenancy without
+        grounds during the fixed term (they can’t evict mid-lease just to raise
         the rent).
       </p>
       <p>
         NSW tenant advocates have long campaigned to end no-grounds evictions.
         As of April 2026, the provisions remain in place but are subject to
-        change. Check the Tenants' Union NSW website for updates.
+        change. Check the Tenants’ Union NSW website for updates.
       </p>
 
       <h2 id="domestic-violence">Domestic violence protections</h2>
@@ -295,10 +294,10 @@ export default function RentersRightsNSWPage() {
       <ul>
         <li>A tenant can <strong>end a fixed-term lease immediately and without penalty</strong> with evidence such as a domestic violence order, police report, or statutory declaration.</li>
         <li>A co-tenant who is the perpetrator can be removed from the lease to protect the victim.</li>
-        <li>Victims aren't liable for break fees or compensation related to early termination.</li>
+        <li>Victims aren’t liable for break fees or compensation related to early termination.</li>
       </ul>
       <p>
-        If you're in immediate danger, call 000. For support: 1800RESPECT
+        If you’re in immediate danger, call 000. For support: 1800RESPECT
         (1800 737 732) or DVConnect on 1800 811 811.
       </p>
 
@@ -313,7 +312,7 @@ export default function RentersRightsNSWPage() {
       </ul>
       <p>
         NCAT applications are generally low-cost and accessible. Before
-        applying, you can also try NSW Fair Trading's free dispute resolution
+        applying, you can also try NSW Fair Trading’s free dispute resolution
         service, which mediates between parties without the formality of a
         tribunal hearing. Lodge applications at ncat.nsw.gov.au.
       </p>
@@ -325,7 +324,7 @@ export default function RentersRightsNSWPage() {
           <a href="https://www.fairtrading.nsw.gov.au" target="_blank" rel="noopener noreferrer">fairtrading.nsw.gov.au</a>
         </li>
         <li>
-          <strong>Tenants' Union NSW</strong>, free advice and advocacy:{" "}
+          <strong>Tenants’ Union NSW</strong>, free advice and advocacy:{" "}
           <a href="https://www.tenants.org.au" target="_blank" rel="noopener noreferrer">tenants.org.au</a>
         </li>
         <li>

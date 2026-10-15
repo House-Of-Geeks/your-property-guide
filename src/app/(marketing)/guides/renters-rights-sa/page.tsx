@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -133,7 +132,7 @@ export default function RentersRightsSAPage() {
       </p>
       <p>
         The Act is administered by Consumer and Business Services SA (CBS).
-        Disputes that can't be resolved through CBS are referred to the South
+        Disputes that can’t be resolved through CBS are referred to the South
         Australian Civil and Administrative Tribunal (SACAT).
       </p>
       <p>
@@ -159,7 +158,7 @@ export default function RentersRightsSAPage() {
       <ul>
         <li><strong>Frequency:</strong> Once every 12 months for periodic tenancies</li>
         <li><strong>Notice:</strong> At least 60 days written notice</li>
-        <li><strong>Fixed-term:</strong> Rent can't be increased during a fixed term unless the increase amount is specified in the agreement</li>
+        <li><strong>Fixed-term:</strong> Rent can’t be increased during a fixed term unless the increase amount is specified in the agreement</li>
       </ul>
       <p>
         If you believe a rent increase is excessive, apply to SACAT for review.
@@ -177,7 +176,7 @@ export default function RentersRightsSAPage() {
         Must be fixed as soon as possible. Examples: burst pipes, gas leaks,
         major structural damage, electrical faults, loss of essential services
         (water, gas, electricity), breakdown of heating/cooling in extreme
-        weather. If the landlord can't be reached, tenants may arrange urgent
+        weather. If the landlord can’t be reached, tenants may arrange urgent
         repairs and seek reimbursement, check CBS for current limits.
       </p>
 
@@ -185,7 +184,7 @@ export default function RentersRightsSAPage() {
       <p>
         Must be addressed within a reasonable time after written notice.
         Always put requests in writing (email is acceptable) and keep records.
-        If the landlord doesn't act, apply to SACAT for a repair order.
+        If the landlord doesn’t act, apply to SACAT for a repair order.
       </p>
 
       <h2 id="entry-rights">Landlord entry rights</h2>
@@ -219,7 +218,7 @@ export default function RentersRightsSAPage() {
       </p>
       <p>
         Breaking a fixed-term lease early may make you liable for the
-        landlord's reasonable reletting costs. Check your agreement and seek
+        landlord’s reasonable reletting costs. Check your agreement and seek
         advice before acting.
       </p>
 
@@ -248,7 +247,7 @@ export default function RentersRightsSAPage() {
           <a href="https://www.cbs.sa.gov.au/renting" target="_blank" rel="noopener noreferrer">cbs.sa.gov.au/renting</a>
         </li>
         <li>
-          <strong>Tenants' Information &amp; Advocacy Service (TIAS)</strong>:{" "}
+          <strong>Tenants’ Information &amp; Advocacy Service (TIAS)</strong>:{" "}
           <a href="https://www.syc.net.au/tias" target="_blank" rel="noopener noreferrer">syc.net.au/tias</a>
         </li>
         <li>

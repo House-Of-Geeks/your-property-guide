@@ -135,15 +135,15 @@ export default function GrannyFlatGuideWAPage() {
 
       <h2 id="what-is">What is an ancillary dwelling in WA?</h2>
       <p className="lead">
-        In Western Australia, what's commonly called a "granny flat" is
+        In Western Australia, what’s commonly called a “granny flat” is
         officially an <strong>ancillary dwelling</strong> (sometimes secondary
-        dwelling). It's a self-contained dwelling on the same lot as a primary
+        dwelling). It’s a self-contained dwelling on the same lot as a primary
         residence, typically smaller than the main house, designed for a family
         member, carer, or tenant.
       </p>
       <p>
         Ancillary dwellings are regulated under the <strong>Residential Design
-        Codes (R-Codes)</strong>, WA's state-wide planning framework, plus local
+        Codes (R-Codes)</strong>, WA’s state-wide planning framework, plus local
         council policies. The R-Codes set minimum lot sizes, maximum floor
         areas, and setbacks.
       </p>
@@ -175,7 +175,7 @@ export default function GrannyFlatGuideWAPage() {
         <li><strong>Minimum lot size:</strong> Generally permitted in R20 and higher density zones. R20 typically corresponds to ~660m² for subdivision but lower for ancillary dwellings. Check your specific zone with your council.</li>
         <li><strong>Floor area cap:</strong> 70m² for most lots (under 500m²); up to 100m² for larger lots. Internal living area including bathroom and kitchen.</li>
         <li><strong>Setbacks:</strong> Must comply with side, rear, and primary-dwelling setbacks. These vary by zone.</li>
-        <li><strong>Lot coverage:</strong> Combined coverage of all structures (main house + ancillary + outbuildings) can't exceed the maximum permissible for the zone.</li>
+        <li><strong>Lot coverage:</strong> Combined coverage of all structures (main house + ancillary + outbuildings) can’t exceed the maximum permissible for the zone.</li>
         <li><strong>Parking:</strong> One car bay may need to be provided in addition to those required for the main house.</li>
         <li><strong>Utilities:</strong> Must have a separate or separately metered electricity and water connection.</li>
       </ul>
@@ -194,7 +194,7 @@ export default function GrannyFlatGuideWAPage() {
       </p>
       <ul>
         <li>The registered owner must reside in the main house or the ancillary dwelling</li>
-        <li>Applies even if you're building the dwelling for a family member</li>
+        <li>Applies even if you’re building the dwelling for a family member</li>
         <li>Enforced through the planning approval and building permit conditions</li>
         <li>Some councils may have exceptions, always verify</li>
       </ul>
@@ -207,7 +207,7 @@ export default function GrannyFlatGuideWAPage() {
 
       <h2 id="approval-process">Approval process, building permit</h2>
       <p>
-        Unlike NSW's CDC pathway, WA requires a building permit for all
+        Unlike NSW’s CDC pathway, WA requires a building permit for all
         ancillary dwellings, processed via your local council or a registered
         building surveyor. The process:
       </p>
@@ -247,7 +247,7 @@ export default function GrannyFlatGuideWAPage() {
 
       <h2 id="rental-income">Rental income potential in Perth</h2>
       <p>
-        Perth's rental market has been exceptionally tight since 2022, with
+        Perth’s rental market has been exceptionally tight since 2022, with
         vacancy rates consistently below 1% across most suburbs. Strong demand
         for ancillary dwellings as well as standard rentals.
       </p>
@@ -267,7 +267,7 @@ export default function GrannyFlatGuideWAPage() {
 
       <p>
         Even allowing for expenses, returns can be compelling, especially given
-        how tight Perth's rental market has been.
+        how tight Perth’s rental market has been.
       </p>
 
       <h2 id="popular-areas">Popular areas for granny flats in Perth</h2>
@@ -290,7 +290,7 @@ export default function GrannyFlatGuideWAPage() {
         <li><strong>Strata title:</strong> If your property is in a strata scheme, separate strata company approval may be required in addition to council approval.</li>
         <li><strong>Tax implications:</strong> Rental income is taxable. Consult an accountant about depreciation, which can offset a significant share of income in early years.</li>
         <li><strong>Insurance:</strong> Update building insurance to cover the ancillary dwelling and consider landlord insurance for the rental.</li>
-        <li><strong>Tenancy laws:</strong> As a landlord, you're bound by the WA Residential Tenancies Act. See <Link href="/guides/renters-rights-wa">Renter's Rights in WA</Link> for the obligations from the tenant side.</li>
+        <li><strong>Tenancy laws:</strong> As a landlord, you’re bound by the WA Residential Tenancies Act. See <Link href="/guides/renters-rights-wa">Renter’s Rights in WA</Link> for the obligations from the tenant side.</li>
       </ul>
 
       <h2 id="resources">Resources</h2>

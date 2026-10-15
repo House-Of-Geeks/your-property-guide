@@ -189,7 +189,7 @@ export default function FirstHomeBuyerNSWPage() {
       <h3>How and when the grant is paid</h3>
       <p>
         For purchases, the grant is typically paid at settlement through your lender.
-        For owner-builders, it's paid when an occupancy certificate is issued. Apply
+        For owner-builders, it’s paid when an occupancy certificate is issued. Apply
         through Revenue NSW (online at revenue.nsw.gov.au) or via your lender.
       </p>
 
