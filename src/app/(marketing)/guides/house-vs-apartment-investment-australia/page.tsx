@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "Houses tend to deliver stronger long-term capital growth (land appreciates, buildings depreciate) but lower rental yields than apartments.",
   "Apartments typically deliver higher gross yields (4% to 5.5%) compared to houses (2.5% to 4%), but body corporate fees and slower growth eat into the advantage.",
-  "Over a 20-year hold, capital city houses have historically out-grown apartments by 1% to 2% annually, that compounds to a meaningful wealth gap.",
+  "Over a 20-year hold, capital city houses have historically out-grown apartments by 1% to 2% annually, and that compounds into a meaningful wealth gap.",
   "Apartments win on cash flow (higher yield, lower entry price) and effort (no garden, no roof). Houses win on long-term capital growth and renovation upside.",
   "The right answer depends on your goal: cash flow now (apartment), wealth in 15 to 20 years (house), or somewhere in between (townhouse, dual-key, regional house).",
 ];
@@ -69,12 +69,12 @@ const FAQS: FaqItem[] = [
   {
     question: "Do houses always outperform apartments?",
     answer:
-      "Not always, apartments in genuinely supply-constrained inner-ring suburbs (think Sydney's Lower North Shore or inner Melbourne) can match house growth. But across broader capital city markets and over 15 to 20 year horizons, separate houses on land have historically delivered 1% to 2% higher annual growth than units.",
+      "Not always. Apartments in genuinely supply-constrained inner-ring suburbs (think Sydney's Lower North Shore or inner Melbourne) can match house growth. But across broader capital city markets and over 15 to 20 year horizons, separate houses on land have historically delivered 1% to 2% higher annual growth than units.",
   },
   {
     question: "What's the typical rental yield difference?",
     answer:
-      "Capital city apartments commonly yield 4% to 5.5% gross. Houses in the same areas typically yield 2.5% to 4%. The yield gap reflects price-to-rent ratios, houses cost more per dollar of rent because the land has speculative value beyond its rental income.",
+      "Capital city apartments commonly yield 4% to 5.5% gross. Houses in the same areas typically yield 2.5% to 4%. The yield gap reflects price-to-rent ratios: houses cost more per dollar of rent because the land has speculative value beyond its rental income.",
   },
   {
     question: "Are body corporate fees a deal-breaker on apartments?",
@@ -119,7 +119,7 @@ export default function HouseVsApartmentInvestmentGuide() {
         <p>
           Over a long enough horizon, separate houses on land usually deliver
           more capital growth. Over a shorter horizon, or if you need positive
-          cash flow today, apartments often win. We'll show the trade-off in
+          cash flow today, apartments often win. We&rsquo;ll show the trade-off in
           numbers below.
         </p>
       </Callout>
@@ -157,11 +157,11 @@ export default function HouseVsApartmentInvestmentGuide() {
       <p>
         Apartments cost less per dollar of rent. A typical capital city
         apartment yields 4% to 5.5% gross; a comparable house yields 2.5% to
-        4%. The reason: a house's price reflects both its rental value and the
+        4%. The reason: a house&rsquo;s price reflects both its rental value and the
         speculative value of the land underneath it.
       </p>
       <p>
-        Higher yield doesn't always mean higher net cash flow. Body corporate
+        Higher yield doesn&rsquo;t always mean higher net cash flow. Body corporate
         fees, special levies, and lower depreciation deductions can narrow the
         gap. But on a pure income basis, apartments fund more of their own
         holding costs.
@@ -216,16 +216,16 @@ export default function HouseVsApartmentInvestmentGuide() {
       <p>
         Net cash flow is similar in year one. By year 20, the house is worth
         $1M more than the apartment despite costing $150K more to buy
-        originally. That's the compounding gap in action.
+        originally. That&rsquo;s the compounding gap in action.
       </p>
 
       <Callout variant="warning" title="The model has limits">
         <p>
           These are illustrative rates of growth, not guarantees. The 6%
-          assumption isn't universal, apartments in genuinely supply-constrained
+          assumption isn&rsquo;t universal: apartments in genuinely supply-constrained
           areas can match or beat houses, and houses in oversupplied outer
           estates can underperform apartments. Use suburb-level data on{" "}
-          <a href="/best-suburbs/highest-growth">our growth rankings</a> rather
+          <Link href="/best-suburbs/highest-growth">our growth rankings</Link> rather
           than national averages.
         </p>
       </Callout>
@@ -233,7 +233,7 @@ export default function HouseVsApartmentInvestmentGuide() {
       <h2 id="case-house">The case for a house</h2>
       <ul>
         <li>Higher long-term capital growth (the wealth-building case)</li>
-        <li>Renovation upside, you can add value through extensions, kitchen, bathroom</li>
+        <li>Renovation upside: you can add value through extensions, kitchen, bathroom</li>
         <li>Subdivision or granny flat potential on larger blocks</li>
         <li>No body corporate, no surprise levies</li>
         <li>Easier to attract long-term family tenants</li>
@@ -254,7 +254,7 @@ export default function HouseVsApartmentInvestmentGuide() {
         <li><strong>Dual-key apartments:</strong> Two rentable units in one title, often higher gross yield.</li>
         <li><strong>Regional houses:</strong> Lower entry price + higher yield than capital city houses, with growth potential in genuine population-growth corridors.</li>
         <li><strong>Granny-flat-capable houses:</strong> Add a second income stream after settlement. See our{" "}
-          <a href="/guides/granny-flat-guide-qld">granny flat guides</a>.</li>
+          <Link href="/guides/granny-flat-guide-qld">granny flat guides</Link>.</li>
       </ul>
 
       <h2 id="next-steps">Next steps</h2>
@@ -265,7 +265,7 @@ export default function HouseVsApartmentInvestmentGuide() {
         </li>
         <li>
           Use the{" "}
-          <a href="/rental-yield-calculator">Rental Yield Calculator</a> on
+          <Link href="/rental-yield-calculator">Rental Yield Calculator</Link> on
           three or four candidates side by side.
         </li>
         <li>
@@ -274,7 +274,7 @@ export default function HouseVsApartmentInvestmentGuide() {
         </li>
         <li>
           Read our{" "}
-          <a href="/guides/negative-gearing-australia">negative gearing guide</a>{" "}
+          <Link href="/guides/negative-gearing-australia">negative gearing guide</Link>{" "}
           to model the after-tax position correctly.
         </li>
       </ol>

@@ -123,7 +123,7 @@ const RELATED: RelatedGuide[] = [
 ];
 
 const STEPS = [
-  { step: "1", title: "Understand the NT market and land tenure", desc: "Research Darwin/regional and the tenure of any property you consider. Engage an NT conveyancer early, leasehold rules differ from mainland states." },
+  { step: "1", title: "Understand the NT market and land tenure", desc: "Research Darwin/regional and the tenure of any property you consider. Engage an NT conveyancer early: leasehold rules differ from mainland states." },
   { step: "2", title: "Calculate your total costs", desc: "Stamp duty at the full rate (there's no first home concession), legal fees, building inspection (cyclone rating compliance), moving costs." },
   { step: "3", title: "Check grant and scheme eligibility", desc: `Confirm eligibility for the ${money(GRANT.amount)} HomeGrown Territory Grant (a new home, contract by ${GRANT_TO}) and the 5% Deposit Scheme (${fmtCap(HG_PRICE_CAPS.NT.capital)} cap in Greater Darwin, ${fmtCap(HG_PRICE_CAPS.NT.rest)} elsewhere).` },
   { step: "4", title: "Get pre-approval", desc: "Use a lender that actively lends on NT Crown Lease properties. Not all lenders operate in the NT; a broker familiar with Darwin helps." },
@@ -240,11 +240,11 @@ export default function FirstHomeBuyerNTPage() {
       <ul>
         <li><strong>Security of tenure:</strong> Long-term leases (99 years) provide reasonable security; the government retains underlying ownership.</li>
         <li><strong>Resale:</strong> You can sell your leasehold interest; the buyer inherits the remaining lease term.</li>
-        <li><strong>Finance:</strong> Some lenders are cautious about lending on leasehold. Not all standard home loans apply, check with your lender early.</li>
+        <li><strong>Finance:</strong> Some lenders are cautious about lending on leasehold. Not all standard home loans apply, so check with your lender early.</li>
         <li><strong>Remote communities:</strong> Many Aboriginal communities operate under different land tenure under the Aboriginal Land Rights (Northern Territory) Act 1976. Special rules apply and buying involves different processes.</li>
       </ul>
       <p>
-        In Darwin's established suburbs, most residential land is on Crown Lease,
+        In Darwin&rsquo;s established suburbs, most residential land is on Crown Lease,
         a long-term arrangement that functions similarly to freehold for most
         practical purposes, and most lenders accept it. Always confirm the
         specific tenure of any property with your conveyancer.

@@ -11,7 +11,7 @@ export const post: BlogPost = {
 <p>In 2026, with capital city affordability stretched and yields strong in regional and outer-metro markets, rentvesting deserves serious consideration. This guide covers how it works, who it suits, the tax implications, and the best rentvesting target markets in each state.</p>
 
 <h2>How rentvesting works</h2>
-<p>The mechanics are straightforward. Instead of buying the home you live in, you rent that home and use your borrowing capacity to buy investment property somewhere more affordable. The investment property generates rental income (which offsets the holding costs) and you continue building wealth through capital growth and tax-effective debt. You also retain flexibility, your job, family, lifestyle can all change without the friction of selling and re-buying your principal residence.</p>
+<p>The mechanics are straightforward. Instead of buying the home you live in, you rent that home and use your borrowing capacity to buy investment property somewhere more affordable. The investment property generates rental income (which offsets the holding costs) and you continue building wealth through capital growth and tax-effective debt. You also retain flexibility: your job, family and lifestyle can all change without the friction of selling and re-buying your principal residence.</p>
 
 <h2>The financial case</h2>
 <p>The financial case for rentvesting hinges on a few key principles:</p>
@@ -53,7 +53,7 @@ export const post: BlogPost = {
 <p>Live in: Inner Brisbane, Sunshine Coast, Gold Coast premium. Invest in: Logan, Ipswich, Caboolture corridors; Toowoomba; Townsville. All offer sub-$600K entry with 4.5 to 5.5% yields.</p>
 
 <h3>WA: Outer Perth + Bunbury/Geraldton</h3>
-<p>Live in: Inner Perth, western suburbs, coastal premium. Invest in: Outer Perth (Mandurah, Armadale, Rockingham); regional Bunbury, Geraldton, Kalgoorlie. WA's combination of yield strength and growth still in play offers compelling rentvesting math.</p>
+<p>Live in: Inner Perth, western suburbs, coastal premium. Invest in: Outer Perth (Mandurah, Armadale, Rockingham); regional Bunbury, Geraldton, Kalgoorlie. WA's combination of yield strength and growth still in play offers compelling rentvesting maths.</p>
 
 <h3>SA: Adelaide outer + Mount Gambier</h3>
 <p>Live in: Inner-eastern Adelaide, beachside. Invest in: Salisbury, Davoren Park, Christies Beach corridors; Mount Gambier. SA's stable yields and lower entry prices make it a low-risk rentvesting target.</p>

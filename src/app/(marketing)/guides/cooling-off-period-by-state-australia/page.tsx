@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -77,7 +78,7 @@ const FAQS: FaqItem[] = [
   {
     question: "When does the cooling-off clock start?",
     answer:
-      "It starts the day contracts are exchanged (when both parties have signed and the contracts are dated). The end date is calculated in business days, not calendar days, Saturdays, Sundays, and public holidays don't count.",
+      "It starts the day contracts are exchanged (when both parties have signed and the contracts are dated). The end date is calculated in business days, not calendar days: Saturdays, Sundays and public holidays don’t count.",
   },
   {
     question: "Can I extend the cooling-off period?",
@@ -117,7 +118,7 @@ export default function CoolingOffPeriodByStateGuide() {
         <p>
           The cooling-off period exists to give buyers a chance to commission
           inspections, finalise finance, and re-read the contract carefully.
-          It's not a "test drive", pulling out costs a small penalty and
+          It&rsquo;s not a &ldquo;test drive&rdquo;: pulling out costs a small penalty and
           burns trust with the seller and agent.
         </p>
       </Callout>
@@ -135,32 +136,32 @@ export default function CoolingOffPeriodByStateGuide() {
 
       <h3>New South Wales</h3>
       <p>
-        <strong>5 business days</strong> for residential property purchases.
+        <strong>5 business days</strong>{" "}for residential property purchases.
         Penalty for rescission: 0.25% of the purchase price. Can be waived
-        with a Section 66W certificate from the buyer's solicitor or
+        with a Section 66W certificate from the buyer&rsquo;s solicitor or
         conveyancer.
       </p>
 
       <h3>Victoria</h3>
       <p>
-        <strong>3 business days</strong> for residential property purchases.
+        <strong>3 business days</strong>{" "}for residential property purchases.
         Penalty: 0.2% of the purchase price (or $100, whichever is greater).
-        Doesn't apply to auctions, properties bought within 3 days of an
+        Doesn&rsquo;t apply to auctions, properties bought within 3 days of an
         auction, or to commercial / industrial property.
       </p>
 
       <h3>Queensland</h3>
       <p>
-        <strong>5 business days</strong> for residential property purchases.
-        Penalty: 0.25% of the purchase price. Doesn't apply to auctions.
+        <strong>5 business days</strong>{" "}for residential property purchases.
+        Penalty: 0.25% of the purchase price. Doesn&rsquo;t apply to auctions.
         Buyer must receive a clear cooling-off statement before exchange or
         the period extends.
       </p>
 
       <h3>South Australia</h3>
       <p>
-        <strong>2 clear business days</strong> after the buyer receives a
-        signed copy of the contract (and the prescribed Form 1 vendor's
+        <strong>2 clear business days</strong>{" "}after the buyer receives a
+        signed copy of the contract (and the prescribed Form 1 vendor&rsquo;s
         statement). No percentage penalty in SA: the buyer gets their money
         back, though the seller may keep a deposit of up to $100 (the most
         that can be taken before the cooling-off period ends).
@@ -204,7 +205,7 @@ export default function CoolingOffPeriodByStateGuide() {
       <h2 id="auction">Auction has no cooling-off, anywhere</h2>
       <p>
         When the hammer falls at a public auction, the contract is binding
-        immediately and unconditionally. There's no cooling-off in any
+        immediately and unconditionally. There&rsquo;s no cooling-off in any
         Australian state for auction purchases. This is why pre-auction due
         diligence (building &amp; pest, contract review, finance approval)
         has to happen before auction day, not after.
@@ -212,7 +213,7 @@ export default function CoolingOffPeriodByStateGuide() {
 
       <Callout variant="warning" title="Pre-auction offers are often treated as auction sales">
         <p>
-          If you make an offer in the days leading up to the auction and it's
+          If you make an offer in the days leading up to the auction and it&rsquo;s
           accepted, some states (notably Victoria) will treat it as an auction
           sale and waive your cooling-off rights. Always confirm with your
           conveyancer before signing a pre-auction contract.
@@ -221,15 +222,15 @@ export default function CoolingOffPeriodByStateGuide() {
 
       <h2 id="waiving">Waiving cooling-off</h2>
       <p>
-        Sellers often ask the buyer to waive cooling-off to firm up the deal -
+        Sellers often ask the buyer to waive cooling-off to firm up the deal,
         especially in hot markets or when there are competing offers.
         Waiving is legally enforceable but strips your protection.
       </p>
       <p>
         In NSW, waiving is done via a Section 66W certificate signed by the
-        buyer's solicitor or conveyancer. Don't sign one until you've completed
-        building &amp; pest inspections and unconditional finance approval -
-        otherwise you've taken on the same risks as an auction buyer with none
+        buyer&rsquo;s solicitor or conveyancer. Don&rsquo;t sign one until you&rsquo;ve completed
+        building &amp; pest inspections and unconditional finance approval.
+        Otherwise you&rsquo;ve taken on the same risks as an auction buyer with none
         of the auction discipline.
       </p>
 
@@ -250,7 +251,7 @@ export default function CoolingOffPeriodByStateGuide() {
           easements, covenants, special conditions, and chattel inclusions.
         </li>
         <li>
-          <strong>Negotiate, don't pull out.</strong> If an inspection turns
+          <strong>Negotiate, don&rsquo;t pull out.</strong> If an inspection turns
           up issues, use them to renegotiate price or repairs rather than
           rescinding outright.
         </li>
@@ -270,7 +271,7 @@ export default function CoolingOffPeriodByStateGuide() {
       </ul>
       <p>
         These penalties are forfeited to the seller. The rest of any deposit
-        you've paid is refunded, typically within a few business days.
+        you&rsquo;ve paid is refunded, typically within a few business days.
       </p>
 
       <GuideSuburbSearch
@@ -281,14 +282,14 @@ export default function CoolingOffPeriodByStateGuide() {
       <h2 id="next-steps">Next steps</h2>
       <ol>
         <li>
-          Confirm your state's cooling-off window with your conveyancer before
+          Confirm your state&rsquo;s cooling-off window with your conveyancer before
           exchange.
         </li>
         <li>
           Read the{" "}
-          <a href="/guides/building-pest-inspection">
+          <Link href="/guides/building-pest-inspection">
             building &amp; pest inspection guide
-          </a>{" "}
+          </Link>{" "}
           and book the inspection for the day after exchange.
         </li>
         <li>
@@ -297,7 +298,7 @@ export default function CoolingOffPeriodByStateGuide() {
         </li>
         <li>
           Read the{" "}
-          <a href="/guides/conveyancing-guide">conveyancing guide</a> for what
+          <Link href="/guides/conveyancing-guide">conveyancing guide</Link> for what
           your conveyancer is doing in parallel.
         </li>
       </ol>

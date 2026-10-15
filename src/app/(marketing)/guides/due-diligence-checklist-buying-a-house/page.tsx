@@ -53,7 +53,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "Due diligence is everything you check before signing a contract (or, for auctions, before bidding). Skipping it can cost tens or hundreds of thousands of dollars and there's no path back once the contract is unconditional.",
   "Three layers: the property itself (building, pest, structural), the legal stack (title, contract, zoning), and the price (comparable sales, market conditions).",
-  "Building and pest inspection: $400–$800. Strata report (units): $250–$400. Conveyancer review: $800–$2,000. Total due diligence cost: typically $1,500–$3,500. Money well spent.",
+  "Building and pest inspection: $400–$800. Strata report (units): $250–$400. Conveyancer review: $800–$2,000. Total due diligence cost: typically $1,500–$3,500.",
   "Pre-auction: you have to do due diligence before bidding because auction contracts are unconditional. Private treaty: most due diligence happens during the cooling-off period.",
   "Red flags to walk away from: unapproved structural work, illegal building modifications, body corporate funding problems, contaminated land, asbestos in poor condition, easements that affect what you can build.",
   "Don't rely solely on the seller's disclosure or the agent's representations. Both are subject to bias and can be incomplete. Get independent professional reports.",
@@ -232,7 +232,7 @@ export default function DueDiligenceChecklistPage() {
 
       <Callout variant="warning" title="Building inspectors are not all equal">
         <p>
-          The industry has variable quality. Some &quot;inspectors&quot;
+          The industry has variable quality. Some &ldquo;inspectors&rdquo;
           spend 45 minutes producing a 20-page report. Look for: full
           licence, experience with your property type/age/state, sample
           reports available on request, and clear independence from

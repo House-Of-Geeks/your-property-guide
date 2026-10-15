@@ -33,7 +33,7 @@ export const post: BlogPost = {
 
 <p>Spring officially opens in a little over five weeks, and the traditional September–November season rewards sellers who arrive prepared. In a market where buyers have choice, presentation, pricing evidence and agent selection do the heavy lifting — and all three get decided in the weeks before a campaign launches, not during it.</p>
 
-<p>Work backwards from the listing weekend you want: starting the preparation now puts a campaign live in mid-September; starting in late August targets the peak October audience; late September is the last comfortable start for a pre-Christmas result. Our free <a href="/selling-guide">selling guide</a> now comes with a printable <strong>Spring 2026 selling countdown</strong> — the 12-week checklist with exact start dates for a September, October or November listing — and the smartest first tick on it is a <a href="/appraisal">free appraisal</a>, so every decision that follows rests on today's evidence rather than a hopeful number.</p>
+<p>Work backwards from the listing weekend you want: starting the preparation now puts a campaign live in mid-September; starting in late August targets the peak October audience; late September is the last comfortable start for a pre-Christmas result. Our free <a href="/selling-guide">selling guide</a> now comes with a printable <strong>Spring 2026 selling countdown</strong> — the 12-week checklist with exact start dates for a September, October or November listing — and the first tick on it is a <a href="/appraisal">free appraisal</a>, so every decision that follows rests on today's evidence rather than a hopeful number.</p>
 
 <h2>Buying through the shift</h2>
 

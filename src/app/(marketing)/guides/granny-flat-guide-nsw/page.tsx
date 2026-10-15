@@ -149,11 +149,11 @@ export default function GrannyFlatGuideNSWPage() {
         DA in most cases.
       </p>
       <p>
-        The secondary dwelling must be <strong>subordinate</strong> to the main
-        dwelling, it can't be larger or more prominent than the primary home.
+        The secondary dwelling must be <strong>subordinate</strong>{" "}to the main
+        dwelling: it can&rsquo;t be larger or more prominent than the primary home.
       </p>
 
-      <h2 id="complying-dev">Complying development, NSW's fast-track approval</h2>
+      <h2 id="complying-dev">Complying development, NSW&rsquo;s fast-track approval</h2>
       <p>
         NSW is unique in having a state-wide complying development pathway for
         granny flats. Under the Low Rise Housing Diversity Code, granny flats
@@ -176,7 +176,7 @@ export default function GrannyFlatGuideNSWPage() {
         <li>Have separate access</li>
       </ul>
       <p>
-        If your site doesn't meet these criteria, you may still be able to build
+        If your site doesn&rsquo;t meet these criteria, you may still be able to build
         a granny flat through a council DA, but it takes longer and costs more.
       </p>
 
@@ -226,7 +226,7 @@ export default function GrannyFlatGuideNSWPage() {
       <h2 id="prefab">Prefab and modular options</h2>
       <p>
         Prefab/modular granny flats are a popular alternative to traditional
-        construction. They're built off-site and craned into position, often 6 to
+        construction. They&rsquo;re built off-site and craned into position, often 6 to
         12 weeks from order to installation.
       </p>
       <ul>
@@ -236,7 +236,7 @@ export default function GrannyFlatGuideNSWPage() {
       <p>
         Those prices typically include structure, fit-out, and installation but
         exclude site prep and utility connections. Get at least 3 quotes and check
-        track record, quality varies significantly.
+        track record: quality varies significantly.
       </p>
 
       <h2 id="rental-returns">Rental returns and yield</h2>
@@ -258,7 +258,7 @@ export default function GrannyFlatGuideNSWPage() {
         <li>Gross yield on construction: $23,400 ÷ $160,000 = <strong>14.6%</strong></li>
       </ul>
       <p>
-        That's gross. Deduct property management (8 to 10%), insurance, and
+        That&rsquo;s gross. Deduct property management (8 to 10%), insurance, and
         maintenance for a net figure. Even so, granny flat yields often
         substantially exceed standalone investment property yields. Use our{" "}
         <Link href="/rental-yield-calculator">rental yield calculator</Link> to
@@ -273,8 +273,8 @@ export default function GrannyFlatGuideNSWPage() {
           community consultation. Certifier fees $2,000 to $5,000.
         </li>
         <li>
-          <strong>DA (Development Application)</strong> via local council.
-          Required where CDC criteria aren't met (heritage areas, flood-affected,
+          <strong>DA (Development Application)</strong>{" "}via local council.
+          Required where CDC criteria aren&rsquo;t met (heritage areas, flood-affected,
           undersized lots). 2 to 6 months. Higher cost, less predictable outcome.
         </li>
       </ol>
@@ -286,7 +286,7 @@ export default function GrannyFlatGuideNSWPage() {
       <p>
         <strong>NSW does not require the owner to live on the property</strong>{" "}
         to build or rent a granny flat. This makes NSW secondary dwellings
-        attractive as pure investment properties, you can build on an investment
+        attractive as pure investment properties: you can build on an investment
         property and rent both dwellings.
       </p>
       <p>
@@ -324,7 +324,7 @@ export default function GrannyFlatGuideNSWPage() {
         </li>
       </ul>
       <p>
-        Talk to a mortgage broker before committing, the financing structure
+        Talk to a mortgage broker before committing: the financing structure
         materially affects your total cost.
       </p>
 

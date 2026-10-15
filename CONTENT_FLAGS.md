@@ -246,3 +246,34 @@ Several of these are contradictions between articles in this batch (agency cooli
 | Check | how-to-find-a-builder-australia `page.tsx:82` | Home warranty "above a state-defined threshold (typically $20,000–$30,000+)" | Thresholds vary widely by state (QLD's is far lower). Check each regulator. |
 | Check | how-to-find-a-builder-australia `page.tsx:53` (also :82) | "statutory warranty in QLD" | Queensland's is the Queensland Home Warranty Scheme, run by QBCC. |
 | Conflict | first-home-buyer-sa `page.tsx:116` | Cooling-off "2 clear business days from the date you receive a copy of the contract" | contract-of-sale-sa says from the contract or service of the Form 1, whichever is later. |
+
+### Batch 7: tax changes, market wraps, Help to Buy, cooling-off, due diligence, first home (NT), Canberra, Moreton Bay
+
+| Severity | Where | Claim | Why it's flagged |
+|---|---|---|---|
+| Check | `negative-gearing-cgt-changes-now-law-2026.ts:8` | "roughly eleven months" (and the excerpt's "11-month runway") | Written 24 July; about 8.5 months are left at 15 October. Label it "as at publication". |
+| Check | `negative-gearing-cgt-changes-now-law-2026.ts:8` | "through the lower house 98 votes to 39" | No source. APH Hansard. |
+| Likely wrong | `property-market-wrap-late-july-2026-spring-outlook.ts:6`, :8 (title) | "Tuesday's inflation number" / "On Tuesday 29 July" | 29 July 2026 is a Wednesday. The title wasn't changed. |
+| Likely wrong | `property-market-wrap-late-july-2026-spring-outlook.ts:36` | The selling guide "now comes with a printable Spring 2026 selling countdown" | The rebuilt guide offers a printable 12-week timeline, not a Spring 2026 countdown. |
+| Check | `cheapest-suburbs-australian-capitals-winter-2026.ts:176` (and :188) | "Winter is the preparation window before the spring market"; journalist data cuts "usually same-day" | Dated now spring has started; confirm the same-day offer still stands. |
+| Likely wrong | granny-flat-guide-nsw `page.tsx:146` (also :49) | "Low Rise Housing Diversity Code (formerly the Affordable Rental Housing SEPP 2009)" | The ARH SEPP was replaced by the Housing SEPP 2021, which now holds the secondary dwelling rules. NSW Planning Portal. |
+| Check | granny-flat-guide-nsw `page.tsx:158` | "NSW is unique in having a state-wide complying development pathway" | Victoria has allowed small second dwellings without a permit since December 2023. |
+| Check | granny-flat-guide-nsw `page.tsx:100`, :339 | "can add 20 to 30% more value than the construction cost" | No source; nor for the rent and yield ranges. |
+| Check | cooling-off-period-by-state-australia `page.tsx:53` (TLDR) | "Queensland, NSW, Victoria, and SA have cooling-off rights" | Leaves out the ACT and NT, which the body covers. |
+| Check | cooling-off-period-by-state-australia `page.tsx:157` | Queensland: without a cooling-off statement "the period extends" | Since 1 August 2025 the seller disclosure regime applies; the remedy may be termination. Property Law Act 2023 (Qld). |
+| Conflict | due-diligence-checklist-buying-a-house `page.tsx:89`, :191 | "cooling-off period (varies by state, 3 to 14 days)" | The cooling-off guide says 2 to 5 business days, and none in WA or Tasmania. |
+| Likely wrong | due-diligence-checklist-buying-a-house `page.tsx:114` | "3–5 days in NSW, 3 days in VIC" | NSW is 5 business days. |
+| Likely wrong | due-diligence-checklist-buying-a-house `page.tsx:389` | "Property Stock and Business Agents Act 2002 (NSW) cooling-off rules" | NSW cooling-off is in the Conveyancing Act 1919 (s 66S on). |
+| Check | `5-percent-deposit-scheme-now-open-all-first-home-buyers.ts:26` | "The Insurance Council of Australia has estimated … up to 10% higher" | No source; check who published the estimate. |
+| Likely wrong | `rentvesting-australia-state-by-state-guide-2026.ts:20` | Losses "can offset other income via negative gearing" | Established homes bought after budget night have losses quarantined from 1 July 2027 (the site's own tax-changes post). |
+| Conflict | `rentvesting-australia-state-by-state-guide-2026.ts:47` | Sydney suburbs with "house medians under $750K" | The site's winter data has no verified Sydney suburb under $800K (Macquarie Fields is the floor at $859K). |
+| Check | `rentvesting-australia-state-by-state-guide-2026.ts:59` | SA is "a low-risk rentvesting target" | No source, and the site's data has no verified Adelaide suburb under $600K. |
+| Conflict | `canberra-act-property-market-2026.ts:27` | "full stamp duty waiver … on a $700K property is roughly $27,000 saved" | The site's duty engine gives $17,048 on $700K in the ACT, and the scheme is now open to anyone with no property interest in five years. |
+| Check | `canberra-act-property-market-2026.ts:24` | "Vacancy at 1.1% in Q1 2026, with weekly rents up 6 to 8%" | No source (nor for the median, days on market or forecast). |
+| Check | `moreton-bay-property-market-update-q1-2025.ts:28` (also :24) | "market conditions remain favourable" | The outlook reads as current; the archive note covers only the figures. |
+| Check | `nsw-building-reforms-prefab-modular-2026.ts:8` | The Building (Approvals and Practitioners) Bill 2026 "introduced in May 2026"; Productivity Commission "up to 20 per cent" | The Bill's status may have moved on; the PC attribution has no link. |
+| Conflict | house-vs-apartment-investment-australia `page.tsx:203` | "Annual holding costs: $4,500" | The page's own list puts a $700K house at $10K+ a year, so "same net cash flow" doesn't hold. |
+| Check | house-vs-apartment-investment-australia `page.tsx:193` | "Same deposit, same loan size after relativising for the deposit." | A $700K and a $550K purchase can't have both; rewrite the assumption. |
+| Check | house-vs-apartment-investment-australia `page.tsx:277` | The after-tax model | Written in May 2026, before the negative gearing and CGT changes. |
+| Conflict | `first-home-buyer-guide-moreton-bay-2025.ts:9` | "Queensland's first home buyer incentives changed on 1 July 2026" | The body says the $30,000 grant was kept, so the note implies a change that didn't happen. |
+| Check | `rba-cash-rate-june-2026-what-it-means-for-buyers.ts:14`, :24; `src/app/(marketing)/rba-cash-rate/page.tsx:40` | "The official cash rate is 4.35%." / "The next decision is due on 11 August" | Reads as current, but the 11 August and 29 September decisions have passed. The RBA tracker page still shows 16 June as the latest decision. |
