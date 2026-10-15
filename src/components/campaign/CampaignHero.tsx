@@ -50,6 +50,8 @@ export function CampaignHero({ stats }: { stats: readonly HeroStat[] }) {
         aria-hidden="true"
         className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(10_46_34/0.78)_0%,rgb(10_46_34/0.84)_55%,rgb(10_46_34/0.94)_100%)] lg:bg-[linear-gradient(90deg,rgb(10_46_34/0.94)_0%,rgb(10_46_34/0.82)_38%,rgb(10_46_34/0.35)_68%,rgb(10_46_34/0.12)_100%)]"
       />
+      {/* A fade under the clear header, so its links read on a bright sky. */}
+      <div aria-hidden="true" className="absolute inset-x-0 top-0 -z-10 h-44 bg-[linear-gradient(180deg,rgb(10_46_34/0.7)_0%,rgb(10_46_34/0)_100%)]" />
 
       <div className={`${SHELL} pb-14 pt-28 sm:pb-20 sm:pt-36 lg:pb-24 lg:pt-40`}>
         <p className="text-[12px] font-semibold uppercase tracking-[0.22em] text-primary sm:text-[13px]">{PROMISE.eyebrow}</p>
