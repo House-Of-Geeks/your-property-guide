@@ -106,7 +106,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Negative Gearing in Australia", href: "/guides/negative-gearing-australia", description: "How property management fees flow through to your tax return." },
   { title: "Property Depreciation Guide", href: "/guides/property-depreciation-guide", description: "The other big deduction on your investment property." },
   { title: "House vs Apartment Investment", href: "/guides/house-vs-apartment-investment-australia", description: "How property management fits into the holding-cost picture." },
-  { title: "Find an Expert", href: "/find-an-expert", description: "Looking for a property manager? Browse our network." },
+  { title: "Find an Expert", href: "/find-an-expert", description: "Selling or buying? Ask for one free introduction to a local agent." },
 ];
 
 const SOURCES: SourceItem[] = PM_FEE_SOURCE_LIST.map((s) => ({
