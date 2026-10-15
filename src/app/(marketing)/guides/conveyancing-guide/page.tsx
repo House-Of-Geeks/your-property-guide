@@ -587,8 +587,9 @@ export default function ConveyancingGuidePage() {
         saving is not worth the risk on a $700,000 transaction.
       </p>
       <p>
-        Ask your real estate agent, mortgage broker, or friends who have
-        recently purchased in the area for recommendations.
+        Ask your mortgage broker, or friends who have recently purchased in
+        the area, for recommendations rather than relying on the selling
+        agent&rsquo;s.
       </p>
 
       <p>

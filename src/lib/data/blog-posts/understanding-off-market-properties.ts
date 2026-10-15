@@ -6,10 +6,10 @@ export const post: BlogPost = {
   title: "Understanding Off-Market Properties",
   excerpt:
     "Learn what off-market properties are, how to find them, and why they can be a smart strategy for buyers in a competitive market.",
-  content: `<p>In today's competitive Moreton Bay property market, savvy buyers are increasingly looking beyond the traditional listing portals to gain an edge. Off-market properties, homes that are for sale but not publicly advertised on platforms like realestate.com.au or Domain, represent a significant portion of property transactions. Understanding how to access these hidden opportunities can be the difference between missing out and securing your dream home.</p>
+  content: `<p>In a competitive Moreton Bay property market, many buyers look beyond the traditional listing portals to gain an edge. Off-market properties, homes that are for sale but not publicly advertised on platforms like realestate.com.au or Domain, represent a significant portion of property transactions. Knowing how to find these homes, and how to judge them, can be the difference between missing out and buying the right one.</p>
 
 <h2>What Are Off-Market Properties?</h2>
-<p>Off-market properties are homes where the owner has decided to sell but has chosen not to publicly list or advertise the property. There are many reasons sellers opt for this approach: they may want to test the market without committing to a full campaign, maintain privacy, avoid the disruption of open homes, or simply prefer a more discreet transaction. In the Moreton Bay Region, off-market sales are particularly common among established homeowners who have strong relationships with local agents.</p>
+<p>Off-market properties are homes where the owner has decided to sell but has chosen not to publicly list or advertise the property. There are many reasons sellers opt for this approach: they may want to test the market without committing to a full campaign, maintain privacy, avoid the disruption of open homes, or prefer a more discreet transaction. In the Moreton Bay Region, off-market sales are particularly common among established homeowners who have strong relationships with local agents.</p>
 
 <h2>How to Access Off-Market Opportunities</h2>
 <p>The most effective way to find off-market properties is by building strong relationships with local real estate agents who specialise in your target suburbs. Agents often know of properties that are about to come to market or sellers who would consider offers without a public campaign. Registering with a buyer's agent is another powerful strategy, as they maintain extensive networks and are often the first to hear about new opportunities — our guide to <a href="/guides/buyers-agent-cost-australia">buyer's agent costs</a> covers what that service runs. You can also let your network know you're actively looking — word of mouth still plays a significant role in property transactions.</p>
@@ -22,7 +22,7 @@ export const post: BlogPost = {
 <li>Potentially lower purchase prices as sellers save on marketing costs</li>
 </ul>
 
-<p>While off-market properties offer clear advantages, it's important to still conduct thorough due diligence. Ensure you obtain independent valuations, complete building and pest inspections, and engage a qualified conveyancer. Working with a trusted local agent who understands the Moreton Bay market is the best way to navigate off-market opportunities with confidence.</p>`,
+<p>While off-market properties offer clear advantages, it's important to still conduct thorough due diligence. Ensure you obtain independent valuations, complete building and pest inspections, and engage a qualified conveyancer. Remember the selling agent works for the seller, so lean on your independent valuation, or a buyer's agent who knows the Moreton Bay market, to navigate off-market opportunities with confidence.</p>`,
   coverImage: "/images/blog/cover-understanding-off-market-properties.jpg",
   author: {
     name: "Ellie Johnston",

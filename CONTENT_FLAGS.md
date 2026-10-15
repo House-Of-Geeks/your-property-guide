@@ -277,3 +277,26 @@ Several of these are contradictions between articles in this batch (agency cooli
 | Check | house-vs-apartment-investment-australia `page.tsx:277` | The after-tax model | Written in May 2026, before the negative gearing and CGT changes. |
 | Conflict | `first-home-buyer-guide-moreton-bay-2025.ts:9` | "Queensland's first home buyer incentives changed on 1 July 2026" | The body says the $30,000 grant was kept, so the note implies a change that didn't happen. |
 | Check | `rba-cash-rate-june-2026-what-it-means-for-buyers.ts:14`, :24; `src/app/(marketing)/rba-cash-rate/page.tsx:40` | "The official cash rate is 4.35%." / "The next decision is due on 11 August" | Reads as current, but the 11 August and 29 September decisions have passed. The RBA tracker page still shows 16 June as the latest decision. |
+
+### Batch 8: inspections, off-market, rents and supply, Help to Buy by state, conveyancing, deposit bonds, brokers
+
+| Severity | Where | Claim | Why it's flagged |
+|---|---|---|---|
+| Likely wrong | `queensland-30000-first-home-grant-closing-june-2026.ts:6` (title and SEO title) | "Queensland's $30,000 First Home Owner Grant for New Homes Closes 30 June" | The grant didn't close: the 2026-27 Budget kept it (QRO). The update note at the top says so, but the title still tells searchers it closes. Suggest keeping the slug and retitling, for example "Queensland’s $30,000 first home grant: the 30 June deadline that never came". |
+| Conflict | `queensland-30000-first-home-grant-closing-june-2026.ts:10`, 15, 17, 27, 35, 38, 40, 46 | "ends on 30 June 2026 … drops back to … $15,000" | The original story, kept below the update note. Readers who skip the note get the wrong answer. Consider trimming the body to the update, or boxing the original as an archive. |
+| Conflict | `queensland-30000-first-home-grant-closing-june-2026.ts:7–8`, :51 | Excerpt: "Days after this article ran"; publishedAt 24 June 2026 | The Budget was 23 June, the day before the post's date. |
+| Likely wrong | capital-growth-vs-cash-flow-australia `page.tsx:80` | 3 to 5% growth on $700,000 "is roughly $25,000 to $40,000 per year" | About $21,000 to $35,000. |
+| Likely wrong | capital-growth-vs-cash-flow-australia `page.tsx:293–295` | "roughly $40,000 in year one, $50,000 in year five, $70,000 in year ten" | At 5% on $700,000: about $35k, $43k and $54k. |
+| Likely wrong | capital-growth-vs-cash-flow-australia `page.tsx:100`, :133, :285–287 | "average incomes (32.5 per cent marginal rate)"; "$6,750 net" | The 32.5% bracket became 30% on 1 July 2024. |
+| Likely wrong | how-to-choose-a-mortgage-broker `page.tsx:58` | 0.10–0.40% off the rate saves "$30,000–$120,000 … on a $600,000 mortgage" | Over 30 years at about 6%, roughly $14k–$56k. |
+| Likely wrong | how-to-choose-a-mortgage-broker `page.tsx:103` | A broker "must … be a member of either MFAA … or FBAA" | Association membership isn't a legal requirement; AFCA membership is. ASIC. |
+| Likely wrong | how-to-choose-a-mortgage-broker `page.tsx:213` | Volume bonuses: "that practice was banned in 2019" | Legislated from 1 January 2021; the industry dropped them earlier. |
+| Likely wrong | how-to-choose-a-mortgage-broker `page.tsx:303` | Link to the financial advisers register | Brokers are on ASIC's credit licensee and representative registers. |
+| Check | bridging-loan-alternatives `page.tsx:260` | "ANZ says a top-up is subject to credit approval" | ANZ isn't in the page's sources. |
+| Likely wrong | building-pest-inspection `page.tsx:505–506` | Warranty "usually 6 years for structural defects, 2 years for non-structural defects in most states" | Victoria is 10 years and Queensland 6.5 years / 12 months; others differ. |
+| Likely wrong | building-pest-inspection `page.tsx:423` | Check the inspector's "membership in the Australian Institute of Building Surveyors (AIBS)" | AIBS covers building surveyors and certifiers, not pre-purchase inspectors. |
+| Conflict | `australian-rents-record-highs-mid-2026.ts:8`, :10 | "7.8% higher than a year ago" vs "annual national rent growth at around 5.9%" | Two unsourced annual figures that disagree. |
+| Check | `rental-vacancy-rate-rises-1-2-percent-2026.ts:19` | Sydney "unit rents are tipped to hit about $792 per week" | Only $23 below houses; looks high. Domain 2026 Forecast Report. |
+| Check | `hobart-tasmania-property-market-2026.ts:14` | "the most affordable mainland-equivalent state for owner-occupiers" | Unclear and unsourced. |
+| Check | `investment-property-guide-moreton-bay-corridor.ts:14` | "the Moreton Bay Rail Link extension" | The Rail Link opened in 2016; no extension project is clear. |
+| Check | `understanding-off-market-properties.ts:9`, :22 | Off-market sales are "a significant portion" of transactions; "lower purchase prices as sellers save on marketing costs" | Unsourced share; the price logic is doubtful. |

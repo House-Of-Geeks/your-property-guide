@@ -12,7 +12,7 @@ export const post: BlogPost = {
 <h2>What is happening</h2>
 <p>Help to Buy is the Commonwealth's shared-equity scheme, and it is now operating at scale rather than sitting on paper. The headline figure is that more than 2,300 places have been approved since launch. Within that group, 278 households have already settled and moved in, while around 2,078 more are working through the process towards a purchase. In other words, the first wave of buyers is no longer hypothetical. People are living in homes bought with the government as a part-owner.</p>
 
-<p>That matters because shared equity is unfamiliar to most Australians. Seeing households actually complete the journey, from approval to settlement to moving day, gives later applicants a clearer picture of what they are signing up for.</p>
+<p>That matters because shared equity is unfamiliar to most Australians. Seeing households actually complete the process, from approval to settlement to moving day, gives later applicants a clearer picture of what they are signing up for.</p>
 
 <h2>How shared equity actually works</h2>
 <p>The core idea is straightforward. Under Help to Buy, an eligible buyer can purchase with a deposit as low as <strong>2%</strong>, and the government takes an equity share in the property in exchange for a financial contribution. For a <strong>new home</strong>, the government can contribute up to <strong>40%</strong> of the price. For an <strong>existing home</strong>, it can contribute up to <strong>30%</strong>.</p>
@@ -38,7 +38,7 @@ export const post: BlogPost = {
 <li><strong>Remember you can buy back the share.</strong> The government's equity is not necessarily forever. You can increase your own stake over time as your situation allows.</li>
 <li><strong>Know your real borrowing limit.</strong> Work out what you can genuinely afford before you start. Our <a href="/borrowing-power-calculator">borrowing power calculator</a> gives you a clear ceiling, and our guide on <a href="/guides/how-much-deposit-to-buy-a-house">how much deposit you need to buy a house</a> sets out the upfront costs to budget for.</li>
 </ul>
-<p>If you are at the start of the journey, our broader <a href="/guides/first-home-buyer-guide">first home buyer guide</a> pulls the whole process together, from saving and pre-approval through to settlement, so you can see where a scheme like Help to Buy fits into the bigger picture.</p>`,
+<p>If you are just starting out, our broader <a href="/guides/first-home-buyer-guide">first home buyer guide</a> pulls the whole process together, from saving and pre-approval through to settlement, so you can see where a scheme like Help to Buy fits into the bigger picture.</p>`,
   coverImage: "/images/blog/cover-help-to-buy-scheme-first-buyers-moving-in-2026.jpg",
   author: { name: "Ellie Johnston", image: "/images/agents/ellie-johnston.jpg" },
   category: "News",
