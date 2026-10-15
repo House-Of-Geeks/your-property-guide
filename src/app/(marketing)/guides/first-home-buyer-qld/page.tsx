@@ -192,14 +192,14 @@ export default function FirstHomeBuyerQLDPage() {
       <h3>When is the grant paid?</h3>
       <p>
         For purchases (e.g. off-the-plan), the grant is paid at settlement. For
-        construction contracts, it's paid when the first progress payment is
+        construction contracts, it’s paid when the first progress payment is
         requested by the builder. Apply through the Queensland Revenue Office or
         via your lender; most lenders process the FHOG alongside your loan.
       </p>
 
       <h2 id="stamp-duty-qld">Stamp duty (transfer duty) concession in QLD</h2>
       <p>
-        Queensland's first home buyer duty relief is now among the most generous
+        Queensland’s first home buyer duty relief is now among the most generous
         in the country, and it runs on two tracks depending on what you buy.
       </p>
 
@@ -233,7 +233,7 @@ export default function FirstHomeBuyerQLDPage() {
       <p>
         Queensland also applies a standard Home Concession for all owner-occupiers,
         not just first home buyers, so even buyers over the first-home thresholds
-        pay less than the general rate on a home they'll live in.
+        pay less than the general rate on a home they’ll live in.
       </p>
 
       <h2 id="federal-schemes">Federal schemes available in QLD</h2>
@@ -245,7 +245,7 @@ export default function FirstHomeBuyerQLDPage() {
       <p>
         See our{" "}
         <Link href="/guides/first-home-buyer-guide">national First Home Buyer Guide</Link>{" "}
-        for full federal scheme detail and how the schemes stack with Queensland's
+        for full federal scheme detail and how the schemes stack with Queensland’s
         grant and duty relief.
       </p>
 
@@ -253,7 +253,7 @@ export default function FirstHomeBuyerQLDPage() {
       <ul>
         <li>
           <strong>Queensland Housing Finance Loan:</strong> For low-to-moderate
-          income earners who can't access a loan from a traditional lender.
+          income earners who can’t access a loan from a traditional lender.
           Administered by Homes and Housing QLD. Check eligibility at qld.gov.au/housing.
         </li>
         <li>
@@ -287,8 +287,8 @@ export default function FirstHomeBuyerQLDPage() {
       <p>QLD has some distinct features versus other states:</p>
       <ul>
         <li><strong>REIQ contract:</strong> QLD uses the Real Estate Institute of Queensland standard contract of sale, with standard conditions for building and pest inspection, finance, and sometimes FIRB.</li>
-        <li><strong>Conditions are built in:</strong> Unlike NSW, building inspections and finance conditions are typically negotiated into the contract before it's signed, rather than relying on a cooling-off window.</li>
-        <li><strong>Cooling-off period:</strong> 5 business days from the buyer's receipt of the contract (residential, not auction).</li>
+        <li><strong>Conditions are built in:</strong> Unlike NSW, building inspections and finance conditions are typically negotiated into the contract before it’s signed, rather than relying on a cooling-off window.</li>
+        <li><strong>Cooling-off period:</strong> 5 business days from the buyer’s receipt of the contract (residential, not auction).</li>
         <li><strong>Auctions:</strong> Less common than Sydney/Melbourne. Private treaty (conditional contract) dominates in QLD.</li>
         <li><strong>Settlement:</strong> Typically 30 to 60 days; via PEXA.</li>
       </ul>

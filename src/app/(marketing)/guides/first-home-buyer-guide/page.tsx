@@ -298,7 +298,7 @@ export default function FirstHomeBuyerGuidePage() {
       </ul>
       <p>
         Broker remuneration is paid by the lender, not you. Ensure your broker is
-        licenced (check ASIC&rsquo;s register) and ask them to explain how they are
+        licensed (check ASIC&rsquo;s register) and ask them to explain how they are
         compensated to understand any potential bias.
       </p>
 

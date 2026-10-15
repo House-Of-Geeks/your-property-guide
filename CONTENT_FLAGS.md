@@ -150,3 +150,35 @@ Several of these are contradictions between articles in this batch (agency cooli
 | Check | `fixed-fee-vs-commission-real-estate-agents.ts:59` (and :38) | "better deal by almost $15,000" | The maths gives about $15,225 ("about", not "almost"); "a downturn … as this is written" is time-sensitive. |
 | Review | sell-first-or-buy-first `page.tsx:416` | "Get an independent appraisal… Free appraisal here" | Our appraisal comes from one participating agent, so it isn't independent. Suggest "a realistic appraisal". |
 | Check | cost-of-selling-a-house-australia `page.tsx:350–373` | The $800,000 worked example | The table has no dollar figures. |
+
+### Batch 4: deposits, first home guides, city markets, auctions, more renters' rights
+
+| Severity | Where | Claim | Why it's flagged |
+|---|---|---|---|
+| Likely wrong | renters-rights-nt `page.tsx:46` (also :86, :172) | Bond "Lodged with NT Consumer Affairs within 7 days of receipt." | The NT has no central bond authority; landlords hold the bond in trust. Residential Tenancies Act 1999 (NT). |
+| Likely wrong | renters-rights-nt `page.tsx:187` (also TLDR :47, FAQ :70) | "Landlords can technically increase every 30 days on a periodic tenancy" | The NT appears to limit increases to once every 6 months. |
+| Check | renters-rights-nt `page.tsx:201` | Entry: "the standard is at least 24 hours" | NT routine inspections appear to need 7 days' notice, at most once every 3 months. |
+| Check | renters-rights-nt `page.tsx:257` (also FAQ :91) | Lease-break exemptions include "loss of employment" | Probably not a statutory exemption. |
+| Check | renters-rights-nt `page.tsx:336` | "ntlac.nt.gov.au" | NT Legal Aid's site appears to be legalaid.nt.gov.au. |
+| Likely wrong | renters-rights-qld `page.tsx:47` (also :72, :131–137, :237) | "QLD's 2024 reforms moved toward grounds-based evictions" | No-grounds notices ended (and the pet rules started) on 1 October 2022, so the "pre-2024 / transitional" row is probably wrong. RTA. |
+| Check | renters-rights-qld `page.tsx:77`, :184 | Emergency repairs "up to $300" | The Queensland cap is two weeks' rent. RTA. |
+| Check | renters-rights-qld `page.tsx:50`, :189 | "urgent (24 to 48 hours)" | Queensland law has emergency and routine repairs only. |
+| Likely wrong | renters-rights-qld `page.tsx:280` | RTA "1800 512 888" | The RTA's published number is 1300 366 311. |
+| Conflict | renters-rights-vic `page.tsx:256–258` (also FAQ :99) | Sale with vacant possession: "60 days notice" | bridging-loans-guide (sourced to CAV) says 90 days. |
+| Check | renters-rights-vic `page.tsx:208` | Inspections "Maximum 4 per year, at least 24 hours notice" | Victorian general inspections appear to be once every 6 months with 7 days' notice. CAV. |
+| Check | renters-rights-vic `page.tsx:152` | "over 130 new minimum standards" | The 2021 package was 130+ reforms; the minimum standards are 14 categories. |
+| Likely wrong | renters-rights-tas `page.tsx:47`, :70, :185 (also description :16) | Rent increases need "at least 42 days written notice" | Tasmania appears to require 60 days. CBOS. |
+| Likely wrong | renters-rights-tas `page.tsx:75`, :248 (also TLDR :50) | "Tasmania still permits no-grounds notices to vacate." | s 42 of the Residential Tenancy Act 1997 lists grounds; periodic leases appear unable to end without one. |
+| Likely wrong | sydney-vs-melbourne-property-market `page.tsx:184` | The same income can "finance roughly $900K to $1.0M in Melbourne… but only $600K to $700K in Sydney" | The same income borrows the same amount in either city; only what it buys differs. |
+| Likely wrong | sydney-vs-melbourne-property-market `page.tsx:205` | Sydney adds "60,000 to 80,000 people per year… Melbourne 80,000 to 110,000" | Both have recently added well over 100,000 a year. ABS. |
+| Check | sydney-vs-melbourne-property-market `page.tsx:147` | "the typical outer-middle-ring house price in Adelaide or Hobart" | Adelaide medians are now well above $600K. |
+| Check | `perth-property-market-2026.ts:21` | Outer-suburb yields of 5 to 6.5% are "the highest in any Australian capital" | Darwin usually yields more; "tightest in WA's history" is unsourced. |
+| Check | `sydney-property-market-2026.ts:10` | "Interest rates have stabilised" | May be stale for a post updated 7 October 2026. |
+| Check | `australia-fastest-growing-suburbs-2026.ts:18` (also :12) | "as venue construction and Athletes Village development progress" | The Brisbane 2032 venue plan was reset in 2025; the growth percentages are unsourced. |
+| Check | `contract-of-sale-wa.ts:40` | "Clause 8.1 reverses the Queensland position" | Queensland's risk rule may have changed under the Property Law Act 2023 from 1 August 2025. |
+| Conflict | property-auction-guide `page.tsx:57`, :368 | Bidder registration "mandatory in NSW and VIC and standard practice elsewhere" | reserve-price-auction cites the Queensland regulation (s 23) that requires registration with photo ID. |
+| Conflict | property-auction-guide `page.tsx:129` (HowTo JSON-LD) | "Even-numbered $5K or $10K increments" | The body advises bidding in non-round numbers (:385). |
+| Likely wrong | property-auction-guide `page.tsx:221–224` (also FAQ :88) | Price guides must represent expectations "under Australian consumer law" | Underquoting rules are state law, and Queensland bans auction price guides. |
+| Review | property-auction-guide (title and frontmatter) | Title "how to bid and how to sell", persona "selling" | The body is written for buyers only. The title wasn't changed. |
+| Conflict | first-home-buyer-qld `page.tsx:167` | "the largest state First Home Owner Grant" | True only if territories are excluded; the page's own FAQ says the NT pays $50,000. |
+| Check | best-time-to-buy-property-australia `page.tsx:228` | "most lenders won’t consider income on probation" | Many lenders now do. |

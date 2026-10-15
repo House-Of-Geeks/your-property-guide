@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -162,7 +161,7 @@ export default function RentersRightsVICPage() {
 
       <h2 id="bond">Bond rules</h2>
       <ul>
-        <li><strong>Maximum bond:</strong> 1 month's rent for properties up to $900/week, 2 months' rent for properties above $900/week.</li>
+        <li><strong>Maximum bond:</strong> 1 month’s rent for properties up to $900/week, 2 months’ rent for properties above $900/week.</li>
         <li><strong>Lodgement:</strong> The bond must be lodged with the Residential Tenancies Bond Authority (RTBA) within 10 business days. Check yours at rtba.vic.gov.au.</li>
         <li><strong>Claiming the bond:</strong> If both parties agree, the bond is refunded at the end of tenancy. Disputes go to VCAT.</li>
       </ul>
@@ -201,7 +200,7 @@ export default function RentersRightsVICPage() {
       <p>
         Must be completed within <strong>14 days</strong> of written notice.
         Always document repair requests in writing and keep records of the
-        landlord's response.
+        landlord’s response.
       </p>
 
       <h2 id="entry-rights">Landlord entry rights</h2>
@@ -229,7 +228,7 @@ export default function RentersRightsVICPage() {
       </ul>
       <p>
         For larger modifications (installing a dishwasher, air conditioning,
-        structural changes), the landlord's consent is required, but consent
+        structural changes), the landlord’s consent is required, but consent
         cannot be unreasonably refused. When vacating, the tenant typically
         restores the property to original condition (or the landlord may agree
         to leave modifications in place).
@@ -238,19 +237,19 @@ export default function RentersRightsVICPage() {
       <h2 id="pets">Pet ownership</h2>
       <p>Victoria has some of the most progressive pet rules in Australia:</p>
       <ul>
-        <li>Renters <strong>can keep pets</strong>, landlords can't simply refuse without reason</li>
+        <li>Renters <strong>can keep pets</strong>; landlords can’t simply refuse without reason</li>
         <li>Landlords may only refuse on <strong>reasonable grounds</strong> as defined in the Act (property unsuitable for the pet, council rules)</li>
         <li>If refused, the landlord must apply to VCAT within 14 days with their reasons; tenants can challenge the refusal</li>
       </ul>
       <p>
-        Landlords <strong>cannot charge a "pet bond"</strong> in Victoria. Tenants
+        Landlords <strong>cannot charge a “pet bond”</strong> in Victoria. Tenants
         remain responsible for any damage caused by their pet.
       </p>
 
       <h2 id="ending-tenancy">Ending a tenancy</h2>
       <p>
         The major 2021 reform: landlords must now have a <strong>valid
-        reason</strong> to end a tenancy, no-grounds notices are no longer
+        reason</strong> to end a tenancy; no-grounds notices are no longer
         permitted.
       </p>
       <ul>
@@ -273,7 +272,7 @@ export default function RentersRightsVICPage() {
 
       <h2 id="no-grounds">No-grounds evictions, abolished in VIC</h2>
       <p>
-        Since <strong>March 2021</strong>, it's illegal for a Victorian landlord
+        Since <strong>March 2021</strong>, it’s illegal for a Victorian landlord
         to issue a no-grounds notice to vacate. Landlords cannot end your
         tenancy simply because they want to, without a legally valid reason.
       </p>
@@ -285,8 +284,8 @@ export default function RentersRightsVICPage() {
       />
 
       <p>
-        If you receive a notice that doesn't cite a valid reason, or you believe
-        the stated reason isn't genuine (e.g. owner claims to move in, then
+        If you receive a notice that doesn’t cite a valid reason, or you believe
+        the stated reason isn’t genuine (e.g. owner claims to move in, then
         re-lists the property), you can challenge it at VCAT. This protection
         applies to both fixed-term and periodic tenancies.
       </p>
