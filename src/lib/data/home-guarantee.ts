@@ -28,7 +28,35 @@ export const HG_SOURCES = {
   mandate: { label: "Housing Australia Investment Mandate Direction 2018, Part 5A (compilation 22, 18 July 2026)", href: "https://www.legislation.gov.au/F2018L00994/latest/text" },
   expansion: { label: "Housing Australia Investment Mandate Amendment (Delivering on Our 2025 Election Commitment) Direction 2025", href: "https://www.legislation.gov.au/F2025L00984/asmade/text" },
   ntCaps: { label: "Housing Australia Investment Mandate Amendment (2026 Measures No. 2) Direction 2026", href: "https://www.legislation.gov.au/F2026L00542/asmade/text" },
+  expansionYearOne: {
+    label: "Treasury Ministers: Helping 100,000 first home buyers into a home of their own (1 October 2026)",
+    href: "https://ministers.treasury.gov.au/ministers/clare-oneil-2025/media-releases/helping-100000-first-home-buyers-home-their-own",
+  },
+  homesForFhbSa: {
+    label: "Treasury Ministers: First deal struck to deliver 100,000 new homes for first home buyers (30 January 2026)",
+    href: "https://ministers.treasury.gov.au/ministers/clare-oneil-2025/media-releases/first-deal-struck-deliver-100000-new-homes-first-home",
+  },
+  homesForFhbAct: {
+    label: "Treasury Ministers: New homes for ACT first home buyers (20 April 2026)",
+    href: "https://ministers.treasury.gov.au/ministers/clare-oneil-2025/media-releases/new-homes-act-first-home-buyers",
+  },
+  homesForFhbTas: {
+    label: "Treasury Ministers: Thousands of new homes for Tasmanian first home buyers (21 April 2026)",
+    href: "https://ministers.treasury.gov.au/ministers/clare-oneil-2025/media-releases/thousands-new-homes-tasmanian-first-home-buyers",
+  },
 } as const satisfies Record<string, Source>;
+
+/** First-year uptake after the 1 October 2025 expansion (Housing Australia data, Treasury Ministers, 1 October 2026). */
+export const HG_EXPANSION_FIRST_YEAR_BUYERS = 102_594;
+export const HG_EXPANSION_FIRST_YEAR_AS_AT = "1 October 2026";
+
+/** Commonwealth election commitment: up to 100,000 homes reserved for first home buyers via state deals. */
+export const HOMES_FOR_FHB_PROGRAM = {
+  totalReserved: 100_000,
+  sa: { homesForFhb: 6_877, totalHomes: 17_000, announced: "30 January 2026" },
+  act: { homesForFhb: 1_700, totalHomes: 4_900, announced: "20 April 2026" },
+  tas: { homesForFhb: 2_101, totalHomes: 4_000, announced: "21 April 2026" },
+} as const;
 
 export const HG_DATES = {
   /** No income test, no limit on places, higher price caps, regional stream closed (F2025L00984). */
