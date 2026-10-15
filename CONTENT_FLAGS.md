@@ -300,3 +300,21 @@ Several of these are contradictions between articles in this batch (agency cooli
 | Check | `hobart-tasmania-property-market-2026.ts:14` | "the most affordable mainland-equivalent state for owner-occupiers" | Unclear and unsourced. |
 | Check | `investment-property-guide-moreton-bay-corridor.ts:14` | "the Moreton Bay Rail Link extension" | The Rail Link opened in 2016; no extension project is clear. |
 | Check | `understanding-off-market-properties.ts:9`, :22 | Off-market sales are "a significant portion" of transactions; "lower purchase prices as sellers save on marketing costs" | Unsourced share; the price logic is doubtful. |
+
+### Batch 9: shared equity, super, Adelaide and Melbourne, auctions, regional towns, agent problems, sensitive sales
+
+| Severity | Where | Claim | Why it's flagged |
+|---|---|---|---|
+| Check | `adelaide-property-market-2026.ts:12` | Median house "around $760K in mid-2026 … Units around $440K" | Looks below even 2025 medians, though updatedAt says 14 October. |
+| Likely wrong | `adelaide-property-market-2026.ts:15` | "The northern foothills (Gilberton, Walkerville, Stepney)" | These are inner north-eastern suburbs on the Torrens, not foothills. |
+| Check | `best-regional-towns-invest-australia-2026.ts:23` | Toowoomba's "second airport project" | Wellcamp opened in 2014; unclear what this refers to. |
+| Check | `best-regional-towns-invest-australia-2026.ts:26`, :38 | Bunbury "around $470K"; Townsville "around $480K" | Look low after 2024–25 regional growth; no town figure has a source. |
+| Conflict | `first-home-buyer-schemes-by-state-australia-2026.ts:17` vs :124 | "save $30,000 to $60,000 or more" vs "$40,000 to $60,000 in benefits" | Pick one range. |
+| Check | `first-home-buyer-schemes-by-state-australia-2026.ts:70` | "SharedStart (Keystart)" | The shared equity guide calls it Keystart shared ownership; `help-to-buy.ts` names SharedStart as one product among several. |
+| Check | `first-home-buyer-schemes-by-state-australia-2026.ts:109` | "Even one dollar over disqualifies the entire benefit" | True for the 5% Deposit Scheme and grant caps; the NSW and VIC duty concessions phase out instead. |
+| Conflict | `how-to-buy-property-interstate-australia-2026.ts:45` vs :53 | "NSW solicitor cannot represent you on a QLD purchase" | Overstated (lawyers can generally practise interstate), and line 53 says they "may technically be able to assist". |
+| Check | `how-to-buy-property-interstate-australia-2026.ts:17` | "Sydney median rental yield around 3% vs. Brisbane 4.5%" | Brisbane gross yields have been nearer 3.5%; no source. |
+| Check | `real-estate-agent-complaints-and-red-flags.ts:59` | WA "Department of Energy, Mines, Industry Regulation and Safety" | Restructured on 1 July 2025 (see batch 1 and 3). |
+| Conflict | `selling-a-house-with-tenants.ts:13` vs :26 | Ending a tenancy for a sale "everywhere except the Northern Territory, requires a genuine sale-related reason" | Line 26 says WA still allows no-grounds periodic termination on 60 days' notice (s 64). |
+| Likely wrong | `selling-a-house-with-tenants.ts:78` | For an inherited home, "the two-year clock runs from settlement rather than contract" | The deceased estate post (:66) says the clock runs from the date of death and ends at settlement. ATO. |
+| Conflict | `winter-property-market-wrap-july-2026.ts` | "Interview two or three agents" | Selling guide chapter 5 says at least three. Small, but settle one line. |

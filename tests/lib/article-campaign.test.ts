@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 import { ARTICLE_CAMPAIGN } from "@/content/articles";
 import { ALL_GUIDES, getGuide } from "@/lib/guides/registry";
 
-const ALL_BATCHES_IN = false;
+const ALL_BATCHES_IN = true;
 
 const entries = Object.entries(ARTICLE_CAMPAIGN);
 

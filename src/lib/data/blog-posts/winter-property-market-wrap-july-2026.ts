@@ -32,11 +32,11 @@ export const post: BlogPost = {
 <ul>
 <li><strong>Now: get your number.</strong> Start with a <a href="/appraisal">free property appraisal</a> so your plans rest on today's evidence rather than a guess or an old estimate. Our guide on <a href="/guides/how-much-is-my-house-worth-australia">how much your house is worth</a> explains how to read the appraisal and the comparable sales behind it.</li>
 <li><strong>Mid-July: shortlist and choose your agent.</strong> Interview two or three agents who genuinely sell in your suburb and compare their track records, campaign plans and fees. Our guide on <a href="/guides/how-to-choose-a-selling-agent">how to choose a selling agent</a> covers the questions worth asking.</li>
-<li><strong>Late July and August: repairs, presentation, styling.</strong> Knock over the honest-to-do list first, the dripping tap, the scuffed walls, the tired front entrance, then declutter and book styling if you are using it. Budget for all of it with our breakdown of the <a href="/guides/cost-of-selling-a-house-australia">cost of selling a house</a>.</li>
+<li><strong>Late July and August: repairs, presentation, styling.</strong> Knock over the honest to-do list first (the dripping tap, the scuffed walls, the tired front entrance), then declutter and book styling if you are using it. Budget for all of it with our breakdown of the <a href="/guides/cost-of-selling-a-house-australia">cost of selling a house</a>.</li>
 <li><strong>Late August: photography and campaign launch.</strong> With the home ready, shoot the photos and let your agent build the campaign so you list into the September market rather than scrambling to catch it.</li>
 </ul>
 
-<p>None of this locks you in. An appraisal and an agent conversation in July cost you nothing and commit you to nothing, but they turn a vague spring intention into a real plan with dates attached. Our <a href="/selling-guide">selling guide</a> walks the full journey from first appraisal to settlement if you want the complete picture.</p>
+<p>None of this locks you in. An appraisal and an agent conversation in July cost you nothing and commit you to nothing, but they turn a vague spring intention into a real plan with dates attached. Our <a href="/selling-guide">selling guide</a> walks through every step from first appraisal to settlement if you want the complete picture.</p>
 
 <h2>Buying through the quiet patch</h2>
 
