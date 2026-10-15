@@ -159,7 +159,7 @@ export default function FirstHomeBuyerWAPage() {
       <h2 id="fhog-wa">First Home Owner Grant WA</h2>
       <p className="lead">
         Western Australia offers a $10,000 First Home Owner Grant for eligible
-        first home buyers purchasing or building new homes. WA's market has seen
+        first home buyers purchasing or building new homes. WA&rsquo;s market has seen
         strong growth since 2021, making the FHOG a meaningful contributor for
         buyers targeting new builds.
       </p>
@@ -261,8 +261,8 @@ export default function FirstHomeBuyerWAPage() {
       <h2 id="wa-specific">WA-specific schemes and resources</h2>
       <ul>
         <li>
-          <strong>Keystart Home Loans:</strong> WA Government home loan provider
-          specifically for low-to-moderate income earners who can't qualify for a
+          <strong>Keystart Home Loans:</strong>{" "}WA Government home loan provider
+          specifically for low-to-moderate income earners who can&rsquo;t qualify for a
           standard bank loan. Keystart offers low-deposit home loans (as low as 2%
           in some cases) without LMI. Income limits apply. Unique to WA, and a
           major advantage for eligible buyers. Apply at keystart.com.au.
@@ -297,7 +297,7 @@ export default function FirstHomeBuyerWAPage() {
       <h2 id="buying-process">The WA buying process</h2>
       <p>WA has notable differences from eastern states:</p>
       <ul>
-        <li><strong>No statutory cooling-off period:</strong> Unlike NSW, VIC, and QLD, WA has no statutory cooling-off period on residential private treaty sales. Once contracts are exchanged and conditions waived or fulfilled, you're committed. Pre-contract due diligence matters even more.</li>
+        <li><strong>No statutory cooling-off period:</strong> Unlike NSW, VIC, and QLD, WA has no statutory cooling-off period on residential private treaty sales. Once contracts are exchanged and conditions waived or fulfilled, you&rsquo;re committed. Pre-contract due diligence matters even more.</li>
         <li><strong>Offer and Acceptance:</strong> WA uses an Offer and Acceptance form. The buyer makes a written offer; if the seller accepts, the signed document becomes a binding contract. Conditions (finance, building inspection, etc.) are negotiated and included in the offer.</li>
         <li><strong>Joint Form of General Conditions:</strong> The offer references general conditions maintained by REIWA and the Law Society of WA.</li>
         <li><strong>Auctions:</strong> Less common than eastern states. Private treaty dominates.</li>

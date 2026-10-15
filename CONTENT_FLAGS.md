@@ -222,3 +222,27 @@ Several of these are contradictions between articles in this batch (agency cooli
 | Conflict | `negative-gearing-changes-2026-budget.ts:43`, :95, :52–54 | SMSFs under the same rules; trusts and companies "never subject to personal negative gearing"; the "substantial renovation" definition | All three disagree with negative-gearing-australia (:418), which says super funds are excluded, companies and most trusts are covered, and a ministerial instrument will define "new build". The post says it "reflects the rules as legislated"; it needs a full re-check. |
 | Likely wrong | `negative-gearing-changes-2026-budget.ts:107` | Link to "/tools/negative-gearing-calculator" | No such route; the calculator is at /negative-gearing-calculator. The link 404s. |
 | Review | `negative-gearing-changes-2026-budget.ts:99` | "a clear break of a pre-election commitment, and the government has been honest about that" | A political claim with no source. |
+
+### Batch 6: timing, contracts of sale, first home (SA, WA), lending, budget, builders
+
+| Severity | Where | Claim | Why it's flagged |
+|---|---|---|---|
+| Likely wrong | fixed-vs-variable-rate-guide `page.tsx:264` | "As of April 2026, the RBA … has subsequently begun reducing the cash rate." | The site's own data says the RBA raised rates three times in 2026, to 4.35% (`src/lib/data/data-updates.ts:26`, the APRA and home-values posts). |
+| Likely wrong | fixed-vs-variable-rate-guide `page.tsx:155` (also :171) | "the RBA’s monthly cash rate decision" | The RBA has met eight times a year since 2024. |
+| Likely wrong | `brisbane-property-market-2026.ts:24` | "Cross River Rail is operating" | Its opening was pushed back to later in the decade. |
+| Check | `brisbane-property-market-2026.ts:24` | Suburbs benefiting include "Albion (Athletes Village area), Woolloongabba" | The 2032 venue and village plans were reworked in 2025. |
+| Conflict | `brisbane-property-market-2026.ts:12` (and vacancy :21) | Median "around $980K in mid-2026" | Unsourced; the site's June 2026 Cotality table shows $1,118,306. |
+| Likely wrong | `federal-budget-2026-property.ts:95`; also the home-values post :34 | "the policy is now law from budget night" | Budget measures need legislation; on 13 May they applied from budget night but weren't law. |
+| Check | `federal-budget-2026-property.ts:64` | "40,000 new social and affordable homes by 2029, with 279 projects committed" | The Housing Australia Future Fund's headline target has been 30,000 over five years; may mix programs. |
+| Check | `federal-budget-2026-property.ts:21` | "Dwelling price growth forecast revised down to 3% in 2026 (from 5%)" | Treasury doesn't usually publish a national price forecast; source unclear. |
+| Conflict | first-home-buyer-wa `page.tsx:300` | "Once contracts are exchanged …" | WA has no exchange; the page's own FAQ says the signed Offer and Acceptance is the contract. |
+| Check | first-home-buyer-wa `page.tsx:288–291` | "Joondalup, Wanneroo, Butler, house medians $530K to $680K" | Look out of date against the site's Perth data ($1,046,551 median, up 23.9%). |
+| Conflict | how-long-does-it-take-to-buy-a-house-australia `page.tsx:52` (also :85, :254) | "Settlement is typically 30 days in NSW and ACT" | `contract-of-sale-nsw.ts:63` says 42 days is customary in NSW. |
+| Likely wrong | how-long-does-it-take-to-buy-a-house-australia `page.tsx:223` (TOC :63) | Cooling-off "3 to 5 business days" in NSW, VIC, QLD, SA, ACT and NT | SA is 2 clear business days and the NT 4. |
+| Check | how-long-does-it-take-to-buy-a-house-australia `page.tsx:199` | "The median in capital city markets is 8 to 12 weeks of active searching" | No source. |
+| Likely wrong | offset-accounts-explained-australia `page.tsx:264` | "On a 32.5 per cent marginal rate…" | The 32.5% bracket became 30% on 1 July 2024. |
+| Conflict | first-home-buyer-mistakes-to-avoid `page.tsx:87` vs :175 | "below 30% of gross household income" vs "30% of your take-home pay" | Same rule, two bases. |
+| Likely wrong | first-home-buyer-mistakes-to-avoid `page.tsx:82` | "3 to 5 business days in most states" | SA is 2 clear business days; WA and Tasmania have none. |
+| Check | how-to-find-a-builder-australia `page.tsx:82` | Home warranty "above a state-defined threshold (typically $20,000–$30,000+)" | Thresholds vary widely by state (QLD's is far lower). Check each regulator. |
+| Check | how-to-find-a-builder-australia `page.tsx:53` (also :82) | "statutory warranty in QLD" | Queensland's is the Queensland Home Warranty Scheme, run by QBCC. |
+| Conflict | first-home-buyer-sa `page.tsx:116` | Cooling-off "2 clear business days from the date you receive a copy of the contract" | contract-of-sale-sa says from the contract or service of the Form 1, whichever is later. |

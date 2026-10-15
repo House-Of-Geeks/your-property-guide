@@ -71,11 +71,11 @@ export const post: BlogPost = {
 
 <h2>How to sell privately, step by step</h2>
 <ol>
-<li><strong>Get two or three agent appraisals anyway.</strong> They are free, they come with the comparable sales, and they tell you what the professionals think your home is worth before you set a price. Some sellers use them to negotiate a lower commission instead of going private; either way you are better informed. <a href="/appraisal">Request appraisals here</a>.</li>
+<li><strong>Get two or three agent appraisals anyway.</strong> They are free, they come with the comparable sales, and they tell you what the professionals think your home is worth before you set a price. Some sellers use them to negotiate a lower commission instead of going private; either way you are better informed. <a href="/appraisal">Request an appraisal here</a>.</li>
 <li><strong>Engage a conveyancer or solicitor now,</strong> not when you find a buyer. In NSW and Victoria the contract or Section 32 must be ready before you advertise.</li>
 <li><strong>Set the price from evidence.</strong> Use the appraisals, the suburb's recent sales and the <a href="/guides/how-much-is-my-house-worth-australia">house-worth guide</a>. Overpricing costs more in a private sale than in an agent's campaign because there is no one to reframe the guide for buyers after week two.</li>
 <li><strong>Prepare the property and the photography</strong> exactly as an agent would. Buyers do not grade on a curve for private sellers.</li>
-<li><strong>List through a for-sale-by-owner platform</strong> so you appear on the portals, and write the listing the way the best agent listings in your suburb are written.</li>
+<li><strong>List through a for-sale-by-owner platform</strong> so you appear on the portals, and write the listing the way the strongest agent listings in your suburb are written.</li>
 <li><strong>Run inspections and enquiries.</strong> Answer every enquiry the same day. Have the contract or vendor statement ready to send.</li>
 <li><strong>Negotiate in writing.</strong> Ask for offers in writing with the buyer's finance position and settlement terms. Do not accept the first number without asking whether it is their best.</li>
 <li><strong>Hand the accepted offer to your conveyancer</strong> and let them run exchange, cooling-off and settlement.</li>

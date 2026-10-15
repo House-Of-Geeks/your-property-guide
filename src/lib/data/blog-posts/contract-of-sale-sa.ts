@@ -15,7 +15,7 @@ export const post: BlogPost = {
 <p>Section 7 applies to freehold land and Crown leasehold; it does not apply where land is sold as part of a business, which has its own Form 2.</p>
 
 <h2>What the Form 1 contains</h2>
-<p>Regulation 8 says the statement must comprise Parts A, B and C of Form 1 plus the applicable parts of its Schedule. In plain terms:</p>
+<p>Regulation 8 says the statement must comprise Parts A, B and C of Form 1 plus the applicable parts of its Schedule. In outline:</p>
 <ul>
 <li><strong>Part A: parties and land.</strong> Buyer, seller, their agents, the date of the contract if it has already been made, and the title description.</li>
 <li><strong>Part B: the buyer's cooling-off rights.</strong> The statutory explanation of the right to cool off, the exceptions, how and when the notice must be served, and what money comes back. This is where most buyers first read the rules quoted below.</li>
@@ -37,7 +37,7 @@ export const post: BlogPost = {
 <p>At auction, section 11 requires the Form 1 to be available at the agent's or auctioneer's office for the three consecutive business days before the auction and at the auction venue for at least 30 minutes before it starts, with all reasonable steps taken to tell prospective buyers where and when they can read it.</p>
 
 <h2>The cooling-off period</h2>
-<p>Section 5 gives the buyer of land the right to rescind by written notice served before the "prescribed time". For land that is:</p>
+<p>Section 5 gives the buyer of land the right to rescind by written notice served before the "prescribed time". The prescribed time is:</p>
 <ul>
 <li>if the Form 1 was served <strong>before</strong> the contract was made, the end of the <strong>second clear business day after the day the contract was made</strong>;</li>
 <li>if the Form 1 was served <strong>after</strong> the contract was made, the end of the <strong>second clear business day from the day the Form 1 was served</strong>;</li>

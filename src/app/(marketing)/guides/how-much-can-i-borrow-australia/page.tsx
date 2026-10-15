@@ -200,7 +200,7 @@ export default function HowMuchCanIBorrowAustraliaPage() {
 
       <h3>The HEM benchmark</h3>
       <p>
-        Lenders do not simply take your word on what you spend. They compare your
+        Lenders do not take your word on what you spend. They compare your
         declared living expenses against the Household Expenditure Measure (HEM), a
         benchmark of typical spending for a household of your size, income and
         location. If you declare less than the benchmark, the lender uses the

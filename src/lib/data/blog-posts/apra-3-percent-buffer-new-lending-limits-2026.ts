@@ -17,7 +17,7 @@ export const post: BlogPost = {
 
 <h2>Why APRA is being cautious</h2>
 
-<p>APRA pointed to high levels of household debt and to total credit growth running above its longer-run average. It also noted that credit growth is expected to rise further as and when interest rates eventually come down, because cheaper money usually means people borrow more. In plain terms, the regulator wants to keep a lid on risky lending before any future rate cuts pour fuel on it.</p>
+<p>APRA pointed to high levels of household debt and to total credit growth running above its longer-run average. It also noted that credit growth is expected to rise further as and when interest rates eventually come down, because cheaper money usually means people borrow more. The regulator wants to keep a lid on risky lending before any future rate cuts pour fuel on it.</p>
 
 <p>It is worth separating the two main authorities here, because they are often confused. APRA sets the rules that banks must follow when they lend, including the serviceability buffer. The Reserve Bank of Australia, the RBA, sets the cash rate, which influences the actual interest rate on your loan. You can follow movements in the cash rate on our <a href="/rba-cash-rate">RBA cash rate tracker</a>. The two work in different ways, and this announcement was about lending rules, not the cash rate itself.</p>
 
@@ -45,7 +45,7 @@ export const post: BlogPost = {
 <li><strong>Plan for tighter, not looser.</strong> If you are an investor or borrowing near your limit, build a little headroom now so a future change in the rules does not derail your plans.</li>
 </ul>
 
-<p>There is no need to rush or panic. APRA holding its settings means the rules you are borrowing under today are stable. The smart move is simply to understand those rules clearly, keep your paperwork current, and stay informed as the conversation between APRA and the banks develops over the coming months.</p>`,
+<p>There is no need to rush or panic. APRA holding its settings means the rules you are borrowing under today are stable. The smart move is to understand those rules clearly, keep your paperwork current, and stay informed as the conversation between APRA and the banks develops over the coming months.</p>`,
   coverImage: "/images/blog/cover-apra-3-percent-buffer-new-lending-limits-2026.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "News",
