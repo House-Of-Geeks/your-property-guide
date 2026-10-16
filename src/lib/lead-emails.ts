@@ -441,7 +441,7 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
     // works; buyers see what a buyer's agent does. Listed sellers were
     // promised no agent contact, so they get neither.
     const panel = (eyebrow: string, text: string, button: string) => `
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:${C.ink};border-radius:10px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:${C.eucalyptus};border-radius:10px;">
         <tr><td style="padding:20px 22px;">
           <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:${C.apricot};">${eyebrow}</p>
           ${text}

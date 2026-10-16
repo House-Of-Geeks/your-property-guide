@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "en_AU",
     url: SITE_URL,
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: `${SITE_NAME}: free guides to selling and buying property in Australia` }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: `${SITE_NAME}: it’s the campaign that wins. Not the market.` }],
   },
   twitter: {
     card: "summary_large_image",

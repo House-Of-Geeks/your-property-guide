@@ -1,18 +1,20 @@
-// Shared email palette + layout, brand v4 (Oct 2026). Hex values match the
-// tokens in src/app/globals.css (email clients can't read CSS variables).
-// Key names are kept from v3 so existing builders keep working; the values
-// are the v4 palette (white paper, charcoal ink, roof-tile actions).
+// Shared email palette + layout, brand v6 (15 Oct 2026, "It's the campaign
+// that wins"). Hex values match the tokens in src/app/globals.css (email
+// clients can't read CSS variables). Key names are kept from v3 so existing
+// builders keep working; the values are the v6 palette (cream paper, ink
+// text, eucalyptus bands, copper actions in the AA-safe shades).
 export const EMAIL_COLORS = {
-  ink:            "#16191d", // --ink / --surface-inverse
-  inkMuted:       "#565e68", // --ink-muted
-  inkSubtle:      "#6b737c", // --ink-subtle
+  ink:            "#14201b", // --ink
+  inkMuted:       "#525c57", // --ink-muted
+  inkSubtle:      "#616b66", // --ink-subtle
   paper:          "#ffffff", // card background
-  cream:          "#f3f4f5", // --surface-warm (Mist), tinted cells/callouts
-  sunken:         "#f5f6f7", // --surface-sunken, page background
-  line:           "#dfe2e6", // --line, hairlines
-  terracotta:     "#c24a1c", // --cta, buttons (roof tile)
-  terracottaDark: "#a8401a", // --primary, links
-  apricot:        "#fbebe4", // --accent-lighter
+  cream:          "#f4efe6", // --sand (--surface-warm), tinted cells/callouts
+  sunken:         "#fbf8f3", // --cream, page background
+  line:           "#e3dccf", // --line, hairlines
+  eucalyptus:     "#0f3d2e", // --eucalyptus (--surface-inverse), dark bands
+  terracotta:     "#a9642c", // --cta, buttons (copper, 4.6:1 with white)
+  terracottaDark: "#9a5a26", // --primary, links
+  apricot:        "#f6e6d4", // --accent-lighter
   // Functional alert colours (urgency signal, not brand)
   alertBg:        "#7f1d1d",
   alertBorder:    "#fecaca",
@@ -24,8 +26,9 @@ const MARK_URL = "https://www.yourpropertyguide.com.au/images/brand/mark-96.png"
 const C = EMAIL_COLORS;
 
 const FONT_SANS = `-apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif`;
-// v4 has one typeface; email falls back to the system sans for headings too.
-const FONT_SERIF = FONT_SANS;
+// v6 sets headings in a serif (Source Serif 4 on the site); email clients
+// can't load it, so Georgia stands in.
+const FONT_SERIF = `Georgia, 'Times New Roman', serif`;
 
 interface EmailLayoutOptions {
   /** Short label in the header band, under the logo. */
@@ -92,7 +95,7 @@ export function emailLayout({
               <td style="vertical-align:middle;font-family:${FONT_SANS};font-size:17px;font-weight:700;letter-spacing:-0.3px;color:${C.ink};">Your Property Guide</td>
             </tr></table>`}
             ${alert || eyebrow !== "Your Property Guide" ? `<p style="margin:0;color:${eyebrowColor};font-size:13px;font-weight:600;font-family:${FONT_SANS};">${eyebrow}</p>` : ""}
-            ${title ? `<h1 style="margin:6px 0 0;color:${titleColor};font-size:22px;line-height:1.25;font-weight:700;font-family:${FONT_SERIF};letter-spacing:-0.3px;">${title}</h1>` : ""}
+            ${title ? `<h1 style="margin:6px 0 0;color:${titleColor};font-size:24px;line-height:1.2;font-weight:400;font-family:${FONT_SERIF};letter-spacing:-0.2px;">${title}</h1>` : ""}
           </td>
         </tr>
         <tr><td>
@@ -104,7 +107,7 @@ export function emailLayout({
           </td>
         </tr>
       </table>
-      <p style="margin:14px 0 0;font-size:11px;color:${C.inkSubtle};font-family:${FONT_SANS};">Property, explained by people.</p>
+      <p style="margin:14px 0 0;font-size:11px;color:${C.inkSubtle};font-family:${FONT_SANS};">Every home deserves a $20 million campaign.</p>
     </td></tr>
   </table>
 </body>
@@ -135,12 +138,12 @@ export function emailButtonOutline(label: string, url: string): string {
  */
 export function emailCoverHero(coverUrl: string, headline: string, sub: string): string {
   return `
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.ink};">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.eucalyptus};">
     <tr><td align="center" style="padding:30px 28px 0;">
       <img src="${coverUrl}" width="216" alt="The Complete Guide to Selling Your Property in Australia, 2026 edition" style="display:block;width:216px;max-width:60%;height:auto;border-radius:6px;box-shadow:0 18px 40px rgba(0,0,0,0.45);" />
     </td></tr>
     <tr><td align="center" style="padding:24px 36px 30px;">
-      <h2 style="margin:0;color:#ffffff;font-size:24px;line-height:1.25;font-weight:700;font-family:${FONT_SERIF};letter-spacing:-0.3px;">${headline}</h2>
+      <h2 style="margin:0;color:#ffffff;font-size:26px;line-height:1.2;font-weight:400;font-family:${FONT_SERIF};letter-spacing:-0.2px;">${headline}</h2>
       <p style="margin:10px 0 0;color:rgba(255,255,255,0.78);font-size:14px;line-height:1.6;font-family:${FONT_SANS};">${sub}</p>
     </td></tr>
   </table>`;
