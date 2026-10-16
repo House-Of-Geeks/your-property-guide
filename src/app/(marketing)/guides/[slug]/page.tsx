@@ -217,7 +217,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               <div className={`${campaign ? "mt-6" : bodyTop} prose-ypg`} dangerouslySetInnerHTML={{ __html: processedContent }} />
             )}
 
-            {campaign && <CampaignCta kind={campaign.cta} from={post.slug} className="mt-12" />}
+            {campaign && <CampaignCta kind={campaign.cta} from={post.slug} chapter={campaign.chapter} className="mt-12" />}
 
             {/* The end-of-article guide offer, routed by the post's category. */}
             {nextStep === "selling" ? (

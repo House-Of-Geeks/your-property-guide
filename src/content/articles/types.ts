@@ -22,3 +22,9 @@ export interface ArticleCampaign {
 }
 
 export type ArticleCampaignBatch = Readonly<Record<string, ArticleCampaign>>;
+
+/** The guide chapter an article's call to action points to (chapters.ts). */
+export interface ArticleChapterRef {
+  guide: "selling" | "buying";
+  chapter: number;
+}

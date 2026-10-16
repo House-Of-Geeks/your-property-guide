@@ -224,7 +224,7 @@ export function GuideArticleLayout({
               </GuideAudienceProvider>
             </div>
 
-            {campaign && <CampaignCta kind={campaign.cta} from={from} className="mt-12" />}
+            {campaign && <CampaignCta kind={campaign.cta} from={from} chapter={campaign.chapter} className="mt-12" />}
 
             {/* The end-of-article guide offer. Sellers (and the investor or
                 renovator who sells) start the selling guide in place; buyers

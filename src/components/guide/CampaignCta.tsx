@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import type { CampaignCtaKind } from "@/content/articles";
+import type { ArticleChapterRef, CampaignCtaKind } from "@/content/articles";
+import { GUIDE_BOOKS, chapterHref } from "@/lib/guide-books";
 import { AGREEMENT_CHECK, ONE_AGENT } from "@/lib/service-model";
 
 // The article's campaign call to action (15 Oct 2026): the campaign plan, the
@@ -47,8 +48,21 @@ const CTA: Record<CampaignCtaKind, { title: string; body: string; label: string;
   },
 };
 
-export function CampaignCta({ kind, from, className = "" }: { kind: CampaignCtaKind; from: string; className?: string }) {
+export function CampaignCta({
+  kind,
+  from,
+  chapter,
+  className = "",
+}: {
+  kind: CampaignCtaKind;
+  from: string;
+  /** The guide chapter that covers the article's topic (chapters.ts). */
+  chapter?: ArticleChapterRef;
+  className?: string;
+}) {
   const c = CTA[kind];
+  const book = chapter && GUIDE_BOOKS[chapter.guide];
+  const ch = chapter && book ? book.chapters[chapter.chapter - 1] : undefined;
   return (
     <aside aria-label={c.title} className={`not-prose rounded-3xl bg-sand p-6 sm:p-7 ${className}`}>
       <div className="font-display text-[24px] leading-snug text-ink">{c.title}</div>
@@ -59,6 +73,15 @@ export function CampaignCta({ kind, from, className = "" }: { kind: CampaignCtaK
       >
         {c.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </Link>
+      {chapter && book && ch && (
+        <div className="mt-5 border-t border-line pt-4 text-[15px] leading-relaxed text-ink-muted">
+          From the guide:{" "}
+          <Link href={chapterHref(chapter.guide, chapter.chapter)} className="font-semibold text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+            {`Chapter ${chapter.chapter}, ${ch.title}`}
+          </Link>
+          {` (${book.name})`}
+        </div>
+      )}
     </aside>
   );
 }
