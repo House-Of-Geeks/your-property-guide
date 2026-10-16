@@ -1,6 +1,6 @@
 // Google Places address field on the appraisal forms: parsing and suburb matching.
 import { describe, expect, it } from "vitest";
-import { guessSuburbSlug, matchSuburb, parsePlaceAddress, type PlaceAddressComponent } from "@/lib/address";
+import { guessSuburbSlug, matchSuburb, parsePlaceAddress, pickSuburb, suburbTerms, type PlaceAddressComponent } from "@/lib/address";
 
 const bondi: PlaceAddressComponent[] = [
   { longText: "15", shortText: "15", types: ["street_number"] },
@@ -42,5 +42,39 @@ describe("suburb slug matching", () => {
     expect(matchSuburb(p, hits)?.slug).toBe("bondi-nsw-2026");
     expect(matchSuburb({ ...p, suburb: "BONDI" }, hits.filter((h) => h.slug !== "bondi-nsw-2026").concat([{ slug: "bondi-x-nsw-2026", name: "Bondi", state: "NSW", postcode: "2026" }]))?.slug).toBe("bondi-x-nsw-2026");
     expect(matchSuburb({ ...p, suburb: "Nowhere" }, hits)).toBeNull();
+  });
+});
+
+describe("suburbTerms", () => {
+  it("reads a bare suburb, a postcode, and a suburb with its state", () => {
+    expect(suburbTerms("Paddington")).toEqual({ name: "Paddington", state: null, postcode: null });
+    expect(suburbTerms("4064")).toEqual({ name: null, state: null, postcode: "4064" });
+    expect(suburbTerms("paddington qld")).toEqual({ name: "paddington", state: "QLD", postcode: null });
+  });
+  it("drops the street from a full address, with or without commas", () => {
+    expect(suburbTerms("12 Smith St, Paddington QLD 4064")).toEqual({ name: "Paddington", state: "QLD", postcode: "4064" });
+    expect(suburbTerms("2/15 Smith Street, Bondi NSW 2026, Australia")).toEqual({ name: "Bondi", state: "NSW", postcode: "2026" });
+    expect(suburbTerms("12 Smith Street North Lakes")).toEqual({ name: "North Lakes", state: null, postcode: null });
+  });
+  it("gives nothing for a street alone or an empty field", () => {
+    expect(suburbTerms("12 Smith Street")).toEqual({ name: null, state: null, postcode: null });
+    expect(suburbTerms("  ")).toEqual({ name: null, state: null, postcode: null });
+  });
+});
+
+describe("pickSuburb", () => {
+  const hits = [
+    { slug: "paddington-qld-4064", name: "Paddington", state: "QLD", postcode: "4064" },
+    { slug: "paddington-nsw-2021", name: "Paddington", state: "NSW", postcode: "2021" },
+    { slug: "paddington-north-qld-4064", name: "Paddington North", state: "QLD", postcode: "4064" },
+  ];
+  it("needs the state or postcode when two suburbs share a name", () => {
+    expect(pickSuburb(suburbTerms("Paddington"), hits)).toBeNull();
+    expect(pickSuburb(suburbTerms("Paddington NSW"), hits)?.slug).toBe("paddington-nsw-2021");
+    expect(pickSuburb(suburbTerms("12 Smith St, Paddington QLD 4064"), hits)?.slug).toBe("paddington-qld-4064");
+  });
+  it("takes a postcode on its own only when it means one suburb", () => {
+    expect(pickSuburb(suburbTerms("2021"), hits)?.slug).toBe("paddington-nsw-2021");
+    expect(pickSuburb(suburbTerms("4064"), hits)).toBeNull();
   });
 });

@@ -57,10 +57,10 @@ const TLDR = [
 const TOC: GuideTOCEntry[] = [
   { id: "headline-numbers",  label: "The headline numbers" },
   { id: "capital-growth",    label: "Capital growth history" },
-  { id: "rental-yield",      label: "Rental yield &amp; cash flow" },
-  { id: "affordability",     label: "Affordability &amp; stamp duty" },
-  { id: "supply",            label: "Supply &amp; population" },
-  { id: "lifestyle",         label: "Lifestyle &amp; tenant demand" },
+  { id: "rental-yield",      label: "Rental yield & cash flow" },
+  { id: "affordability",     label: "Affordability & stamp duty" },
+  { id: "supply",            label: "Supply & population" },
+  { id: "lifestyle",         label: "Lifestyle & tenant demand" },
   { id: "case-sydney",       label: "When Sydney makes more sense" },
   { id: "case-melbourne",    label: "When Melbourne makes more sense" },
   { id: "next-steps",        label: "Next steps" },
@@ -119,7 +119,7 @@ export default function SydneyVsMelbourneGuide() {
       <Callout variant="info" title="Comparing markets, not picking a winner">
         <p>
           Both cities have produced wealth for property owners over the long
-          run. The interesting question isn't which is "better" but which fits
+          run. The interesting question isn’t which is “better” but which fits
           your strategy, cash flow, capital growth, or affordability.
         </p>
       </Callout>
@@ -157,7 +157,7 @@ export default function SydneyVsMelbourneGuide() {
       </p>
       <p>
         For investors, that volatility difference matters less than people
-        think over a 10 to 20 year hold, both markets average out to similar
+        think over a 10 to 20 year hold; both markets average out to similar
         end-points. For owner-occupiers planning to upgrade, sequence-of-returns
         risk is real: a Sydney house you bought in 2017 was worth less three
         years later. A Melbourne house bought in the same year was about flat.
@@ -167,7 +167,7 @@ export default function SydneyVsMelbourneGuide() {
       <p>
         Yield is where Melbourne pulls ahead. The same outer-middle-ring
         three-bedroom house typically rents for similar money in dollar terms
-        in either city, but Melbourne's lower price pushes the yield higher.
+        in either city, but Melbourne’s lower price pushes the yield higher.
       </p>
       <p>
         For an investor, that 0.7% to 1.2% yield gap means meaningful cash
@@ -184,7 +184,7 @@ export default function SydneyVsMelbourneGuide() {
         A couple earning $200,000 combined can comfortably finance roughly
         $900K to $1.0M in Melbourne (a starter house in many suburbs) but
         only $600K to $700K in Sydney (apartment territory or far outer
-        suburbs). The same job income unlocks meaningfully more property
+        suburbs). The same job income buys meaningfully more property
         in Melbourne.
       </p>
 
@@ -192,9 +192,9 @@ export default function SydneyVsMelbourneGuide() {
       <p>
         Both states offer generous concessions, but the price points differ.
         See our{" "}
-        <a href="/guides/first-home-buyer-schemes-by-state-australia-2026">
+        <Link href="/guides/first-home-buyer-schemes-by-state-australia-2026">
           state-by-state schemes guide
-        </a>{" "}
+        </Link>{" "}
         for current thresholds. Use the{" "}
         <a href="/stamp-duty-calculator">Stamp Duty Calculator</a> to model
         the exact figure for your scenario.
@@ -218,24 +218,24 @@ export default function SydneyVsMelbourneGuide() {
       <p>
         For owner-occupiers, this is where personal preference dominates. Both
         cities have world-class education, dining, sport, and beaches/coast.
-        Sydney's geography (harbour, beaches, national parks) is more
-        constrained, that's both a price-driver and a lifestyle premium.
-        Melbourne's grid is flatter and more navigable, with stronger public
+        Sydney’s geography (harbour, beaches, national parks) is more
+        constrained; that’s both a price-driver and a lifestyle premium.
+        Melbourne’s grid is flatter and more navigable, with stronger public
         transport in many inner suburbs.
       </p>
 
       <h2 id="case-sydney">When Sydney makes more sense</h2>
       <ul>
         <li>You want long-term land-banking in a structurally constrained market.</li>
-        <li>You're an owner-occupier with strong income and a 15+ year horizon.</li>
+        <li>You’re an owner-occupier with strong income and a 15+ year horizon.</li>
         <li>You value harbour, beach, or eastern-suburbs access.</li>
-        <li>You're prepared to accept lower yields for the chance of higher peak growth.</li>
+        <li>You’re prepared to accept lower yields for the chance of higher peak growth.</li>
       </ul>
 
       <h2 id="case-melbourne">When Melbourne makes more sense</h2>
       <ul>
-        <li>You're an investor focused on near-term cash flow.</li>
-        <li>You're a first home buyer at $600K to $900K, Melbourne unlocks a house, Sydney unlocks an apartment.</li>
+        <li>You’re an investor focused on near-term cash flow.</li>
+        <li>You’re a first home buyer at $600K to $900K: in Melbourne that buys a house, in Sydney an apartment.</li>
         <li>You want lower volatility through cycles.</li>
         <li>You value access to AFL, food culture, and a more navigable street grid.</li>
       </ul>
@@ -258,11 +258,11 @@ export default function SydneyVsMelbourneGuide() {
         </li>
         <li>
           Cross-reference yield with our{" "}
-          <a href="/best-suburbs/best-rental-yield">best rental yield rankings</a>.
+          <Link href="/best-suburbs/best-rental-yield">best rental yield rankings</Link>.
         </li>
         <li>
-          If you're considering Brisbane as a third option, read our{" "}
-          <a href="/guides/brisbane-property-market-2026">Brisbane 2026 outlook</a>.
+          If you’re considering Brisbane as a third option, read our{" "}
+          <Link href="/guides/brisbane-property-market-2026">Brisbane 2026 outlook</Link>.
         </li>
       </ol>
     </GuideArticleLayout>

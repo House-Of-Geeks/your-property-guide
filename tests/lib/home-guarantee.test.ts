@@ -48,7 +48,7 @@ describe("5% Deposit Scheme data", () => {
     expect(HG_DATES).toEqual({ expanded: "1 October 2025", ntCapSplit: "1 July 2026" });
     expect(HG_CHECKED_ON).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     for (const source of Object.values(HG_SOURCES)) {
-      expect(source.href).toMatch(/^https:\/\/(firsthomebuyers\.gov\.au|www\.legislation\.gov\.au)\//);
+      expect(source.href).toMatch(/^https:\/\/(firsthomebuyers\.gov\.au|www\.legislation\.gov\.au|ministers\.treasury\.gov\.au)\//);
     }
   });
 

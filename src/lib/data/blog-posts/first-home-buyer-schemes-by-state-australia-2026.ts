@@ -129,13 +129,13 @@ ${AUSTRALIAN_STATES.map((s) => `<li>${hgCapSentence(s)}</li>`).join("\n")}
 <h2>Common mistakes</h2>
 <ul>
 <li><strong>Not knowing which schemes you're eligible for.</strong> The interaction between federal and state schemes is complex</li>
-<li><strong>Going over the price cap.</strong> The most expensive mistake, a dollar over and the entire benefit disappears</li>
+<li><strong>Going over the price cap.</strong> The most expensive mistake: a dollar over and the entire benefit disappears</li>
 <li><strong>Buying established when only new qualifies for FHOG.</strong> Most state FHOGs are new-only</li>
 <li><strong>Missing the FHSSS opportunity.</strong> The tax saving is real and often underused</li>
 <li><strong>Not getting pre-approval before bidding.</strong> Auction or competitive offer scenarios require pre-approval secured</li>
 </ul>
 
-<p>First home buying in Australia in 2026 is more government-supported than at any point in the country's history, but the support is fragmented across federal, state and territory schemes. The reward for working through the rules properly is substantial, for buyers eligible for the maximum stack, $40,000 to $60,000 in benefits is achievable. The cost of getting it wrong is equally substantial, exceeding a price cap by even a small amount can wipe out the entire benefit. Take the time, get advice, and make the system work for you.</p>`,
+<p>First home buying in Australia in 2026 is more government-supported than at any point in the country's history, but the support is fragmented across federal, state and territory schemes. The reward for working through the rules properly is substantial: for buyers eligible for the maximum stack, $40,000 to $60,000 in benefits is achievable. The cost of getting it wrong is equally substantial: exceeding a price cap by even a small amount can wipe out the entire benefit. Take the time, get advice, and make the system work for you.</p>`,
   coverImage: "/images/blog/cover-first-home-buyer-schemes-by-state-australia-2026.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Buying Guide",

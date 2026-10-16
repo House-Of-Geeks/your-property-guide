@@ -195,11 +195,11 @@ export default function RealEstateAgentFeesPage() {
       <Callout variant="info" title="Run your own numbers">
         <p>
           Our{" "}
-          <a href="/real-estate-commission-calculator">commission calculator</a>{" "}
+          <Link href="/real-estate-commission-calculator">commission calculator</Link>{" "}
           turns these percentages into dollars on your sale price, including
           marketing and conveyancing. And if you&rsquo;re comparing agents now,
           the{" "}
-          <a href="/selling-guide">free selling guide</a> includes the 10
+          <Link href="/selling-guide">free selling guide</Link> includes the 10
           questions to ask every agent before you sign, plus the fee
           negotiation tactics that actually work.
         </p>
@@ -349,9 +349,10 @@ export default function RealEstateAgentFeesPage() {
       </ul>
       <p>
         Always read the full agreement before signing, and ask your conveyancer
-        or solicitor to review it if you have any concerns. We have a free{" "}
-        <Link href="/appraisal">property appraisal</Link> from a local agent in
-        your suburb if you want a starting point on price.
+        or solicitor to review it if you have any concerns. If you want a
+        starting point on price, we can arrange a free{" "}
+        <Link href="/appraisal">property appraisal</Link> from one local agent
+        in your suburb.
       </p>
     </GuideArticleLayout>
   );

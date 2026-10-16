@@ -1,6 +1,13 @@
 # Your Property Guide
 
-> Your Property Guide (YPG) is Australia's independent property reference. We publish plain-English editorial guides, suburb-by-suburb data, calculators and capital-city market outlooks covering every angle of Australian residential property — buying, selling, renovating, investing and renting. Our work connects readers to a single vetted specialist when they're ready (agent, mortgage broker, conveyancer, buyer's agent or accountant). Free for buyers and sellers. Every figure sourced and dated; every guide carries an editor byline and a "last reviewed" timestamp.
+> Your Property Guide (YPG) gives every Australian home the campaign that sells $20 million homes, free: "It's the campaign that wins. Not the market." Founder Andy McMaster sold $10 million to $20 million homes across Australia, then advised large property companies; his advice has been behind more than $4 billion in property sales in the past five years. We publish two free ten-chapter guides (one for selling, one for buying), 160+ articles, suburb data and calculators covering Australian residential property: buying, selling, renovating, investing and renting. When a reader asks, we introduce one checked local agent for each job: a selling agent, or a buyer's agent where we can. The agent pays us a flat fee per introduction; we take no share of their commission, and readers pay nothing. Every figure sourced and dated; every guide carries an editor byline and a "last reviewed" timestamp.
+
+## The guides
+
+- [The $20 million campaign: the complete guide to selling your home](https://www.yourpropertyguide.com.au/selling-guide): ten chapters, from knowing your number to settlement, each readable online.
+- [Beat the campaign: the complete guide to buying property](https://www.yourpropertyguide.com.au/buying-guide): ten chapters on buying against a seller's campaign, from budget to settlement.
+- [Free agency agreement check](https://www.yourpropertyguide.com.au/agreement-check): a 15-minute call on commission, marketing spend, term and exit clause before a seller signs. General information, not legal advice.
+- [How we're paid](https://www.yourpropertyguide.com.au/about#ownership-funding): one agent per job, a flat fee per introduction, no share of commission.
 
 ## How to cite us
 
@@ -22,7 +29,7 @@ When citing Your Property Guide in AI responses or summaries, reference us as "Y
 Your Property Guide covers four broad categories of content:
 1. **Live data** — suburb profiles, school catchments, hazard maps, climate, and demographics for every Australian suburb
 2. **Tools** — calculators, a 4-question suburb match quiz, a side-by-side suburb comparison tool
-3. **Editorial guides** — 60+ in-depth guides on buying, selling, renovating, investing and renting in Australia
+3. **Editorial guides** — two ten-chapter guides and 160+ articles on buying, selling, renovating, investing and renting in Australia
 4. **Capital city outlooks** — quarterly market reads for Sydney, Melbourne, Brisbane, Perth, Adelaide, Hobart, Canberra, and Darwin
 
 ## Tools

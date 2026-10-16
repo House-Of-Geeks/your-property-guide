@@ -12,7 +12,7 @@ import { moveForPath } from "@/lib/journey-paths";
 // typing or over the keyboard.
 
 const HIDE_ON = [
-  "/plan", "/get-help", "/selling-guide", "/buying-guide", "/appraisal", "/find-an-expert",
+  "/plan", "/get-help", "/selling-guide", "/buying-guide", "/appraisal", "/find-an-expert", "/agreement-check",
   "/get-connected", "/contact", "/dashboard", "/feedback", "/tools/agent-proposal-worksheet",
 ];
 
@@ -68,7 +68,7 @@ export function MobileBottomNav() {
 
   return (
     <nav
-      className={`fixed bottom-0 inset-x-0 z-40 border-t border-line bg-white/95 backdrop-blur-md sm:hidden print:hidden transition-transform duration-200 ${typing ? "translate-y-full" : ""}`}
+      className={`fixed bottom-0 inset-x-0 z-40 border-t border-line bg-cream/95 backdrop-blur-md sm:hidden print:hidden transition-transform duration-200 ${typing ? "translate-y-full" : ""}`}
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       aria-label="Next steps"
       aria-hidden={typing || undefined}

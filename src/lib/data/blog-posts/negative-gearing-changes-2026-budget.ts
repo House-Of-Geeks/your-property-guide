@@ -13,7 +13,7 @@ export const post: BlogPost = {
 <p>This article unpacks exactly what's changing, the timing rules that matter, who is and isn't affected, and what investors should actually do with the information.</p>
 
 <h2>Negative gearing in plain English</h2>
-<p>Negative gearing happens when the costs of owning an investment property, interest, council rates, insurance, repairs, depreciation, are higher than the rental income. The "loss" can currently be deducted against your salary and other income, reducing the total tax you pay. For high-income earners on the 37% or 45% marginal rate, the tax saving from negative gearing has historically been substantial.</p>
+<p>Negative gearing happens when the costs of owning an investment property (interest, council rates, insurance, repairs, depreciation) are higher than the rental income. The "loss" can currently be deducted against your salary and other income, reducing the total tax you pay. For high-income earners on the 37% or 45% marginal rate, the tax saving from negative gearing has historically been substantial.</p>
 <p>Approximately 1.1 million Australians currently negatively gear an investment property, claiming roughly $11 billion in net rental losses annually against their other income. The system has been a structural feature of Australian property investment for nearly four decades.</p>
 
 <h2>What's actually changing on 1 July 2027</h2>
@@ -104,7 +104,7 @@ export const post: BlogPost = {
 <li><strong>Update your records.</strong> Confirm with your accountant that each property's purchase date and contract date are documented clearly, this matters if there's ever a question about which regime applies</li>
 <li><strong>Review your strategy for future purchases.</strong> The new regime favours yield over loss-driven returns, and new builds over established. Adjust accordingly</li>
 <li><strong>Talk to your accountant before the 2026-27 financial year close.</strong> There may be ways to bring forward maintenance, repairs or depreciation reviews to maximise current-year deductions while the old rules still apply to all property types</li>
-<li><strong>Use our <a href="/tools/negative-gearing-calculator">negative gearing calculator</a></strong> with and without the new rules to see how the change affects your specific portfolio</li>
+<li><strong>Use our <a href="/negative-gearing-calculator">negative gearing calculator</a></strong> with and without the new rules to see how the change affects your specific portfolio</li>
 </ol>
 
 <p>The negative gearing changes are real, structural, and significant, but they don't break the case for property investment in Australia. They reshape it. Investors who think carefully about location, yield, supply incentives and tax positioning under the new regime can still build sustainable property portfolios. The strategy needs to be sharper than it was, but the opportunity remains.</p>

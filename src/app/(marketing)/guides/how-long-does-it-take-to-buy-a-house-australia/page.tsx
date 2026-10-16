@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -102,7 +103,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "Buying Property in Australia", href: "/guides/buying-property-australia", description: "The full step-by-step buyer's playbook." },
-  { title: "How Much Deposit Do You Need?", href: "/guides/how-much-deposit-to-buy-a-house", description: "5%, 10%, 20%, what each tier unlocks, plus schemes." },
+  { title: "How Much Deposit Do You Need?", href: "/guides/how-much-deposit-to-buy-a-house", description: "5%, 10%, 20%, what each tier gets you, plus schemes." },
   { title: "Cooling-Off Period by State", href: "/guides/cooling-off-period-by-state-australia", description: "Your right to rescind a contract, state by state." },
   { title: "Building & Pest Inspection", href: "/guides/building-pest-inspection", description: "When to inspect and what the report should cover." },
   { title: "Conveyancing in Australia", href: "/guides/conveyancing-guide", description: "What your conveyancer actually does, and how to pick one." },
@@ -228,9 +229,9 @@ export default function HowLongBuyHouseGuide() {
       </p>
       <p>
         See our{" "}
-        <a href="/guides/cooling-off-period-by-state-australia">
+        <Link href="/guides/cooling-off-period-by-state-australia">
           cooling-off period by state guide
-        </a>{" "}
+        </Link>{" "}
         for the exact window in your state.
       </p>
 
@@ -322,7 +323,7 @@ export default function HowLongBuyHouseGuide() {
         </li>
         <li>
           Use our{" "}
-          <a href="/borrowing-power-calculator">Borrowing Power Calculator</a>{" "}
+          <Link href="/borrowing-power-calculator">Borrowing Power Calculator</Link>{" "}
           to set a realistic search budget.
         </li>
         <li>
@@ -335,7 +336,7 @@ export default function HowLongBuyHouseGuide() {
         </li>
         <li>
           Read our full{" "}
-          <a href="/guides/buying-property-australia">buying property in Australia guide</a>{" "}
+          <Link href="/guides/buying-property-australia">buying property in Australia guide</Link>{" "}
           for the step-by-step playbook.
         </li>
       </ol>

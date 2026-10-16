@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { GUIDE_BOOKS, type GuideBookId } from "@/lib/guide-books";
+import Link from "next/link";
+import { GUIDE_BOOKS, chapterHref, type GuideBookId } from "@/lib/guide-books";
 import { track } from "@/lib/analytics";
 import { Book3D } from "./Book3D";
 
 // A guide's contents beside the book itself (v5, 14 Oct 2026). Point at a
 // chapter and the book opens to it; "Look inside" opens it on a tap. The
-// list is the real, readable contents (and the page's SEO body); the book's
-// own page is a picture of it.
+// list is the real, readable contents (and the page's SEO body), each row
+// linking to its chapter page; the book's own page is a picture of it.
 
 export function GuideContents({ guide }: { guide: GuideBookId }) {
   const book = GUIDE_BOOKS[guide];
@@ -37,17 +38,19 @@ export function GuideContents({ guide }: { guide: GuideBookId }) {
         {book.chapters.map((c, i) => (
           <li
             key={c.title}
+            id={`chapter-${i + 1}`}
             onMouseEnter={() => {
               setOn(i);
               setOpen(true);
             }}
-            className={`flex items-start gap-4 border-t border-line px-2 py-4 transition-colors duration-200 ${on === i ? "bg-surface-warm" : ""}`}
+            className={`flex scroll-mt-28 items-start gap-4 border-t border-line px-2 py-4 transition-colors duration-200 target:bg-surface-warm ${on === i ? "bg-surface-warm" : ""}`}
           >
             <span className={`w-6 shrink-0 text-base font-semibold leading-6 transition-colors ${on === i ? "text-primary" : "text-ink-subtle"}`}>{i + 1}</span>
-            <div>
-              <p className="text-base font-semibold leading-6 text-ink">{c.title}</p>
-              <p className="mt-0.5 text-sm leading-snug text-ink-muted">{c.sub}</p>
-            </div>
+            <Link href={chapterHref(guide, i + 1)} className="group min-w-0 flex-1">
+              <span className="block text-base font-semibold leading-6 text-ink group-hover:underline underline-offset-4">{c.title}</span>
+              <span className="mt-0.5 block text-sm leading-snug text-ink-muted">{c.sub}</span>
+            </Link>
+            <span className="hidden shrink-0 self-center text-sm font-semibold text-ink sm:block" aria-hidden="true">Read →</span>
           </li>
         ))}
       </ol>

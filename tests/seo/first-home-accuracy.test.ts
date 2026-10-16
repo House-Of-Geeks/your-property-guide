@@ -7,6 +7,8 @@
 // src/lib/policy/first-home.ts. These tests render the pages, keep the stale
 // phrases out, and pin each page's key figures to the shared data.
 import fs from "node:fs";
+import { createElement } from "react";
+import { CHAPTERS } from "@/content/guides";
 import path from "node:path";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
@@ -142,9 +144,11 @@ describe("no stale first home figures", () => {
     expect(found).toEqual([]);
   });
 
-  it("in the buying guide PDF source", () => {
-    const html = decode(fs.readFileSync(path.join(ROOT, "scripts/guide-pdf/buying-guide.html"), "utf8"));
-    expect(hits("buying-guide.html", html)).toEqual([]);
+  it("in the buying guide (the chapter pages and the PDF share src/content/guides)", () => {
+    const html = decode(
+      CHAPTERS.buying.map((c) => `${c.standfirst} ${c.callout} ${c.checklist.join(" ")} ${renderToStaticMarkup(createElement(c.Body))}`).join(" "),
+    );
+    expect(hits("buying guide", html)).toEqual([]);
     expect(html).toContain("$103,000 for singles, $165,000 for couples");
     expect(html).toContain(`$${calculateStampDuty(750_000, "NSW", false, false, false).total.toLocaleString("en-AU")}`);
     expect(html).toContain("contracts to 30 September 2027");

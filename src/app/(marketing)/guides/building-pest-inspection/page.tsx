@@ -442,7 +442,7 @@ export default function BuildingPestInspectionPage() {
       <h2 id="timing">When to get the inspection</h2>
       <ul>
         <li><strong>Private sale with conditions.</strong> The inspection clause in your contract gives you a set timeframe to commission the inspection and, if issues are found, to either withdraw or renegotiate. Read the date in your contract, not a rule of thumb.</li>
-        <li><strong>Before auction.</strong> Must be done <em>before</em> auction day. Contact the agent to arrange access. Allow at least 48 to 72 hours turnaround to receive the report.</li>
+        <li><strong>Before auction.</strong> Must be done <em>before</em> auction day. Contact the selling agent to arrange access. Allow at least 48 to 72 hours turnaround to receive the report.</li>
         <li><strong>Before making an offer (preferred).</strong> Some buyers commission inspections before making an offer to negotiate with full knowledge. This means paying for an inspection on properties you may not buy, but avoids conditional delays.</li>
       </ul>
 
@@ -478,7 +478,7 @@ export default function BuildingPestInspectionPage() {
         <li>Get repair quotes from licensed tradespeople (not verbal estimates)</li>
         <li>Be reasonable, all properties have some defects</li>
         <li>Focus on major defects, not minor wear and tear</li>
-        <li>Negotiate through your conveyancer or agent, in writing</li>
+        <li>Negotiate through your conveyancer (or your buyer’s agent, if you have one), in writing</li>
       </ul>
 
       <h2 id="new-homes">Inspections for new homes</h2>

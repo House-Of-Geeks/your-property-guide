@@ -244,7 +244,7 @@ export default function HowToChooseMortgageBrokerPage() {
         Ask any broker you interview to explain BID in their own words and
         walk you through how they apply it. A confident, specific answer is
         a strong signal. A vague answer or one that conflates BID with
-        general &quot;customer service&quot; is a yellow flag.
+        general &ldquo;customer service&rdquo; is a yellow flag.
       </p>
 
       <Callout variant="warning" title="The credit proposal document">
@@ -289,12 +289,12 @@ export default function HowToChooseMortgageBrokerPage() {
       </p>
       <ul>
         <li><strong>Referrals from people whose financial judgement you trust.</strong> Friends, family, your accountant, your conveyancer. The single best source.</li>
-        <li><strong>MFAA and FBAA &quot;find a broker&quot; directories.</strong> Both industry associations list accredited members. Filter by suburb and specialisation.</li>
+        <li><strong>MFAA and FBAA &ldquo;find a broker&rdquo; directories.</strong> Both industry associations list accredited members. Filter by suburb and specialisation.</li>
         <li><strong>Vetted-broker matching services.</strong> Services that screen brokers on track record, lender panel, and complaints history before referring you. Faster than DIY-sourcing if you don&rsquo;t have a personal referral.</li>
       </ul>
       <p>
         Avoid: brokers who cold-call you, brokers from comparison-site
-        forms that promise &quot;the best home loan rate&quot; without first
+        forms that promise &ldquo;the best home loan rate&rdquo; without first
         understanding your circumstances, and brokers whose only credential is
         the lender they work for.
       </p>

@@ -63,7 +63,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What do agent comparison websites charge?",
     answer:
-      "Platforms like OpenAgent and LocalAgentFinder are free for sellers but charge the agent a referral fee, typically 20% to 30% of their commission, or a flat fee around 0.4% of the sale price. Some top agents refuse to pay these fees, so platform shortlists don't always show the best agents in your suburb. It costs nothing to also ask around locally.",
+      "Agent comparison sites are usually free for sellers. Many are paid by the agent, often as a share of the agent's commission when the property sells, so check how any site you use is paid before you rely on its shortlist. We take no share of commission: the one agent we introduce pays us a flat fee for the introduction, and it doesn't change what you pay them.",
   },
 ];
 
@@ -116,9 +116,9 @@ export default function CommissionCalculatorPage() {
             costs you far more than the 0.4% you saved on commission. On an
             $850,000 sale, the gap between a 1.8% and a 2.2% rate is $3,400.
             The gap between a strong negotiator and a weak one is routinely
-            ten times that. Compare agents on recent comparable sales and
+            ten times that. Judge an agent on recent comparable sales and
             days on market first, then negotiate the rate with the one you
-            want.
+            want. Hire the campaign, not the quote.
           </p>
 
           <h3>The costs beyond commission</h3>

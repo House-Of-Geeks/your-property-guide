@@ -308,8 +308,8 @@ export default function HowToFindABuilderAustraliaPage() {
       </ul>
       <p>
         Visit at least one completed job per builder if you can. The
-        photos are always flattering and the workmanship is harder to
-        assess in person.
+        photos are always flattering; the workmanship is easier to
+        judge in person.
       </p>
 
       <h2 id="quotes">Getting comparable quotes</h2>

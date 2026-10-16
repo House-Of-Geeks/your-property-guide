@@ -16,7 +16,7 @@ import { Band, HeroLead, HeroTitle, PhotoHero, RuleGrid, RuleItem, SectionHeadin
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Our Data, Sources &amp; Live Numbers",
+  title: "Our Data, Sources & Live Numbers",
   description:
     "How much data sits behind every page on Your Property Guide, live counts of suburbs, schools, properties, hazards, and the named source behind each.",
   alternates: { canonical: `${SITE_URL}/data` },

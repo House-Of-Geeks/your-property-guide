@@ -59,8 +59,8 @@ const TOC: GuideTOCEntry[] = [
   { id: "outer-growth",   label: "Outer-ring growth corridors" },
   { id: "inner-south",    label: "Inner south walkable picks" },
   { id: "schools",        label: "School catchment strategy" },
-  { id: "flood",          label: "Flood &amp; hazard checks" },
-  { id: "budget",         label: "Budget &amp; finance" },
+  { id: "flood",          label: "Flood & hazard checks" },
+  { id: "budget",         label: "Budget & finance" },
   { id: "next-steps",     label: "Next steps" },
 ];
 
@@ -118,14 +118,14 @@ export default function BestBrisbaneFamilySuburbsGuide() {
         <p>
           We score on four pillars: well-rated state and private schools, walk
           and bike infrastructure (parks, paths, low traffic streets),
-          commute to major employer hubs, and a median price that's still
+          commute to major employer hubs, and a median price that’s still
           financeable for a household earning $180K to $250K.
         </p>
       </Callout>
 
       <h2 id="what-makes">What makes a Brisbane suburb family-friendly</h2>
       <p className="lead">
-        Brisbane's geography is unusual: a sprawling, river-dominated grid
+        Brisbane’s geography is unusual: a sprawling, river-dominated grid
         with strong middle-ring suburbs and a fast-growing outer ring. Pockets
         of the inner south have transformed from light-industrial to
         family-friendly in the last decade. The right suburb for you depends
@@ -138,7 +138,7 @@ export default function BestBrisbaneFamilySuburbsGuide() {
       <p>
         Tree-lined streets, character Queenslanders, walking distance to
         Wilston State School and a short bus or train ride to the CBD. Premium
-        pricing, median house around $1.4M to $1.6M, but some of Brisbane's
+        pricing, median house around $1.4M to $1.6M, but some of Brisbane’s
         most consistent family demand.
       </p>
 
@@ -247,25 +247,25 @@ export default function BestBrisbaneFamilySuburbsGuide() {
           later.
         </li>
         <li>
-          <strong>Read the official map.</strong> The Department of Education's
+          <strong>Read the official map.</strong> The Department of Education’s
           catchment finder is the source of truth. Real estate ads sometimes
-          overstate which schools a property is "near".
+          overstate which schools a property is “near”.
         </li>
       </ol>
 
       <h2 id="flood">Flood &amp; hazard checks</h2>
       <p>
-        Brisbane's 2011 and 2022 floods were highly localised. Before you
+        Brisbane’s 2011 and 2022 floods were highly localised. Before you
         bid:
       </p>
       <ul>
         <li>
-          Pull the property's flood report from Brisbane City Council's
+          Pull the property’s flood report from Brisbane City Council’s
           Flood Awareness Map.
         </li>
         <li>
           Check insurance availability and premium quote, a property the
-          insurer won't cover (or quotes $8,000+/year) is a red flag.
+          insurer won’t cover (or quotes $8,000+/year) is a red flag.
         </li>
         <li>
           Look at the floor height vs the 2011 and 2022 high water marks. A
@@ -277,7 +277,7 @@ export default function BestBrisbaneFamilySuburbsGuide() {
       <Callout variant="warning" title="Flood overlay isn't the same as flood risk">
         <p>
           A property can be in a flood overlay (declared zone) but elevated
-          above any historical flood line. Conversely, a property "outside"
+          above any historical flood line. Conversely, a property “outside”
           the overlay can still flood in a freak event. Read the actual flood
           report and look at street-level photos from 2011 and 2022 if
           available.
@@ -303,18 +303,18 @@ export default function BestBrisbaneFamilySuburbsGuide() {
         </li>
         <li>
           Check school catchment boundaries on the Department of Education
-          catchment finder for the exact streets you'd consider.
+          catchment finder for the exact streets you’d consider.
         </li>
         <li>
           Check the sale prices for each suburb on its{" "}
           <Link href="/suburbs">suburb page</Link>.
         </li>
         <li>
-          Run flood reports on any address you're seriously considering.
+          Run flood reports on any address you’re seriously considering.
         </li>
         <li>
           Read our{" "}
-          <a href="/guides/brisbane-property-market-2026">Brisbane 2026 outlook</a>{" "}
+          <Link href="/guides/brisbane-property-market-2026">Brisbane 2026 outlook</Link>{" "}
           for the macro context.
         </li>
       </ol>

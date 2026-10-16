@@ -190,7 +190,9 @@ describe("calculators and their guides", () => {
 
   it("every calculator the site has, and every one /tools links, is paired", () => {
     const onDisk = fs.readdirSync(APP).filter((d) => d.endsWith("-calculator") && fs.existsSync(path.join(APP, d, "page.tsx")));
-    const onTools = [...read("tools/page.tsx").matchAll(/href: "\/([a-z-]+-calculator)"/g)].map((m) => m[1]);
+    // /tools renders the list in src/lib/tools.ts.
+    const onTools = [...fs.readFileSync(path.join(SRC, "lib/tools.ts"), "utf8").matchAll(/href: "\/([a-z-]+-calculator)"/g)].map((m) => m[1]);
+    expect(onTools.length).toBeGreaterThan(10);
     for (const dir of new Set([...onDisk, ...onTools])) expect(getCalculator(`/${dir}`), dir).toBeDefined();
   });
 });

@@ -41,12 +41,12 @@ const PERSONA_EDITOR_NOTE: Record<PersonaId, React.ReactNode> = {
   ),
   "selling": (
     <p>
-      The seller&rsquo;s mistake I see most often is overpaying on
-      marketing and underpaying on agent choice. The campaign is what
-      you can see, so it feels controllable. The negotiation that
-      actually sets your sale price happens after the open homes,
-      privately, and the right agent is worth more than every
-      glossy brochure combined.
+      The seller&rsquo;s mistake I see most often is treating the
+      campaign as the brochure. The campaign is the whole plan: a price
+      you can prove, a home presented for the top buyer, a launch that
+      reaches every one of them, and the negotiation after the open
+      homes. The same campaign wins at every price, and the agent you
+      hire is the person who runs it. Hire the campaign, not the quote.
     </p>
   ),
   "upgrading": (

@@ -80,7 +80,7 @@ export function buildSuburbAgentsModel(
   });
   faqs.push({
     question: `Do I have to pay to be matched with an agent in ${sn}?`,
-    answer: `No. Requesting a match or an appraisal through Your Property Guide is free and carries no obligation to list. Your details go to one agent only, and that agent pays us a fee for the introduction, whether or not you list with them. The agent pays it from their own pocket. We never charge you, and you negotiate commission directly with the agent.`,
+    answer: `No. Requesting a match or an appraisal through Your Property Guide is free and carries no obligation to list. Your details go to one agent only, and that agent pays us a flat fee for the introduction, whether or not you list with them. It is never a share of their commission. The agent pays it from their own pocket. We never charge you, and you negotiate commission directly with the agent.`,
   });
 
   const title = `Real Estate Agents in ${sn} ${suburb.state} ${suburb.postcode}`;

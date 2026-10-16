@@ -285,7 +285,7 @@ export function AppraisalForm({ source = "website", formName = "appraisal" }: Ap
         {!isSubmitting && <span aria-hidden="true">→</span>}
       </button>
       <p className="text-[11px] text-ink-subtle leading-relaxed pt-1">
-        Free, no commitment. We introduce you to one local agent who sells in your area. If we don&rsquo;t have one yet, we&rsquo;ll tell you. Your details go only to that agent, who pays us for the introduction. We never sell them to anyone else.{" "}
+        Free, no commitment. We introduce you to one local agent who sells in your area. If we don&rsquo;t have one yet, we&rsquo;ll tell you. Your details go only to that agent, who pays us a flat fee for the introduction, never a share of their commission. We never sell them to anyone else.{" "}
         <a href="/privacy" className="underline underline-offset-2 hover:text-ink">Privacy policy</a>.
       </p>
     </form>

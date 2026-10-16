@@ -77,7 +77,7 @@ const LANES: Lane[] = [
     label: "Buying and selling",
     headline: "When you’re doing both at once",
     body:
-      "Two separate introductions if you want them, each with its own yes: a selling agent for the sale and, where we can, a buyer’s agent for the purchase.",
+      "One agent for each job, each with its own yes: a selling agent for the sale and, where we can, a buyer’s agent for the purchase.",
     fits: [
       "You’re selling one home to buy the next",
       "You need the two settlements to line up",
@@ -113,7 +113,7 @@ const FAQS = [
   {
     question: "What does it cost to be introduced to an agent?",
     answer:
-      "Nothing for buyers and sellers. The agent pays us a fee for each introduction, whether or not you list with them. The fee comes out of the agent's pocket and doesn't change what you pay them: you agree any commission directly with the agent.",
+      "Nothing for buyers and sellers. The agent pays us a flat fee for each introduction, whether or not you list with them. It’s never a share of their commission. The fee comes out of the agent's pocket and doesn't change what you pay them: you agree any commission directly with the agent.",
   },
   {
     question: "Will my details be passed to other agents?",
@@ -177,8 +177,9 @@ export default async function FindAnExpertPage({ searchParams }: { searchParams:
         <HeroLead className="max-sm:mt-4 max-sm:text-base">
           Selling? Ask us to introduce one participating agent who sells in
           your area. If we can&rsquo;t cover your suburb, we tell you before
-          you send anything. The agent pays us for the introduction; you pay
-          nothing and there&rsquo;s no obligation to list.
+          you send anything. The agent pays us a flat fee for the
+          introduction, never a share of their commission; you pay nothing
+          and there&rsquo;s no obligation to list.
         </HeroLead>
         <p className="mt-4 text-sm sm:text-base text-ink-muted max-w-xl">
           Buying? You can ask about a buyer&rsquo;s agent too. Something

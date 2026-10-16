@@ -22,9 +22,9 @@ export const post: BlogPost = {
 <p>Getting into a home with a 5% deposit rather than 20% also changes the timeline. A smaller deposit means less time saving and an earlier entry into the market. To see what a 5% deposit looks like against the price you are targeting, our guide on <a href="/guides/how-much-deposit-to-buy-a-house">how much deposit you need to buy a house</a> sets out the numbers and the other upfront costs to budget for.</p>
 
 <h2>The price effect to weigh</h2>
-<p>There is a genuine trade-off here, and it is worth understanding rather than glossing over. When you make it easier for more buyers to enter the market at the same time, you add demand, and added demand tends to push prices up.</p>
+<p>There is a genuine trade-off here. When you make it easier for more buyers to enter the market at the same time, you add demand, and added demand tends to push prices up.</p>
 
-<p>The Insurance Council of Australia has estimated the expansion could push prices up to 10% higher in the first year in the markets that first home buyers favour, and between 3.5% and 6.6% higher nationally. Economists who study housing have made a broader point: demand-side measures like deposit schemes generally lift prices, and the structural fix for affordability is increasing housing supply rather than subsidising demand. In plain terms, helping more people buy without building more homes can feed back into the very prices buyers are trying to get ahead of.</p>
+<p>The Insurance Council of Australia has estimated the expansion could push prices up to 10% higher in the first year in the markets that first home buyers favour, and between 3.5% and 6.6% higher nationally. Economists who study housing have made a broader point: demand-side measures like deposit schemes generally lift prices, and the structural fix for affordability is increasing housing supply rather than subsidising demand. Helping more people buy without building more homes can feed back into the very prices buyers are trying to get ahead of.</p>
 
 <p>None of that means the scheme is a bad deal for an individual buyer. It means you should enter with your eyes open. If a chunk of the benefit you gain from a smaller deposit is offset by paying a higher price, that is a real consideration when you decide how much to offer and where.</p>
 

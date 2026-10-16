@@ -158,7 +158,7 @@ export default function SellFirstOrBuyFirstPage() {
       <Callout variant="info" title="There's no universally right answer">
         <p>
           The right call depends on the market direction, your equity
-          position, and your appetite for moving twice. We'll walk through the
+          position, and your appetite for moving twice. We’ll walk through the
           framework and a few worked examples, but get advice tailored to your
           actual numbers from a broker before committing.
         </p>
@@ -166,14 +166,14 @@ export default function SellFirstOrBuyFirstPage() {
 
       <h2 id="the-question">Why this is hard</h2>
       <p className="lead">
-        When you're moving from one home to another, two transactions need to
-        talk to each other. Sell too early and you're in temporary
-        accommodation while you search. Buy too early and you're carrying two
+        When you’re moving from one home to another, two transactions need to
+        talk to each other. Sell too early and you’re in temporary
+        accommodation while you search. Buy too early and you’re carrying two
         properties (and two mortgages) until the old one sells. Either path
         has costs, and either path has risks.
       </p>
       <p>
-        The "right" answer isn't about a universal rule, it's about matching
+        The “right” answer isn’t about a universal rule, it’s about matching
         the option to your specific market, equity, and timing constraints.
       </p>
 
@@ -193,7 +193,7 @@ export default function SellFirstOrBuyFirstPage() {
         <strong>Cons:</strong> You typically need short-term accommodation
         between settlements (rental, family, or leaseback from your buyer). In
         a fast-rising market, prices on your target suburb may run away while
-        you search. Pressure to settle for "good enough" on the next home.
+        you search. Pressure to settle for “good enough” on the next home.
       </p>
 
       <h3>Option 2: Buy first with a subject-to-sale offer</h3>
@@ -204,7 +204,7 @@ export default function SellFirstOrBuyFirstPage() {
         right of first refusal if a competing offer comes in.
       </p>
       <p>
-        <strong>Pros:</strong> Locks in today's price on the next purchase
+        <strong>Pros:</strong> Locks in today’s price on the next purchase
         without bridging cost. No double-mortgage risk. No bridging fees or
         interest.
       </p>
@@ -244,7 +244,7 @@ export default function SellFirstOrBuyFirstPage() {
       <ul>
         <li>
           <strong>Days on market</strong> in your target suburb (the next home).
-          Under 30 days and falling? Hot market, sellers won't entertain
+          Under 30 days and falling? Hot market, sellers won’t entertain
           subject-to-sale, and prices may rise during a sell-first search.
         </li>
         <li>
@@ -281,12 +281,12 @@ export default function SellFirstOrBuyFirstPage() {
         </li>
         <li>
           <strong>End-debt serviceability:</strong> Can your income comfortably
-          service the mortgage you'll be left with after the move? Lender will
+          service the mortgage you’ll be left with after the move? Lender will
           assess at standard rates plus a buffer. Tight serviceability is a
           warning sign for any path.
         </li>
         <li>
-          <strong>Cash reserve:</strong> Even with bridging, you'll need cash
+          <strong>Cash reserve:</strong> Even with bridging, you’ll need cash
           for stamp duty, conveyancing, valuations, and a bridging period of
           double holding costs. Allow $20K to $50K of cash buffer for a
           straightforward move.
@@ -294,12 +294,12 @@ export default function SellFirstOrBuyFirstPage() {
         <li>
           <strong>Family flexibility:</strong> Can you stay with family,
           friends, or in a short-term rental between settlements if you sell
-          first? Children's schools or work proximity may make this hard.
+          first? Children’s schools or work proximity may make this hard.
         </li>
         <li>
           <strong>Risk tolerance:</strong> Bridging makes the move smoother but
-          introduces lender-forced-sale risk if the old home doesn't clear in
-          time. Sell-first introduces "settling for the wrong next home" risk.
+          introduces lender-forced-sale risk if the old home doesn’t clear in
+          time. Sell-first introduces “settling for the wrong next home” risk.
         </li>
       </ul>
 
@@ -315,7 +315,7 @@ export default function SellFirstOrBuyFirstPage() {
         <li>
           <strong>If buying first, do you have the equity for bridging?</strong>{" "}
           Peak debt LVR has to fit within 75 to 80% on combined property value.
-          <strong> If no</strong>, you're stuck with subject-to-sale or sell
+          <strong> If no</strong>, you’re stuck with subject-to-sale or sell
           first.
         </li>
         <li>
@@ -337,10 +337,10 @@ export default function SellFirstOrBuyFirstPage() {
       <p>
         Sydney inner-west. Existing home worth $1.6M, owe $400K. Target
         suburb (next home) has 18 days median on market, clearance rate 78%,
-        prices up 3% last quarter. You've found a $2.1M home you love.
+        prices up 3% last quarter. You’ve found a $2.1M home you love.
       </p>
       <p>
-        <strong>Best option:</strong> Bridging. Subject-to-sale won't be
+        <strong>Best option:</strong> Bridging. Subject-to-sale won’t be
         accepted at auction in this market. Sell-first risks the next home
         going to a competing buyer or rising further in price. Equity supports
         peak debt LVR ({EX_A.peakLvr}%). Bridging costs about{" "}
@@ -354,7 +354,7 @@ export default function SellFirstOrBuyFirstPage() {
       <p>
         Brisbane outer suburbs. Existing home worth $750K, owe $450K. Target
         suburb has 65 days median on market, clearance below 55%, flat prices.
-        You've found a $850K home through private treaty.
+        You’ve found a $850K home through private treaty.
       </p>
       <p>
         <strong>Best option:</strong> Subject-to-sale. The market gives you
@@ -367,12 +367,12 @@ export default function SellFirstOrBuyFirstPage() {
       <p>
         Melbourne middle-ring. Existing home worth $1.2M, owe $600K. Target
         suburb has 40 days median on market, clearance 65%, prices up 1% last
-        quarter. You've found a $1.5M place but you're flexible on which one.
+        quarter. You’ve found a $1.5M place but you’re flexible on which one.
       </p>
       <p>
         <strong>Best option:</strong> Sell first. Market is balanced enough
         that your next home (or one like it) will still be available in 2 to 3
-        months. Subject-to-sale is plausible but you're competing with
+        months. Subject-to-sale is plausible but you’re competing with
         unconditional buyers. Sell-first gives you the cleanest position and
         avoids about {fmt(EX_C.bridgingCost)} of bridging interest and fees
         over six months.
@@ -384,14 +384,14 @@ export default function SellFirstOrBuyFirstPage() {
       <h2 id="common-mistakes">Common mistakes</h2>
       <ul>
         <li>
-          <strong>Treating optimism as a sale plan.</strong> "It'll definitely
-          sell in 2 months" without a comparable-sales reality check is how
+          <strong>Treating optimism as a sale plan.</strong> “It’ll definitely
+          sell in 2 months” without a comparable-sales reality check is how
           bridging extensions happen.
         </li>
         <li>
           <strong>Underestimating end-debt serviceability.</strong> Peak debt
-          gets all the attention, but the long-term mortgage is what you'll be
-          paying for years. Don't stretch.
+          gets all the attention, but the long-term mortgage is what you’ll be
+          paying for years. Don’t stretch.
         </li>
         <li>
           <strong>Picking a selling agent based on appraisal price.</strong>{" "}
@@ -405,7 +405,7 @@ export default function SellFirstOrBuyFirstPage() {
         </li>
         <li>
           <strong>Treating bridging as a long-term solution.</strong> Bridging
-          is for 6 months, not 12. If you can't be confident of selling in that
+          is for 6 months, not 12. If you can’t be confident of selling in that
           window, look at sell-first or a different next home.
         </li>
       </ul>
@@ -423,18 +423,18 @@ export default function SellFirstOrBuyFirstPage() {
           accommodation cost if selling first.
         </li>
         <li>
-          <strong>Talk to a mortgage broker</strong> who's arranged bridging
+          <strong>Talk to a mortgage broker</strong> who’s arranged bridging
           loans recently. Ask which lenders are writing them and at what
           terms.
         </li>
         <li>
           <strong>Pick the right selling agent</strong> for your existing home
-          early, not after you've already committed to a path. See our{" "}
+          early, not after you’ve already committed to a path. See our{" "}
           <Link href="/guides/how-to-choose-a-selling-agent">selling agent guide</Link>.
         </li>
         <li>
-          <strong>Make the decision and commit.</strong> Don't try to keep all
-          three options open, you'll end up paying for optionality you can't
+          <strong>Make the decision and commit.</strong> Don’t try to keep all
+          three options open, you’ll end up paying for optionality you can’t
           use.
         </li>
       </ol>

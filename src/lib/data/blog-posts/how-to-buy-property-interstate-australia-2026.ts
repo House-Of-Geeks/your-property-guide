@@ -70,7 +70,7 @@ export const post: BlogPost = {
 <li><strong>NT interstate buyers:</strong> Land tenure is genuinely complex; engage NT specialists from day one</li>
 </ul>
 
-<p>Interstate buying done well opens up Australia-wide opportunity that local buyers can't always match. Done poorly, it's a recipe for expensive surprises. The work upfront, conveyancer, broker, buyer's agent, inspections, pays for itself many times over.</p>`,
+<p>Interstate buying done well opens up Australia-wide opportunity that local buyers can't always match. Done poorly, it's a recipe for expensive surprises. The work upfront (conveyancer, broker, buyer's agent, inspections) pays for itself many times over.</p>`,
   coverImage: "/images/blog/cover-how-to-buy-property-interstate-australia-2026.jpg",
   author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
   category: "Buying Guide",

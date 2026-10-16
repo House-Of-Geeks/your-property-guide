@@ -37,7 +37,7 @@ export const post: BlogPost = {
 
 <p>Fast-rising rents change the calculation for first home buyers in two ways. They make saving a deposit harder, because more of each pay packet goes to a landlord. But they also strengthen the case for buying, because the cost of staying a renter is climbing rather than holding steady. When rent is forecast to hit record highs across every capital city, the comparison between paying off your own mortgage and paying someone else's becomes more pointed.</p>
 
-<p>The right answer depends entirely on your numbers, your timeline and where you want to live. Working through the steps methodically helps, and our <a href="/guides/first-home-buyer-guide">first home buyer guide</a> covers deposits, costs and the buying process in plain English so you can decide with clear eyes rather than in a rush.</p>
+<p>The right answer depends entirely on your numbers, your timeline and where you want to live. Working through the steps methodically helps, and our <a href="/guides/first-home-buyer-guide">first home buyer guide</a> covers deposits, costs and the buying process so you can decide with clear eyes rather than in a rush.</p>
 
 <h2>What it means for you</h2>
 

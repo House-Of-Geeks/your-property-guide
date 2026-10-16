@@ -174,7 +174,7 @@ export default function NegativeGearingPage() {
       </p>
       <p>
         <strong>Key principle.</strong> Negative gearing is not a free lunch.
-        You are genuinely losing money on a cash-flow basis, you are betting
+        You are genuinely losing money on a cash-flow basis; you are betting
         that capital growth will deliver a larger long-term gain.
       </p>
 
@@ -398,7 +398,7 @@ export default function NegativeGearingPage() {
         <li><strong>Vacancy.</strong> A vacant property earns no rent but still incurs all holding costs. Even a single month&rsquo;s vacancy significantly worsens your cash flow. Landlord insurance with rent default cover can partially mitigate this.</li>
         <li><strong>Interest rate rises.</strong> Since 2022, RBA rate increases have significantly increased interest costs for investors on variable rate loans. A 2% rate rise on a $560,000 loan adds $11,200 a year to costs, potentially turning a manageable loss into a severe one.</li>
         <li><strong>Legislative change.</strong> The rules have just changed: the 2026&ndash;27 Budget package, passed on 25 June 2026, limits negative gearing to new builds and replaces the 50% CGT discount from 1 July 2027 (see below). Parliament can change them again, so a property should still work if the tax benefits shrink further.</li>
-        <li><strong>No capital growth.</strong> If the property does not appreciate, the strategy fails, you are left with accumulated losses and no compensating gain.</li>
+        <li><strong>No capital growth.</strong> If the property does not appreciate, the strategy fails: you are left with accumulated losses and no compensating gain.</li>
         <li><strong>Serviceability strain.</strong> If your income drops (job loss, illness), your ability to cover the ongoing loss is compromised. Many investors have been forced to sell at sub-optimal times due to financial pressure.</li>
       </ul>
 

@@ -150,7 +150,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
               <MatchAgent initialSuburbSlug={slug} initialIntent="selling" source={model.matchSource} compact />
             </Suspense>
             <p className="mt-5 border-t border-line pt-3 font-sans text-xs text-ink-subtle leading-relaxed">
-              Free for you, with no obligation to list. The agent pays us a fee for the introduction; it does not change what you pay them.
+              Free for you, with no obligation to list. The agent pays us a flat fee for the introduction, never a share of their commission; it does not change what you pay them.
             </p>
           </div>
         }

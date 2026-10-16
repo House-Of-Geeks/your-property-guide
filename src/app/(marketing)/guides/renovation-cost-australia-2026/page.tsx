@@ -386,7 +386,7 @@ export default function RenovationCostAustralia2026Page() {
         A separate dwelling on your existing block. State-by-state planning
         rules vary significantly, so read our <Link href="/guides/granny-flat-guide-nsw">granny flat guides</Link> for the full
         per-state breakdown. Granny flats often have the best ROI of any
-        renovation because they add rental income (or accommodate aging
+        renovation because they add rental income (or accommodate ageing
         parents / adult children without buying a second property), and they
         appeal to the investor buyer pool at sale.
       </p>

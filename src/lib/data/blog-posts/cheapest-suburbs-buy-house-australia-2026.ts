@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Where can you still buy a house in Australia for under $500K in 2026? More places than you'd think. A state-by-state look at the genuine value plays, plus what to actually check before you buy.",
   content: `<p>Australian housing affordability dominates the news in 2026, but the headline median prices hide significant variation. Across every state, there are still suburbs where the median house price sits under $500,000, many under $400,000. The question for buyers is which of those represent genuine value (where prices reflect a viable lifestyle) versus which are cheap for reasons that won't change.</p>
 
-<p>This guide covers the cheapest suburbs to buy a house in Australia in 2026, organised by state, with an honest take on what each location offers and what to check before committing.</p>
+<p>This guide covers the cheapest suburbs to buy a house in Australia in 2026, organised by state, with what each location offers and what to check before committing.</p>
 
 <h2>New South Wales</h2>
 <p>NSW remains Australia's most expensive state, but regional and far-western suburbs still offer genuine sub-$500K options. <strong>Broken Hill</strong> sits around $260K, supported by mining-sector employment and historic charm. <strong>Tamworth</strong> at around $480K offers a regional centre lifestyle with good services. <strong>Lithgow</strong> at $420K and <strong>Bathurst-adjacent suburbs</strong> at $450 to $500K provide commuter-distance value to the Central Coast and Blue Mountains. Within Greater Sydney's outer rings, suburbs like <strong>Mount Druitt</strong> are pushing past the $700K mark, so Sydney metro under $500K is largely unavailable in 2026.</p>
@@ -38,7 +38,7 @@ export const post: BlogPost = {
 <li><strong>Infrastructure pipeline.</strong> Hospitals, schools, roads and rail upgrades drive medium-term value</li>
 <li><strong>Climate and hazard exposure.</strong> Flood, bushfire, cyclone and erosion risk are real and increasingly material to insurance and property values</li>
 <li><strong>Local employment base.</strong> Single-industry towns are riskier than diverse regional centres</li>
-<li><strong>Buyer agent or local expert.</strong> Cheap doesn't mean low-effort. The cheaper end of the market often requires more local knowledge to navigate</li>
+<li><strong>Buyer's agent or local expert.</strong> Cheap doesn't mean low-effort. The cheaper end of the market often requires more local knowledge to navigate</li>
 </ul>
 
 <p>Cheap suburbs in 2026 are still findable across every state. The question isn't whether you can buy a house under $500,000 in Australia, you can, but whether the right one for your situation exists at that price. Use suburb data, check the fundamentals, and make sure the price reflects opportunity rather than risk.</p>`,

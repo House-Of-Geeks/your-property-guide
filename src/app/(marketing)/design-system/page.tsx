@@ -407,7 +407,7 @@ export default function DesignSystemPage() {
             {
               n: "03",
               title: "We earn from agents, not from you",
-              body: "Buyers and sellers pay nothing. The agent we introduce you to pays us a fee for that introduction. It isn't a share of their commission, it doesn't depend on the listing or sale going ahead, and it doesn't change what you pay them. We disclose this on every match.",
+              body: "Buyers and sellers pay nothing. The agent we introduce you to pays us a flat fee for that introduction. It isn't a share of their commission, it doesn't depend on the listing or sale going ahead, and it doesn't change what you pay them. We disclose this on every match.",
             },
             {
               n: "04",

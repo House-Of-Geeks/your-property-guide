@@ -55,7 +55,7 @@ const TLDR = [
   "Five things are negotiable, not one: the rate, the structure (flat, fixed fee or tiered), the marketing budget line by line, the exclusive agency period, and the tail clause.",
   "All your leverage exists before you sign the agency agreement. Get three written proposals, negotiate while agents are still competing for the listing, then sign.",
   "A tiered commission (lower base plus a bonus above a target price) aligns the agent's incentive with yours, but only if the target sits above the realistic appraisal range.",
-  "Don't over-negotiate. Shaving 0.5% off commission on an $800,000 sale saves $4,000; an agent who negotiates 2% more on the price adds $16,000. Pick the best agent first, then negotiate the fee.",
+  "Don't over-negotiate. Shaving 0.5% off commission on an $800,000 sale saves $4,000; an agent who negotiates 2% more on the price adds $16,000. Pick the right agent first, then negotiate the fee.",
 ];
 
 const TOC: GuideTOCEntry[] = [

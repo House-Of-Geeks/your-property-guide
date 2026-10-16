@@ -118,7 +118,7 @@ function FooterBottom() {
           <Link href="/sitemap.xml" className="text-sm text-white/60 hover:text-white transition-colors">Sitemap</Link>
         </div>
       </div>
-      <p className="text-xs leading-relaxed text-white/45">
+      <p className="text-xs leading-relaxed text-white/70">
         Part of the Profit Geeks network:{" "}
         {NETWORK_LINKS.map((l, i) => (
           <span key={l.href}>
@@ -185,7 +185,8 @@ export function Footer() {
               Free guides, tools and plans for buying and selling property in
               Australia. When you want personal help, we introduce one
               participating local agent, with your permission. The agent pays
-              us for the introduction; you pay us nothing.
+              us a flat fee for the introduction, never a share of their
+              commission; you pay us nothing.
             </p>
             <a
               href={`tel:${CONTACT_PHONE_E164}`}

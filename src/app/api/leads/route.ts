@@ -11,6 +11,7 @@ import {
   TENANTED_LABELS,
   MANAGER_TIMEFRAME_LABELS,
   confirmationCopy,
+  formatSignDate,
   buildAdminEmailHtml,
   buildConfirmationHtml,
   buildFailureAlertHtml,
@@ -20,6 +21,7 @@ import { normalizePhone } from "@/lib/utils/phone";
 import { attributionFromRequest, attributionJson, attributionRowsFor } from "@/lib/attribution-server";
 import { callConsentText, downloadConsentText, guideCallKind } from "@/lib/guide-consent";
 import { kindForType } from "@/lib/lead-kinds";
+import { AGREEMENT_CHECK } from "@/lib/service-model";
 import { addressFromSuburbSlug } from "@/lib/sent247";
 import { SEQUENCES, dueAt, sequenceFor } from "@/lib/email-sequences";
 import { randomBytes } from "node:crypto";
@@ -50,6 +52,9 @@ const leadSchema = z.object({
     // Landlord asking for a rental appraisal / property manager (the
     // rental-market sub-page, 30 Sep 2026). Free string on the Lead row.
     "rental-appraisal",
+    // The free agreement check (15 Oct 2026): a call from our team before
+    // someone signs an agency agreement. Never goes to an agent.
+    "agreement-check",
   ]),
   firstName: z.string().min(1),
   lastName: z.string().min(1).optional(),
@@ -110,6 +115,10 @@ const leadSchema = z.object({
   // message below, the way the appraisal timeframe is.
   tenanted: z.enum(["yes", "no"]).optional(),
   managerTimeframe: z.enum(["asap", "0-3-months", "3-6-months", "researching"]).optional(),
+  // Agreement check answers: who the agreement is with (if known) and the
+  // date they plan to sign. No Lead columns: serialised into message below.
+  agencyName: z.string().trim().max(120).optional(),
+  signDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
   // Learning path (14 Oct 2026). The tips series is its own unticked box
   // (wantsSequence); requestKey stops a double submit making two rows.
   wantsSequence: z.boolean().optional(),
@@ -226,6 +235,15 @@ export async function POST(request: Request) {
         .filter(Boolean)
         .join(" · ");
     }
+    if (lead.type === "agreement-check") {
+      persistedMessage = [
+        `Agent or agency: ${lead.agencyName || "not given"}`,
+        `Planning to sign: ${lead.signDate ? formatSignDate(lead.signDate) : "not sure yet"}`,
+        lead.message,
+      ]
+        .filter(Boolean)
+        .join(" · ");
+    }
     if (lead.type === "guide-download") {
       const score = scoreGuideLead(lead);
       persistedMessage = [
@@ -265,7 +283,8 @@ export async function POST(request: Request) {
     // or marketingConsent from a page loaded before this deploy).
     const kind = kindForType(lead.type, { call: guideCall });
     const wantsSequence = lead.type === "guide-download" && !guideCall && (lead.wantsSequence ?? lead.marketingConsent ?? false);
-    const journey = lead.type === "guide-download" ? (lead.guideType === "buying" ? "buying" : "selling") : undefined;
+    const journey =
+      lead.type === "guide-download" ? (lead.guideType === "buying" ? "buying" : "selling") : lead.type === "agreement-check" ? "selling" : undefined;
     const stage = lead.stage ?? (lead.type === "guide-download" ? (lead.guideType === "buying" ? undefined : lead.agentStatus) : undefined);
     const sequence = wantsSequence && journey ? sequenceFor(journey, stage) : null;
     const now = new Date();
@@ -276,7 +295,13 @@ export async function POST(request: Request) {
       stage,
       timeframe: lead.sellingTimeframe,
       marketingConsent: lead.type === "guide-download" ? wantsSequence : lead.marketingConsent,
-      consentText: guideDownload ? downloadConsentText(lead.guideType) : callKind ? callConsentText(callKind) : undefined,
+      consentText: guideDownload
+        ? downloadConsentText(lead.guideType)
+        : callKind
+          ? callConsentText(callKind)
+          : lead.type === "agreement-check"
+            ? AGREEMENT_CHECK.collection
+            : undefined,
       introConsent: callKind === "agent" ? true : undefined,
       service: callKind === "agent" ? "selling-agent" : undefined,
       status: kind === "introduction" ? "received" : undefined,
@@ -328,7 +353,9 @@ export async function POST(request: Request) {
           ? "[HOT] "
           : lead.type === "rental-appraisal" && lead.managerTimeframe === "asap"
             ? "[HOT] "
-            : "";
+            : lead.type === "agreement-check" && lead.signDate
+              ? `[Signs ${formatSignDate(lead.signDate)}] `
+              : "";
     const callLabel = callKind === "agent" ? "Appraisal call: " : callKind === "ypg" ? "Call from YPG (not for agents): " : "";
     const subject     = `${scorePrefix}${callLabel}${typeLabel}, ${lead.firstName}${lead.lastName ? ` ${lead.lastName}` : ""}${lead.suburb ? ` (${lead.suburb})` : ""}`;
 
@@ -455,6 +482,13 @@ export async function POST(request: Request) {
     // This is the only path from here to an agent: callKind is set only
     // for an explicit call request.
     const deliveryRows: Array<[string, string]> = [];
+    if (lead.type === "agreement-check") {
+      deliveryRows.push(
+        ["Path", "Agreement check: a 15-minute call from our team before they sign. Never pass to an agent."],
+        ["Agent or agency", lead.agencyName || "Not given"],
+        ["Planning to sign", lead.signDate ? formatSignDate(lead.signDate) : "Not sure yet"],
+      );
+    }
     if (callKind) {
       deliveryRows.push([
         "Call requested",

@@ -259,7 +259,7 @@ export default function UseSuperToBuyAHousePage() {
       </ul>
       <p>
         Our guide to <Link href="/guides/how-much-deposit-to-buy-a-house">how much deposit you need</Link> shows
-        what each level unlocks.
+        what each level gets you.
       </p>
 
       <MatchCTA

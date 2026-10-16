@@ -229,7 +229,7 @@ export default function FirstHomeBuyerTasPage() {
       <h3>First Home Super Saver scheme (FHSS)</h3>
       <FhssNote as="p" />
 
-      <h2 id="affordability">Tasmania, one of Australia's most affordable states</h2>
+      <h2 id="affordability">Tasmania, one of Australia&rsquo;s most affordable states</h2>
       <p>
         Despite COVID-era growth, Tasmania remains considerably more affordable
         than most mainland capitals. For first home buyers priced out of Sydney or
@@ -250,7 +250,7 @@ export default function FirstHomeBuyerTasPage() {
 
       <h3>Hobart</h3>
       <p>
-        Tasmania's capital. Inner suburbs (Battery Point, Sandy Bay, North Hobart)
+        Tasmania&rsquo;s capital. Inner suburbs (Battery Point, Sandy Bay, North Hobart)
         sit at premium prices; outer suburbs and satellite towns like Glenorchy,
         Clarence and Kingborough offer more accessible entry points for first home
         buyers.
@@ -258,7 +258,7 @@ export default function FirstHomeBuyerTasPage() {
 
       <h3>Launceston</h3>
       <p>
-        Tasmania's second-largest city and the main commercial centre of the
+        Tasmania&rsquo;s second-largest city and the main commercial centre of the
         north. Lower medians than Hobart, with strong community infrastructure,
         good schools, and improving connectivity.
       </p>

@@ -75,3 +75,72 @@ export function matchSuburb(parsed: ParsedAddress, hits: SuburbSearchHit[]): Sub
   );
   return byName ?? null;
 }
+
+// ── Typed text to a suburb (homepage campaign field, 15 Oct 2026) ─────────
+// The homepage asks for "your address or suburb" with no Places lookup, so
+// it stays fast and the street never leaves the browser: only the suburb
+// name or the postcode is sent to /api/suggest.
+
+const STATE_CODES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"] as const;
+const STREET_TYPES =
+  "street|st|road|rd|avenue|ave|drive|dr|court|ct|place|pl|crescent|cres|parade|pde|lane|ln|way|terrace|tce|boulevard|blvd|highway|hwy|close|cl|circuit|cct|esplanade|esp|grove|gr|square|sq";
+
+export interface SuburbTerms {
+  /** The suburb's name as typed ("Paddington"), or null. */
+  name: string | null;
+  /** A state code ("QLD"), or null. */
+  state: string | null;
+  /** A four-digit postcode, or null. */
+  postcode: string | null;
+}
+
+/**
+ * Pull the suburb, state and postcode out of whatever someone typed:
+ * "Paddington", "4064", "Paddington QLD", "12 Smith St, Paddington QLD 4064"
+ * or "12 Smith Street Paddington". The street part is dropped.
+ */
+export function suburbTerms(text: string): SuburbTerms {
+  const parts = text
+    .replace(/\s+/g, " ")
+    .split(",")
+    .map((p) => p.trim())
+    .filter((p) => p && !/^australia$/i.test(p));
+  if (parts.length === 0) return { name: null, state: null, postcode: null };
+
+  // The locality is the last part with a letter or a postcode in it.
+  let loc = parts.length > 1 ? parts[parts.length - 1] : parts[0];
+  if (parts.length > 1 && !/[a-z]/i.test(loc) && !/\b\d{4}\b/.test(loc)) loc = parts[parts.length - 2];
+
+  const postcode = loc.match(/\b(\d{4})\s*$/)?.[1] ?? null;
+  if (postcode) loc = loc.replace(/\b\d{4}\s*$/, "").trim();
+  const stateMatch = loc.match(new RegExp(`\\b(${STATE_CODES.join("|")})\\s*$`, "i"));
+  const state = stateMatch ? stateMatch[1].toUpperCase() : null;
+  if (stateMatch) loc = loc.slice(0, stateMatch.index).trim();
+
+  // No comma: "12 Smith Street Paddington" keeps what follows the street type.
+  if (/^\d/.test(loc)) {
+    const afterStreet = loc.match(new RegExp(`^.*?\\b(?:${STREET_TYPES})\\b\\.?\\s+(.*)$`, "i"));
+    loc = afterStreet ? afterStreet[1] : "";
+  }
+  const name = loc.replace(/^\d+[a-z]?\s*/i, "").trim();
+  return { name: name.length >= 2 ? name : null, state, postcode };
+}
+
+/** What to send to /api/suggest for the typed text: the suburb name, else the postcode. */
+export function suburbQuery(t: SuburbTerms): string | null {
+  return t.name ?? t.postcode;
+}
+
+/**
+ * The one suburb the typed text means, or null when it's ambiguous: an exact
+ * name match (narrowed by state and postcode when given), else the only hit
+ * for a postcode on its own.
+ */
+export function pickSuburb(t: SuburbTerms, hits: SuburbSearchHit[]): SuburbSearchHit | null {
+  const fits = hits.filter((h) => (!t.state || h.state === t.state) && (!t.postcode || h.postcode === t.postcode));
+  if (t.name) {
+    const exact = fits.filter((h) => h.name.toLowerCase() === t.name!.toLowerCase());
+    return exact.length === 1 ? exact[0] : null;
+  }
+  return fits.length === 1 ? fits[0] : null;
+}

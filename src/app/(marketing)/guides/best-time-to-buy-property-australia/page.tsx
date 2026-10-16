@@ -135,7 +135,7 @@ export default function BestTimeToBuyGuide() {
         conditions are met.
       </p>
       <p>
-        For investors, timing matters slightly more, buying near the start
+        For investors, timing matters slightly more: buying near the start
         of a rate-cutting cycle gives you a tailwind for both price growth
         and refinancing. But even then, the suburb selection and entry price
         matter far more than the month you bought.
@@ -209,7 +209,7 @@ export default function BestTimeToBuyGuide() {
       <ul>
         <li><strong>Cutting cycle, early stage:</strong> Best time to buy. Borrowing capacity rises before prices fully respond, giving you a window of 1 to 3 quarters of relative affordability.</li>
         <li><strong>Cutting cycle, late stage:</strong> Prices have caught up. Still good for owner-occupiers, less of a clear edge for investors.</li>
-        <li><strong>Hiking cycle, early stage:</strong> Borrowing capacity tightens but prices haven&rsquo;t fallen yet. The hardest combination, wait if you can.</li>
+        <li><strong>Hiking cycle, early stage:</strong> Borrowing capacity tightens but prices haven&rsquo;t fallen yet. The hardest combination; wait if you can.</li>
         <li><strong>Hiking cycle, late stage:</strong> Prices have softened, sellers are motivated. A genuine buyer&rsquo;s market.</li>
       </ul>
       <p>
@@ -231,7 +231,7 @@ export default function BestTimeToBuyGuide() {
 
       <h2 id="auction-vs-private">Auction vs private treaty timing</h2>
       <p>
-        Auctions are heavily seasonal, Saturday auction clearance rates spike
+        Auctions are heavily seasonal: Saturday auction clearance rates spike
         during the spring selling season and drop in winter. Private treaty
         works year-round.
       </p>
@@ -268,7 +268,7 @@ export default function BestTimeToBuyGuide() {
           your suburb&rsquo;s market. A capital city growing 8% nationally can
           contain suburbs growing 15% and others falling 2%. Use suburb-level
           data on{" "}
-          <a href="/best-suburbs">our suburb rankings</a> rather than national
+          <Link href="/best-suburbs">our suburb rankings</Link> rather than national
           averages.
         </p>
       </Callout>

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <!-- Brand v4: the house bubble in white on a roof-tile tile -->
-  <rect width="32" height="32" rx="7" fill="#c24a1c"/>
-  <path fill="#ffffff" transform="translate(4.4 4.2) scale(0.725)" d="M16 2.5 L28.5 12 L28.5 25 L12.5 25 L6.5 30.5 L7.6 25 L3.5 25 L3.5 12 Z"/>
+  <!-- Brand v6: the house bubble in light copper on a eucalyptus tile -->
+  <rect width="32" height="32" rx="7" fill="#0f3d2e"/>
+  <path fill="#e9b07c" transform="translate(4.4 4.2) scale(0.725)" d="M16 2.5 L28.5 12 L28.5 25 L12.5 25 L6.5 30.5 L7.6 25 L3.5 25 L3.5 12 Z"/>
 </svg>

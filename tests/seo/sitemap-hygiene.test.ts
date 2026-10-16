@@ -49,7 +49,8 @@ describe("canonicals", () => {
     };
     walk(root);
     // Pages whose metadata comes from a shared builder that sets the canonical.
-    const viaHelper = /guides\/(cost-of-selling-a-house-[a-z]+|stamp-duty-(nsw|vic|qld|wa|sa|tas|act|nt))\/page\.tsx$/;
+    // The guide chapters' canonical comes from chapterMetadata (src/components/guide-book/ChapterPage.tsx).
+    const viaHelper = /(guides\/(cost-of-selling-a-house-[a-z]+|stamp-duty-(nsw|vic|qld|wa|sa|tas|act|nt))|(selling|buying)-guide\/\[chapter\])\/page\.tsx$/;
     const missing = pages.filter((file) => {
       const code = fs.readFileSync(file, "utf8").replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, "");
       if (/robots:\s*\{\s*index:\s*false/.test(code)) return false; // noindex pages need none
@@ -57,5 +58,6 @@ describe("canonicals", () => {
       return !/canonical/.test(code);
     });
     expect(missing.map((f) => path.relative(root, f))).toEqual([]);
+    expect(fs.readFileSync(path.join(APP, "../components/guide-book/ChapterPage.tsx"), "utf8")).toMatch(/alternates:\s*\{\s*canonical/);
   });
 });

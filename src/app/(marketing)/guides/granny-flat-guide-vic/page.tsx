@@ -46,7 +46,7 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Victoria has no state-wide complying-development pathway for secondary dwellings, you typically need a council planning permit, which takes longer and costs more than NSW's CDC route.",
+  "Victoria has no state-wide complying-development pathway for secondary dwellings: you typically need a council planning permit, which takes longer and costs more than NSW's CDC route.",
   "Planning permit timelines: 2 to 4 months for simple applications, 4 to 8 months with neighbour notification, 12+ months if there are objections or VCAT involvement.",
   "ResCode is the state-wide residential development code; planning overlays (Heritage, NCO, Flood, Bushfire, VPO) add further constraints.",
   "Lot size requirements vary by zone. GRZ is most flexible; NRZ may prohibit secondary dwellings.",
@@ -118,7 +118,7 @@ export default function GrannyFlatGuideVICPage() {
       <Callout variant="warning" title="Verify with your local council">
         <p>
           Planning rules for secondary dwellings in Victoria vary significantly
-          by council. Always check with your local council's planning department
+          by council. Always check with your local council&rsquo;s planning department
           before committing to a project.
         </p>
       </Callout>
@@ -127,19 +127,19 @@ export default function GrannyFlatGuideVICPage() {
         <p>
           Unlike NSW, Victoria does not have a state-wide complying-development
           pathway for secondary dwellings. Most projects require a council
-          planning permit, taking longer and costing more than NSW's CDC process.
+          planning permit, taking longer and costing more than NSW&rsquo;s CDC process.
         </p>
       </Callout>
 
       <h2 id="overview">Secondary dwellings in Victoria</h2>
       <p className="lead">
-        In Victoria, a granny flat is referred to as a <strong>dependent person's
+        In Victoria, a granny flat is referred to as a <strong>dependent person&rsquo;s
         unit</strong> or, more broadly, a <strong>secondary dwelling</strong>.
         Terminology and planning rules depend on your zone, overlay, and local
         planning scheme.
       </p>
       <p>
-        Unlike NSW, with its state-wide streamlined pathway, Victoria's approach
+        Unlike NSW, with its state-wide streamlined pathway, Victoria&rsquo;s approach
         is largely council-driven, so rules, processing times, and outcomes vary
         significantly by municipality.
       </p>
@@ -157,7 +157,7 @@ export default function GrannyFlatGuideVICPage() {
       <ol>
         <li>Lodge a planning permit application with supporting documents (plans, site analysis)</li>
         <li>Council assessment, which may include a neighbour notification period</li>
-        <li>Council decision, approval, approval with conditions, or refusal</li>
+        <li>Council decision: approval, approval with conditions, or refusal</li>
         <li>If approved, obtain a building permit before commencing construction</li>
       </ol>
       <p>
@@ -168,7 +168,7 @@ export default function GrannyFlatGuideVICPage() {
 
       <h2 id="rescode">ResCode and planning overlays</h2>
       <p>
-        <strong>ResCode</strong> is Victoria's state-wide residential development
+        <strong>ResCode</strong>{" "}is Victoria&rsquo;s state-wide residential development
         code, setting standards for setbacks, site coverage, overlooking,
         overshadowing, and open space. All secondary dwelling proposals must
         comply with ResCode (or receive a variation).
@@ -198,10 +198,10 @@ export default function GrannyFlatGuideVICPage() {
           400m² for attached, more for detached.
         </li>
         <li>
-          <strong>Neighbourhood Residential Zone (NRZ):</strong> More
+          <strong>Neighbourhood Residential Zone (NRZ):</strong>{" "}More
           restrictive. May limit dwellings per lot and impose stricter design
-          requirements. Sometimes prohibits secondary dwellings, check your
-          council's scheme.
+          requirements. Sometimes prohibits secondary dwellings; check your
+          council&rsquo;s scheme.
         </li>
         <li>
           <strong>Residential Growth Zone (RGZ):</strong> Encourages
@@ -209,8 +209,8 @@ export default function GrannyFlatGuideVICPage() {
         </li>
       </ul>
       <p>
-        Contact your council's planning department early to understand your
-        site's development potential before spending money on design.
+        Contact your council&rsquo;s planning department early to understand your
+        site&rsquo;s development potential before spending money on design.
       </p>
 
       <h2 id="costs">Building costs in Victoria</h2>
@@ -257,14 +257,14 @@ export default function GrannyFlatGuideVICPage() {
       />
 
       <p>
-        Versus NSW's CDC pathway (typically 2 to 4 weeks), Victoria's planning
+        Versus NSW&rsquo;s CDC pathway (typically 2 to 4 weeks), Victoria&rsquo;s planning
         process is meaningfully slower. Factor this into your project timeline
         and budget.
       </p>
 
       <h2 id="growth-corridors">Growth corridor opportunities</h2>
       <p>
-        Melbourne's urban growth corridors (Werribee, Melton, Cranbourne,
+        Melbourne&rsquo;s urban growth corridors (Werribee, Melton, Cranbourne,
         Epping) are zoned for higher-density residential development.
         Secondary dwellings tend to be more readily approved because:
       </p>

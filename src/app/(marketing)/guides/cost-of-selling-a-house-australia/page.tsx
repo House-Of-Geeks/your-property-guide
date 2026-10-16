@@ -302,7 +302,7 @@ export default function CostOfSellingAHouseAustraliaPage() {
       <p>
         If the property is your main home, you generally pay no capital gains tax
         when you sell. This is the main residence exemption, and for most owner-
-        occupiers it means CGT simply does not apply.
+        occupiers it means CGT does not apply.
       </p>
       <p>
         If the property is an investment, capital gains tax can be the single

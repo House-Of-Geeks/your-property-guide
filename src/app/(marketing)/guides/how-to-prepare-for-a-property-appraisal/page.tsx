@@ -217,8 +217,8 @@ export default function HowToPrepareForAPropertyAppraisalPage() {
       <Callout variant="info" title="Want a number without the sales pitch pressure?">
         <p>
           Our <Link href="/appraisal">free property appraisal</Link> service
-          connects you with a vetted local agent who provides an honest
-          appraisal backed by comparable sales evidence. No obligation to list,
+          connects you with one vetted local agent for an appraisal
+          backed by comparable sales evidence. No obligation to list,
           no lock-in.
         </p>
       </Callout>
@@ -306,7 +306,7 @@ export default function HowToPrepareForAPropertyAppraisalPage() {
       <p>
         A folder of documents does two things: it sharpens the appraisal,
         because the agent is estimating with facts instead of guesses, and it
-        signals you&rsquo;re a genuine seller worth an agent&rsquo;s best work.
+        signals you&rsquo;re a serious seller who expects an agent&rsquo;s best work.
         Pull together:
       </p>
       <ul>
@@ -456,7 +456,7 @@ export default function HowToPrepareForAPropertyAppraisalPage() {
         <li>
           <strong>Get the full playbook.</strong> The free{" "}
           <Link href="/selling-guide">selling guide</Link> covers the whole
-          journey from appraisal to settlement, personalised to your suburb.
+          process from appraisal to settlement, personalised to your suburb.
         </li>
       </ol>
 

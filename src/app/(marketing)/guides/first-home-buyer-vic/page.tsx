@@ -246,7 +246,7 @@ export default function FirstHomeBuyerVICPage() {
 
       <h2 id="median-prices">Median property prices for first home buyers</h2>
       <p>
-        Melbourne's property market has large price variation by distance from the
+        Melbourne’s property market has large price variation by distance from the
         CBD. First home buyers typically focus on:
       </p>
       <ul>
@@ -262,9 +262,9 @@ export default function FirstHomeBuyerVICPage() {
       <h2 id="buying-process">The VIC buying process</h2>
       <p>Victoria has some distinct features:</p>
       <ul>
-        <li><strong>Section 32 (Vendor's Statement):</strong> Vendors must provide a Section 32 before a contract is signed. It contains title, planning overlays, outgoings, and building permits. Review with your solicitor before signing.</li>
+        <li><strong>Section 32 (Vendor’s Statement):</strong> Vendors must provide a Section 32 before a contract is signed. It contains title, planning overlays, outgoings, and building permits. Review with your solicitor before signing.</li>
         <li><strong>Cooling-off period:</strong> 3 business days from signing the contract of sale. No cooling-off at auction.</li>
-        <li><strong>Auction market:</strong> Melbourne is one of Australia's most active auction markets. Pre-auction due diligence (building inspections, finance, contract review) needs to be done before bidding.</li>
+        <li><strong>Auction market:</strong> Melbourne is one of Australia’s most active auction markets. Pre-auction due diligence (building inspections, finance, contract review) needs to be done before bidding.</li>
         <li><strong>Settlement:</strong> Typically 30 to 60 days, conducted via PEXA.</li>
       </ul>
 

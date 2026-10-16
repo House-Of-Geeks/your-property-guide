@@ -8,7 +8,8 @@ export type LeadType =
   | "property-interest"
   | "match-request"
   | "guide-download"
-  | "rental-appraisal";
+  | "rental-appraisal"
+  | "agreement-check";
 
 export interface Lead {
   id?: string;

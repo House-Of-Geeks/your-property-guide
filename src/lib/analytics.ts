@@ -39,7 +39,9 @@ export type AnalyticsEvent =
   | "help_cta_clicked"
   | "intro_started"
   | "intro_submitted"
-  | "intro_duplicate_blocked";
+  | "intro_duplicate_blocked"
+  // The agreement check (15 Oct 2026): a call from our team, counted on the server's answer.
+  | "agreement_check_submitted";
 
 declare global {
   interface Window {

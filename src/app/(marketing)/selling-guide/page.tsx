@@ -13,10 +13,12 @@ import { guideOgImages } from "@/lib/og/helpers";
 import { StickyGuideBar } from "./StickyGuideBar";
 import { Book3D } from "@/components/interactive/Book3D";
 import { GuideContents } from "@/components/interactive/GuideContents";
+import { GuideIntroNote } from "@/components/guide-book/GuideIntroNote";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 
-const META_TITLE = "Free guide to selling your property in Australia (2026)";
+const META_TITLE = "Free guide to selling your home in Australia: the $20 million campaign";
 const META_DESCRIPTION =
-  "The agent you pick is a $20,000 decision. This free guide shows you how to pick well: real selling costs by state, fee negotiation, and the 10 questions that expose an average agent. Personalised to your suburb.";
+  "The campaign that sells $20 million homes, for yours: your number, the top buyer, the right agent, the launch and the negotiation. Free, personalised to your suburb.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -111,7 +113,7 @@ export default function SellingGuidePage() {
         data={{
           "@context": "https://schema.org",
           "@type": "DigitalDocument",
-          name: "The Complete Guide to Selling Your Property in Australia (2026 Edition)",
+          name: `${GUIDE_BOOKS.selling.title} (2026 edition)`,
           description: META_DESCRIPTION,
           url: `${SITE_URL}/selling-guide`,
           image: `${SITE_URL}/images/guide/selling-guide-cover.png`,
@@ -176,14 +178,20 @@ export default function SellingGuidePage() {
           <p className="text-sm font-semibold text-ink-muted mb-3 sm:mb-5">
             Free PDF, 2026 edition
           </p>
-          <HeroTitle>The free guide to selling your property</HeroTitle>
+          <HeroTitle>
+            {GUIDE_BOOKS.selling.name}
+            <span className="mt-3 block font-sans text-[0.42em] font-semibold leading-snug tracking-[-0.01em] text-ink-muted">
+              {GUIDE_BOOKS.selling.subtitle}
+            </span>
+          </HeroTitle>
           {/* Phone-sized lede, as before: the funnel stays on the first screen. */}
           <HeroLead className="max-sm:mt-4 max-sm:text-base">
-            Ten chapters, in order: whether and when to sell, what your
-            property is worth, the real costs in your state, preparing it,
-            choosing an agent, and the campaign through to settlement.
-            Answer three questions and we&rsquo;ll point you to the
-            chapters for your stage.
+            The campaign that gets top dollar for a $20 million home, for
+            yours. Ten chapters, in order: your number, the real costs in
+            your state, presenting the home, hiring the agent who runs the
+            campaign, the method, the launch, the negotiation and
+            settlement. Read it free online, or get the PDF with pointers
+            for your stage.
           </HeroLead>
           <div className="hidden lg:block mt-12">
             <GuidePitch />
@@ -195,9 +203,13 @@ export default function SellingGuidePage() {
           guide" queries and as proof the guide is a real document. */}
       <Band>
         <div className="max-w-5xl">
-          <SectionHeading title="Ten chapters, no filler" />
+          <GuideIntroNote guide="selling" className="max-w-3xl" />
 
-          <div className="mt-10 sm:mt-12">
+          <div className="mt-16">
+            <SectionHeading title="Read it online, chapter by chapter" />
+          </div>
+
+          <div className="mt-10 sm:mt-12" id="contents">
             <GuideContents guide="selling" />
           </div>
 

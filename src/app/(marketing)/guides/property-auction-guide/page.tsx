@@ -217,7 +217,7 @@ export default function PropertyAuctionGuidePage() {
         the auction and is not disclosed to buyers.
       </p>
       <p>
-        The agent&rsquo;s pre-auction <em>price guide</em>{" "}is not the reserve,
+        The agent&rsquo;s pre-auction <em>price guide</em>{" "}is not the reserve;
         it is an indication of expected bidding range. Price guides must be
         genuinely representative of the vendor&rsquo;s expectations under
         Australian consumer law and cannot be set artificially low to attract
@@ -262,7 +262,7 @@ export default function PropertyAuctionGuidePage() {
       <p>
         A property is &ldquo;passed in&rdquo; when bidding does not reach the
         vendor&rsquo;s reserve price by the end of the auction. This is not a
-        failed sale, it is the start of post-auction negotiations.
+        failed sale; it is the start of post-auction negotiations.
       </p>
       <p>When a property is passed in:</p>
       <ul>
@@ -313,7 +313,7 @@ export default function PropertyAuctionGuidePage() {
         <li>
           <strong>Know your limit.</strong> Set a firm maximum bid based on
           your pre-approval and stick to it. Auction rooms can create emotional
-          pressure, decide your limit in advance.
+          pressure; decide your limit in advance.
         </li>
       </ol>
       <p>
@@ -394,7 +394,7 @@ export default function PropertyAuctionGuidePage() {
         </li>
         <li>
           <strong>Know your absolute maximum and stick to it.</strong> The
-          auctioneer will encourage higher bids, it is their job. Set your
+          auctioneer will encourage higher bids; it is their job. Set your
           limit with your head, not in the emotion of the room.
         </li>
         <li>
@@ -454,7 +454,7 @@ export default function PropertyAuctionGuidePage() {
       <ul>
         <li>Removes the emotional component of bidding</li>
         <li>Experienced in auction dynamics and strategy</li>
-        <li>Can help you set a realistic reserve and market price range beforehand</li>
+        <li>Can help you set a realistic limit and price range beforehand</li>
         <li>Useful if you cannot attend in person (e.g. interstate buyer)</li>
       </ul>
       <p>

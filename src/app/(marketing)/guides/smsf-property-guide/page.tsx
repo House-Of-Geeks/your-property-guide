@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -300,8 +299,7 @@ export default function SMSFPropertyGuidePage() {
         The 0% tax in pension phase is perhaps the most powerful feature.
         Once all SMSF members retire and the fund moves to pension phase, all
         earnings and capital gains within the fund become completely
-        tax-free. This is an extraordinary benefit for long-term property
-        holders.
+        tax-free. It matters most to long-term property holders.
       </p>
       <p>
         Even in accumulation phase, the 15% tax rate on rental income vs a

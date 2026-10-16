@@ -8,7 +8,7 @@ export const post: BlogPost = {
     "Treasurer Jim Chalmers handed down the 2026-27 federal budget on 12 May 2026, with the biggest changes to property tax in a generation. Negative gearing is being limited to new builds, the 50% CGT discount is being scrapped, and $6.3 billion is going into housing-enabling infrastructure. Here's what every owner, investor, renter and first home buyer needs to know.",
   content: `<p>The 2026-27 federal budget, handed down by Treasurer Jim Chalmers on the evening of 12 May 2026, contains the most significant overhaul of Australian property tax in over thirty years. After months of speculation and a broken pre-election promise on negative gearing, the government has moved decisively on the demand side of the housing market while also injecting billions into supply. The combined effect will reshape how Australians buy, invest and rent for at least the next decade.</p>
 
-<p>This is the plain-English guide to what's in the budget for property, when it takes effect, who is grandfathered, and what it actually means for your situation, whether you're a first home buyer, a current owner, an investor, or a tenant.</p>
+<p>This guide covers what's in the budget for property, when it takes effect, who is grandfathered, and what it actually means for your situation, whether you're a first home buyer, a current owner, an investor, or a tenant.</p>
 
 <h2>The headline changes at a glance</h2>
 <ul>
@@ -16,7 +16,7 @@ export const post: BlogPost = {
 <li><strong>50% CGT discount replaced</strong> with cost base indexation plus a 30% minimum tax on net capital gains for residential investment property</li>
 <li><strong>New homes exempt</strong> from both the negative gearing and CGT changes, a deliberate incentive to direct investor capital into new supply</li>
 <li><strong>Existing investors grandfathered</strong>: anyone who owns a residential investment property on 12 May 2026 keeps their current tax treatment for that property</li>
-<li><strong>$6.3 billion total for housing-enabling infrastructure</strong>: water, sewer, roads and power to unlock up to 65,000 new homes over the decade</li>
+<li><strong>$6.3 billion total for housing-enabling infrastructure</strong>: water, sewer, roads and power to enable up to 65,000 new homes over the decade</li>
 <li><strong>Housing Australia Future Fund</strong> continues progressing toward 40,000 social and affordable homes</li>
 <li><strong>Dwelling price growth forecast revised down</strong> to 3% in 2026 (from 5%), with Treasury expecting a modest cooling effect from the tax changes</li>
 </ul>
@@ -58,7 +58,7 @@ export const post: BlogPost = {
 <p>The counter-argument from Treasury and supporters: the tax changes are designed to redirect investor capital from existing stock to new builds, which adds to total housing supply over time. Either way, the immediate impact for current tenants on existing leases is zero. The medium-term effect will depend on whether the housing-enabling infrastructure investment delivers the 65,000 additional homes Treasury is forecasting.</p>
 
 <h2>The $6.3 billion supply package</h2>
-<p>Often overlooked beneath the tax changes is a substantial supply-side commitment. The federal government is putting $6.3 billion into housing-enabling infrastructure, the water, sewer, roads, electricity connections and rail/transport links that have to exist before homes can be built on greenfield and brownfield sites. The package is designed to unlock up to 65,000 additional homes over the next decade.</p>
+<p>Often overlooked beneath the tax changes is a substantial supply-side commitment. The federal government is putting $6.3 billion into housing-enabling infrastructure, the water, sewer, roads, electricity connections and rail/transport links that have to exist before homes can be built on greenfield and brownfield sites. The package is designed to enable up to 65,000 additional homes over the next decade.</p>
 <p>This adds to existing commitments:</p>
 <ul>
 <li><strong>Housing Australia Future Fund</strong>: 40,000 new social and affordable homes by 2029, with 279 projects committed to date</li>
@@ -87,7 +87,7 @@ export const post: BlogPost = {
 </ul>
 
 <h2>What to do next</h2>
-<p>If you own investment property, do nothing in haste. Your existing properties are grandfathered. The instinct to sell quickly to lock in the old CGT discount usually creates more cost (transaction costs, retraining a portfolio, transaction-related CGT itself) than it saves. Speak to your accountant before making any structural moves.</p>
+<p>If you own investment property, do nothing in haste. Your existing properties are grandfathered. The instinct to sell quickly to lock in the old CGT discount usually creates more cost (transaction costs, restructuring a portfolio, transaction-related CGT itself) than it saves. Speak to your accountant before making any structural moves.</p>
 <p>If you're considering buying an investment property, the calculation has changed but not necessarily for the worse. New builds remain favourably treated and have additional structural support. The investor case for outer-corridor house and land in Brisbane, southwest Sydney, north-west Melbourne and Perth growth corridors is arguably stronger now than before the budget.</p>
 <p>If you're a first home buyer, this is one of the better budgets you'll see in your buying lifetime. Schemes are intact, investor competition is easing, and the supply package will start to deliver additional stock from late 2026 onward. The window to use the existing schemes well is wide open.</p>
 

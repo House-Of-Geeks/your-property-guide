@@ -46,7 +46,7 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Property depreciation is a non-cash tax deduction for investment properties. You don't physically spend money to claim it, the deduction reflects the gradual decline in value of the building and its fittings.",
+  "Property depreciation is a non-cash tax deduction for investment properties. You don't physically spend money to claim it: the deduction reflects the gradual decline in value of the building and its fittings.",
   "Division 43 (capital works) covers the building structure: 2.5% per year for 40 years from construction date, on properties built after 16 September 1987.",
   "Division 40 (plant and equipment) covers removable fittings: carpet, blinds, hot water systems, appliances. Each has its own ATO-set effective life.",
   "The 2017 rule change blocks Division 40 claims on existing plant and equipment in established properties bought after 9 May 2017. Division 43 is unaffected.",
@@ -135,7 +135,7 @@ export default function PropertyDepreciationGuidePage() {
         available to property investors.
       </p>
       <p>
-        Depreciation is a <em>non-cash deduction</em>, you do not physically
+        Depreciation is a <em>non-cash deduction</em>: you do not physically
         spend money to claim it. The ATO allows you to deduct the theoretical
         decline in value of the property&rsquo;s components over time, reducing
         your taxable income and therefore your annual tax bill.
@@ -149,7 +149,7 @@ export default function PropertyDepreciationGuidePage() {
       <h2 id="div-43">Division 43: capital works deduction</h2>
       <p>
         <strong>Division 43</strong> covers the structural components of the
-        building itself, walls, floors, roof, windows, built-in wardrobes,
+        building itself: walls, floors, roof, windows, built-in wardrobes,
         plumbing, wiring within the structure, and other permanent components.
       </p>
       <Callout variant="info" title="Key Division 43 rules">
@@ -186,7 +186,7 @@ export default function PropertyDepreciationGuidePage() {
       <h2 id="div-40">Division 40: plant and equipment</h2>
       <p>
         <strong>Division 40</strong> covers assets that can be physically
-        removed from the property, items that are not structurally part of the
+        removed from the property: items that are not structurally part of the
         building. Common examples:
       </p>
       <table>
@@ -241,7 +241,7 @@ export default function PropertyDepreciationGuidePage() {
       <ul>
         <li><strong>If you purchased an established residential property after 9 May 2017,</strong> you cannot claim Division 40 depreciation on the <em>existing</em> plant and equipment in the property (carpet, blinds, appliances, etc.) unless you installed them yourself as new assets.</li>
         <li><strong>New plant and equipment you purchase and install yourself</strong> (after buying the property) can still be depreciated under Division 40.</li>
-        <li><strong>Division 43 (capital works) is unaffected</strong> by this rule change, you can still claim 2.5% on the original construction cost regardless of when you purchased the property.</li>
+        <li><strong>Division 43 (capital works) is unaffected</strong> by this rule change: you can still claim 2.5% on the original construction cost regardless of when you purchased the property.</li>
         <li><strong>New properties are unaffected,</strong> if you buy a brand new property (from the developer, never previously occupied as a residence), you can claim Division 40 on all plant and equipment.</li>
       </ul>
 

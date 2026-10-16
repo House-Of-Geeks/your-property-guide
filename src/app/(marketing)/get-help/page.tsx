@@ -58,7 +58,7 @@ export default async function GetHelpPage({ searchParams }: { searchParams: Prom
         <ul className="mt-8 hidden lg:grid gap-3 text-base sm:text-lg text-ink">
           <li className="border-t border-line pt-3">{`One agent per service, never a list, and never sold to anyone else`}</li>
           <li className="border-t border-line pt-3">{`They contact you the way you choose, normally ${RESPONSE_WINDOW}`}</li>
-          <li className="border-t border-line pt-3">{`Free for you. The agent pays us for the introduction, whether or not you go ahead`}</li>
+          <li className="border-t border-line pt-3">{`Free for you. The agent pays us a flat fee for the introduction, whether or not you go ahead, and never a share of their commission`}</li>
         </ul>
         <div className="mt-10 hidden lg:flex items-center gap-4 border-t border-line pt-6 max-w-xl">
           <Image src="/images/agents/andy-mcmaster.jpg" alt="Andy McMaster" width={56} height={56} className="w-14 h-14 rounded-full object-cover object-top shrink-0 ring-2 ring-line" />

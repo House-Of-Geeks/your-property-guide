@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -127,7 +126,7 @@ export default function RentersRightsWAPage() {
       <h2 id="act">The WA Residential Tenancies Act 1987</h2>
       <p className="lead">
         The Residential Tenancies Act 1987 (WA) is the primary legislation
-        governing residential tenancies in WA. While WA hasn't introduced the
+        governing residential tenancies in WA. While WA hasn’t introduced the
         sweeping reforms seen in Victoria and Queensland, tenants still have
         significant legal protections.
       </p>
@@ -150,7 +149,7 @@ export default function RentersRightsWAPage() {
       </ul>
       <p>
         Always complete the property condition report and take photos on day
-        one. In WA, "fair wear and tear" can't be claimed from the bond, only
+        one. In WA, “fair wear and tear” can’t be claimed from the bond, only
         damage beyond normal use.
       </p>
 
@@ -158,7 +157,7 @@ export default function RentersRightsWAPage() {
       <ul>
         <li>
           <strong>Periodic tenancies:</strong> At least 60 days written notice.
-          Unlike NSW, QLD, and VIC, WA doesn't yet have a statutory minimum of
+          Unlike NSW, QLD, and VIC, WA doesn’t yet have a statutory minimum of
           12 months between increases for periodic tenancies. Always verify
           the current rule.
         </li>
@@ -181,7 +180,7 @@ export default function RentersRightsWAPage() {
       <h3>Urgent repairs</h3>
       <p>
         Must be addressed immediately. Examples: burst pipe, gas leak, roof
-        damage after storm, electrical fault. If you can't contact the
+        damage after storm, electrical fault. If you can’t contact the
         landlord or agent, you may arrange urgent repairs and seek
         reimbursement up to $1,000.
       </p>
@@ -189,7 +188,7 @@ export default function RentersRightsWAPage() {
       <h3>Non-urgent repairs</h3>
       <p>
         Must be carried out within a reasonable time after written notice.
-        Always put requests in writing. If the landlord doesn't act, apply to
+        Always put requests in writing. If the landlord doesn’t act, apply to
         the Magistrates Court for a repair order.
       </p>
 
@@ -228,10 +227,10 @@ export default function RentersRightsWAPage() {
       </p>
 
       <h2 id="disputes">Resolving disputes</h2>
-      <p>WA doesn't have a dedicated residential tenancy tribunal. Disputes go through:</p>
+      <p>WA doesn’t have a dedicated residential tenancy tribunal. Disputes go through:</p>
       <ul>
         <li><strong>Consumer Protection WA:</strong> Free conciliation and mediation. Contact 1300 304 054.</li>
-        <li><strong>Magistrates Court:</strong> For disputes that can't be resolved through mediation, including bond claims and repair orders.</li>
+        <li><strong>Magistrates Court:</strong> For disputes that can’t be resolved through mediation, including bond claims and repair orders.</li>
       </ul>
 
       <h2 id="resources">Resources and contacts</h2>

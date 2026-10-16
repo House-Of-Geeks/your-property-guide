@@ -37,6 +37,20 @@ export interface LeadEmailData {
   managerTimeframe?: string;
   /** A guide call request: "agent" (one agent calls) or "ypg" (YPG calls). Set by /api/leads. */
   callKind?: string;
+  /** Agreement check: the agent or agency named, and the date they plan to sign (YYYY-MM-DD). */
+  agencyName?: string;
+  signDate?: string;
+}
+
+/** "Mon 20 Oct 2026" from YYYY-MM-DD, read in UTC so a date never shifts a day. */
+export function formatSignDate(iso: string): string {
+  const d = new Date(`${iso}T00:00:00Z`);
+  if (isNaN(d.getTime())) return iso;
+  const part = (type: Intl.DateTimeFormatPartTypes) =>
+    new Intl.DateTimeFormat("en-AU", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })
+      .formatToParts(d)
+      .find((p) => p.type === type)?.value ?? "";
+  return `${part("weekday")} ${part("day")} ${part("month")} ${part("year")}`;
 }
 
 // Lead temperature for guide-download leads. The bands follow the
@@ -120,6 +134,7 @@ export function labelFor(type: string, guideType?: string): string {
     case "match-request":          return "Match Request (homepage)";
     case "guide-download":         return "Selling Guide Download";
     case "rental-appraisal":       return "Rental Appraisal Request (landlord)";
+    case "agreement-check":        return "Agreement Check";
     default:                       return "Property Enquiry";
   }
 }
@@ -129,7 +144,7 @@ export function labelFor(type: string, guideType?: string): string {
 import { GUIDE_PDF_PATH, BUYING_GUIDE_PDF_PATH } from "@/lib/guide-pdfs";
 export { GUIDE_PDF_PATH, BUYING_GUIDE_PDF_PATH };
 export const GUIDE_PDF_URL = `https://www.yourpropertyguide.com.au${GUIDE_PDF_PATH}`;
-// Cover art rendered from scripts/guide-pdf/cover-art.html. The email
+// Cover art printed from /print/guides/<guide> by npm run guides:pdf. The email
 // variant is a ~70KB JPEG so it loads fast on mobile data.
 export const GUIDE_COVER_URL = "https://www.yourpropertyguide.com.au/images/guide/selling-guide-cover-email.jpg";
 export const BUYING_GUIDE_PDF_URL = `https://www.yourpropertyguide.com.au${BUYING_GUIDE_PDF_PATH}`;
@@ -304,6 +319,15 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
         intro: `Thanks ${firstName}. We've received your rental appraisal request${addr ? ` for ${addr}` : ""}.`,
         next: "A property manager who works in your suburb will be in touch within one business day to arrange it. They will give you a rent figure and their fee schedule; there is no commitment until you decide to appoint them.",
       };
+    case "agreement-check": {
+      // A call from our team, not an agent (AGREEMENT_CHECK in service-model).
+      const when = lead.signDate ? ` before ${escapeHtml(formatSignDate(lead.signDate))}, the date you plan to sign,` : "";
+      return {
+        subject: "We'll call you about your agency agreement",
+        intro: `Thanks ${firstName}. Your free agreement check is in.`,
+        next: `Someone from our team will call you${when} to go through the agreement with you: the commission, the marketing spend, the term and the exit clause. It takes about 15 minutes, so have the agreement in front of you if you can. It's general information, not legal advice, and we never pass your details to an agent.`,
+      };
+    }
     case "match-request":
       // Only what exists: one local agent for a seller, a pointer to the
       // right next step for anyone else. No profile email (directory paused).
@@ -417,7 +441,7 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
     // works; buyers see what a buyer's agent does. Listed sellers were
     // promised no agent contact, so they get neither.
     const panel = (eyebrow: string, text: string, button: string) => `
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:${C.ink};border-radius:10px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:${C.eucalyptus};border-radius:10px;">
         <tr><td style="padding:20px 22px;">
           <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:${C.apricot};">${eyebrow}</p>
           ${text}

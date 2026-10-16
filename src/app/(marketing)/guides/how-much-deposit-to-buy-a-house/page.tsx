@@ -111,7 +111,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "First Home Buyer Schemes by State (2026)", href: "/guides/first-home-buyer-schemes-by-state-australia-2026", description: "Every grant, exemption, and concession by state, in plain English." },
+  { title: "First Home Buyer Schemes by State (2026)", href: "/guides/first-home-buyer-schemes-by-state-australia-2026", description: "Every grant, exemption, and concession by state." },
   { title: "Stamp Duty Calculator", href: "/stamp-duty-calculator", description: "Estimate stamp duty for your state, including first home buyer concessions." },
   { title: "Borrowing Power Calculator", href: "/borrowing-power-calculator", description: "Find out what you can borrow on top of your deposit." },
   { title: "Lenders Mortgage Insurance Guide", href: "/guides/lenders-mortgage-insurance-guide", description: "How LMI is calculated and when it's worth paying." },
@@ -177,7 +177,7 @@ export default function HowMuchDepositGuidePage() {
       <h3>10% deposit</h3>
       <p>
         A common middle ground. LMI is roughly 1.5% to 2% of the loan amount,
-        rather than 3% to 4% at the 5% level. You unlock more lenders and
+        rather than 3% to 4% at the 5% level. You get a wider choice of lenders and
         better rates than a 5% deposit would, without waiting another year or
         two to hit 20%.
       </p>

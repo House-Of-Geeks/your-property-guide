@@ -86,7 +86,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Is real estate commission negotiable in NT?",
     answer:
-      "Yes. Commission is deregulated in the Northern Territory, so there is no fixed or official rate and every agent sets their own. The percentage on the first agency agreement you read is an opening number, not a fixed price. The way to negotiate well is to get two or three appraisals, compare the rate against the service and the marketing budget rather than in isolation, and ask each agent to justify their figure. Be wary of simply taking the cheapest, since a stronger agent who negotiates a higher sale price can easily earn back a small difference in rate.",
+      "Yes. Commission is deregulated in the Northern Territory, so there is no fixed or official rate and every agent sets their own. The percentage on the first agency agreement you read is an opening number, not a fixed price. The way to negotiate well is to get two or three appraisals, compare the rate against the service and the marketing budget rather than in isolation, and ask each agent to justify their figure. Be wary of taking the cheapest, since a stronger agent who negotiates a higher sale price can easily earn back a small difference in rate.",
   },
   {
     question: "Do you pay commission if the house doesn't sell?",
@@ -96,7 +96,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Does commission include GST in NT?",
     answer:
-      "Commission usually attracts 10% GST on top of the quoted rate, since real estate agency services are a taxable supply. The catch is that quotes vary on whether they show the figure inclusive or exclusive of GST, so a rate that looks lower may simply be quoted before tax. Always ask each agent to confirm whether their commission quote includes GST so you are comparing like with like, and so the dollar figure at settlement matches what you expected.",
+      "Commission usually attracts 10% GST on top of the quoted rate, since real estate agency services are a taxable supply. The catch is that quotes vary on whether they show the figure inclusive or exclusive of GST, so a rate that looks lower may be quoted before tax. Always ask each agent to confirm whether their commission quote includes GST so you are comparing like with like, and so the dollar figure at settlement matches what you expected.",
   },
 ];
 
@@ -207,7 +207,7 @@ export default function RealEstateCommissionNtPage() {
         <p>
           Commission is a taxable service, so 10% GST usually applies on top of
           the rate. Agents differ on whether they quote inclusive or exclusive
-          of GST, so a rate that looks cheaper may simply be shown before tax.
+          of GST, so a rate that looks cheaper may be shown before tax.
           Ask each agent to confirm, so the figures you compare are genuinely
           like for like.
         </p>

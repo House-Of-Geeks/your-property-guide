@@ -22,7 +22,7 @@ export const post: BlogPost = {
 <li>Research the suburb thoroughly, including future development plans and infrastructure projects</li>
 <li>Engage a local buyer's agent who understands the Moreton Bay market</li>
 <li>Factor in additional costs such as building inspections, conveyancing, and moving expenses</li>
-<li>Don't rush the process, take time to attend open homes and understand what you truly need</li>
+<li>Don't rush the process: take time to attend open homes and understand what you truly need</li>
 </ul>
 
 <p>The Moreton Bay Region continues to experience population growth and infrastructure investment, and with zero transfer duty on new homes, first home buyers retain a genuine edge here. With the right preparation and professional guidance, owning your first home in this thriving corridor is well within reach — our full <a href="/guides/first-home-buyer-guide">first home buyer guide</a> covers every step.</p>`,

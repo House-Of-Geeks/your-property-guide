@@ -53,7 +53,7 @@ postcode first → intent split (selling vs browsing) → property type → time
 ## 5. What was built (June 2026)
 
 - `/selling-guide` — multi-step qualification funnel (the lead engine).
-- `public/downloads/` guide PDF (regenerate from `scripts/guide-pdf/selling-guide.html` with headless Chrome).
+- `public/downloads/` guide PDF (since 15 Oct 2026 printed from the chapter content in `src/content/guides` by `npm run guides:pdf`).
 - `/api/leads` extended with `guide-download` type, server-side scoring, score-tagged admin email, guide-delivery confirmation email.
 - `/real-estate-commission-calculator` — KD~0 SEO spearhead.
 - `/for-agents` — agent acquisition page.
@@ -71,7 +71,7 @@ Round 2 (same week):
 The sync is built and verified end to end: every guide-download lead is upserted into the House of Geeks AC account (`src/lib/activecampaign.ts`, hook in `/api/leads` after `db.lead.create`, best-effort). List "YPG Property Sellers" + nine YPG custom fields created via `scripts/setup-activecampaign.ts`; tags `ypg-seller`/`ypg-score-*`/`ypg-timeframe-*`/`ypg-agent-*`/`ypg-consented`. List subscription is gated on the marketing-consent checkbox; DO-NOT-CONTACT vendors get a CRM record only. Env vars are in the project `.env` and Vercel production. The four nurture automations (with full email copy) are blueprinted in `docs/activecampaign-automations.md` and need assembling in the AC UI; DKIM on Cloudflare is the blocking step before any marketing send.
 
 ### Buying guide (LIVE as of 2026-06-11)
-The buyer side of the machine mirrors the seller side. `/buying-guide` runs a 7-step persona funnel (suburb, persona, property type, budget, timeframe, finance, contact) into the same `/api/leads` endpoint with `guideType: "buying"`. Personas: first home / upgrading / investing / downsizing. Buyer scoring: HOT = buying within 3 months AND (pre-approved or cash); WARM = within 3 months without finance, or 3-6 months; COLD = the rest. PDF is `scripts/guide-pdf/buying-guide.html` (35pp, persona call-out boxes, 2026 scheme caps verified) rendered to `public/downloads/your-property-guide-buying-property-australia.pdf`. Buyer-side persona hubs (first home, upgrading, investing) embed the buying funnel as their closing band; selling and renovating hubs embed the selling funnel. AC: buyers land on list "YPG Property Buyers" (id 7) with fields YPG Guide Type / Buyer Persona / Finance Status / Budget (ids 16-19) and tags `ypg-buyer` / `ypg-persona-*` / `ypg-finance-*`. Same consent gate as sellers.
+The buyer side of the machine mirrors the seller side. `/buying-guide` runs a 7-step persona funnel (suburb, persona, property type, budget, timeframe, finance, contact) into the same `/api/leads` endpoint with `guideType: "buying"`. Personas: first home / upgrading / investing / downsizing. Buyer scoring: HOT = buying within 3 months AND (pre-approved or cash); WARM = within 3 months without finance, or 3-6 months; COLD = the rest. PDF is printed from `src/content/guides/buying` by `npm run guides:pdf` (persona call-out boxes, 2026 scheme caps verified) to `public/downloads/your-property-guide-buying-property-australia.pdf`. Buyer-side persona hubs (first home, upgrading, investing) embed the buying funnel as their closing band; selling and renovating hubs embed the selling funnel. AC: buyers land on list "YPG Property Buyers" (id 7) with fields YPG Guide Type / Buyer Persona / Finance Status / Budget (ids 16-19) and tags `ypg-buyer` / `ypg-persona-*` / `ypg-finance-*`. Same consent gate as sellers.
 
 ## 6. Not built yet / next
 

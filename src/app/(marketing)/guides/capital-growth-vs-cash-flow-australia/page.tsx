@@ -67,7 +67,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "yield-suburbs",        label: "What cash-flow-focused property looks like" },
   { id: "your-situation",       label: "Which strategy fits your situation" },
   { id: "modelling",            label: "Modelling the trade-off on a real property" },
-  { id: "portfolio-stage",      label: "Where you are in your portfolio journey" },
+  { id: "portfolio-stage",      label: "Where you are in building your portfolio" },
   { id: "tax-effect",           label: "The tax effect (and why it's smaller than the spruikers say)" },
   { id: "common-mistakes",      label: "Common mistakes investors make on this question" },
   { id: "verdict",              label: "Verdict: how to actually choose" },
@@ -102,7 +102,7 @@ const FAQS: FaqItem[] = [
   {
     question: "When should I switch from cash-flow focus to growth focus (or vice versa)?",
     answer:
-      "Switch toward cash flow when you've hit lender serviceability ceiling and need positive cash flow from new purchases to keep buying. Switch toward growth when you've got serviceability runway, your existing portfolio is producing surplus, and you want to compound long-run wealth. Most experienced investors describe their journey as cash-flow-stable in the first 3 to 5 properties, then growth-focused thereafter. The transition isn't a one-time switch; it's a gradual rebalance as the portfolio matures.",
+      "Switch toward cash flow when you've hit lender serviceability ceiling and need positive cash flow from new purchases to keep buying. Switch toward growth when you've got serviceability runway, your existing portfolio is producing surplus, and you want to compound long-run wealth. Most experienced investors describe their path as cash-flow-stable in the first 3 to 5 properties, then growth-focused thereafter. The transition isn't a one-time switch; it's a gradual rebalance as the portfolio matures.",
   },
   {
     question: "Is a buyer's agent biased toward one strategy?",
@@ -163,8 +163,8 @@ export default function CapitalGrowthVsCashFlowPage() {
           selling, then spend a decade wondering why the numbers
           don&rsquo;t look like the case study. The honest answer is
           that the right strategy depends on your serviceability,
-          your tax bracket and where you are in your portfolio
-          journey. Two investors looking at the same property should
+          your tax bracket and how far along your portfolio is.
+          Two investors looking at the same property should
           reach different conclusions, and that&rsquo;s fine.
         </p>
       </EditorNote>
@@ -329,10 +329,10 @@ export default function CapitalGrowthVsCashFlowPage() {
         subtitle="One quarterly email on the Australian property market, RBA rate moves and the investor data updates that change how the cap-growth-vs-cash-flow trade-off should be read. No spam."
       />
 
-      <h2 id="portfolio-stage">Where you are in your portfolio journey</h2>
+      <h2 id="portfolio-stage">Where you are in building your portfolio</h2>
       <p>
         Most successful Australian property investors describe their
-        journey as cash-flow stable in the first 3 to 5 properties, then
+        path as cash-flow stable in the first 3 to 5 properties, then
         growth-focused thereafter. The reason is mechanical: in the
         early stages, you&rsquo;re building serviceability and need
         properties that pay for themselves so the next lender will lend.

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -144,7 +143,7 @@ export default function RentersRightsNTPage() {
         Applies to most private residential tenancies in the NT, including
         Darwin urban properties, Alice Springs rentals, and regional centres.
         Government-owned housing and remote community housing may have
-        different provisions, see the remote housing section below.
+        different provisions; see the remote housing section below.
       </p>
 
       <h2 id="lease-types">Lease types</h2>
@@ -152,12 +151,12 @@ export default function RentersRightsNTPage() {
         <li>
           <strong>Fixed term:</strong> Agreed start and end dates. Neither
           party can end without grounds during the term (limited exceptions
-          such as family violence). Rent can't be increased unless the increase
+          such as family violence). Rent can’t be increased unless the increase
           is specified in the agreement.
         </li>
         <li>
           <strong>Periodic:</strong> Ongoing tenancy with no fixed end date,
-          often created when a fixed term lease expires and isn't renewed.
+          often created when a fixed term lease expires and isn’t renewed.
           Either party can end it with appropriate notice.
         </li>
       </ul>
@@ -188,10 +187,10 @@ export default function RentersRightsNTPage() {
           increases for periodic tenancies. Landlords can technically increase
           every 30 days on a periodic tenancy with proper notice.
         </li>
-        <li><strong>Fixed term:</strong> Rent can't be increased unless the agreement specifies the amount or method</li>
+        <li><strong>Fixed term:</strong> Rent can’t be increased unless the agreement specifies the amount or method</li>
       </ul>
       <p>
-        No rent caps. If you're in a periodic tenancy and facing frequent
+        No rent caps. If you’re in a periodic tenancy and facing frequent
         increases, your options are to negotiate, accept, or give 14 days
         notice to vacate. Contact NT Consumer Affairs if you believe the
         increase is retaliatory.
@@ -218,7 +217,7 @@ export default function RentersRightsNTPage() {
       <p>
         Urgent repairs make the property uninhabitable, unsafe, or affect an
         essential service. The landlord must arrange these as soon as possible.
-        In Darwin's tropical climate, urgent repairs also include:
+        In Darwin’s tropical climate, urgent repairs also include:
       </p>
       <ul>
         <li>Air conditioning breakdown (during wet season or extreme heat)</li>
@@ -237,7 +236,7 @@ export default function RentersRightsNTPage() {
       <h3>General (non-urgent) repairs</h3>
       <p>
         Submit a written request and allow a reasonable time. Keep copies of
-        all correspondence. If repairs aren't completed within a reasonable
+        all correspondence. If repairs aren’t completed within a reasonable
         period, apply to NTCAT for a repair order.
       </p>
 
@@ -289,7 +288,7 @@ export default function RentersRightsNTPage() {
         </li>
       </ul>
       <p>
-        If you're renting in a remote NT community, contact the North Australian
+        If you’re renting in a remote NT community, contact the North Australian
         Aboriginal Justice Agency (NAAJA) or Central Australian Aboriginal Legal
         Aid Service (CAALAS) for specialist advice.
       </p>
@@ -314,7 +313,7 @@ export default function RentersRightsNTPage() {
       </p>
       <p>
         Before applying to NTCAT, attempt direct resolution with your landlord
-        or agent and document all communications, NTCAT will want to see
+        or agent and document all communications; NTCAT will want to see
         evidence of attempts at informal resolution.
       </p>
 

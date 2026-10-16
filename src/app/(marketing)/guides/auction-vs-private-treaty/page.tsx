@@ -100,7 +100,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What is sale by expression of interest?",
     answer:
-      "Expression of interest (EOI), sometimes called sale by tender or sale by set date, invites buyers to submit their best written offer by a deadline, without seeing competing offers. It borrows the deadline pressure of an auction while keeping offers, and any failure to sell, private. It is common for prestige homes, unusual properties that are hard to price, and development sites. The trade-off is opacity: some buyers dislike blind bidding and simply will not participate, so EOI works best where the property is genuinely scarce and buyer demand is deep.",
+      "Expression of interest (EOI), sometimes called sale by tender or sale by set date, invites buyers to submit their best written offer by a deadline, without seeing competing offers. It borrows the deadline pressure of an auction while keeping offers, and any failure to sell, private. It is common for prestige homes, unusual properties that are hard to price, and development sites. The trade-off is opacity: some buyers dislike blind bidding and will not participate, so EOI works best where the property is genuinely scarce and buyer demand is deep.",
   },
 ];
 
@@ -111,7 +111,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Cost of Selling a House",          href: "/guides/cost-of-selling-a-house-australia",      description: "Every selling cost explained, from commission to marketing to CGT." },
   { title: "Best Time to Sell a House",        href: "/guides/best-time-to-sell-a-house-australia",    description: "Seasonality, market cycles and timing the campaign." },
   { title: "Cooling-Off Periods by State",     href: "/guides/cooling-off-period-by-state-australia",  description: "The full state-by-state cooling-off rules for private sales." },
-  { title: "Find an Expert",                   href: "/find-an-expert",                                description: "Vetted local agents who can benchmark both methods for your property." },
+  { title: "Find an Expert",                   href: "/find-an-expert",                                description: "One vetted local agent who can benchmark both methods for your property." },
 ];
 
 export default function AuctionVsPrivateTreatyPage() {
@@ -523,8 +523,8 @@ export default function AuctionVsPrivateTreatyPage() {
       <Callout variant="info" title="Want a second opinion on method?">
         <p>
           A vetted local agent can benchmark both methods against recent sales
-          of homes like yours. Browse agents we&rsquo;ve screened at{" "}
-          <Link href="/find-an-expert">Find an Expert</Link>, or start with a{" "}
+          of homes like yours. <Link href="/find-an-expert">Find an Expert</Link>{" "}
+          introduces one agent we&rsquo;ve screened, or start with a{" "}
           <Link href="/appraisal">free property appraisal</Link>, no
           commitment to list.
         </p>

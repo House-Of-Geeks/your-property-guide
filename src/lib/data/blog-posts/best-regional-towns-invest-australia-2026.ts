@@ -14,7 +14,7 @@ export const post: BlogPost = {
 <p>Newcastle remains Australia's most consistent regional performer. The combination of port and mining infrastructure, education (University of Newcastle), healthcare expansion, and Sydney commute ability has supported sustained price growth. House medians in Newcastle CBD around $980K, with surrounding suburbs like Mayfield, Hamilton South and Adamstown in the $750K to $900K range. Yields are 3.5 to 4.5% gross. The Hunter Valley wine region adds lifestyle appeal that supports premium pricing in towns like Pokolbin and Lovedale.</p>
 
 <h2>Geelong (VIC)</h2>
-<p>Geelong has had a wild ride since 2020, strong growth then a flat 2024, and 2026 sees the market steadying with renewed interest. House median around $730K, supported by Melbourne commuter demand, Avalon Airport expansion, and ongoing waterfront precinct development. Yields of 3.5 to 4% gross. The Surf Coast (Torquay, Anglesea) commands premium pricing for lifestyle buyers.</p>
+<p>Geelong has had a wild ride since 2020: strong growth, then a flat 2024. In 2026 the market is steadying with renewed interest. House median around $730K, supported by Melbourne commuter demand, Avalon Airport expansion, and ongoing waterfront precinct development. Yields of 3.5 to 4% gross. The Surf Coast (Torquay, Anglesea) commands premium pricing for lifestyle buyers.</p>
 
 <h2>Sunshine Coast and Hinterland (QLD)</h2>
 <p>The Sunshine Coast has been one of Australia's standout markets for a decade and 2026 sees that pattern continue. Maroochydore, Mooloolaba and Buderim sit at $1.0M to $1.4M house medians with continued strong demand. The hinterland (Maleny, Montville, Eumundi) offers premium lifestyle pricing. Solid 3.5 to 4.5% gross yields with strong rental demand from tourism and lifestyle migration.</p>
@@ -39,7 +39,7 @@ export const post: BlogPost = {
 
 <h2>What makes a great regional investment in 2026</h2>
 <ul>
-<li><strong>Diverse economic base.</strong> Single-industry towns are riskier, look for at least 3 to 4 major employment drivers</li>
+<li><strong>Diverse economic base.</strong> Single-industry towns are riskier; look for at least 3 to 4 major employment drivers</li>
 <li><strong>Population growth above 1.5% annually.</strong> Reliable population inflow drives both rental demand and capital growth</li>
 <li><strong>Infrastructure pipeline.</strong> New hospitals, university expansions, transport upgrades all signal sustained demand</li>
 <li><strong>Strong rental fundamentals.</strong> Vacancy under 2% and yields above 4.5% gross provide the cash-flow margin to weather cycles</li>

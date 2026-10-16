@@ -1,6 +1,8 @@
 import type { Property, Agent, Agency, BlogPost, Suburb, HouseAndLandPackage } from "@/types";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION_LONG, SITE_KNOWS_ABOUT } from "@/lib/constants";
 import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
+import { FOUNDER } from "@/lib/founder";
+import { findPerson } from "@/components/guide/people";
 
 function JsonLdScript({ data }: { data: Record<string, unknown> }) {
   return (
@@ -9,6 +11,23 @@ function JsonLdScript({ data }: { data: Record<string, unknown> }) {
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
+}
+
+/**
+ * A writer as a Person node. Someone on /about gets their @id there
+ * (/about#andy-mcmaster), so every byline resolves to the one Person the
+ * about page and the Organization's founder describe.
+ */
+function personNode(name: string, role?: string) {
+  const p = findPerson(name);
+  const jobTitle = role ?? p?.role;
+  return {
+    "@type": "Person" as const,
+    ...(p && { "@id": `${SITE_URL}/about#${p.slug}` }),
+    name,
+    ...(jobTitle && { jobTitle }),
+    url: p ? `${SITE_URL}/about#${p.slug}` : `${SITE_URL}/about`,
+  };
 }
 
 // Generic JSON-LD renderer for one-off schema types that don't yet have
@@ -54,9 +73,10 @@ export function OrganizationJsonLd() {
           // founder + employee strengthens the editorial-publisher signal.
           founder: {
             "@type": "Person",
-            "@id": `${SITE_URL}/about#andy-mcmaster`,
-            name: "Andy McMaster",
-            jobTitle: "Editor",
+            "@id": `${SITE_URL}/about#${FOUNDER.id}`,
+            name: FOUNDER.name,
+            jobTitle: "Founder and editor",
+            description: FOUNDER.facts.join(" "),
             worksFor: { "@id": `${SITE_URL}#organization` },
             url: `${SITE_URL}/about`,
             sameAs: [
@@ -66,9 +86,9 @@ export function OrganizationJsonLd() {
           employee: [
             {
               "@type": "Person",
-              "@id": `${SITE_URL}/about#andy-mcmaster`,
-              name: "Andy McMaster",
-              jobTitle: "Editor",
+              "@id": `${SITE_URL}/about#${FOUNDER.id}`,
+              name: FOUNDER.name,
+              jobTitle: "Founder and editor",
             },
           ],
           // Editorial policy signals. These are the trust hooks Google's
@@ -317,11 +337,9 @@ export function ArticleJsonLd({ post }: { post: BlogPost }) {
         image,
         datePublished: post.publishedAt,
         dateModified: post.updatedAt || post.publishedAt,
-        author: {
-          "@type": "Person",
-          name: post.author.name,
-          url: `${SITE_URL}/about`,
-        },
+        author: personNode(post.author.name),
+        // Andy edits every article and signs it off (BRAND.md §7).
+        editor: { "@id": `${SITE_URL}/about#${FOUNDER.id}` },
         publisher: {
           "@type": "Organization",
           "@id": `${SITE_URL}#organization`,
@@ -638,20 +656,13 @@ export function GuideArticleJsonLd({
   author?: { name: string; role?: string };
   reviewedBy?: { name: string; role?: string };
 }) {
-  // Use a Person entity when an author name is provided so Google can attribute
-  // the article correctly for E-E-A-T. Fall back to the org for older callers.
-  const authorEntity = author
-    ? {
-        "@type": "Person" as const,
-        name: author.name,
-        ...(author.role && { jobTitle: author.role }),
-        url: `${SITE_URL}/about`,
-      }
-    : {
-        "@type": "Organization" as const,
-        name: SITE_NAME,
-        url: SITE_URL,
-      };
+  // A named person on /about is a Person with their /about @id; anything
+  // else (the static guides' "Your Property Guide editorial" byline, or no
+  // author) is the Organization, never a made-up Person.
+  const authorEntity = author && findPerson(author.name)
+    ? personNode(author.name, author.role)
+    : { "@id": `${SITE_URL}#organization`, "@type": "Organization" as const, name: SITE_NAME, url: SITE_URL };
+  const reviewer = reviewedBy && findPerson(reviewedBy.name);
 
   return (
     <JsonLdScript
@@ -665,13 +676,12 @@ export function GuideArticleJsonLd({
         dateModified: dateModified ?? datePublished,
         author: authorEntity,
         ...(reviewedBy && {
-          reviewedBy: {
-            "@type": "Person",
-            name: reviewedBy.name,
-            ...(reviewedBy.role && { jobTitle: reviewedBy.role }),
-            url: `${SITE_URL}/about`,
-          },
+          reviewedBy: reviewer
+            ? personNode(reviewedBy.name, reviewedBy.role)
+            : { "@type": "Person", name: reviewedBy.name, ...(reviewedBy.role && { jobTitle: reviewedBy.role }), url: `${SITE_URL}/about` },
         }),
+        // Andy edits and signs off every guide (BRAND.md §7).
+        editor: { "@id": `${SITE_URL}/about#${FOUNDER.id}` },
         publisher: {
           "@type": "Organization",
           name: SITE_NAME,

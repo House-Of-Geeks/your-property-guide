@@ -167,7 +167,7 @@ export default function FirstHomeBuyerACTPage() {
         </p>
       </EditorNote>
 
-      <h2 id="no-fhog">No FHOG in the ACT, here's what you get instead</h2>
+      <h2 id="no-fhog">No FHOG in the ACT, here&rsquo;s what you get instead</h2>
       <p className="lead">
         Unlike every other Australian state and territory, the ACT does <strong>not</strong>{" "}
         offer a First Home Owner Grant. The ACT Government replaced it with the Home
@@ -246,7 +246,7 @@ export default function FirstHomeBuyerACTPage() {
       <h3>First Home Super Saver scheme (FHSS)</h3>
       <FhssNote as="p" />
 
-      <h2 id="leasehold">Leasehold land, the ACT's unique system</h2>
+      <h2 id="leasehold">Leasehold land, the ACT&rsquo;s unique system</h2>
       <p>
         The most important thing to understand about Canberra property: <strong>all
         land in the ACT is held under Crown Lease (leasehold tenure)</strong>.
@@ -258,7 +258,7 @@ export default function FirstHomeBuyerACTPage() {
         <li><strong>Crown Leases specify permitted use</strong>, e.g. residential, commercial. Using land contrary to the lease is a breach.</li>
         <li><strong>Change-of-use charges:</strong> if you develop, subdivide, or change the use of the land, the government may charge a fee for the uplift in land value.</li>
         <li><strong>Mortgage and finance:</strong> All major banks lend on ACT Crown Lease properties as a matter of course; no unusual financing challenges for standard residential purchases.</li>
-        <li><strong>99-year leases:</strong> When a lease approaches the end of its term (rare in modern residential areas), it's typically renewed automatically.</li>
+        <li><strong>99-year leases:</strong> When a lease approaches the end of its term (rare in modern residential areas), it&rsquo;s typically renewed automatically.</li>
       </ul>
       <p>
         For most buyers of standard residential homes in Canberra, leasehold
@@ -268,7 +268,7 @@ export default function FirstHomeBuyerACTPage() {
 
       <h2 id="canberra-market">Canberra property market overview</h2>
       <p>
-        Canberra is consistently among Australia's most expensive markets, driven
+        Canberra is consistently among Australia&rsquo;s most expensive markets, driven
         by high incomes, stable government employment, and quality housing demand.
       </p>
       <ul>
@@ -281,7 +281,7 @@ export default function FirstHomeBuyerACTPage() {
       </ul>
       <p>
         For first home buyers, the HBCS and the{" "}
-        {fmtCap(HG_PRICE_CAPS.ACT.capital)} 5% Deposit Scheme cap are critical enablers in a market where median house prices regularly exceed
+        {fmtCap(HG_PRICE_CAPS.ACT.capital)} 5% Deposit Scheme cap make a real difference in a market where median house prices regularly exceed
         $900,000.
       </p>
 

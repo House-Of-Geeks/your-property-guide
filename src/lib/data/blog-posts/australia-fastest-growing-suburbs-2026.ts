@@ -6,7 +6,7 @@ export const post: BlogPost = {
   title: "Australia's Fastest-Growing Suburbs in 2026",
   excerpt:
     "Where in Australia are property prices growing fastest in 2026? A look at the standout-performing suburbs in each state, what's driving them, and whether the growth is durable.",
-  content: `<p>Year-over-year price growth varies enormously across Australian suburbs. Some areas are growing at 12 to 15% annually while neighbouring suburbs are flat or down. Understanding what's driving the growth, infrastructure, population, investment, or speculation, is the difference between catching a structural trend and buying late into a heated market. This guide covers Australia's fastest-growing suburbs in 2026 by state, with an honest read on whether each story is durable.</p>
+  content: `<p>Year-over-year price growth varies enormously across Australian suburbs. Some areas are growing at 12 to 15% annually while neighbouring suburbs are flat or down. Understanding what's driving the growth (infrastructure, population, investment or speculation) is the difference between catching a structural trend and buying late into a heated market. This guide covers Australia's fastest-growing suburbs in 2026 by state, with an honest read on whether each story is durable.</p>
 
 <h2>NSW: Western Sydney corridor</h2>
 <p>The standout NSW growth story is Sydney's outer-southwest corridor. <strong>Oran Park, Leppington, Austral and Edmondson Park</strong> are seeing 9 to 12% annual growth, supported by the Western Sydney Airport (operational from late 2026), the M12 motorway, and the South West Rail Link. These are infrastructure-driven moves that should be durable through 2027–28. <strong>Marsden Park and Schofields</strong> in the northwest are also delivering 8 to 10% growth on similar drivers.</p>
@@ -60,7 +60,7 @@ export const post: BlogPost = {
 <li>Consider buying earlier in the next cycle rather than late in the current one</li>
 </ol>
 
-<p>The fastest-growing suburbs in 2026 reflect Australia's structural shifts: infrastructure-driven outer-metro growth, regional centre maturation, and lifestyle-led migration. Most of these stories should run another 2 to 4 years. But "fastest-growing now" doesn't always mean "best to buy today", late entrants often pay for someone else's earlier insight.</p>`,
+<p>The fastest-growing suburbs in 2026 reflect Australia's structural shifts: infrastructure-driven outer-metro growth, regional centre maturation, and lifestyle-led migration. Most of these stories should run another 2 to 4 years. But "fastest-growing now" doesn't always mean "best to buy today": late entrants often pay for someone else's earlier insight.</p>`,
   coverImage: "/images/blog/cover-australia-fastest-growing-suburbs-2026.jpg",
   author: { name: "Ellie Johnston", image: "/images/agents/ellie-johnston.jpg" },
   category: "Investment",

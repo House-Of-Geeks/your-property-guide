@@ -176,9 +176,9 @@ export default function BuyingPropertyAustraliaPage() {
         auction rules in Victoria differ from those in Western Australia.
       </p>
       <p>
-        The good news is that Australia has a robust and well-regulated property
-        market. With the right preparation and a clear understanding of each
-        step, buying property is very much achievable, even in a competitive
+        Australia&rsquo;s property market is well regulated, and with the right
+        preparation and a clear understanding of each step, buying property is
+        very much achievable, even in a competitive
         market. This guide walks you through every stage, from initial financial
         health-check to collecting the keys.
       </p>
@@ -240,7 +240,7 @@ export default function BuyingPropertyAustraliaPage() {
         (also called conditional approval) from a
         lender gives you a realistic budget and signals to agents that
         you&rsquo;re a serious buyer. Pre-approvals typically last 90 days and
-        can be renewed. Pre-approval is not a guarantee of final approval, it
+        can be renewed. Pre-approval is not a guarantee of final approval; it
         is conditional on the property valuing at or above purchase price and
         your circumstances not changing.
       </p>
@@ -338,10 +338,10 @@ export default function BuyingPropertyAustraliaPage() {
       <p>Auctions are common in Sydney and Melbourne. Key points:</p>
       <ul>
         <li>Register to bid before the auction (bring ID).</li>
-        <li>You must have finance pre-approved, there is no cooling-off period at auction.</li>
+        <li>You must have finance pre-approved: there is no cooling-off period at auction.</li>
         <li>Have your building inspection done before auction day.</li>
         <li>The highest bid above the reserve wins; you exchange contracts and pay the deposit on the spot.</li>
-        <li>Set your maximum bid before the auction and stick to it, the atmosphere can be emotionally charged.</li>
+        <li>Set your maximum bid before the auction and stick to it, because the atmosphere can be emotionally charged.</li>
         <li>If a property is &ldquo;passed in&rdquo; (no one bids above reserve), the highest bidder gets first right to negotiate with the vendor.</li>
       </ul>
       <p>

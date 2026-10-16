@@ -139,9 +139,9 @@ export default function GrannyFlatGuideSAPage() {
 
       <h2 id="what-is">What is a secondary dwelling in SA?</h2>
       <p className="lead">
-        In SA, what most people call a "granny flat" is officially a{" "}
+        In SA, what most people call a “granny flat” is officially a{" "}
         <strong>secondary dwelling</strong> or <strong>ancillary
-        accommodation</strong> under the SA Planning and Design Code. It's a
+        accommodation</strong> under the SA Planning and Design Code. It’s a
         self-contained dwelling on the same allotment as a primary residence,
         typically for a family member or as a rental.
       </p>
@@ -159,10 +159,10 @@ export default function GrannyFlatGuideSAPage() {
 
       <h2 id="planning-code">SA Planning and Design Code</h2>
       <p>
-        The Planning and Design Code is SA's central planning document, accessed
+        The Planning and Design Code is SA’s central planning document, accessed
         via the PlanSA portal. It classifies land into zones and overlays, and
-        specifies what's "accepted" (no approval needed), "complying" (approved
-        as of right if criteria met), or "performance assessed" (DA required
+        specifies what’s “accepted” (no approval needed), “complying” (approved
+        as of right if criteria met), or “performance assessed” (DA required
         against performance outcomes).
       </p>
       <p>
@@ -187,7 +187,7 @@ export default function GrannyFlatGuideSAPage() {
         <li>A separate building consent (planning approval ≠ building consent) is still required</li>
       </ul>
       <p>
-        If your proposal doesn't meet all criteria (e.g. lot slightly under
+        If your proposal doesn’t meet all criteria (e.g. lot slightly under
         minimum size), it shifts to performance assessment, 40 to 60 business
         days, discretionary outcome.
       </p>
@@ -208,7 +208,7 @@ export default function GrannyFlatGuideSAPage() {
         <tbody>
           <tr><td>Minimum lot size</td><td>≥ 250m² (verify current threshold)</td></tr>
           <tr><td>Maximum secondary dwelling floor area</td><td>60m² (verify current threshold)</td></tr>
-          <tr><td>Primary dwelling must be retained</td><td>Yes, can't demolish the main house</td></tr>
+          <tr><td>Primary dwelling must be retained</td><td>Yes, can’t demolish the main house</td></tr>
           <tr><td>Side and rear setbacks</td><td>Minimum 0.9m to 1.0m (zone dependent)</td></tr>
           <tr><td>Maximum site coverage</td><td>Zone dependent, typically 60 to 70%</td></tr>
         </tbody>
@@ -229,7 +229,7 @@ export default function GrannyFlatGuideSAPage() {
       <h2 id="owner-occupier">Owner-occupier requirement</h2>
       <p>
         In most cases SA planning requires that <strong>one of the two
-        dwellings on the allotment must be owner-occupied</strong>. You can't
+        dwellings on the allotment must be owner-occupied</strong>. You can’t
         purchase a property as a pure investment and rent both the main house
         and the secondary dwelling.
       </p>
@@ -293,7 +293,7 @@ export default function GrannyFlatGuideSAPage() {
         <li>Northern and southern suburbs: <strong>$280 to $400/week</strong></li>
       </ul>
       <p>
-        Adelaide's lower property prices versus Sydney and Melbourne mean
+        Adelaide’s lower property prices versus Sydney and Melbourne mean
         construction is a higher proportion of overall value, but the tight
         rental market and strong yields still make secondary dwellings
         compelling for owner-occupier investors.

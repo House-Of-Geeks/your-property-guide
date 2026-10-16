@@ -1,18 +1,36 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk } from "next/font/google";
+import { Schibsted_Grotesk, Source_Serif_4 } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
 import { Providers } from "@/components/analytics/Providers";
 
-// One typeface for the whole brand (v4, Oct 2026): Schibsted Grotesk, a
-// newsroom grotesk that stays sharp at headline sizes and reads cleanly at
-// body sizes. --font-display points at the same face in globals.css, so
-// every heading and body style shares one family.
+// Two faces (v6, 15 Oct 2026): Schibsted Grotesk for body text, labels and
+// h3 down, and Source Serif 4 for h1, h2, the wordmark and big figures
+// (--font-display points at it in globals.css). The serif's italic is its
+// own font, not preloaded, so only pages that set serif italic (an accent
+// phrase, a pull quote, a signature) download it; globals.css points serif
+// italic text at it. No optical-size axis: it more than doubled the files
+// and cost mobile LCP (Lighthouse, 16 Oct 2026).
 const brandFont = Schibsted_Grotesk({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
+});
+
+const displayFont = Source_Serif_4({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  style: ["normal"],
+  display: "swap",
+});
+
+const displayItalic = Source_Serif_4({
+  variable: "--font-serif-italic",
+  subsets: ["latin"],
+  style: ["italic"],
+  display: "swap",
+  preload: false,
 });
 
 
@@ -30,7 +48,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "en_AU",
     url: SITE_URL,
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: `${SITE_NAME}: free guides to selling and buying property in Australia` }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: `${SITE_NAME}: it’s the campaign that wins. Not the market.` }],
   },
   twitter: {
     card: "summary_large_image",
@@ -66,7 +84,7 @@ export default function RootLayout({
     <html
       suppressHydrationWarning
       lang="en"
-      className={`${brandFont.variable} h-full antialiased`}
+      className={`${brandFont.variable} ${displayFont.variable} ${displayItalic.variable} h-full antialiased`}
     >
       <head>
         {/* Preconnect to high-priority third-party origins. dns-prefetch is a
@@ -87,8 +105,8 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.clarity.ms" />
         <link rel="dns-prefetch" href="https://secure.quantserve.com" />
 
-        {/* Theme colour for the address bar on mobile browsers: the white page. */}
-        <meta name="theme-color" content="#ffffff" />
+        {/* Theme colour for the address bar on mobile browsers: the cream page. */}
+        <meta name="theme-color" content="#fbf8f3" />
       </head>
       <body className="min-h-full flex flex-col">
         {/* Pre-paint motion gate: reveal styles only apply under

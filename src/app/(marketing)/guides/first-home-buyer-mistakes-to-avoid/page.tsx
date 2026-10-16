@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   GuideArticleLayout,
   Callout,
@@ -139,7 +140,7 @@ export default function FirstHomeBuyerMistakesGuide() {
       <p>
         <strong>The fix:</strong> Budget the deposit + 5% on top for
         ancillary costs. Use our{" "}
-        <a href="/stamp-duty-calculator">Stamp Duty Calculator</a> to lock in
+        <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link> to lock in
         the biggest single number.
       </p>
 
@@ -199,13 +200,13 @@ export default function FirstHomeBuyerMistakesGuide() {
         <strong>The fix:</strong>{" "}Always commission building &amp; pest. For
         auctions, do it before bidding (you can&rsquo;t back out after).
         See our{" "}
-        <a href="/guides/building-pest-inspection">building &amp; pest inspection guide</a>.
+        <Link href="/guides/building-pest-inspection">building &amp; pest inspection guide</Link>.
       </p>
 
       <h2 id="address-blindspot">6. Buying on suburb reputation, not address-level data</h2>
       <p>
-        <strong>The mistake:</strong>{" "}&ldquo;This suburb has good schools&rdquo;
-       , but your specific address is in a different school catchment, or
+        <strong>The mistake:</strong>{" "}&ldquo;This suburb has good schools&rdquo;,
+        but your specific address is in a different school catchment, or
         the block backs onto a flood-prone creek you didn&rsquo;t notice.
       </p>
       <p>
@@ -281,7 +282,7 @@ export default function FirstHomeBuyerMistakesGuide() {
       <ol>
         <li>
           Build the all-in cash budget using our{" "}
-          <a href="/guides/how-much-deposit-to-buy-a-house">deposit guide</a>.
+          <Link href="/guides/how-much-deposit-to-buy-a-house">deposit guide</Link>.
         </li>
         <li>
           Get pre-approval (free, 90-day validity) before your first open
@@ -293,11 +294,11 @@ export default function FirstHomeBuyerMistakesGuide() {
         </li>
         <li>
           Stress-test repayments at +2% rates using the{" "}
-          <a href="/mortgage-calculator">Mortgage Calculator</a>.
+          <Link href="/mortgage-calculator">Mortgage Calculator</Link>.
         </li>
         <li>
           Read our{" "}
-          <a href="/guides/cooling-off-period-by-state-australia">cooling-off period guide</a>{" "}
+          <Link href="/guides/cooling-off-period-by-state-australia">cooling-off period guide</Link>{" "}
           before signing any contract.
         </li>
       </ol>

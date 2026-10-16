@@ -131,7 +131,7 @@ export default function DownsizersGuidePage() {
       <p className="lead">
         Downsizing means selling a larger family home and moving to a smaller,
         more manageable property. For many Australians, the family home
-        represents their largest financial asset, and downsizing can unlock
+        represents their largest financial asset, and downsizing can release
         significant capital at a stage of life when income may be reducing
         and retirement is approaching or underway.
       </p>

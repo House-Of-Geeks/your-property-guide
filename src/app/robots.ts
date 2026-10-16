@@ -9,7 +9,8 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         // /downloads/ holds the gated lead-magnet PDFs; keeping them out
         // of the index keeps the /selling-guide funnel as the front door.
-        disallow: ["/api/", "/dashboard/", "/downloads/", "/*.woff2", "/*.woff"],
+        // /print/ is the printable guide the PDFs are made from.
+        disallow: ["/api/", "/dashboard/", "/downloads/", "/print/", "/*.woff2", "/*.woff"],
       },
       // OpenAI
       { userAgent: "GPTBot",          allow: "/" },

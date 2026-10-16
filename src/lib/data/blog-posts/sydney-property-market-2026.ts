@@ -7,7 +7,7 @@ export const post: BlogPost = {
   title: "Sydney Property Market 2026: Where Prices, Yields and Demand Are Heading",
   excerpt:
     "An honest look at Sydney's property market in 2026. Where prices are heading, which suburbs are running hot, where the value plays sit, and what buyers and sellers should expect through the rest of the year.",
-  content: `<p>Sydney remains Australia's most expensive property market in 2026, and the dynamics shaping prices this year are markedly different from the post-COVID rebound that defined 2021 and 2022. Population growth, constrained supply, and a sharp drop in rental vacancy are the structural forces in play. Interest rates have stabilised but borrowing capacity hasn't fully recovered, which keeps a lid on the top end of the market while the middle and lower segments continue to firm. Here's an honest read on where Sydney sits as we move through 2026.</p>
+  content: `<p>Sydney remains Australia's most expensive property market in 2026, and the dynamics shaping prices this year are markedly different from the post-COVID rebound that defined 2021 and 2022. Population growth, constrained supply, and a sharp drop in rental vacancy are the structural forces in play. Interest rates have stabilised but borrowing capacity hasn't fully recovered, which keeps a lid on the top end of the market while the middle and lower segments continue to firm. Here's where Sydney sits as we move through 2026.</p>
 
 <h2>Headline numbers</h2>
 <p>Sydney's median house price sits around $1.65M as of mid-2026, up roughly 4.1% year-on-year, with units a few percentage points behind at around $830K. Days on market average 28 to 35 across most of metro Sydney, with the inner-west and northern beaches at the tighter end (under 25 days) and outer-fringe estates in southwest Sydney closer to 45 days. Auction clearance rates have averaged in the high-60s through early 2026, which historically signals a balanced-to-firm seller's market.</p>
@@ -25,7 +25,7 @@ export const post: BlogPost = {
 <ul>
 <li>Listing volumes will likely lift through spring as price expectations stabilise, particularly in the upgrader market</li>
 <li>Western Sydney's infrastructure pipeline (airport, motorways, rail) will continue to support outer-fringe price growth</li>
-<li>Inner-city units remain under-priced relative to houses on a long-run basis, watch for investor re-entry</li>
+<li>Inner-city units remain under-priced relative to houses on a long-run basis; watch for investor re-entry</li>
 <li>Days on market may compress further in tightly-held middle ring suburbs as supply remains constrained</li>
 <li>First home buyer competition for the $800K to $1.1M segment will be intense, particularly with the 5% Deposit Scheme cap at ${fmtCap(HG_PRICE_CAPS.NSW.capital)} in Greater Sydney and no income test since ${HG_DATES.expanded}</li>
 </ul>
