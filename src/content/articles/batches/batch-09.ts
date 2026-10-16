@@ -58,4 +58,8 @@ export const batch9: ArticleCampaignBatch = {
     hook: "Spring brings the biggest buyer audience of the year, but the campaign decides the result, and a spring campaign is built in July: the number, the agent, the presentation, then the launch.",
     cta: "selling-plan",
   },
+  "are-house-prices-crashing-in-australia": {
+    hook: "A falling market doesn’t set your price; the campaign does. With values down six months running and stock building, a seller needs a number from recent sales and a campaign that reaches the buyers still active, and a buyer has room to negotiate.",
+    cta: "selling-plan",
+  },
 };
