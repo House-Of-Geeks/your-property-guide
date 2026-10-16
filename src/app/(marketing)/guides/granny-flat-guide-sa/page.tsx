@@ -102,7 +102,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "Granny Flat Guide NSW",         href: "/guides/granny-flat-guide-nsw", description: "Compare to NSW's CDC pathway." },
-  { title: "Granny Flat Guide VIC",         href: "/guides/granny-flat-guide-vic", description: "Victoria's slower planning permit process." },
+  { title: "Granny Flat Guide VIC",         href: "/guides/granny-flat-guide-vic", description: "Victoria's small second dwelling rules and when you need a planning permit." },
   { title: "Granny Flat Guide QLD",         href: "/guides/granny-flat-guide-qld", description: "QLD's code-assessable approach and tight rental market." },
   { title: "Property Depreciation Guide",   href: "/guides/property-depreciation-guide", description: "Maximising deductions on a new build." },
   { title: "Renter's Rights in SA",         href: "/guides/renters-rights-sa", description: "Tenant entitlements when you rent the dwelling out." },

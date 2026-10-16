@@ -25,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Practical, agent-aware negotiation tactics for buying property in Australia. Opening offers, counter-offer logic, conditional clauses, walk-away triggers and the mistakes that cost real money.",
   slug: "how-to-negotiate-property-price-australia",
   publishedAt: "2026-05-18",
-  updatedAt: "2026-05-18",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 13,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -104,7 +104,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What's the difference between negotiating and bidding at auction?",
     answer:
-      "Negotiation is a private-treaty process: you and the vendor (via the agent) exchange offers until you agree or walk away. You typically have cooling-off rights after exchange (3 to 5 business days, state-dependent) to finalise finance and inspections. Auction is unconditional from the moment the hammer falls. There's no cooling-off period, no subject-to-finance, no subject-to-inspection. All due diligence must happen before auction day. They're materially different processes; the negotiation guidance in this article is for private treaty.",
+      "Negotiation is a private-treaty process: you and the vendor (via the agent) exchange offers until you agree or walk away. In most states you have cooling-off rights after exchange (2 to 5 business days, state-dependent; WA and Tasmania have no statutory cooling-off) to finalise finance and inspections. Auction is unconditional from the moment the hammer falls. There's no cooling-off period, no subject-to-finance, no subject-to-inspection. All due diligence must happen before auction day. They're materially different processes; the negotiation guidance in this article is for private treaty.",
   },
   {
     question: "Is it worth using a buyer's agent just to negotiate?",

@@ -20,7 +20,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "The Victorian cooling-off period explained: how long you have, when it applies (and when it doesn't), the penalty if you withdraw, and how it interacts with auctions and Section 32 statements.",
   slug: "cooling-off-period-vic",
   publishedAt: "2026-05-13",
-  updatedAt: "2026-05-13",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Victorian residential cooling-off period is 3 clear business days from the date you sign the contract.",
-  "If you withdraw during cooling-off, the seller can keep the lesser of $100 or 0.2% of the purchase price (so $2,000 on a $1M property).",
+  "If you withdraw during cooling-off, the seller can keep the greater of $100 or 0.2% of the purchase price (so $2,000 on a $1M property).",
   "Cooling-off doesn't apply to: auction purchases, purchases within 3 clear business days before or after a publicly advertised auction, sales within 3 days of withdrawal from auction (passed-in), or sales to estate agents and bodies corporate. There are also some exclusions for industrial/business property.",
   "To withdraw, give written notice to the seller or seller's agent before the cooling-off period ends. Don't rely on verbal or last-minute notice.",
   "Cooling-off is independent of subject-to-finance conditions, which can give you a longer withdrawal window in private treaty sales.",
@@ -71,7 +71,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the cooling-off period in Victoria?",
     answer:
-      "Victorian residential buyers have 3 clear business days from the date the contract is signed (by both buyer and seller) to withdraw without needing to give any reason. The cooling-off period is granted by section 31 of the Sale of Land Act 1962 (Vic). \"Clear business days\" means the day you sign and the day you withdraw are not counted, only the full business days in between.",
+      "Victorian residential buyers have 3 clear business days from the date they sign the contract (not the date the seller signs it) to withdraw without needing to give any reason. The cooling-off period is granted by section 31 of the Sale of Land Act 1962 (Vic). \"Clear business days\" means the day you sign and the day you withdraw are not counted, only the full business days in between.",
   },
   {
     question: "Does cooling-off apply to auction purchases in Victoria?",
@@ -81,7 +81,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What does it cost to withdraw during cooling-off?",
     answer:
-      "The seller can retain the lesser of $100 or 0.2% of the purchase price. On a $500,000 property that's $1,000; on a $1.5M property that's $3,000. The rest of any deposit you've paid must be refunded. The seller cannot pursue other damages provided you've withdrawn within the cooling-off period. The 0.2%/$100 penalty is the full and final cost.",
+      "The seller can retain the greater of $100 or 0.2% of the purchase price. On a $500,000 property that's $1,000; on a $1.5M property that's $3,000. The rest of any deposit you've paid must be refunded. The seller cannot pursue other damages provided you've withdrawn within the cooling-off period. The 0.2%/$100 penalty is the full and final cost.",
   },
   {
     question: "How do I withdraw during the cooling-off period?",
@@ -147,12 +147,12 @@ export default function CoolingOffPeriodVicPage() {
       <h2 id="how-long">How long the period is</h2>
       <p>
         The period is <strong>3 clear business days</strong>{" "}from the date
-        the contract is signed by both parties. &quot;Clear business
+        you sign the contract, not the date the seller signs it. &quot;Clear business
         days&quot; excludes weekends, public holidays, and both the day you
         sign and the day you withdraw.
       </p>
       <p>
-        Example: contract signed by both parties on Monday afternoon.
+        Example: you sign the contract on Monday afternoon.
         Cooling-off period runs Tuesday, Wednesday, and Thursday business
         days. Your written notice must be delivered to the seller or
         seller&rsquo;s agent <strong>before the end of business on
@@ -187,10 +187,10 @@ export default function CoolingOffPeriodVicPage() {
 
       <h2 id="penalty">The penalty if you withdraw</h2>
       <p>
-        The seller can keep <strong>the lesser of $100 or 0.2% of the
+        The seller can keep <strong>the greater of $100 or 0.2% of the
         purchase price</strong>. On a $500,000 property that&rsquo;s $1,000.
         On a $1.5M property that&rsquo;s $3,000. The rest of any deposit
-        you&rsquo;ve paid must be refunded to you within 14 days.
+        you&rsquo;ve paid must be refunded to you.
       </p>
       <p>
         Importantly, this 0.2%/$100 penalty is the seller&rsquo;s full and

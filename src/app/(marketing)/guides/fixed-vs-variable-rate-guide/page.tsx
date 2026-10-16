@@ -19,7 +19,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Pros and cons of fixed and variable rate home loans in Australia. Split loans explained, break costs that surprise borrowers, the RBA rate context for 2026, and the questions to ask before fixing.",
   slug: "fixed-vs-variable-rate-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 6,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -152,9 +152,9 @@ export default function FixedVsVariableRateGuidePage() {
       <p>
         A variable rate loan has an interest rate that can change over the life
         of the loan. The most common driver of variable rate changes in
-        Australia is the RBA&rsquo;s monthly cash rate decision, when the RBA
-        raises or lowers the cash rate, most lenders pass on the change (in
-        full or in part) to their variable rate borrowers.
+        Australia is the RBA’s cash rate decision, made at eight meetings
+        a year. When the RBA raises or lowers the cash rate, most lenders pass
+        on the change (in full or in part) to their variable rate borrowers.
       </p>
       <p>
         Variable rates are the &ldquo;default&rdquo; loan type in Australia.
@@ -168,7 +168,7 @@ export default function FixedVsVariableRateGuidePage() {
       <Callout variant="success" title="Advantages of fixing">
         <p>
           Certainty of repayments, easy to budget. Protection if rates rise
-          during the fixed period. Peace of mind, no monthly RBA anxiety. Can
+          during the fixed period. Peace of mind, no anxiety before each RBA decision. Can
           lock in a low rate if you believe rates will rise.
         </p>
       </Callout>
@@ -261,18 +261,19 @@ export default function FixedVsVariableRateGuidePage() {
         </li>
       </ul>
       <p>
-        As of April 2026, the RBA has moved through a significant rate hiking
-        cycle (2022 to 2023) and has subsequently begun reducing the cash rate.
-        In a rate-cutting environment, variable rates have generally performed
-        better than fixed rates, as variable borrowers benefit from each RBA
-        cut while fixed borrowers remain locked to their prior rate.
+        After a significant rate hiking cycle (2022 to 2023), the RBA cut the
+        cash rate three times in 2025, to 3.60%, then began raising it again.
+        It lifted the rate in February, March and May 2026, held in June and
+        August, and raised it again on 29 September 2026, to 4.60%. Variable
+        borrowers have absorbed each of those rises, while borrowers who fixed
+        before February 2026 are shielded from them until their fixed term
+        ends.
       </p>
       <p>
-        The key question for 2026 is: are we in the middle of a rate-cutting
-        cycle, or near the bottom? If rates are expected to fall further,
-        variable is likely the better choice. If rates are expected to
-        stabilise or rise again, fixing provides security. No one can predict
-        this with certainty, including the RBA.
+        The key question now is whether rates are near their peak. If rates
+        are expected to rise further, fixing provides security. If they are
+        expected to stabilise and then fall, variable is likely the better
+        choice. No one can predict this with certainty, including the RBA.
       </p>
 
       <h2 id="break-costs">Break costs: the hidden danger of fixed rates</h2>

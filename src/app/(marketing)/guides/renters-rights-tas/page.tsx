@@ -13,10 +13,10 @@ import { guideOgImages } from "@/lib/og/helpers";
 const FRONTMATTER: GuideFrontmatter = {
   title: "Renter's Rights in Tasmania: Complete Guide for Tenants (2026)",
   description:
-    "Tasmania tenant rights: bond rules, rent increases (12-month minimum, 42 days notice), inspections, repairs, ending a tenancy, and CBOS / Magistrates Court dispute resolution.",
+    "Tasmania tenant rights: bond rules, rent increases (12-month minimum, 60 days notice), inspections, repairs, ending a tenancy, and CBOS / Magistrates Court dispute resolution.",
   slug: "renters-rights-tas",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -44,10 +44,10 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Maximum bond is 4 weeks rent. Lodged with the Rental Deposit Authority (RDA), administered by CBOS.",
-  "Rent can only be increased once every 12 months with at least 42 days written notice.",
+  "Rent can only be increased once every 12 months with at least 60 days written notice.",
   "Routine inspections capped at 4 per year, with 24 hours written notice required.",
   "Urgent repairs (burst pipes, gas leaks, dangerous electrical, blocked sole toilet) must be addressed within 24 hours.",
-  "Periodic tenancy notice: 14 days from tenant, 42 days from landlord (no grounds). With grounds (breach), 14 days from either side.",
+  "Periodic tenancy notice: 14 days from tenant. A landlord needs a reason listed in the Act: 42 days for reasons such as sale, renovations or a family member moving in, 14 days for a breach.",
   "No dedicated tenancy tribunal. Disputes go through CBOS first, then the Magistrates Court of Tasmania for unresolved matters.",
 ];
 
@@ -67,12 +67,12 @@ const FAQS: FaqItem[] = [
   {
     question: "How often can my rent be increased in Tasmania?",
     answer:
-      "Once every 12 months. The landlord must give at least 42 days written notice before the increase takes effect. There's no cap on the amount of an increase, only the frequency and notice required.",
+      "Once every 12 months. The landlord must give at least 60 days written notice before the increase takes effect. There's no cap on the amount of an increase, only the frequency and notice required.",
   },
   {
     question: "Can my landlord evict me without a reason in Tasmania?",
     answer:
-      "On a periodic tenancy, yes, with 42 days written notice. Tasmania still permits no-grounds notices to vacate. If you suspect retaliatory eviction (e.g. after a repair request), seek advice from the Tenants' Union of Tasmania or CBOS.",
+      "Not on a periodic tenancy. The landlord needs a reason listed in the Residential Tenancy Act, such as selling the property, significant renovations, a change of use, or a family member moving in (at least 42 days notice), or a breach by the tenant (at least 14 days). On a fixed-term lease, the landlord can give notice that the lease is ending: at least 42 days, served no more than 60 days before it expires. If you suspect retaliatory eviction (e.g. after a repair request), seek advice from the Tenants' Union of Tasmania or CBOS.",
   },
   {
     question: "What's the bond rule in Tasmania?",
@@ -97,9 +97,9 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "NSW also still permits no-grounds evictions." },
+  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "NSW has required a reason to end a tenancy since May 2025." },
   { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms abolished no-grounds evictions." },
-  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD's 2024 reforms toward grounds-based evictions." },
+  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD ended no-grounds evictions in October 2022." },
   { title: "Renter's Rights in WA",       href: "/guides/renters-rights-wa",  description: "WA's Residential Tenancies Act and entry rules." },
   { title: "First Home Buyer Guide TAS",  href: "/guides/first-home-buyer-tas", description: "Tasmania's $20K grant on new homes, and why the duty exemption ended." },
 ];
@@ -182,7 +182,7 @@ export default function RentersRightsTasPage() {
       <h2 id="rent-increases">Rent increases</h2>
       <ul>
         <li><strong>Minimum period:</strong> At least <strong>12 months</strong> between any two rent increases.</li>
-        <li><strong>Notice required:</strong> At least <strong>42 days written notice</strong> before the increase takes effect.</li>
+        <li><strong>Notice required:</strong> At least <strong>60 days written notice</strong> before the increase takes effect.</li>
         <li><strong>Fixed term:</strong> Rent can’t be increased during the fixed term unless the increase amount or method is specified in the agreement.</li>
       </ul>
       <p>
@@ -245,9 +245,9 @@ export default function RentersRightsTasPage() {
           <tr><th>Situation</th><th>Tenant notice</th><th>Landlord notice</th></tr>
         </thead>
         <tbody>
-          <tr><td>Periodic, no grounds</td><td>14 days</td><td>42 days</td></tr>
+          <tr><td>Periodic, owner reason (sale, renovations, change of use, family moving in)</td><td>14 days</td><td>42 days</td></tr>
           <tr><td>Periodic, with grounds (breach)</td><td>14 days</td><td>14 days</td></tr>
-          <tr><td>Fixed term, end of term</td><td>Check agreement terms</td><td>Check agreement terms</td></tr>
+          <tr><td>Fixed term, end of term</td><td>Check agreement terms</td><td>42 days (served no more than 60 days before the term ends)</td></tr>
         </tbody>
       </table>
       <p>

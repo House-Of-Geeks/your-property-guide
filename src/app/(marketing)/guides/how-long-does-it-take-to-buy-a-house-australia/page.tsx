@@ -19,7 +19,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "From pre-approval to keys in hand, how long does buying a house in Australia really take? A realistic week-by-week breakdown with the typical delays that catch first-time buyers off guard.",
   slug: "how-long-does-it-take-to-buy-a-house-australia",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-05-06",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -60,7 +60,7 @@ const TOC: GuideTOCEntry[] = [
   { id: "stage-2",            label: "Stage 2: Pre-approval (1 to 2 weeks)" },
   { id: "stage-3",            label: "Stage 3: Search (6 to 16 weeks)" },
   { id: "stage-4",            label: "Stage 4: Offer & contract (1 to 2 weeks)" },
-  { id: "stage-5",            label: "Stage 5: Cooling-off (3 to 5 days)" },
+  { id: "stage-5",            label: "Stage 5: Cooling-off (2 to 5 days)" },
   { id: "stage-6",            label: "Stage 6: Settlement (30 to 90 days)" },
   { id: "by-state",           label: "Settlement times by state" },
   { id: "speed-it-up",        label: "How to speed it up" },
@@ -122,7 +122,7 @@ export default function HowLongBuyHouseGuide() {
           { name: "Pre-approval", text: "Apply for conditional finance approval through a lender or broker. Typically 1 to 2 weeks." },
           { name: "Property search", text: "Inspect, shortlist, and negotiate. The big wildcard, anywhere from 1 weekend to 6 months." },
           { name: "Offer and contract exchange", text: "Make an offer or attend auction, then sign the contract. 1 to 2 weeks." },
-          { name: "Cooling-off and due diligence", text: "Building & pest, contract review, finance unconditional. 3 to 5 business days in most states." },
+          { name: "Cooling-off and due diligence", text: "Building & pest, contract review, finance unconditional. 2 to 5 business days in most states." },
           { name: "Settlement", text: "Final payment, title transfer, key handover. Typically 30 to 90 days from contract exchange." },
         ]}
       />
@@ -218,7 +218,7 @@ export default function HowLongBuyHouseGuide() {
         <li><strong>Expression of interest / tender:</strong> Submit by deadline; vendor reviews and accepts. Can take 1 to 2 weeks.</li>
       </ul>
 
-      <h2 id="stage-5">Stage 5: Cooling-off and due diligence (3 to 5 business days)</h2>
+      <h2 id="stage-5">Stage 5: Cooling-off and due diligence (2 to 5 business days)</h2>
       <p>
         For private treaty purchases in NSW, VIC, QLD, SA, ACT, and NT, you
         have a short cooling-off window after exchange to commission building

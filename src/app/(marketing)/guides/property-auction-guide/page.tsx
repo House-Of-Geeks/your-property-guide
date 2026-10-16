@@ -21,7 +21,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "How auctions actually work in Australia. The reserve price, vendor bids, what 'passed in' means, why finance must be unconditional before auction day, and bidding strategies that don't lose you money.",
   slug: "property-auction-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-09-20",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -85,7 +85,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What's the difference between a price guide and a reserve price?",
     answer:
-      "The price guide is the agent's pre-auction estimate of where bidding will fall. The reserve is the confidential minimum the vendor will accept, set just before auction starts. Price guides must be genuinely representative of vendor expectations under Australian consumer law, but they are not the reserve. Victoria is the exception: under the Consumer Legislation Amendment Act 2026, for residential auctions held on or after 16 October 2026 the agent must obtain the seller's reserve in writing as a single dollar figure and publish it in the advertising at least 7 days before the auction, or the auction cannot proceed.",
+      "The price guide is the agent's pre-auction estimate of where bidding will fall. The reserve is the confidential minimum the vendor will accept, set just before auction starts. Where price guides are allowed, state underquoting and fair trading laws require them to be a genuine estimate (Queensland bans them for residential auctions), but they are not the reserve. Victoria is the exception: under the Consumer Legislation Amendment Act 2026, for residential auctions held on or after 16 October 2026 the agent must obtain the seller's reserve in writing as a single dollar figure and publish it in the advertising at least 7 days before the auction, or the auction cannot proceed.",
   },
   {
     question: "What does 'on the market' mean at auction?",
@@ -218,10 +218,11 @@ export default function PropertyAuctionGuidePage() {
       </p>
       <p>
         The agent&rsquo;s pre-auction <em>price guide</em>{" "}is not the reserve;
-        it is an indication of expected bidding range. Price guides must be
-        genuinely representative of the vendor&rsquo;s expectations under
-        Australian consumer law and cannot be set artificially low to attract
-        more bidders.
+        it is an indication of expected bidding range. Where price guides
+        are allowed, state underquoting and fair trading laws require them
+        to be a genuine estimate, and they cannot be set artificially low to
+        attract more bidders. Queensland goes further: agents can’t give a
+        price guide for a residential auction at all.
       </p>
       <p>
         A property cannot be sold at auction for less than the reserve price.

@@ -12,7 +12,7 @@ export const post: BlogPost = {
 <p>Adelaide's median house price has reached around $760K in mid-2026, up around 5.8% year-on-year. Units sit at around $440K. Days on market average 22 to 30, comparable to Brisbane and tighter than Melbourne. The market is well-balanced, with stock levels gradually improving but demand absorbing it.</p>
 
 <h2>Where Adelaide is firming most</h2>
-<p>Inner-eastern suburbs (Burnside, Norwood, Toorak Gardens, Marryatville) lead the growth, supported by school catchment demand and tightly-held character housing. Coastal suburbs through Henley Beach, Glenelg and Brighton are seeing strong upgrader demand. The northern foothills (Gilberton, Walkerville, Stepney) continue to attract buyers from the eastern suburbs as price differentials narrow.</p>
+<p>Inner-eastern suburbs (Burnside, Norwood, Toorak Gardens, Marryatville) lead the growth, supported by school catchment demand and tightly-held character housing. Coastal suburbs through Henley Beach, Glenelg and Brighton are seeing strong upgrader demand. The inner north-east (Gilberton, Walkerville, Stepney) continues to attract buyers from the eastern suburbs as price differentials narrow.</p>
 
 <h2>Where the value sits</h2>
 <p>Adelaide's outer suburbs still offer remarkable affordability. Salisbury, Elizabeth and Davoren Park in the north, and Christies Beach, Noarlunga and Aldinga in the south, all offer house medians in the $450K to $620K range. These are accessible for first home buyers and offer compelling rental yields, particularly in the Salisbury corridor where yields of 5 to 6% gross are still common.</p>
@@ -38,6 +38,6 @@ export const post: BlogPost = {
   category: "Market Update",
   tags: ["adelaide", "south australia", "market update", "2026", "property prices"],
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-14",
+  updatedAt: "2026-10-16",
   readingTime: 7,
 };

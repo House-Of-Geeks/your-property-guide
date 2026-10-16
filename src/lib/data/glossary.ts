@@ -241,7 +241,7 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   {
     term: "Exclusive Agency Agreement",
     slug: "exclusive-agency-agreement",
-    html: `A contract appointing one real estate agent as the sole agent to sell a property for a specified period (typically 60–90 days). During this period, commission is payable to the appointed agent even if the property is sold through another party. Most residential auction campaigns use exclusive agreements.`,
+    html: `A contract appointing one real estate agent exclusively to sell a property for a specified period (typically 60–90 days). During this period, commission is payable to that agent whoever finds the buyer, including the owner. Most residential auction campaigns use exclusive agreements.`,
     category: "selling",
   },
   {

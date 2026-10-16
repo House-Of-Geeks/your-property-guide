@@ -3,9 +3,9 @@ import type { BlogPost } from "@/types";
 export const post: BlogPost = {
   id: "blog-market-wrap-late-july-2026",
   slug: "property-market-wrap-late-july-2026-spring-outlook",
-  title: "Late-July wrap: Tuesday's inflation number, the August rate call, and the first buyer's-market spring in years",
+  title: "Late-July wrap: Wednesday's inflation number, the August rate call, and the first buyer's-market spring in years",
   excerpt: "The June-quarter inflation figures land on 29 July and the RBA decides on 11 August — the two dates that will set the tone for spring. With clearance rates around 50%, more stock on market and every major bank trimming its forecasts, spring 2026 is shaping up as a season that rewards preparation over momentum.",
-  content: `<p>Two dates now sit between the winter market and the spring selling season. On <strong>Tuesday 29 July</strong>, the Australian Bureau of Statistics releases the June-quarter inflation figures. On <strong>11 August</strong>, the Reserve Bank hands down its next cash rate decision — the first since it held at <strong>4.35%</strong> in June, and the last before spring listings start building in earnest. What happens between those two dates will shape the market that September sellers and buyers walk into.</p>
+  content: `<p>Two dates now sit between the winter market and the spring selling season. On <strong>Wednesday 29 July</strong>, the Australian Bureau of Statistics releases the June-quarter inflation figures. On <strong>11 August</strong>, the Reserve Bank hands down its next cash rate decision — the first since it held at <strong>4.35%</strong> in June, and the last before spring listings start building in earnest. What happens between those two dates will shape the market that September sellers and buyers walk into.</p>
 
 <p>Here is where things stand in late July, what the forecasters are saying about the second half, and how to use the five weeks left before the season opens on 1 September.</p>
 
@@ -13,7 +13,7 @@ export const post: BlogPost = {
 
 <p>The Reserve Bank held the cash rate at 4.35% at its June meeting — a unanimous decision — after lifting it three times this year, in February, March and May. But the Board kept the door explicitly open to going again if inflation stays hot, and the June statement noted it was still prepared to raise the cash rate further if required.</p>
 
-<p>That is why Tuesday's number matters so much. The monthly reading for May had headline inflation at <strong>4.0%</strong> and the trimmed mean at <strong>3.6%</strong> — both well above the RBA's 2 to 3% target band. The June-quarter release on 29 July is the last major inflation read before the August decision, and the banks are split on what it will produce: <strong>CBA, NAB and ANZ all expect the cash rate to hold from here</strong>, while <strong>Westpac still pencils in one more increase, most likely in August</strong>. A survey of economists published by Aussie in early July found 55% expect at least one more hike this year, and of those, most nominate August. Follow the decision on our <a href="/rba-cash-rate">RBA cash rate tracker</a>.</p>
+<p>That is why Wednesday's number matters so much. The monthly reading for May had headline inflation at <strong>4.0%</strong> and the trimmed mean at <strong>3.6%</strong> — both well above the RBA's 2 to 3% target band. The June-quarter release on 29 July is the last major inflation read before the August decision, and the banks are split on what it will produce: <strong>CBA, NAB and ANZ all expect the cash rate to hold from here</strong>, while <strong>Westpac still pencils in one more increase, most likely in August</strong>. A survey of economists published by Aussie in early July found 55% expect at least one more hike this year, and of those, most nominate August. Follow the decision on our <a href="/rba-cash-rate">RBA cash rate tracker</a>.</p>
 
 <p>For borrowers, the practical move is the same whichever way August goes: know your current numbers. Three hikes this year have trimmed borrowing capacity by more than most people realise, so run the <a href="/borrowing-power-calculator">borrowing power calculator</a> before you plan around a figure from summer.</p>
 
@@ -33,7 +33,7 @@ export const post: BlogPost = {
 
 <p>Spring officially opens in a little over five weeks, and the traditional September–November season rewards sellers who arrive prepared. In a market where buyers have choice, presentation, pricing evidence and agent selection do the heavy lifting — and all three get decided in the weeks before a campaign launches, not during it.</p>
 
-<p>Work backwards from the listing weekend you want: starting the preparation now puts a campaign live in mid-September; starting in late August targets the peak October audience; late September is the last comfortable start for a pre-Christmas result. Our free <a href="/selling-guide">selling guide</a> now comes with a printable <strong>Spring 2026 selling countdown</strong> — the 12-week checklist with exact start dates for a September, October or November listing — and the first tick on it is a <a href="/appraisal">free appraisal</a>, so every decision that follows rests on today's evidence rather than a hopeful number.</p>
+<p>Work backwards from the listing weekend you want: starting the preparation now puts a campaign live in mid-September; starting in late August targets the peak October audience; late September is the last comfortable start for a pre-Christmas result. Our free <a href="/selling-guide">selling guide</a> now has a printable companion, the <a href="/downloads/your-property-guide-spring-selling-countdown-2026.pdf">Spring 2026 selling countdown</a> — the 12-week checklist with exact start dates for a September, October or November listing — and the first tick on it is a <a href="/appraisal">free appraisal</a>, so every decision that follows rests on today's evidence rather than a hopeful number.</p>
 
 <h2>Buying through the shift</h2>
 
@@ -43,7 +43,7 @@ export const post: BlogPost = {
 
 <ul>
 <li><strong>Watch 29 July, then 11 August.</strong> The June-quarter CPI is the last big input before the RBA's spring-setting decision. CBA, NAB and ANZ expect a hold; Westpac tips one more hike.</li>
-<li><strong>Spring sellers: start now.</strong> Preparation fills the five weeks to 1 September quickly. Begin with a <a href="/appraisal">free appraisal</a> and the spring countdown checklist in our <a href="/selling-guide">selling guide</a>.</li>
+<li><strong>Spring sellers: start now.</strong> Preparation fills the five weeks to 1 September quickly. Begin with a <a href="/appraisal">free appraisal</a> and the printable <a href="/downloads/your-property-guide-spring-selling-countdown-2026.pdf">spring countdown checklist</a> that goes with our <a href="/selling-guide">selling guide</a>.</li>
 <li><strong>Price to the market you are in.</strong> Values fell 0.4% nationally in June, discounting is at 3.6%, and listings are up. Evidence-based pricing beats optimism in this market.</li>
 <li><strong>Buyers: use the window.</strong> Sub-50% clearance rates mean negotiating room now, with more competition likely once spring stock and any rate relief arrive.</li>
 <li><strong>Everyone: re-run your numbers.</strong> Three hikes this year have moved borrowing capacity; the <a href="/borrowing-power-calculator">borrowing power calculator</a> takes two minutes.</li>

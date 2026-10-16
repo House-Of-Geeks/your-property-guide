@@ -12,7 +12,7 @@ export const post: BlogPost = {
 <h2>What Queensland locked in</h2>
 
 <ul>
-<li><strong>$30,000 First Home Owner Grant</strong> for new homes (buying or building) valued under $750,000 — extended four years in the Budget, roughly a $72 million commitment. It remains the largest first home grant in the country, tied with Tasmania's.</li>
+<li><strong>$30,000 First Home Owner Grant</strong> for new homes (buying or building) valued under $750,000 — extended four years in the Budget, roughly a $72 million commitment. It's the second-largest first home grant in the country, behind the Northern Territory's $50,000 HomeGrown Territory Grant for new homes.</li>
 <li><strong>Zero transfer duty for first home buyers on new homes, permanently.</strong> The concession, in place since 1 May 2025 with no price cap, has already saved more than 3,500 buyers over $66 million between them. On established homes, the full concession still applies up to $700,000, phasing out at $800,000.</li>
 <li><strong>Supply money behind it:</strong> the Budget doubled the Residential Activation Fund to $1 billion and committed $5.73 billion over four years to social housing — the pipeline that determines whether grants meet homes to spend them on.</li>
 </ul>

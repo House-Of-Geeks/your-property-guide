@@ -24,7 +24,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Rent where you want to live, buy where it makes financial sense. How rentvesting actually works in Australia, the maths, the tax position, the first home buyer scheme trade-off, and when it's the right call.",
   slug: "rentvesting-australia",
   publishedAt: "2026-05-13",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 12,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -55,7 +55,7 @@ const TLDR = [
   "Rentvesting means renting where you want to live (often inner-city, premium suburbs) and buying an investment property where the numbers work (often outer-ring, regional, or growth corridors).",
   "It's a financial play, not a lifestyle compromise. Done right, you build property equity sooner than waiting for a deposit on your dream owner-occupier home.",
   "Key trade-off: buying an investment property as your first property generally disqualifies you from the First Home Owner Grant in most states (it's reinstated in some if you owner-occupy later), and you may lose access to the First Home Guarantee Scheme. Run those numbers carefully.",
-  "Negative gearing applies. Rental losses (after depreciation and interest) reduce your taxable income. Capital gains tax applies on sale, with the 50% discount after 12 months.",
+  "Negative gearing applies. Rental losses (after depreciation and interest) reduce your taxable income. From 1 July 2027, losses on an established home contracted after 7:30pm AEST on 12 May 2026 can only offset income from residential property; new builds and homes held at that time keep negative gearing. Capital gains tax applies on sale, with the 50% discount after 12 months.",
   "The maths only stack up if you can find an investment-grade property: yield ≥ 4.5% gross, manageable holding cost, and a defensible growth thesis. Random outer-suburb purchases often underperform.",
   "Rentvesting suits people whose dream-suburb price tag is years away on their current trajectory, who want property exposure now, and who are comfortable being a landlord.",
 ];
@@ -102,7 +102,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Is negative gearing worth it?",
     answer:
-      "Negative gearing isn't a strategy. It's a consequence of buying a property whose total deductible expenses (interest, depreciation, council rates, agent fees, insurance, repairs) exceed the rent received. The tax benefit is that the loss reduces your taxable income, which at the top marginal rate saves you 47c per dollar of loss. But you're still spending real money out of pocket each year. Negative gearing makes sense when expected capital growth more than covers the holding cost; it's destructive if growth doesn't materialise. Run the worst-case numbers.",
+      "Negative gearing isn't a strategy. It's a consequence of buying a property whose total deductible expenses (interest, depreciation, council rates, agent fees, insurance, repairs) exceed the rent received. The tax benefit is that the loss reduces your taxable income, which at the top marginal rate saves you 47c per dollar of loss. From 1 July 2027 that only applies to a new build or a home held at 7:30pm AEST on 12 May 2026: losses on an established home contracted after then can only offset income from residential property. But you're still spending real money out of pocket each year. Negative gearing makes sense when expected capital growth more than covers the holding cost; it's destructive if growth doesn't materialise. Run the worst-case numbers.",
   },
   {
     question: "What's the typical yield I should target for an investment property?",
@@ -226,15 +226,23 @@ export default function RentvestingAustraliaPage() {
       </p>
       <ul>
         <li>Rent received: $26,000</li>
-        <li>Mortgage interest (4-bedroom, $400,000 loan, 6.2% interest-only): $24,800</li>
+        <li>Mortgage interest (3-bedroom, $400,000 loan, 6.2% interest-only): $24,800</li>
         <li>Property management fees (7%): $1,820</li>
         <li>Council rates, insurance, repairs: ~$3,500</li>
         <li>Depreciation (paper deduction, modern build): ~$8,000</li>
         <li><strong>Cash flow before tax</strong>: 26,000 − 24,800 − 1,820 − 3,500 = <strong>−$4,120</strong> (Sam puts in $4,120/year out of pocket)</li>
         <li>Taxable position after depreciation: −$4,120 − $8,000 = <strong>−$12,120 paper loss</strong></li>
-        <li>Tax benefit at 39c marginal rate: $4,727</li>
-        <li><strong>True after-tax cost</strong>: $4,120 − $4,727 = <strong>+$607</strong> (essentially neutral)</li>
+        <li>Tax benefit at 32c marginal rate (30% plus the 2% Medicare levy): $12,120 × 0.32 = $3,878</li>
+        <li><strong>True after-tax cost</strong>: $4,120 − $3,878 = <strong>$242 a year</strong> out of pocket (close to neutral)</li>
       </ul>
+      <p>
+        That tax saving assumes negative gearing applies. From 1 July 2027
+        it only does for a new build or a home held at 7:30pm AEST on 12 May
+        2026. If Sam’s house is an established home contracted after that
+        time, the $12,120 loss can only offset income from residential
+        property and carries forward, so Sam would carry the full $4,120 a
+        year.
+      </p>
       <p>
         So the property is roughly cash-flow neutral after tax. Sam still
         pays $44,200/year in rent on the Surry Hills apartment, but the
@@ -302,7 +310,11 @@ export default function RentvestingAustraliaPage() {
         Australian tax law allows you to deduct rental property expenses
         against your overall taxable income. When the deductions exceed the
         rent (a paper loss), the property is &quot;negatively geared&quot;
-        and the loss reduces your tax bill at your marginal rate.
+        and the loss reduces your tax bill at your marginal rate. From
+        1 July 2027, losses on an established home contracted after 7:30pm
+        AEST on 12 May 2026 can only offset income from residential
+        property; new builds and homes held at that time keep negative
+        gearing.
       </p>
       <p>
         Deductible expenses typically include:
@@ -357,7 +369,7 @@ export default function RentvestingAustraliaPage() {
       <ul>
         <li><strong>Higher interest rate.</strong> Typically 0.05–0.20% above the equivalent owner-occupier loan with the same lender.</li>
         <li><strong>Higher LMI cost.</strong> Investment LMI premiums are typically 10–20% higher than owner-occupier LMI for the same LVR.</li>
-        <li><strong>Stricter serviceability.</strong> Lenders apply a higher assessment rate buffer to investment loans, partially because rental income is haircut by 70–80% for serviceability purposes.</li>
+        <li><strong>Stricter serviceability.</strong> Lenders apply a higher assessment rate buffer to investment loans, partially because lenders count only 70–80% of the rent for serviceability purposes (a 20–30% haircut; APRA expects at least 20%).</li>
         <li><strong>Interest-only is harder to get</strong> than it used to be. APRA tightening over 2017–2024 limited interest-only investment lending; you&rsquo;ll typically need a clear repayment strategy. Many investors still use 3–5 year interest-only periods to maximise tax efficiency.</li>
         <li><strong>Cross-collateralisation risk.</strong> Some lenders try to cross-collateralise the investment loan with your existing assets. Push back and keep loans uncrossed where possible.</li>
       </ul>

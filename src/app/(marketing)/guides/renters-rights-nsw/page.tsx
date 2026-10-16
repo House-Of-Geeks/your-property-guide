@@ -17,7 +17,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Everything NSW tenants need to know: bond rules, rent increases, repairs, entry rights, ending a tenancy, and how to resolve disputes through NCAT.",
   slug: "renters-rights-nsw",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -47,8 +47,8 @@ const TLDR = [
   "Maximum bond is 4 weeks rent. Lodged with NSW Fair Trading via Rental Bonds Online within 10 working days.",
   "Rent can only go up once every 12 months, with at least 60 days written notice. NSW has no cap on the amount of an increase.",
   "Urgent repairs must be addressed immediately; if the landlord can't be reached, tenants can arrange repairs up to $1,000 and reclaim costs.",
-  "Landlord entry: 24 hours notice for general entry; 7 days notice for routine inspections (max 4 per year); no notice in genuine emergencies.",
-  "No-grounds evictions are still permitted on periodic tenancies in NSW (90 days notice required), unlike VIC where they were abolished in 2021.",
+  "Landlord entry: 2 days notice for repairs or maintenance; 7 days notice for routine inspections (max 4 per year); no notice for urgent repairs or genuine emergencies.",
+  "No-grounds evictions ended in NSW on 19 May 2025. A landlord now needs a reasonable ground to end any lease, including at the end of a fixed term. Most non-breach grounds need 90 days notice (60 days on a fixed term of 6 months or less).",
   "Domestic violence victims can end a fixed-term lease immediately and without penalty, with appropriate evidence.",
 ];
 
@@ -75,7 +75,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can my landlord evict me without a reason in NSW?",
     answer:
-      "On a periodic tenancy, yes, but they must give 90 days written notice. This is no-grounds termination. On a fixed-term lease, the landlord generally can't end the tenancy without grounds during the fixed term.",
+      "No. Since 19 May 2025, a landlord needs a reasonable ground to end a periodic or fixed-term lease, including at the end of a fixed term. Grounds include a proposed sale, significant renovations, or the landlord or a family member moving in. These need 90 days written notice (60 days on a fixed term of 6 months or less). An actual sale needs 30 days, and a breach such as unpaid rent needs 14 days.",
   },
   {
     question: "How quickly do urgent repairs have to be done?",
@@ -85,7 +85,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can the landlord turn up unannounced?",
     answer:
-      "No. General entry requires 24 hours written notice, routine inspections need 7 days notice (max 4 per year), and entry must be between 8am and 8pm and not on Sundays or public holidays without consent. Emergency entry is the only no-notice exception.",
+      "No. Entry for repairs or maintenance needs 2 days notice, routine inspections need 7 days written notice (max 4 per year), and entry must be between 8am and 8pm and not on Sundays or public holidays without consent. Emergency entry is the only no-notice exception.",
   },
   {
     question: "Will I get my full bond back?",
@@ -240,7 +240,7 @@ export default function RentersRightsNSWPage() {
 
       <h2 id="entry-rights">Landlord entry rights</h2>
       <ul>
-        <li><strong>General entry:</strong> At least <strong>24 hours written notice</strong></li>
+        <li><strong>Repairs or maintenance:</strong> At least <strong>2 days notice</strong> each time</li>
         <li><strong>Routine inspections:</strong> At least <strong>7 days written notice</strong>; no more than <strong>4 inspections per year</strong></li>
         <li><strong>Emergency:</strong> No notice required (suspected gas leak, flood, etc.)</li>
       </ul>
@@ -260,9 +260,10 @@ export default function RentersRightsNSWPage() {
           <tr><th>Situation</th><th>Tenant notice</th><th>Landlord notice</th></tr>
         </thead>
         <tbody>
-          <tr><td>Fixed term, end of term</td><td>14 days</td><td>30 days</td></tr>
-          <tr><td>Periodic, no grounds</td><td>21 days</td><td>90 days</td></tr>
-          <tr><td>Periodic, with grounds (e.g. non-payment)</td><td>21 days</td><td>30 days (some grounds vary)</td></tr>
+          <tr><td>Fixed term, end of term</td><td>14 days</td><td>60 days (term of 6 months or less) or 90 days (longer term), with a reasonable ground</td></tr>
+          <tr><td>Periodic</td><td>21 days</td><td>90 days, with a reasonable ground (e.g. proposed sale, renovations, landlord moving in)</td></tr>
+          <tr><td>Property sold with vacant possession</td><td>-</td><td>30 days</td></tr>
+          <tr><td>Breach (e.g. unpaid rent)</td><td>14 days</td><td>14 days</td></tr>
         </tbody>
       </table>
 
@@ -274,19 +275,27 @@ export default function RentersRightsNSWPage() {
 
       <h2 id="no-grounds">No-grounds evictions in NSW</h2>
       <p>
-        Unlike Victoria, which abolished no-grounds evictions in 2021,{" "}
-        <strong>NSW still permits no-grounds evictions</strong> on periodic
-        tenancies. The landlord must give <strong>90 days notice</strong>.
+        NSW ended no-grounds evictions on <strong>19 May 2025</strong>. A
+        landlord now needs a <strong>reasonable ground</strong> to end any
+        tenancy, periodic or fixed term, including at the end of a fixed term.
+        This applies to tenancies that started before 19 May 2025 too.
       </p>
       <p>
-        For fixed-term tenancies, the landlord can’t end the tenancy without
-        grounds during the fixed term (they can’t evict mid-lease just to raise
-        the rent).
+        Reasonable grounds include a breach of the agreement, unpaid rent, a
+        sale or proposed sale with vacant possession, significant renovations
+        or repairs, demolition, a change of use, and the landlord or a family
+        member moving in. For a proposed sale, renovations, a change of use or
+        a family member moving in, the landlord must give{" "}
+        <strong>90 days notice</strong> (60 days on a fixed term of 6 months or
+        less). An actual sale needs 30 days, and a breach needs 14 days.
       </p>
       <p>
-        NSW tenant advocates have long campaigned to end no-grounds evictions.
-        As of April 2026, the provisions remain in place but are subject to
-        change. Check the Tenants’ Union NSW website for updates.
+        If a notice doesn’t give a genuine ground, you can challenge it at
+        NCAT. Check the full list of grounds and notice periods with{" "}
+        <a href="https://www.nsw.gov.au/housing-and-construction/rules/landlord-ending-a-tenancy" target="_blank" rel="noopener noreferrer">
+          NSW Fair Trading
+        </a>{" "}
+        or the Tenants’ Union NSW.
       </p>
 
       <h2 id="domestic-violence">Domestic violence protections</h2>
@@ -298,7 +307,7 @@ export default function RentersRightsNSWPage() {
       </ul>
       <p>
         If you’re in immediate danger, call 000. For support: 1800RESPECT
-        (1800 737 732) or DVConnect on 1800 811 811.
+        (1800 737 732) or the NSW Domestic Violence Line on 1800 656 463.
       </p>
 
       <h2 id="disputes">Resolving disputes, NCAT</h2>

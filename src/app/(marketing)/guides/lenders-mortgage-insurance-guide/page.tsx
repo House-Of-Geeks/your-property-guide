@@ -21,7 +21,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Complete guide to LMI in Australia. What it is (and isn't), when it applies, what it costs, who provides it (Helia, Arch), how to capitalise it into your loan, and four ways to avoid it.",
   slug: "lenders-mortgage-insurance-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -361,8 +361,9 @@ export default function LMIGuidePage() {
           <strong>Wait two more years to save the full 20% deposit.</strong>{" "}
           During that time, the property market might rise, say 5% per year. The
           same $800,000 property could now cost $882,000, requiring a higher
-          deposit. The cost of waiting is potentially the additional $82,000 plus
-          $82,000 more in stamp duty and ongoing costs.
+          deposit. The cost of waiting is potentially the additional $82,000,
+          plus a few thousand dollars more in stamp duty (in Victoria, 6% of
+          the extra $82,000 is $4,920) and ongoing costs.
         </li>
         <li>
           <strong>Buy now with 10% deposit and pay around $18,000 LMI.</strong>{" "}

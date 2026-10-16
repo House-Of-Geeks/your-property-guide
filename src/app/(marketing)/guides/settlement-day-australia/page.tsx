@@ -25,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Settlement day in plain English: who does what, the order things happen, what can delay it, the final inspection, the funds flow and when you actually get the keys. State-by-state notes for NSW, VIC, QLD, WA, SA, TAS, ACT and NT.",
   slug: "settlement-day-australia",
   publishedAt: "2026-05-18",
-  updatedAt: "2026-05-18",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 12,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -58,7 +58,7 @@ const TLDR = [
   "Typical settlement length is 30 to 90 days from exchange of contracts; 30 to 45 days is the most common. The vendor and buyer agree on the date at contract signing.",
   "Final inspection happens in the 5 to 7 days before settlement. You're checking the property is in the same condition as when you bought it, with all included chattels still present.",
   "Things that can delay settlement: lender unable to release funds on time, last-minute title issues, missing rates or strata clearances, vendor moves out late, or PEXA workspace not signed by all parties.",
-  "If settlement is delayed by your side, you pay default interest (typically 8 to 12 per cent of the purchase price, prorated daily) until the deal completes. If it's delayed by the vendor, they may owe you the same.",
+  "If settlement is delayed by your side, you pay default interest on the unpaid balance (typically 8 to 12 per cent per annum, prorated daily) until the deal completes. If it's delayed by the vendor, they may owe you the same.",
   "Stamp duty is usually paid through your conveyancer at settlement, included in the funds flow. First home buyers eligible for concessions need the paperwork lodged before settlement.",
 ];
 
@@ -109,7 +109,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Do I need building insurance from the day of settlement?",
     answer:
-      "Earlier in most states. Risk transfers to the buyer at different points depending on jurisdiction. In NSW, ACT and the NT, risk transfers at exchange. In VIC, QLD, SA, TAS and WA, risk typically transfers at settlement, but standard practice is to take out building insurance from the date of exchange to be safe. For strata properties, the body corporate carries the building insurance; you only need contents.",
+      "Often earlier. Risk transfers to the buyer at different points depending on the state and the contract. In NSW the property stays at the vendor’s risk until settlement or until you take possession, whichever comes first. Under the standard Queensland contract, it’s at your risk from 5pm on the first business day after the contract date. In the ACT, insuring the property is your responsibility once contracts are exchanged. Elsewhere, risk typically transfers at settlement, but contracts vary, so standard practice is to take out building insurance from the date of exchange to be safe. For strata properties, the body corporate carries the building insurance; you only need contents.",
   },
 ];
 
@@ -400,8 +400,9 @@ export default function SettlementDayAustraliaPage() {
       <ul>
         <li>
           <strong>Building and contents insurance:</strong> confirm
-          building insurance is active from settlement date (or earlier,
-          if your state transfers risk at exchange). For strata
+          building insurance is active from settlement date (or sooner,
+          if your contract puts the risk on you earlier, as Queensland’s
+          does). For strata
           properties, contents-only is enough; the body corporate covers
           building.
         </li>
@@ -438,8 +439,10 @@ export default function SettlementDayAustraliaPage() {
 
       <h3>New South Wales</h3>
       <p>
-        Risk transfers to the buyer at exchange, not settlement. You need
-        building insurance from the day of exchange. Standard settlement
+        Under section 66K of the Conveyancing Act, the property stays at
+        the vendor’s risk until settlement or until you take possession,
+        whichever comes first. Check when your lender needs building
+        insurance in place. Standard settlement
         is 42 days but can be shorter or longer. Stamp duty is paid at
         settlement and is one of the highest in Australia for non-FHB
         purchases.
@@ -476,7 +479,8 @@ export default function SettlementDayAustraliaPage() {
 
       <h3>Tasmania</h3>
       <p>
-        Cooling-off is 3 business days. Settlements are coordinated
+        There’s no statutory cooling-off period, though the standard
+        contract lets buyer and seller agree to one. Settlements are coordinated
         through the Land Titles Office, increasingly via PEXA.
       </p>
 
@@ -490,7 +494,8 @@ export default function SettlementDayAustraliaPage() {
 
       <h3>Northern Territory</h3>
       <p>
-        No statutory cooling-off period for private treaty sales. Final
+        Contracts for sales not made at auction must give the buyer a 4
+        business day cooling-off period. Final
         inspection is standard practice. Stamp duty rates are different
         again; check the NT government calculator.
       </p>

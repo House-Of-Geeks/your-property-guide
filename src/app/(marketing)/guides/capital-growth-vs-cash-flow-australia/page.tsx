@@ -23,7 +23,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "The investor decision that gets oversimplified into one sentence. What capital growth and cash flow really mean for an Australian property portfolio, how to model the trade-off, and which strategy fits which life stage.",
   slug: "capital-growth-vs-cash-flow-australia",
   publishedAt: "2026-05-18",
-  updatedAt: "2026-05-18",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 14,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -77,7 +77,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Is capital growth or cash flow more important for Australian property investors?",
     answer:
-      "Neither is universally more important. Capital growth historically dominates long-run returns (3 to 5 per cent compound growth on a $700,000 property is roughly $25,000 to $40,000 per year, dwarfing typical cash-flow positives of $2,000 to $8,000). But growth is only realised on sale; cash flow is real money in your account every month. The right answer depends on your serviceability runway and your years-to-exit. For investors building a portfolio, cash flow matters more in the early stages (lets you keep buying); growth matters more in the later stages (compounds your existing portfolio).",
+      "Neither is universally more important. Capital growth historically dominates long-run returns (3 to 5 per cent compound growth on a $700,000 property is roughly $21,000 to $35,000 per year, dwarfing typical cash-flow positives of $2,000 to $8,000). But growth is only realised on sale; cash flow is real money in your account every month. The right answer depends on your serviceability runway and your years-to-exit. For investors building a portfolio, cash flow matters more in the early stages (lets you keep buying); growth matters more in the later stages (compounds your existing portfolio).",
   },
   {
     question: "Can a property have both capital growth and positive cash flow?",
@@ -97,7 +97,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Does negative gearing make capital-growth strategy more attractive?",
     answer:
-      "Marginally, but less than property spruikers make out. Negative gearing turns a $10,000 annual cash-flow loss into a $5,300 loss for an investor on the top marginal rate (47 per cent). You're still spending real money out of pocket each year; the tax saving offsets less than half. Negative gearing makes growth strategy viable for high-income investors who can absorb the cash drain while waiting for appreciation. For investors on average incomes (32.5 per cent marginal rate), the offset is smaller and the cash drain is harder. See our negative gearing guide for the full mechanics.",
+      "Marginally, but less than property spruikers make out. Negative gearing turns a $10,000 annual cash-flow loss into a $5,300 loss for an investor on the top marginal rate (47 per cent). You're still spending real money out of pocket each year; the tax saving offsets less than half. From 1 July 2027 that saving only applies to a new build or a home held at 7:30pm AEST on 12 May 2026: losses on an established home contracted after then can only offset income from residential property. Negative gearing makes growth strategy viable for high-income investors who can absorb the cash drain while waiting for appreciation. For investors on average incomes (30 per cent marginal rate), the offset is smaller and the cash drain is harder. See our negative gearing guide for the full mechanics.",
   },
   {
     question: "When should I switch from cash-flow focus to growth focus (or vice versa)?",
@@ -130,7 +130,7 @@ export default function CapitalGrowthVsCashFlowPage() {
         steps={[
           { name: "Define your years-to-exit",          text: "10+ years favours growth; 3 to 5 years favours yield. Short holding periods don't give growth time to compound." },
           { name: "Test your serviceability headroom",  text: "If a new lender will lend you another $400,000+, growth strategy is viable. If you're near ceiling, you need cash-flow positive purchases.", url: "/borrowing-power-calculator" },
-          { name: "Check your tax bracket",              text: "47 per cent marginal rate makes negative gearing meaningfully useful. 32.5 per cent makes it marginal." },
+          { name: "Check your tax bracket",              text: "47 per cent marginal rate makes negative gearing meaningfully useful. 30 per cent makes it marginal. From 1 July 2027 that only applies to a new build or a home held at 7:30pm AEST on 12 May 2026." },
           { name: "Model both on the actual property",   text: "Use the rental yield calculator and the mortgage calculator to project 10-year cash flow and 10-year capital value.", url: "/rental-yield-calculator" },
           { name: "Compare against what's missing in your portfolio", text: "Already have two growth properties? Probably need cash flow next. Have two yielders? Probably need growth." },
           { name: "Pick deliberately, not by default",   text: "The wrong way to choose is whichever the buyer's agent or social-media investor is currently selling." },
@@ -282,17 +282,21 @@ export default function CapitalGrowthVsCashFlowPage() {
       <p>
         On the top marginal rate (47 per cent including Medicare), every
         $1 of cash-flow loss returns 47 cents at tax time. That makes
-        negative-gearing strategy meaningfully more accessible. On a 32.5
-        per cent marginal rate, the offset is smaller and a $10,000 annual
-        cash-flow loss still costs you $6,750 net. Growth strategy gets
-        harder as your tax bracket drops.
+        negative-gearing strategy meaningfully more accessible. On a 30
+        per cent marginal rate (32 per cent including Medicare), the offset
+        is smaller and a $10,000 annual cash-flow loss still costs you
+        $6,800 net. Growth strategy gets
+        harder as your tax bracket drops. These savings only apply to a new
+        build or a home held at 7:30pm AEST on 12 May 2026: from 1 July 2027,
+        losses on an established home contracted after then can only offset
+        income from residential property.
       </p>
 
       <h3>Your years-to-exit</h3>
       <p>
         Capital growth needs time. 5 per cent compound annual growth on a
-        $700,000 property is roughly $40,000 in year one, $50,000 in year
-        five, $70,000 in year ten. Short holding periods (3 to 5 years)
+        $700,000 property is roughly $35,000 in year one, $43,000 in year
+        five, $54,000 in year ten. Short holding periods (3 to 5 years)
         don&rsquo;t give growth time to compound past the friction costs
         of buying and selling. If you&rsquo;ll hold for less than 7 years,
         cash flow is usually the safer bet. For 10-year-plus horizons,
@@ -354,7 +358,10 @@ export default function CapitalGrowthVsCashFlowPage() {
         Negative gearing converts cash-flow losses into deductions against
         your taxable income. On a 47 per cent marginal rate, a $10,000
         loss becomes a $5,300 loss after tax. The tax effect is real, but
-        it&rsquo;s a partial offset, not a free lunch.
+        it&rsquo;s a partial offset, not a free lunch. From 1 July 2027,
+        losses on an established home contracted after 7:30pm AEST on
+        12 May 2026 can only offset income from residential property; new
+        builds and homes held at that time keep negative gearing.
       </p>
       <p>
         The full mechanics (depreciation schedules, capital works

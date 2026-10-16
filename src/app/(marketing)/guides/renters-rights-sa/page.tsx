@@ -16,7 +16,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "SA tenant rights: bond, rent increases, repairs, entry rights, and ending a tenancy under the Residential Tenancies Act 1995, plus SACAT dispute resolution.",
   slug: "renters-rights-sa",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -44,8 +44,8 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Maximum bond is 4 weeks rent (higher allowable for furnished or higher-rent properties). Lodged with Consumer and Business Services SA (CBS) within prescribed timeframes.",
-  "Rent can only be increased once every 12 months on periodic tenancies, with at least 60 days written notice.",
-  "SA still permits no-grounds evictions on periodic tenancies, with 90 days notice required.",
+  "Rent can only be increased once every 12 months, on periodic and fixed-term tenancies, with at least 60 days written notice.",
+  "Since 1 July 2024, SA landlords need a prescribed reason to end a tenancy, including at the end of a fixed term. Notice is 60 or 90 days on a periodic tenancy, depending on the reason, and at least 60 days at the end of a fixed term.",
   "Urgent repairs must be addressed immediately; if landlord can't be reached, tenants can arrange repairs and seek reimbursement.",
   "SACAT (South Australian Civil and Administrative Tribunal) handles tenancy disputes; CBS offers free mediation as a first step.",
   "Always complete and sign property condition reports at start and end of tenancy. Take dated photos.",
@@ -66,7 +66,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can my landlord still evict me without a reason in SA?",
     answer:
-      "Yes, on periodic tenancies. The landlord must give 90 days notice for a no-grounds termination. SA tenant advocates have campaigned for the abolition of no-grounds evictions (as Victoria did in 2021), but as of April 2026 the provisions remain. Check Consumer and Business Services SA for any updates.",
+      "No. Since 1 July 2024, a landlord needs a prescribed reason to end a periodic tenancy, or to end a fixed term when it expires. On a periodic tenancy, selling, demolition, major renovations, or the landlord or a family member moving in need at least 60 days notice; other prescribed reasons need 90 days. Ending a fixed term at expiry needs at least 60 days notice. Check Consumer and Business Services SA for the full list of reasons.",
   },
   {
     question: "How much bond can my landlord ask for?",
@@ -76,7 +76,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What's the notice period for the landlord to end a fixed-term lease?",
     answer:
-      "28 days at the end of the fixed term, with both tenant and landlord giving 28 days. During the fixed term, the landlord generally can't end the tenancy without grounds (e.g. serious breach by the tenant).",
+      "At least 60 days before the fixed term ends, and only for a prescribed reason (a tenant ending at the end of the term gives 28 days). During the fixed term, the landlord generally can't end the tenancy without grounds (e.g. serious breach by the tenant).",
   },
   {
     question: "How fast must urgent repairs be done in SA?",
@@ -96,9 +96,9 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "Compare to NSW which also still permits no-grounds evictions." },
+  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "NSW also requires a reason to end a tenancy, since May 2025." },
   { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms abolished no-grounds evictions." },
-  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD's 2024 reforms toward grounds-based evictions." },
+  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD ended no-grounds evictions in October 2022." },
   { title: "Renter's Rights in WA",       href: "/guides/renters-rights-wa",  description: "WA's Residential Tenancies Act and entry rules." },
   { title: "First Home Buyer Guide SA",   href: "/guides/first-home-buyer-sa", description: "When you're ready to stop renting and buy your first home." },
 ];
@@ -136,10 +136,10 @@ export default function RentersRightsSAPage() {
         Australian Civil and Administrative Tribunal (SACAT).
       </p>
       <p>
-        SA has progressively updated its tenancy laws in recent years. As of
-        April 2026, SA still permits no-grounds evictions on periodic
-        tenancies with 90 days notice. Check CBS for current or proposed
-        amendments.
+        SA has progressively updated its tenancy laws in recent years. Since
+        1 July 2024, a landlord needs a prescribed reason to end a tenancy,
+        including at the end of a fixed term. Check CBS for current or
+        proposed amendments.
       </p>
 
       <h2 id="bond">Bond rules</h2>
@@ -156,7 +156,7 @@ export default function RentersRightsSAPage() {
 
       <h2 id="rent-increases">Rent increases</h2>
       <ul>
-        <li><strong>Frequency:</strong> Once every 12 months for periodic tenancies</li>
+        <li><strong>Frequency:</strong> Once every 12 months, for periodic and fixed-term tenancies</li>
         <li><strong>Notice:</strong> At least 60 days written notice</li>
         <li><strong>Fixed-term:</strong> Rent can’t be increased during a fixed term unless the increase amount is specified in the agreement</li>
       </ul>
@@ -205,16 +205,16 @@ export default function RentersRightsSAPage() {
           <tr><th>Situation</th><th>Tenant notice</th><th>Landlord notice</th></tr>
         </thead>
         <tbody>
-          <tr><td>Fixed term, end of term</td><td>28 days</td><td>28 days</td></tr>
-          <tr><td>Periodic, no grounds</td><td>21 days</td><td>90 days</td></tr>
+          <tr><td>Fixed term, end of term</td><td>28 days</td><td>60 days, with a prescribed reason</td></tr>
+          <tr><td>Periodic</td><td>21 days</td><td>60 days (sale, demolition, major renovations, landlord or family moving in) or 90 days (other prescribed reasons)</td></tr>
           <tr><td>Periodic, significant breach</td><td>-</td><td>14 to 30 days (depending on breach)</td></tr>
         </tbody>
       </table>
       <p>
-        SA still permits no-grounds evictions on periodic tenancies, but the
-        90-day notice provides some security. If you believe an eviction is
-        retaliatory or not made in good faith, seek advice from a tenancy
-        advocate or CBS.
+        Since 1 July 2024, SA landlords can’t end a tenancy without a
+        prescribed reason. If you believe a notice doesn’t give a genuine
+        reason, or is retaliatory, seek advice from a tenancy advocate or CBS.
+        You can also apply to SACAT.
       </p>
       <p>
         Breaking a fixed-term lease early may make you liable for the

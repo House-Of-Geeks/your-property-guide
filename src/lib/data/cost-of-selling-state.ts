@@ -163,7 +163,7 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
     capital: "Brisbane",
     capitalMedian: 1_080_142,
     intro: [
-      "Queensland commission is higher than in the southern capitals, typically 2.3% to 2.9%, a legacy of the 5% statutory cap that applied until commission was deregulated on 1 December 2014 and that many agencies still price against. On the Cotality Brisbane median of $1,080,142 in August 2026, that range is $24,800 to $31,300 before GST.",
+      "Queensland commission is higher than in the southern capitals, typically 2.3% to 2.9%, a legacy of the statutory maximum (5% of the first $18,000 and 2.5% of the balance) that applied until commission was deregulated on 1 December 2014 and that many agencies still price against. On the Cotality Brisbane median of $1,080,142 in August 2026, that range is $24,800 to $31,300 before GST.",
       "Queensland also added a seller disclosure regime on 1 August 2025, and it has two safety certificates most other states do not require at sale: a pool safety certificate and compliant interconnected smoke alarms.",
     ],
     differences: [
@@ -201,7 +201,7 @@ export const COST_OF_SELLING_STATE: Record<StateCode, StateCostGuide> = {
     ],
     faqs: [
       { question: "How much does it cost to sell a house in Queensland?", answer: "On an $800,000 sale, budget roughly $22,000 to $36,000 all-in: commission of $18,400 to $23,200 (2.3% to 2.9%, plus GST), marketing of $2,000 to $8,000, conveyancing of $800 to $2,500, the Form 2 disclosure searches of $200 to $700, plus a pool safety certificate, smoke alarm work, an auctioneer or a mortgage discharge fee where they apply." },
-      { question: "Is real estate commission capped in Queensland?", answer: "Not since 1 December 2014, when the Property Occupations Act 2014 removed the former 5% cap. Commission is now negotiated, and typical rates are 2.3% to 2.9% of the sale price plus GST, with around 2.5% most common." },
+      { question: "Is real estate commission capped in Queensland?", answer: "Not since 1 December 2014, when the Property Occupations Act 2014 removed the former statutory maximum of 5% on the first $18,000 and 2.5% on the balance. Commission is now negotiated, and typical rates are 2.3% to 2.9% of the sale price plus GST, with around 2.5% most common." },
       { question: "Who pays for the seller disclosure statement in Queensland?", answer: "The seller. The Form 2 and its certificates are your obligation under the Property Law Act 2023 from 1 August 2025. Search fees are typically $200 to $700; a body corporate certificate for a unit adds to that." },
       { question: "Do I need a pool safety certificate to sell in Queensland?", answer: "You must either give the buyer a current certificate before settlement or give a Form 36 notice that there is none, after which the buyer must obtain one within 90 days. Most sellers get the certificate, typically $150 to $300 for the inspection plus any fence repairs." },
       { question: "How long can a Queensland agency agreement run?", answer: "A sole or exclusive appointment for a residential sale is capped at 90 days and can be renewed for further terms of up to 90 days, but not earlier than 14 days before the current term ends. An open listing can be ended at any time." },

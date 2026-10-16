@@ -17,7 +17,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "ACT tenant rights: bond, rent increases (8 weeks notice, 12 months between), no-grounds eviction protections, pet rights, minimum standards, and ACAT dispute resolution.",
   slug: "renters-rights-act",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -75,7 +75,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How much notice for a rent increase in the ACT?",
     answer:
-      "8 weeks written notice, one of the longest in Australia. Plus a minimum 12 months between any two increases. ACT doesn't cap the amount, but you can apply to ACAT to challenge an excessive increase.",
+      "8 weeks written notice, one of the longest in Australia. Plus a minimum 12 months between any two increases. The increase is generally limited to the prescribed amount: 110% of the rise in the rents part of the Canberra CPI. Above that, the landlord needs your written agreement or an ACAT order.",
   },
   {
     question: "What's the minimum-standards requirement in the ACT?",
@@ -100,9 +100,9 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "Compare ACT to NSW where no-grounds evictions remain on periodic tenancies." },
+  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "NSW also ended no-grounds evictions, in May 2025." },
   { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms also abolished no-grounds evictions." },
-  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD's 2024 reforms toward grounds-based evictions." },
+  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD ended no-grounds evictions in October 2022." },
   { title: "Renter's Rights in WA",       href: "/guides/renters-rights-wa",  description: "WA's Residential Tenancies Act and entry rules." },
   { title: "First Home Buyer Guide ACT",  href: "/guides/first-home-buyer-act", description: "Canberra's HBCS stamp duty waiver and Crown Lease land." },
 ];
@@ -198,9 +198,17 @@ export default function RentersRightsACTPage() {
       />
 
       <p>
-        ACT doesn’t have formal rent caps, but the combination of the 12-month
-        minimum, 8-week notice, and ACAT review rights provides meaningful
-        protection against rapid or unreasonable increases.
+        The ACT also limits the size of an increase. Generally it can’t be
+        more than the <strong>prescribed amount</strong>: 110% of the rise in
+        the rents part of the Canberra CPI since the last increase (or since
+        the tenancy started). For example, if rents CPI rose 2%, rent of $500
+        a week can go up by 2.2%, to $511. Above that, the landlord needs your
+        written agreement or an ACAT order. A fixed term that started before
+        10 December 2024 may set its own increase terms. Check the current
+        rules with the{" "}
+        <a href="https://www.act.gov.au/housing-planning-and-property/renting/rent-increases" target="_blank" rel="noopener noreferrer">
+          ACT Government
+        </a>.
       </p>
 
       <h2 id="inspections">Routine inspections</h2>
@@ -276,7 +284,7 @@ export default function RentersRightsACTPage() {
       <p>
         If a landlord gives a “no grounds” notice, the tenant can challenge it
         at ACAT, and the landlord must establish that a valid ground exists.
-        This is a significant practical protection compared to NSW and WA,
+        This is a significant practical protection compared to WA and the NT,
         where no-grounds evictions on periodic tenancies remain available.
       </p>
       <p>

@@ -24,7 +24,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What home loan pre-approval actually means, how to get it, how long it lasts, and the difference between conditional pre-approval and formal approval. Plain English, no bank jargon.",
   slug: "home-loan-pre-approval-australia",
   publishedAt: "2026-05-13",
-  updatedAt: "2026-05-13",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -102,7 +102,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I bid at an auction with only pre-approval?",
     answer:
-      "Yes, and it's the norm. Pre-approval is what agents and auctioneers expect from serious bidders. But understand the risk: an auction contract is unconditional, you can't make it subject to finance. If you win the auction and the lender's valuation comes in below the contract price (or your situation changes), you could be on the hook to settle or lose your deposit. Mitigate by: getting a Lender's Mortgage Insurance buffer in your pre-approval, doing your own informal valuation against comparable sales before bidding, and not bidding above the price your pre-approval comfortably covers.",
+      "Yes, and it's the norm. Pre-approval is what agents and auctioneers expect from serious bidders. But understand the risk: an auction contract is unconditional, you can't make it subject to finance. If you win the auction and the lender's valuation comes in below the contract price (or your situation changes), you could be on the hook to settle or lose your deposit. Mitigate by: keeping cash in reserve to cover a valuation shortfall (lenders mortgage insurance protects the lender, not you, and won't cover it), doing your own informal valuation against comparable sales before bidding, and not bidding above the price your pre-approval comfortably covers.",
   },
   {
     question: "Can I get pre-approved if I'm self-employed?",
@@ -341,8 +341,8 @@ export default function HomeLoanPreApprovalAustraliaPage() {
         <p>
           A surprisingly common DIY approach is to apply to three or four
           banks simultaneously, &quot;to see who offers the best deal&quot;.
-          Each rejection or pre-approval creates a credit enquiry, the
-          rejections stay on your file for 5 years, and lenders treat a
+          Each application creates a credit enquiry, approved or declined,
+          each enquiry stays on your file for 5 years, and lenders treat a
           string of recent enquiries as a red flag. Pick a lender carefully
           (or use a broker to do one application across many) before
           applying anywhere.
@@ -390,5 +390,7 @@ const PRE_APPROVAL_SOURCES: readonly SourceItem[] = [
   { label: "APRA: Residential mortgage lending serviceability buffer", href: "https://www.apra.gov.au/", note: "3% buffer in force, referenced in serviceability framing" },
   { label: "MFAA: Mortgage and Finance Association of Australia industry data", href: "https://www.mfaa.com.au/", note: "Broker market share and lender SLA tracking" },
   { label: "Office of the Australian Information Commissioner: Credit reporting", href: "https://www.oaic.gov.au/privacy/your-privacy-rights/credit-reporting", note: "Hard-enquiry mechanics described in the credit-impact section" },
+  { label: "OAIC: What stays on a credit report?", href: "https://www.oaic.gov.au/privacy/your-privacy-rights/credit-reporting/what-stays-on-a-credit-report", note: "Credit enquiries stay on a credit report for 5 years" },
+  { label: "ASIC's Moneysmart: lenders mortgage insurance (LMI)", href: "https://moneysmart.gov.au/glossary/lenders-mortgage-insurance-lmi", note: "LMI protects the lender if a borrower can't repay" },
   { label: "NHFIC (Housing Australia): First Home Guarantee", href: "https://www.housingaustralia.gov.au/", note: "Federal-scheme deposit and LMI rules referenced for first-home buyers" },
 ];

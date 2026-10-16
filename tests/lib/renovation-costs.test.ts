@@ -223,6 +223,6 @@ describe("renovation guide copy", () => {
       expect(PAGE, id).toContain(`id: "${id}"`);
       expect(PAGE, id).toContain(`id="${id}"`);
     }
-    expect(PAGE).toContain('updatedAt: "2026-09-30"');
+    expect(PAGE).toContain('updatedAt: "2026-10-16"');
   });
 });

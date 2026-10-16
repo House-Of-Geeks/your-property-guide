@@ -19,7 +19,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Sydney vs Melbourne in 2026: median prices, capital growth, rental yields, affordability, and lifestyle compared. The honest case for each market and who each suits.",
   slug: "sydney-vs-melbourne-property-market",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-05-06",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -50,7 +50,7 @@ const TLDR = [
   "Sydney's median house price sits around $1.6M to $1.7M, roughly 50% higher than Melbourne's $1.0M to $1.1M.",
   "Melbourne offers stronger gross rental yields (3.5% to 4.2%) than Sydney (2.5% to 3.2%), meaningful for cash-flow-focused investors.",
   "Long-run capital growth has been similar (5% to 6% annual nominal), but Sydney has had sharper cyclical peaks and Melbourne deeper troughs.",
-  "Affordability heavily favours Melbourne: same income borrows about 50% more property, and stamp duty thresholds are kinder for first home buyers.",
+  "Affordability heavily favours Melbourne: the same income borrows the same amount in either city, but Sydney's median house costs about 50% more, and stamp duty thresholds are kinder for first home buyers.",
   "Both cities still offer pockets of value, outer Sydney corridors, Melbourne's western and northern growth areas, regional fringes accessible by V/Line or NSW TrainLink.",
 ];
 
@@ -127,8 +127,8 @@ export default function SydneyVsMelbourneGuide() {
       <h2 id="headline-numbers">The headline numbers</h2>
       <p className="lead">
         Sydney sits roughly 50% above Melbourne on the median house price. That
-        single fact drives most of the strategic differences below: borrowing
-        capacity, time-to-deposit, cash flow at year one, and which suburbs
+        single fact drives most of the strategic differences below: how far
+        a loan stretches, time-to-deposit, cash flow at year one, and which suburbs
         are accessible to which buyers.
       </p>
 
@@ -181,11 +181,13 @@ export default function SydneyVsMelbourneGuide() {
 
       <h3>Borrowing capacity at the same income</h3>
       <p>
-        A couple earning $200,000 combined can comfortably finance roughly
-        $900K to $1.0M in Melbourne (a starter house in many suburbs) but
-        only $600K to $700K in Sydney (apartment territory or far outer
-        suburbs). The same job income buys meaningfully more property
-        in Melbourne.
+        A couple earning $200,000 combined can borrow the same amount in
+        either city: lenders assess income, expenses and debts, not the
+        postcode. What differs is what the loan buys. With Sydney’s median
+        house about 50% above Melbourne’s, a budget that reaches a starter
+        house in many Melbourne suburbs is apartment territory or the far
+        outer suburbs in Sydney. The same job income buys meaningfully more
+        property in Melbourne.
       </p>
 
       <h3>Stamp duty for first home buyers</h3>

@@ -21,7 +21,7 @@ export const post: BlogPost = {
 <p>Brisbane's rental market remains the tightest of Australia's capital cities. Vacancy sits at 0.8% as of Q1 2026, with weekly rents up 7 to 10% on the year. The pressure has pushed yields back up despite price growth; gross yields of 4.0 to 4.8% are achievable in middle and outer suburbs. For investors, Brisbane continues to offer the best combination of yield, growth and infrastructure tailwind of any Australian capital.</p>
 
 <h2>The Olympics factor</h2>
-<p>The 2032 Olympics is now close enough that infrastructure spending is concrete and visible. Cross River Rail is operating, new stations are reshaping commute patterns, and venue construction is underway. Suburbs benefiting most include Albion (Athletes Village area), Woolloongabba, Kelvin Grove and Kangaroo Point. Investors looking at a 6 to 8 year horizon are increasingly active in these locations.</p>
+<p>The 2032 Olympics is now close enough that infrastructure spending is concrete and visible. Cross River Rail is due to carry its first passengers in 2029, its new stations are set to reshape commute patterns, and venue construction is underway. Suburbs benefiting most include Bowen Hills (Athletes Village area), Woolloongabba, Kelvin Grove and Kangaroo Point. Investors looking at a 6 to 8 year horizon are increasingly active in these locations.</p>
 
 <h2>What to expect through 2026</h2>
 <ul>

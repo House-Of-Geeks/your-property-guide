@@ -15,10 +15,10 @@ import { guideOgImages } from "@/lib/og/helpers";
 const FRONTMATTER: GuideFrontmatter = {
   title: "Granny Flat Guide Victoria: Rules, Costs & Approvals (2026)",
   description:
-    "Building a secondary dwelling in Victoria: planning permits, ResCode, council rules, costs, and what makes VIC slower and more expensive than NSW.",
+    "Building a small second dwelling (granny flat) in Victoria: when you still need a planning permit, ResCode, overlays, council rules, costs and rental returns.",
   slug: "granny-flat-guide-vic",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -46,10 +46,10 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Victoria has no state-wide complying-development pathway for secondary dwellings: you typically need a council planning permit, which takes longer and costs more than NSW's CDC route.",
-  "Planning permit timelines: 2 to 4 months for simple applications, 4 to 8 months with neighbour notification, 12+ months if there are objections or VCAT involvement.",
+  "Since 14 December 2023, a small second dwelling (Victoria’s granny flat) normally needs no planning permit in residential and rural zones, only a building permit. The planning size limit rose from 60m² to 80m² on 15 October 2026.",
+  "Where a planning permit is still needed (a lot under 300m² in a residential zone, some rural zones, or an overlay that requires one): 2 to 4 months for simple applications, 4 to 8 months with neighbour notification, 12+ months if there are objections or VCAT involvement.",
   "ResCode is the state-wide residential development code; planning overlays (Heritage, NCO, Flood, Bushfire, VPO) add further constraints.",
-  "Lot size requirements vary by zone. GRZ is most flexible; NRZ may prohibit secondary dwellings.",
+  "A small second dwelling is allowed in every residential zone, including the NRZ. The number that matters is 300m²: below it, in a residential zone, you need a planning permit.",
   "Build costs sit between $120K (basic 1-bed) and $350K+ (heritage-sensitive).",
   "Inner Melbourne rents of $350 to $550/week deliver gross yields of 8 to 12% on construction cost, lower than NSW due to higher build cost.",
 ];
@@ -67,19 +67,19 @@ const TOC: GuideTOCEntry[] = [
 
 const FAQS: FaqItem[] = [
   {
-    question: "Why is building a granny flat slower in Victoria than NSW?",
+    question: "Is building a granny flat slower in Victoria than NSW?",
     answer:
-      "Victoria has no state-wide complying-development pathway for secondary dwellings. Most projects require a council planning permit (2 to 4 months minimum), with neighbour notification, ResCode compliance, and possible VCAT appeals. NSW can issue a CDC in 10 to 20 days for eligible sites.",
+      "Not always any more. Since 14 December 2023, a small second dwelling normally needs no planning permit in Victoria’s residential and rural zones, so you go straight to a building permit. Where a planning permit is still needed (a lot under 300m² in a residential zone, some rural zones, or an overlay that requires one), expect 2 to 4 months minimum, with possible neighbour notification and VCAT appeals. NSW can issue a CDC in 10 to 20 days for eligible sites.",
   },
   {
     question: "Are secondary dwellings allowed in NRZ areas?",
     answer:
-      "Sometimes prohibited, sometimes restricted. The Neighbourhood Residential Zone is more conservative than General Residential Zone. Always check your council's planning scheme and the specific schedule applied to NRZ in your area before assuming a secondary dwelling is permissible.",
+      "Yes. A small second dwelling is allowed in every residential zone, including the Neighbourhood Residential Zone, and normally needs no planning permit there if the lot is at least 300m² and no overlay requires one. The zone’s conditions still apply, so check your council’s planning scheme and the schedule to the NRZ in your area.",
   },
   {
     question: "What's a 'dependent person's unit' and how does it differ from a granny flat?",
     answer:
-      "A dependent person's unit is a planning category in Victoria where the secondary dwelling is for use by someone dependent on the residents of the main house. It can sometimes be approved more readily but it's restricted to dependent occupancy and typically can't be rented to the general public, which limits investment value.",
+      "A dependent person’s unit was a movable building on the same lot as a house, for someone dependent on a resident of the main house. Amendment VC253 removed the term from Victorian planning schemes in December 2023 and replaced it with the small second dwelling, which anyone can live in or rent. Transitional rules allow new dependent person’s unit applications until 28 March 2027.",
   },
   {
     question: "Can VCAT overturn a council refusal?",
@@ -89,7 +89,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Does Victoria have a heritage overlay impact on granny flats?",
     answer:
-      "Heritage Overlays often require the secondary dwelling to be heritage-sensitive in materials, scale and detailing, plus a heritage report and officer review. Cost can rise $50K to $100K+ versus a vanilla design. Worth getting heritage advice before lodging.",
+      "In a Heritage Overlay, a small second dwelling needs no planning permit if it is no more than 5 metres high and finished in muted tones and colours. A taller or bolder design needs a permit, usually with heritage-sensitive materials, scale and detailing, plus a heritage report and officer review. Cost can rise $50K to $100K+ versus a vanilla design. Worth getting heritage advice before lodging.",
   },
   {
     question: "Are yields really lower than NSW for granny flats?",
@@ -99,7 +99,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Granny Flat Guide NSW",       href: "/guides/granny-flat-guide-nsw", description: "Compare to NSW's faster CDC pathway." },
+  { title: "Granny Flat Guide NSW",       href: "/guides/granny-flat-guide-nsw", description: "Compare NSW's CDC pathway." },
   { title: "Granny Flat Guide QLD",       href: "/guides/granny-flat-guide-qld", description: "Auxiliary dwellings and what's allowed in QLD." },
   { title: "Negative Gearing in Australia", href: "/guides/negative-gearing-australia", description: "Tax treatment of investment property and granny flat income." },
   { title: "Property Depreciation Guide",   href: "/guides/property-depreciation-guide", description: "Maximising deductions on a new build." },
@@ -125,34 +125,52 @@ export default function GrannyFlatGuideVICPage() {
 
       <Callout variant="info" title="VIC vs NSW">
         <p>
-          Unlike NSW, Victoria does not have a state-wide complying-development
-          pathway for secondary dwellings. Most projects require a council
-          planning permit, taking longer and costing more than NSW&rsquo;s CDC process.
+          Victoria’s fast route works differently from NSW’s. Since December
+          2023, a small second dwelling normally needs no planning permit in
+          residential and rural zones, so most projects go straight to a
+          building permit. A council planning permit is still needed on a lot
+          under 300m² in a residential zone, in some rural zones, and where an
+          overlay or another planning control requires one.
         </p>
       </Callout>
 
       <h2 id="overview">Secondary dwellings in Victoria</h2>
       <p className="lead">
-        In Victoria, a granny flat is referred to as a <strong>dependent person&rsquo;s
-        unit</strong> or, more broadly, a <strong>secondary dwelling</strong>.
-        Terminology and planning rules depend on your zone, overlay, and local
-        planning scheme.
+        In Victoria’s planning system, a granny flat is a <strong>small second
+        dwelling</strong>: a self-contained home on the same lot as an existing
+        house, with a kitchen, a bathroom and a toilet. The term replaced the
+        old <strong>dependent person’s unit</strong> in December 2023.
       </p>
       <p>
-        Unlike NSW, with its state-wide streamlined pathway, Victoria&rsquo;s approach
-        is largely council-driven, so rules, processing times, and outcomes vary
-        significantly by municipality.
+        The small second dwelling rules are state-wide: they sit in the Victoria
+        Planning Provisions and every council’s planning scheme. Your zone,
+        overlays and any covenant or section 173 agreement on the title still
+        decide what you can build, so check them for your property.
       </p>
       <p>
-        The Victorian Government has been working on housing supply reforms that
-        affect secondary dwellings. Check the Department of Transport and
-        Planning website for the latest policy position.
+        Amendment VC253 created the small second dwelling on 14 December 2023,
+        with a limit of 60m². Amendment VC306 lifted the planning limit to 80m²
+        on 15 October 2026, with matching changes to the building regulations
+        to follow, so confirm the current size limit with your building
+        surveyor. The Department of Transport and Planning’s{" "}
+        <a
+          href="https://www.planning.vic.gov.au/guides-and-resources/strategies-and-initiatives/small-second-dwellings"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          small second homes page
+        </a>{" "}
+        has the latest position.
       </p>
 
       <h2 id="planning">Planning permit requirements</h2>
       <p>
-        In most Victoria areas, building a secondary dwelling requires a planning
-        permit from the local council. The process:
+        A small second dwelling normally needs no planning permit in a
+        residential or rural zone. You need one if the lot is under 300m² in a
+        residential zone, if the land is in a Rural Conservation, Green Wedge
+        or Green Wedge A Zone, if a rural zone’s own setback or earthworks
+        rules require one, or if an overlay or another part of the planning
+        scheme does. Where a permit is needed, the process:
       </p>
       <ol>
         <li>Lodge a planning permit application with supporting documents (plans, site analysis)</li>
@@ -161,9 +179,11 @@ export default function GrannyFlatGuideVICPage() {
         <li>If approved, obtain a building permit before commencing construction</li>
       </ol>
       <p>
-        Some minor secondary dwelling proposals may be exempt under ResCode or
-        council by-laws. A planning consultant or council planner can advise on
-        whether your project is exempt.
+        With or without a planning permit, you need a building permit. Where no
+        planning permit is needed, the building surveyor checks the siting
+        rules (setbacks, site coverage, overlooking and the like) as part of
+        it. A council planner can confirm whether your project needs a planning
+        permit.
       </p>
 
       <h2 id="rescode">ResCode and planning overlays</h2>
@@ -175,9 +195,9 @@ export default function GrannyFlatGuideVICPage() {
       </p>
       <p>Common overlays affecting proposals:</p>
       <ul>
-        <li><strong>Neighbourhood Character Overlay (NCO):</strong> May restrict design or height</li>
-        <li><strong>Heritage Overlay:</strong> Heritage-sensitive design and officer approval required</li>
-        <li><strong>Flood or Bushfire Overlay:</strong> Additional assessment, may restrict development</li>
+        <li><strong>Neighbourhood Character Overlay (NCO):</strong> May restrict design or height. A small second dwelling up to 5 metres high, in muted tones and colours, needs no planning permit</li>
+        <li><strong>Heritage Overlay:</strong> No planning permit for a small second dwelling up to 5 metres high in muted tones and colours; anything taller or bolder needs a permit, heritage-sensitive design and officer approval</li>
+        <li><strong>Flood or Bushfire Overlay:</strong> Can trigger a planning permit and additional assessment, may restrict development</li>
         <li><strong>Vegetation Protection Overlay:</strong> Limits tree removal needed for construction</li>
       </ul>
       <p>
@@ -187,25 +207,28 @@ export default function GrannyFlatGuideVICPage() {
 
       <h2 id="lot-size">Lot size and zone requirements</h2>
       <p>
-        Victoria has no universal minimum lot size for secondary dwellings.
-        Requirements vary by zone:
+        For a small second dwelling, the number that matters is 300m²: on a
+        smaller lot in a residential zone, you need a planning permit. Beyond
+        that, zone conditions vary:
       </p>
       <ul>
         <li>
           <strong>General Residential Zone (GRZ):</strong> Most common in
-          established suburbs. Secondary dwellings generally permissible with a
-          planning permit. Councils typically expect lots of at least 300 to
-          400m² for attached, more for detached.
+          established suburbs. A small second dwelling normally needs no
+          planning permit on a lot of 300m² or more, subject to the
+          zone’s conditions and its minimum garden area requirement.
         </li>
         <li>
           <strong>Neighbourhood Residential Zone (NRZ):</strong>{" "}More
-          restrictive. May limit dwellings per lot and impose stricter design
-          requirements. Sometimes prohibits secondary dwellings; check your
-          council&rsquo;s scheme.
+          restrictive for multi-unit development, but a small second dwelling
+          is allowed and normally needs no planning permit on a lot of 300m²
+          or more. The minimum garden area requirement applies here too; check
+          your council’s schedule to the zone.
         </li>
         <li>
           <strong>Residential Growth Zone (RGZ):</strong> Encourages
-          higher-density. Secondary dwellings more readily approved.
+          higher-density. A small second dwelling normally needs no planning
+          permit on a lot of 300m² or more.
         </li>
       </ul>
       <p>
@@ -233,13 +256,17 @@ export default function GrannyFlatGuideVICPage() {
 
       <p>Additional VIC-specific costs to budget for:</p>
       <ul>
-        <li>Planning permit application fee: $1,000 to $3,000+</li>
+        <li>Planning permit application fee, if you need a permit: $1,000 to $3,000+</li>
         <li>Planning permit consultant: $3,000 to $8,000 (recommended for complex sites)</li>
         <li>Heritage report: $2,000 to $5,000 (if heritage overlay applies)</li>
         <li>Soil and drainage report: $1,000 to $2,000</li>
       </ul>
 
       <h2 id="approval-time">How long does approval take?</h2>
+      <p>
+        If your small second dwelling needs no planning permit, you go straight
+        to the building permit. Where a planning permit is needed:
+      </p>
       <ul>
         <li><strong>Simple applications (no objections, no overlay):</strong> 2 to 4 months</li>
         <li><strong>Notifiable applications (neighbour notification):</strong> 4 to 8 months</li>
@@ -252,14 +279,14 @@ export default function GrannyFlatGuideVICPage() {
 
       <KeyFigure
         value="2–8 months"
-        label="Typical Victorian planning permit timeline."
+        label="Typical Victorian planning permit timeline, where a permit is needed."
         context="NSW CDC by comparison: 10 to 20 days"
       />
 
       <p>
-        Versus NSW&rsquo;s CDC pathway (typically 2 to 4 weeks), Victoria&rsquo;s planning
-        process is meaningfully slower. Factor this into your project timeline
-        and budget.
+        Where a permit is needed, Victoria’s planning process is meaningfully
+        slower than NSW’s CDC pathway (typically 2 to 4 weeks). Factor this
+        into your project timeline and budget.
       </p>
 
       <h2 id="growth-corridors">Growth corridor opportunities</h2>

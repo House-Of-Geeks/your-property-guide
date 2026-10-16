@@ -3,7 +3,7 @@ import type { BlogPost } from "@/types";
 export const post: BlogPost = {
   id: "blog-queensland-30000-first-home-grant-closing-june-2026",
   slug: "queensland-30000-first-home-grant-closing-june-2026",
-  title: "Queensland's $30,000 First Home Owner Grant for New Homes Closes 30 June",
+  title: "Queensland’s $30,000 first home grant: the 30 June deadline that never came",
   excerpt: "Update: it didn't close. Days after this article ran, the 2026-27 Queensland Budget locked the $30,000 grant in for another four years. The original deadline story is below, with the update up top.",
   content: `<p><em><strong>Update (July 2026):</strong> the deadline this article covered never arrived. On 23 June 2026, the 2026-27 Queensland Budget locked the boosted $30,000 First Home Owner Grant in for another four years, and made the zero transfer duty for first home buyers on new homes permanent. The Queensland Revenue Office confirms $30,000 for eligible contracts signed from 20 November 2023, with no end date currently published. See our full coverage of <a href="/guides/first-home-buyer-qld">Queensland's first home buyer support</a>. The original article follows as published.</em></p>
 
@@ -49,6 +49,6 @@ export const post: BlogPost = {
   category: "News",
   tags: ["first home owner grant","queensland","first home buyer","stamp duty","new homes","first home guarantee","property grants","2026"],
   publishedAt: "2026-06-24",
-  updatedAt: "2026-07-24",
+  updatedAt: "2026-10-16",
   readingTime: 5,
 };

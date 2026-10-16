@@ -20,7 +20,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "The 10 most expensive mistakes Australian first home buyers make in 2026, from over-stretching on a deposit to skipping building inspections. Each mistake explained with the simple fix.",
   slug: "first-home-buyer-mistakes-to-avoid",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -79,7 +79,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I lose my deposit if I pull out of a contract?",
     answer:
-      "Within the cooling-off period (3 to 5 business days in most states for private treaty), you forfeit a small penalty (0.2% to 0.25% of the price) and get the rest of the deposit back. After cooling-off ends, the deposit is at risk. At auction, there's no cooling-off, the deposit is at risk from the moment the hammer falls.",
+      "Within the cooling-off period (2 to 5 business days in most states for private treaty; WA and Tasmania have none), you lose only a small amount and get the rest of the deposit back: 0.25% of the price in NSW and the ACT, up to 0.25% in Queensland, the greater of $100 or 0.2% in Victoria, at most $100 in SA, and nothing in the NT. After cooling-off ends, the deposit is at risk. At auction, there's no cooling-off, the deposit is at risk from the moment the hammer falls.",
   },
   {
     question: "How much should I borrow as a first home buyer?",

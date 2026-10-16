@@ -17,7 +17,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "How SMSFs invest in property: the sole purpose test, residential vs commercial rules, LRBA borrowing, costs, tax advantages including 0% in pension phase, and the risks.",
   slug: "smsf-property-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -238,7 +238,7 @@ export default function SMSFPropertyGuidePage() {
         <li><strong>Find and assess the property.</strong> The property must meet the SIS Act requirements. For residential: cannot buy from related parties. For commercial: can buy from a member&rsquo;s business at market value with independent valuation.</li>
         <li><strong>Conduct due diligence.</strong> Building and pest inspection, title search, strata report (if applicable). All standard property due diligence applies, the fact it&rsquo;s in an SMSF doesn&rsquo;t reduce the need for thorough checks.</li>
         <li><strong>Exchange and settle.</strong> The contract must be in the name of the bare trustee (not the SMSF directly). Your SMSF conveyancer or solicitor manages settlement.</li>
-        <li><strong>Ongoing compliance.</strong> The SMSF must be audited annually by a registered SMSF auditor. The property must be independently valued at least every 3 years, and more frequently for unlisted assets in certain circumstances.</li>
+        <li><strong>Ongoing compliance.</strong> The SMSF must be audited annually by a registered SMSF auditor. The property must be valued at market value every year for the fund’s accounts. An external valuation isn’t required each year, but the ATO says one may be prudent if the value has likely changed materially or a significant event has occurred.</li>
       </ol>
 
       <h2 id="costs">Costs of SMSF property ownership</h2>
@@ -257,7 +257,7 @@ export default function SMSFPropertyGuidePage() {
           <tr><td>Annual SMSF audit</td><td>$500 to $1,000</td><td>Annual</td></tr>
           <tr><td>Financial advice (SMSF specialist)</td><td>$2,000 to $5,000+</td><td>Setup + ongoing</td></tr>
           <tr><td>SMSF loan rate premium (vs standard loan)</td><td>1.5% to 2.5% pa above standard rates</td><td>While loan is outstanding</td></tr>
-          <tr><td>Property valuation</td><td>$500 to $1,500</td><td>Every 3 years minimum</td></tr>
+          <tr><td>Property valuation</td><td>$500 to $1,500</td><td>Market value every year; external valuation when needed</td></tr>
         </tbody>
       </table>
 
@@ -304,9 +304,9 @@ export default function SMSFPropertyGuidePage() {
       <p>
         Even in accumulation phase, the 15% tax rate on rental income vs a
         high-income earner&rsquo;s 47% marginal rate represents a significant
-        saving. For someone earning $150,000 personally (45% tax rate),
-        holding a property in an SMSF instead could reduce the tax rate on
-        rental income by 30 percentage points.
+        saving. For someone earning $150,000 personally (37% tax rate, 39%
+        with the Medicare levy), holding a property in an SMSF instead could
+        reduce the tax rate on rental income by 24 percentage points.
       </p>
 
       <h2 id="risks">Risks and downsides</h2>

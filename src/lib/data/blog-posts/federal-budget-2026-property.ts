@@ -13,9 +13,9 @@ export const post: BlogPost = {
 <h2>The headline changes at a glance</h2>
 <ul>
 <li><strong>Negative gearing limited to new builds</strong> from 1 July 2027, established residential investment properties purchased after 7:30pm AEST on 12 May 2026 will no longer be eligible for negative gearing against salary income</li>
-<li><strong>50% CGT discount replaced</strong> with cost base indexation plus a 30% minimum tax on net capital gains for residential investment property</li>
-<li><strong>New homes exempt</strong> from both the negative gearing and CGT changes, a deliberate incentive to direct investor capital into new supply</li>
-<li><strong>Existing investors grandfathered</strong>: anyone who owns a residential investment property on 12 May 2026 keeps their current tax treatment for that property</li>
+<li><strong>50% CGT discount replaced</strong> with cost base indexation plus a 30% minimum tax, for gains that accrue from 1 July 2027 on property, shares and other assets held by individuals, trusts and partnerships</li>
+<li><strong>New builds favoured</strong>: they keep negative gearing and a choice of CGT treatment, a deliberate incentive to direct investor capital into new supply</li>
+<li><strong>Existing investors keep negative gearing</strong>: anyone who owns a residential investment property at 7:30pm AEST on 12 May 2026 can keep negatively gearing it. The CGT change still reaches it, for gains that accrue from 1 July 2027</li>
 <li><strong>$6.3 billion total for housing-enabling infrastructure</strong>: water, sewer, roads and power to enable up to 65,000 new homes over the decade</li>
 <li><strong>Housing Australia Future Fund</strong> continues progressing toward 40,000 social and affordable homes</li>
 <li><strong>Dwelling price growth forecast revised down</strong> to 3% in 2026 (from 5%), with Treasury expecting a modest cooling effect from the tax changes</li>
@@ -23,23 +23,23 @@ export const post: BlogPost = {
 
 <h2>What's actually changing on negative gearing</h2>
 <p>Negative gearing, the ability to deduct net rental losses against salary and other income, has been a fixture of Australian property investment since the 1980s. From 1 July 2027, it will only apply to <em>new builds</em>. For established residential investment properties purchased after 7:30pm AEST on Tuesday 12 May 2026, any rental loss will only be deductible against other property income, not against salary.</p>
-<p>The grandfathering is critical. If you owned the investment property on budget night, nothing changes for that property. If you buy an established property the day after the budget, you fall under the new rules. The cut-off is precise, to the minute, to prevent a rush of last-minute purchases.</p>
+<p>The grandfathering is critical. If you owned the investment property on budget night, its negative gearing doesn't change. If you buy an established property the day after the budget, you fall under the new rules. The cut-off is precise, to the minute, to prevent a rush of last-minute purchases.</p>
 <p>What this means in practice: investors weighing an established three-bedroom rental in an outer suburb will get a different answer in 2026 than they would have in 2025. The same property, with the same rent, will produce a worse after-tax cashflow position for any new buyer. Investors who want to keep the negative gearing benefit can still do so, but only by buying new builds.</p>
 
 <h2>What's actually changing on capital gains tax</h2>
-<p>The 50% CGT discount, which has applied to assets held longer than 12 months since 1999, is being replaced for residential investment property. Two changes work together:</p>
+<p>The 50% CGT discount, which has applied to assets held longer than 12 months since 1999, is being replaced for gains that accrue from 1 July 2027. The change covers individuals, trusts and partnerships, and property and shares alike. Two changes work together:</p>
 <ul>
 <li><strong>Cost base indexation</strong> returns. Instead of paying tax on half the nominal gain, investors will pay on the real (inflation-adjusted) gain. For long-held properties this is roughly tax-neutral. For shorter holds in low-inflation periods, it's worse.</li>
-<li><strong>A 30% minimum tax</strong> on net capital gains from residential investment property. Even if your marginal rate is below 30%, that's the floor for residential property gains.</li>
+<li><strong>A 30% minimum tax</strong> on capital gains. Even if your marginal rate is below 30%, that's the floor, unless you receive a means-tested payment such as the Age Pension or JobSeeker in the year you sell.</li>
 </ul>
-<p>New homes are exempt, a property that was a new build when first acquired by the investor keeps the old 50% discount treatment. Like negative gearing, existing properties owned on 12 May 2026 are fully grandfathered.</p>
+<p>New builds keep a choice: an investor who buys a new build can take either the 50% discount or indexation with the minimum tax when they sell. Unlike negative gearing, the CGT change has no budget-night cut-off. For property you own before 1 July 2027 and sell after it, the gain up to 1 July 2027 keeps the 50% discount, and the gain from that date falls under the new rules.</p>
 
 <h2>What it means if you're a homeowner (not an investor)</h2>
 <p>If you own your principal place of residence and don't have an investment property, the budget changes almost nothing for you directly. The main residence CGT exemption is untouched. What may move is the value of your home, indirectly, through changes in investor demand. Treasury's revised forecast, 3% national dwelling price growth in 2026, down from 5%, suggests they expect a mild cooling effect rather than a crash.</p>
 <p>Owner-occupier suburbs, particularly family-suited middle-ring areas, are likely to be less affected than investor-heavy markets like inner-city units in Sydney and Melbourne, where any cooling will be more pronounced.</p>
 
 <h2>What it means if you're a property investor</h2>
-<p>The most important rule for current investors: <em>existing properties are protected</em>. Any property you owned on 12 May 2026 keeps negative gearing eligibility against salary income, and keeps the 50% CGT discount on sale. There is no requirement to sell, restructure or do anything immediately.</p>
+<p>The most important rule for current investors: <em>existing properties keep negative gearing</em>. Any property you owned on 12 May 2026 keeps negative gearing eligibility against salary income. The 50% CGT discount is different: it covers only the gain up to 1 July 2027, and the gain from that date is taxed under the new rules when you sell. There is no requirement to sell, restructure or do anything immediately.</p>
 <p>For investors considering future purchases, the calculation is different:</p>
 <ul>
 <li>An established rental loses both negative gearing against salary and the 50% CGT discount. The after-tax case for that purchase is materially worse</li>
@@ -74,7 +74,7 @@ export const post: BlogPost = {
 <h3>Winners</h3>
 <ul>
 <li><strong>Owner-occupiers and first home buyers</strong>: less investor competition for established stock</li>
-<li><strong>Existing investors</strong>: fully grandfathered and now own scarce assets in a smaller future pool</li>
+<li><strong>Existing investors</strong>: keep negative gearing on property held at budget night, and now own scarce assets in a smaller future pool</li>
 <li><strong>New-build investors</strong>: concentrate in a segment that keeps both negative gearing and the CGT discount</li>
 <li><strong>Developers of medium-density and new-estate housing</strong>: investor demand shifts toward their stock</li>
 <li><strong>States and territories with active land release programs</strong>: infrastructure funding goes further</li>
@@ -87,12 +87,12 @@ export const post: BlogPost = {
 </ul>
 
 <h2>What to do next</h2>
-<p>If you own investment property, do nothing in haste. Your existing properties are grandfathered. The instinct to sell quickly to lock in the old CGT discount usually creates more cost (transaction costs, restructuring a portfolio, transaction-related CGT itself) than it saves. Speak to your accountant before making any structural moves.</p>
+<p>If you own investment property, do nothing in haste. Your existing properties keep negative gearing, and the gain up to 1 July 2027 keeps the 50% discount whenever you sell. The instinct to sell quickly to lock in the old CGT discount usually creates more cost (transaction costs, restructuring a portfolio, transaction-related CGT itself) than it saves. Speak to your accountant before making any structural moves.</p>
 <p>If you're considering buying an investment property, the calculation has changed but not necessarily for the worse. New builds remain favourably treated and have additional structural support. The investor case for outer-corridor house and land in Brisbane, southwest Sydney, north-west Melbourne and Perth growth corridors is arguably stronger now than before the budget.</p>
 <p>If you're a first home buyer, this is one of the better budgets you'll see in your buying lifetime. Schemes are intact, investor competition is easing, and the supply package will start to deliver additional stock from late 2026 onward. The window to use the existing schemes well is wide open.</p>
 
 <h2>The political and economic context</h2>
-<p>The negative gearing change breaks a clear pre-election commitment, and the government has acknowledged that. Treasurer Chalmers has framed the move as a structural reform that prioritises young Australians being able to buy, even at political cost. Whatever your view on the politics, the policy is now law from budget night, and the cut-off times are locked. The economic effects will play out over years, not weeks.</p>
+<p>The negative gearing change breaks a clear pre-election commitment, and the government has acknowledged that. Treasurer Chalmers has framed the move as a structural reform that prioritises young Australians being able to buy, even at political cost. Whatever your view on the politics, the cut-off times run from budget night, even though the package still had to pass Parliament. It passed on 25 June 2026 and became law on 26 June; our explainer on the <a href="/guides/negative-gearing-cgt-changes-now-law-2026">negative gearing and CGT changes now law</a> covers what was passed. The economic effects will play out over years, not weeks.</p>
 
 <p>For Your Property Guide's view: this is a sober, structurally significant set of changes that will reward investors who think long-term and buyers who understand the new incentive landscape. We'll be updating our suburb data, calculators (negative gearing, CGT, rental yield) and state buying guides over the coming weeks to reflect the new rules. The fundamentals of property, location, supply, demand, and rental yield, haven't changed. The tax wrapper around them has.</p>
 

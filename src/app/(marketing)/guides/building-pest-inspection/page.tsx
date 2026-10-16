@@ -33,7 +33,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What a building and pest inspection costs in Sydney, Melbourne, Brisbane, Perth, Adelaide, Hobart, Canberra and Darwin, by unit, house and large property, combined or separate, from inspectors' own price lists, plus who pays and what the report covers.",
   slug: "building-pest-inspection",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 11,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -420,7 +420,7 @@ export default function BuildingPestInspectionPage() {
       <h2 id="who-to-hire">Who to hire</h2>
       <p>Look for an inspector with the following qualifications:</p>
       <ul>
-        <li><strong>Building inspector.</strong> Should be a licensed builder, architect, or engineer with inspection qualifications. Check for membership in the Australian Institute of Building Surveyors (AIBS) or similar. In Queensland only a QBCC-licensed residential building inspector can do a pre-purchase inspection.</li>
+        <li><strong>Building inspector.</strong> Should be a licensed builder, architect, or engineer with inspection qualifications. Check that licence on your state’s register, and ask for a report to Australian Standard AS 4349.1. In Queensland only a QBCC-licensed residential building inspector can do a pre-purchase inspection.</li>
         <li><strong>Pest inspector.</strong> Should be a licensed pest controller or timber pest inspector, qualified under Australian Standard AS 4349.3.</li>
         <li><strong>Professional indemnity insurance.</strong> Essential. If the inspector misses a significant issue, you need recourse.</li>
       </ul>
@@ -502,10 +502,11 @@ export default function BuildingPestInspectionPage() {
         plus GST by bedroom count and WA Building Inspections $499 plus GST.
       </p>
       <p>
-        New homes typically come with a statutory warranty period (usually 6
-        years for structural defects, 2 years for non-structural defects in
-        most states). Document any issues with photos and written notices to
-        the builder. See our{" "}
+        New homes come with statutory warranties, but the periods vary by
+        state: in NSW, 6 years for major defects and 2 years for other
+        defects; in Victoria, up to 10 years from completion. Check the
+        periods that apply with your state’s building regulator. Document
+        any issues with photos and written notices to the builder. See our{" "}
         <Link href="/guides/buying-property-australia">complete buying guide</Link>{" "}
         for the broader process.
       </p>

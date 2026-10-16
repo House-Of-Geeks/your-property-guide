@@ -17,7 +17,7 @@ export const post: BlogPost = {
 <p>The financial case for rentvesting hinges on a few key principles:</p>
 <ul>
 <li><strong>Rent is often cheaper than the equivalent mortgage in inner-city or premium suburbs.</strong> A $1.5M Sydney inner-west house might rent for $900 to $1,100/week, far less than the mortgage on $1.2M of debt</li>
-<li><strong>Investment debt is tax-deductible.</strong> Interest, depreciation, and operating costs are all deductible against rental income (and can offset other income via negative gearing if applicable)</li>
+<li><strong>Investment debt is tax-deductible.</strong> Interest, depreciation, and operating costs are all deductible against rental income (and can offset other income via negative gearing if applicable). From 1 July 2027, losses on an established home contracted after 7:30pm AEST on 12 May 2026 only offset income from residential property and carry forward; new builds and homes held at that time keep negative gearing</li>
 <li><strong>You can buy in higher-yield markets.</strong> A $600K outer-Brisbane investment property generating $560/week rent (4.8% gross yield) may produce stronger long-term returns than a $1.5M owner-occupier purchase in inner Melbourne</li>
 <li><strong>You retain flexibility.</strong> Career changes, relationship changes, lifestyle changes don't require selling your home</li>
 </ul>

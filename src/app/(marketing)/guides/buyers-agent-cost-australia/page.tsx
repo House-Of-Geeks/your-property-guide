@@ -18,7 +18,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Buyer's agent fees in Australia: fixed fees vs percentage commissions, typical ranges by market, what's included, and when paying $10K to $25K is worth it.",
   slug: "buyers-agent-cost-australia",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-05-06",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -88,7 +88,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Are buyer's agents licensed?",
     answer:
-      "Yes. Each state has a real estate or property licensing regime, for example, NSW requires a Class 1 or Class 2 Real Estate Licence (Stock and Station). Always check the licence number on your state's licensing register before signing an engagement letter.",
+      "Yes. Each state has a real estate or property licensing regime, for example, in NSW a buyer's agent must hold a real estate agent's licence, or a certificate of registration and work under a licensed real estate agent. Always check the licence number on your state's licensing register before signing an engagement letter.",
   },
   {
     question: "Do they have to be exclusive?",
