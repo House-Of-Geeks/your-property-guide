@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Phone } from "lucide-react";
@@ -50,11 +49,7 @@ export default function AgreementCheckPage() {
         photo="paperwork"
         size="lg"
         breadcrumbs={[{ label: "Agreement check" }]}
-        aside={
-          <Suspense fallback={null}>
-            <AgreementCheckForm />
-          </Suspense>
-        }
+        aside={<AgreementCheckForm />}
       >
         <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-primary">Free agreement check</p>
         <div className="mt-4">

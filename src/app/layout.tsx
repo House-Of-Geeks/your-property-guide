@@ -7,9 +7,11 @@ import { Providers } from "@/components/analytics/Providers";
 
 // Two faces (v6, 15 Oct 2026): Schibsted Grotesk for body text, labels and
 // h3 down, and Source Serif 4 for h1, h2, the wordmark and big figures
-// (--font-display points at it in globals.css). The serif's optical-size
-// axis keeps it fine at display sizes; the italic is for the one accent
-// phrase a headline may carry.
+// (--font-display points at it in globals.css). The serif's italic is its
+// own font, not preloaded, so only pages that set serif italic (an accent
+// phrase, a pull quote, a signature) download it; globals.css points serif
+// italic text at it. No optical-size axis: it more than doubled the files
+// and cost mobile LCP (Lighthouse, 16 Oct 2026).
 const brandFont = Schibsted_Grotesk({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -19,9 +21,16 @@ const brandFont = Schibsted_Grotesk({
 const displayFont = Source_Serif_4({
   variable: "--font-serif",
   subsets: ["latin"],
-  style: ["normal", "italic"],
-  axes: ["opsz"],
+  style: ["normal"],
   display: "swap",
+});
+
+const displayItalic = Source_Serif_4({
+  variable: "--font-serif-italic",
+  subsets: ["latin"],
+  style: ["italic"],
+  display: "swap",
+  preload: false,
 });
 
 
@@ -75,7 +84,7 @@ export default function RootLayout({
     <html
       suppressHydrationWarning
       lang="en"
-      className={`${brandFont.variable} ${displayFont.variable} h-full antialiased`}
+      className={`${brandFont.variable} ${displayFont.variable} ${displayItalic.variable} h-full antialiased`}
     >
       <head>
         {/* Preconnect to high-priority third-party origins. dns-prefetch is a

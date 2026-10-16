@@ -118,7 +118,7 @@ function FooterBottom() {
           <Link href="/sitemap.xml" className="text-sm text-white/60 hover:text-white transition-colors">Sitemap</Link>
         </div>
       </div>
-      <p className="text-xs leading-relaxed text-white/45">
+      <p className="text-xs leading-relaxed text-white/70">
         Part of the Profit Geeks network:{" "}
         {NETWORK_LINKS.map((l, i) => (
           <span key={l.href}>

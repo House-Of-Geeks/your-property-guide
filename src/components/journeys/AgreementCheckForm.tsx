@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { track } from "@/lib/analytics";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
 import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
@@ -16,13 +16,22 @@ import { CheckField, Field, Honeypot, INPUT_CLASS, SubmitButton, describedBy, us
 // agent. The collection statement shown here is stored with the row.
 
 const today = () => new Date().toLocaleDateString("en-CA", { timeZone: "Australia/Sydney" }); // YYYY-MM-DD
+const noSubscribe = () => () => {};
+
+// Where the reader came from (?from=<article slug>), read at submit time so
+// the form renders in the page's HTML instead of waiting for the URL on the
+// client (that wait shifted the page by 0.1 CLS on phones, 16 Oct 2026).
+function sourceTag(): string {
+  const from = new URLSearchParams(window.location.search).get("from");
+  return `agreement-check${from && /^[a-z0-9-]{1,40}$/.test(from) ? `-${from}` : ""}`;
+}
 
 export function AgreementCheckForm() {
   const router = useRouter();
-  const params = useSearchParams();
-  const from = params.get("from");
-  const source = `agreement-check${from && /^[a-z0-9-]{1,40}$/.test(from) ? `-${from}` : ""}`;
   const requestKey = useRequestKey();
+  // Today's date only on the client: the page is static, so the server's
+  // date would be the build's.
+  const minDate = useSyncExternalStore(noSubscribe, today, () => undefined);
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -57,6 +66,7 @@ export function AgreementCheckForm() {
     if (!validate()) return;
     inFlight.current = true;
     setBusy(true);
+    const source = sourceTag();
     try {
       const res = await fetch("/api/leads", {
         method: "POST",
@@ -143,7 +153,7 @@ export function AgreementCheckForm() {
           <input id="ac-agency" maxLength={120} value={agency} onChange={(e) => setAgency(e.target.value)} aria-describedby="ac-agency-hint" className={INPUT_CLASS} />
         </Field>
         <Field id="ac-date" label="When do you plan to sign?" optional hint="Leave it blank if you’re not sure yet." error={errors.signDate}>
-          <input id="ac-date" type="date" min={today()} value={signDate} onChange={(e) => setSignDate(e.target.value)} aria-invalid={errors.signDate ? true : undefined} aria-describedby={describedBy("ac-date", true, errors.signDate)} className={INPUT_CLASS} />
+          <input id="ac-date" type="date" min={minDate} value={signDate} onChange={(e) => setSignDate(e.target.value)} aria-invalid={errors.signDate ? true : undefined} aria-describedby={describedBy("ac-date", true, errors.signDate)} className={INPUT_CLASS} />
         </Field>
         <CheckField id="ac-marketing" checked={marketing} onChange={setMarketing}>
           {MARKETING_CONSENT}

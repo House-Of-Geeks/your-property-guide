@@ -224,6 +224,21 @@ h1, h2 {
   text-wrap: balance;
 }
 
+/* Serif italic (16 Oct 2026): the italic is a separate, lazily loaded font
+   (layout.tsx), because a family without an italic face would fake one.
+   Point italic text set in the serif at it: an accent phrase in an h1 or h2,
+   or a font-display element set in italic (pull quotes, signatures). Unlayered,
+   so it beats the font-display utility. */
+.font-display.italic,
+.font-display .italic,
+.font-display em,
+h1 .italic,
+h1 em,
+h2 .italic,
+h2 em {
+  font-family: var(--font-serif-italic), var(--font-serif), Georgia, "Times New Roman", serif;
+}
+
 /* Headings (v6): h1 and h2 in the serif at a regular weight, h3 down in
    the grotesk. In @layer base so a weight or tracking utility on the
    element still wins. */
