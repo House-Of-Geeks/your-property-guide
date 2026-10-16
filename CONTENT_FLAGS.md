@@ -221,7 +221,6 @@ Several of these are contradictions between articles in this batch (agency cooli
 | Check | granny-flat-guide-qld `page.tsx:138` | "Most projects require a Development Application" | A complying Brisbane secondary dwelling is often accepted development needing building approval only; check the 600m²/450m² minimums too. |
 | Check | granny-flat-guide-qld `page.tsx:50` | Vacancy "below 1% … for years" | No source. |
 | Conflict | `negative-gearing-changes-2026-budget.ts:43`, :95, :52–54 | SMSFs under the same rules; trusts and companies "never subject to personal negative gearing"; the "substantial renovation" definition | All three disagree with negative-gearing-australia (:418), which says super funds are excluded, companies and most trusts are covered, and a ministerial instrument will define "new build". The post says it "reflects the rules as legislated"; it needs a full re-check. |
-| Likely wrong | `negative-gearing-changes-2026-budget.ts:107` | Link to "/tools/negative-gearing-calculator" | No such route; the calculator is at /negative-gearing-calculator. The link 404s. |
 | Review | `negative-gearing-changes-2026-budget.ts:99` | "a clear break of a pre-election commitment, and the government has been honest about that" | A political claim with no source. |
 
 ### Batch 6: timing, contracts of sale, first home (SA, WA), lending, budget, builders

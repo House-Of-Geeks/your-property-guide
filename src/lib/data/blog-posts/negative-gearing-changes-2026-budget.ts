@@ -104,7 +104,7 @@ export const post: BlogPost = {
 <li><strong>Update your records.</strong> Confirm with your accountant that each property's purchase date and contract date are documented clearly, this matters if there's ever a question about which regime applies</li>
 <li><strong>Review your strategy for future purchases.</strong> The new regime favours yield over loss-driven returns, and new builds over established. Adjust accordingly</li>
 <li><strong>Talk to your accountant before the 2026-27 financial year close.</strong> There may be ways to bring forward maintenance, repairs or depreciation reviews to maximise current-year deductions while the old rules still apply to all property types</li>
-<li><strong>Use our <a href="/tools/negative-gearing-calculator">negative gearing calculator</a></strong> with and without the new rules to see how the change affects your specific portfolio</li>
+<li><strong>Use our <a href="/negative-gearing-calculator">negative gearing calculator</a></strong> with and without the new rules to see how the change affects your specific portfolio</li>
 </ol>
 
 <p>The negative gearing changes are real, structural, and significant, but they don't break the case for property investment in Australia. They reshape it. Investors who think carefully about location, yield, supply incentives and tax positioning under the new regime can still build sustainable property portfolios. The strategy needs to be sharper than it was, but the opportunity remains.</p>
