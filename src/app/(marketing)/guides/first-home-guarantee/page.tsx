@@ -28,7 +28,10 @@ import {
   HG_PREAPPROVAL_DAYS,
   HG_PRICE_CAPS,
   HG_SINGLE_PARENT_SELL_WEEKS,
+  HG_EXPANSION_FIRST_YEAR_AS_AT,
+  HG_EXPANSION_FIRST_YEAR_BUYERS,
   HG_SOURCES,
+  HOMES_FOR_FHB_PROGRAM,
   fmtCap,
 } from "@/lib/data/home-guarantee";
 
@@ -38,7 +41,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "How the Australian Government 5% Deposit Scheme (the expanded First Home Guarantee) lets eligible first home buyers purchase with a 5% deposit and no Lenders Mortgage Insurance. The 2025 expansion, price caps, the Family Home Guarantee, and how it stacks with the FHOG.",
   slug: "first-home-guarantee",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-08",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -83,6 +86,8 @@ const TOC: GuideTOCEntry[] = [
   { id: "how-it-works",    label: "How the 5% deposit and no LMI works" },
   { id: "eligibility",     label: "Eligibility and price caps" },
   { id: "related",         label: "Regional and Family Home Guarantees" },
+  { id: "uptake",          label: "How many buyers use the scheme" },
+  { id: "homes-program",   label: "100,000 homes for first home buyers" },
   { id: "stacking",        label: "Stacking with the FHOG and stamp duty" },
   { id: "applying",        label: "How to apply" },
 ];
@@ -227,6 +232,50 @@ export default function FirstHomeGuaranteePage() {
         and the{" "}
         <Link href="/borrowing-power-calculator">borrowing power calculator</Link>{" "}
         help you sense-check both sides.
+      </p>
+
+      <h2 id="uptake">How many buyers use the scheme</h2>
+      <p>
+        The late-2025 expansion was designed to open the guarantee to every eligible
+        first home buyer, not a fixed annual allocation. On {HG_EXPANSION_FIRST_YEAR_AS_AT},
+        Housing Australia data cited by the federal government showed{" "}
+        <strong>{HG_EXPANSION_FIRST_YEAR_BUYERS.toLocaleString("en-AU")} first home buyers</strong>{" "}
+        had purchased through the expanded 5% Deposit Scheme in its first year (the
+        period with no income test, no cap on places and higher property price limits).
+        More than 280,000 buyers have been supported since 2022 across the life of the
+        Home Guarantee Scheme, and the government estimates expanded-scheme users avoided
+        more than $1.4&nbsp;billion in lenders mortgage insurance in that first year alone.
+      </p>
+      <p>
+        Uptake is highest in Victoria, New South Wales and Queensland, which reflects
+        where most first home buyer activity already occurs rather than any restriction
+        on the scheme. Housing Australia reports that 99% of scheme borrowers are ahead or
+        on track with repayments, with only 13 claims paid since launch and most
+        participants refinancing off the guarantee after about 2.5 years.
+      </p>
+
+      <h2 id="homes-program">100,000 homes for first home buyers</h2>
+      <p>
+        Deposit support is demand-side; the Commonwealth is also funding supply reserved
+        for first home buyers. The election commitment to help deliver up to{" "}
+        <strong>{HOMES_FOR_FHB_PROGRAM.totalReserved.toLocaleString("en-AU")} homes</strong>{" "}
+        for first home buyers is being implemented through state and territory deals.
+        South Australia announced the first agreement in {HOMES_FOR_FHB_PROGRAM.sa.announced},
+        unlocking about {HOMES_FOR_FHB_PROGRAM.sa.totalHomes.toLocaleString("en-AU")} homes
+        including nearly {HOMES_FOR_FHB_PROGRAM.sa.homesForFhb.toLocaleString("en-AU")} reserved
+        for first home buyers. The ACT ({HOMES_FOR_FHB_PROGRAM.act.announced}) and Tasmania
+        ({HOMES_FOR_FHB_PROGRAM.tas.announced}) have since signed on, reserving more than{" "}
+        {HOMES_FOR_FHB_PROGRAM.act.homesForFhb.toLocaleString("en-AU")} and up to{" "}
+        {HOMES_FOR_FHB_PROGRAM.tas.homesForFhb.toLocaleString("en-AU")} homes respectively
+        within wider housing pipelines. First homes from these projects are expected from
+        2027–28.
+      </p>
+      <p>
+        Those projects do not replace the 5% Deposit Scheme (you can still use the
+        guarantee on an eligible purchase), but they are meant to add new stock where
+        first home buyers are not only competing on established listings. See the{" "}
+        <Link href="/guides/first-home-buyer-guide">national first home buyer guide</Link>{" "}
+        for how supply and deposit schemes fit together.
       </p>
 
       <h2 id="eligibility">Eligibility and price caps</h2>
@@ -413,6 +462,10 @@ export default function FirstHomeGuaranteePage() {
           { ...HG_SOURCES.mandate, note: "eligibility (s29D), price caps (s29F), the guarantee (s29H), regional closure (s29IBA)" },
           { ...HG_SOURCES.expansion, note: `the ${HG_DATES.expanded} expansion` },
           { ...HG_SOURCES.ntCaps, note: `Darwin's higher cap from ${HG_DATES.ntCapSplit}` },
+          { ...HG_SOURCES.expansionYearOne, note: `${HG_EXPANSION_FIRST_YEAR_BUYERS.toLocaleString("en-AU")} buyers in the first expanded year` },
+          { ...HG_SOURCES.homesForFhbSa, note: "SA deal under the 100,000 homes program" },
+          { ...HG_SOURCES.homesForFhbAct, note: "ACT deal under the 100,000 homes program" },
+          { ...HG_SOURCES.homesForFhbTas, note: "Tasmania deal under the 100,000 homes program" },
         ]}
       />
     </GuideArticleLayout>

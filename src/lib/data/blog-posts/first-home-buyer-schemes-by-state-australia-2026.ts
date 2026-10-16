@@ -6,7 +6,17 @@ import { currentDutyRelief, currentGrant, money, summariseRelief } from "@/lib/p
 const grant = (s: AustralianState) => currentGrant(s);
 const relief = (s: AustralianState, k: "established" | "new" | "vacant-land" = "established") => summariseRelief(currentDutyRelief(s, k));
 const ownerDuty = (s: AustralianState, price: number) => money(calculateStampDuty(price, s, false, false, false).total);
-import { HG_DATES, HG_MIN_DEPOSIT_PCT, HG_NO_OWNERSHIP_YEARS, HG_PREAPPROVAL_DAYS, HG_SINGLE_PARENT_SELL_WEEKS, hgCapSentence } from "@/lib/data/home-guarantee";
+import {
+  HG_DATES,
+  HG_EXPANSION_FIRST_YEAR_AS_AT,
+  HG_EXPANSION_FIRST_YEAR_BUYERS,
+  HG_MIN_DEPOSIT_PCT,
+  HG_NO_OWNERSHIP_YEARS,
+  HG_PREAPPROVAL_DAYS,
+  HG_SINGLE_PARENT_SELL_WEEKS,
+  HOMES_FOR_FHB_PROGRAM,
+  hgCapSentence,
+} from "@/lib/data/home-guarantee";
 
 export const post: BlogPost = {
   id: "blog-fhb-schemes-state-2026",
@@ -26,6 +36,10 @@ export const post: BlogPost = {
 ${AUSTRALIAN_STATES.map((s) => `<li>${hgCapSentence(s)}</li>`).join("\n")}
 </ul>
 <p>The Regional First Home Buyer Guarantee closed to new guarantees on ${HG_DATES.expanded}; regional buyers use the 5% Deposit Scheme at their area's cap.</p>
+<p>As at ${HG_EXPANSION_FIRST_YEAR_AS_AT}, Housing Australia data cited by the federal government showed <strong>${HG_EXPANSION_FIRST_YEAR_BUYERS.toLocaleString("en-AU")} first home buyers</strong> had used the expanded scheme in its first year, with more than 280,000 supported since 2022. One in two first home buyers nationally now use a government scheme to purchase, according to the same release.</p>
+
+<h3>100,000 Homes for First Home Buyers</h3>
+<p>Separate from the deposit guarantee, the Commonwealth is partnering with states and territories to reserve up to <strong>${HOMES_FOR_FHB_PROGRAM.totalReserved.toLocaleString("en-AU")} new homes for first home buyers</strong>. Deals announced to date include South Australia (${HOMES_FOR_FHB_PROGRAM.sa.homesForFhb.toLocaleString("en-AU")} reserved homes within about ${HOMES_FOR_FHB_PROGRAM.sa.totalHomes.toLocaleString("en-AU")} new dwellings, ${HOMES_FOR_FHB_PROGRAM.sa.announced}), the ACT (more than ${HOMES_FOR_FHB_PROGRAM.act.homesForFhb.toLocaleString("en-AU")} reserved within about ${HOMES_FOR_FHB_PROGRAM.act.totalHomes.toLocaleString("en-AU")} homes, ${HOMES_FOR_FHB_PROGRAM.act.announced}) and Tasmania (up to ${HOMES_FOR_FHB_PROGRAM.tas.homesForFhb.toLocaleString("en-AU")} reserved within about ${HOMES_FOR_FHB_PROGRAM.tas.totalHomes.toLocaleString("en-AU")} homes, ${HOMES_FOR_FHB_PROGRAM.tas.announced}). First completions from these pipelines are expected from 2027–28.</p>
 
 <h3>Family Home Guarantee</h3>
 <p>${HG_MIN_DEPOSIT_PCT.singleParent}% deposit, no LMI, for single parents and single legal guardians, with no income test since ${HG_DATES.expanded}. You don't need to be a first home buyer, but any other home you own must be sold within ${HG_SINGLE_PARENT_SELL_WEEKS} weeks of settling. Same property price caps as the 5% Deposit Scheme.</p>
@@ -127,6 +141,6 @@ ${AUSTRALIAN_STATES.map((s) => `<li>${hgCapSentence(s)}</li>`).join("\n")}
   category: "Buying Guide",
   tags: ["first home buyer", "schemes", "fhog", "stamp duty", "2026"],
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-14",
+  updatedAt: "2026-10-08",
   readingTime: 12,
 };

@@ -1,4 +1,5 @@
 import type { BlogPost } from "@/types";
+import { HG_EXPANSION_FIRST_YEAR_AS_AT, HG_EXPANSION_FIRST_YEAR_BUYERS, HOMES_FOR_FHB_PROGRAM } from "@/lib/data/home-guarantee";
 
 export const post: BlogPost = {
   id: "blog-5pc-deposit-scheme-all-fhbs",
@@ -35,7 +36,17 @@ export const post: BlogPost = {
 <h2>What it means for you</h2>
 <p>The expanded scheme removes the income cap, the limit on places, and a good deal of the price-cap restriction that kept buyers out before. For a lot of first home buyers, that turns the 5% deposit pathway from something they might qualify for into something they almost certainly can use.</p>
 
-<p>The smart move is to pair the opportunity with a clear-eyed view of the price effect. Work out what you can genuinely borrow first, then decide what you are willing to pay in a market where demand has just been given a nudge. Run the numbers with our <a href="/borrowing-power-calculator">borrowing power calculator</a> so you know your real ceiling before you start making offers.</p>`,
+<p>The smart move is to pair the opportunity with a clear-eyed view of the price effect. Work out what you can genuinely borrow first, then decide what you are willing to pay in a market where demand has just been given a nudge. Run the numbers with our <a href="/borrowing-power-calculator">borrowing power calculator</a> so you know your real ceiling before you start making offers.</p>
+
+<h2>One year on: how many buyers have used it?</h2>
+<p>On ${HG_EXPANSION_FIRST_YEAR_AS_AT}, Housing Australia data cited by the federal government showed the expanded scheme had supported <strong>${HG_EXPANSION_FIRST_YEAR_BUYERS.toLocaleString("en-AU")} first home buyers</strong> in the first year after the October 2025 changes (the period with no income test, no cap on places and higher price limits). That is on top of more than 280,000 buyers supported since 2022 across the life of the Home Guarantee Scheme. The government estimates those buyers avoided more than $1.4 billion in lenders mortgage insurance in that first expanded year alone.</p>
+
+<p>Take-up is uneven by state: Victoria, New South Wales and Queensland accounted for the bulk of the first-year figure, which reflects where most first home buyer activity already sits rather than any restriction on the scheme itself.</p>
+
+<h2>100,000 homes reserved for first home buyers</h2>
+<p>Deposit support is only one lever. The Albanese Government's election commitment to help deliver up to <strong>${HOMES_FOR_FHB_PROGRAM.totalReserved.toLocaleString("en-AU")} homes reserved for first home buyers</strong> is being rolled out through state and territory deals. South Australia struck the first agreement in January 2026, unlocking about ${HOMES_FOR_FHB_PROGRAM.sa.totalHomes.toLocaleString("en-AU")} homes including nearly ${HOMES_FOR_FHB_PROGRAM.sa.homesForFhb.toLocaleString("en-AU")} for first home buyers. The ACT followed in April 2026 (${HOMES_FOR_FHB_PROGRAM.act.homesForFhb.toLocaleString("en-AU")}+ homes reserved for first home buyers within about ${HOMES_FOR_FHB_PROGRAM.act.totalHomes.toLocaleString("en-AU")} new homes), and Tasmania in April 2026 (up to ${HOMES_FOR_FHB_PROGRAM.tas.homesForFhb.toLocaleString("en-AU")} homes for first home buyers). Construction on the first reserved homes is expected from 2027–28 in the announced projects.</p>
+
+<p>Those homes are supply-side: they do not replace the 5% Deposit Scheme, but they are meant to give first home buyers a fairer shot at new stock in growth corridors rather than only competing on established listings. Our <a href="/guides/first-home-guarantee">5% Deposit Scheme guide</a> and <a href="/guides/first-home-buyer-guide">national first home buyer guide</a> cover how federal and state help fits together.</p>`,
   coverImage: "/images/blog/cover-5-percent-deposit-scheme-now-open-all-first-home-buyers.jpg",
   author: {
     name: "Ellie Johnston",
@@ -53,5 +64,6 @@ export const post: BlogPost = {
     "home loans",
   ],
   publishedAt: "2026-06-16",
-  readingTime: 7,
+  updatedAt: "2026-10-08",
+  readingTime: 9,
 };

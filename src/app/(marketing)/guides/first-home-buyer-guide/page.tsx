@@ -22,8 +22,11 @@ import {
   HG_DATES,
   HG_MIN_AGE,
   HG_MIN_DEPOSIT_PCT,
+  HG_EXPANSION_FIRST_YEAR_AS_AT,
+  HG_EXPANSION_FIRST_YEAR_BUYERS,
   HG_NO_OWNERSHIP_YEARS,
   HG_SINGLE_PARENT_SELL_WEEKS,
+  HOMES_FOR_FHB_PROGRAM,
 } from "@/lib/data/home-guarantee";
 
 const FRONTMATTER: GuideFrontmatter = {
@@ -32,7 +35,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Complete guide for Australian first home buyers: federal grants and schemes (FHBG, Family Home Guarantee), state grants by state, stamp duty concessions, and step-by-step buying advice.",
   slug: "first-home-buyer-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-14",
+  updatedAt: "2026-10-08",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -196,14 +199,38 @@ export default function FirstHomeBuyerGuidePage() {
 
       <HomeGuaranteeCapsTable />
 
-      <h3>2. Regional First Home Buyer Guarantee</h3>
+      <p>
+        On {HG_EXPANSION_FIRST_YEAR_AS_AT}, Housing Australia data cited by the federal
+        government showed <strong>{HG_EXPANSION_FIRST_YEAR_BUYERS.toLocaleString("en-AU")} first home buyers</strong>{" "}
+        had used the expanded scheme in its first year, with more than 280,000 supported
+        since 2022. See our{" "}
+        <Link href="/guides/first-home-guarantee">5% Deposit Scheme guide</Link> for
+        eligibility, price caps and how to apply.
+      </p>
+
+      <h3>2. 100,000 Homes for First Home Buyers</h3>
+      <p>
+        The Commonwealth is also partnering with states and territories to reserve up to{" "}
+        <strong>{HOMES_FOR_FHB_PROGRAM.totalReserved.toLocaleString("en-AU")} new homes</strong>{" "}
+        for first home buyers. Deals announced to date include South Australia (nearly{" "}
+        {HOMES_FOR_FHB_PROGRAM.sa.homesForFhb.toLocaleString("en-AU")} reserved homes within
+        about {HOMES_FOR_FHB_PROGRAM.sa.totalHomes.toLocaleString("en-AU")} new dwellings), the
+        ACT (more than {HOMES_FOR_FHB_PROGRAM.act.homesForFhb.toLocaleString("en-AU")} reserved
+        within about {HOMES_FOR_FHB_PROGRAM.act.totalHomes.toLocaleString("en-AU")} homes) and
+        Tasmania (up to {HOMES_FOR_FHB_PROGRAM.tas.homesForFhb.toLocaleString("en-AU")} reserved
+        within about {HOMES_FOR_FHB_PROGRAM.tas.totalHomes.toLocaleString("en-AU")} homes), with
+        first completions expected from 2027–28. This is supply-side support and sits alongside
+        deposit schemes rather than replacing them.
+      </p>
+
+      <h3>3. Regional First Home Buyer Guarantee</h3>
       <p>
         Closed. No new regional guarantees have been issued since{" "}
         {HG_DATES.expanded}. Buyers in regional areas now use the 5% Deposit Scheme
         above, at the price cap for their area, with no residency test.
       </p>
 
-      <h3>3. Family Home Guarantee</h3>
+      <h3>4. Family Home Guarantee</h3>
       <p>
         Designed for <strong>single parents and single legal guardians</strong> with
         at least one dependent child, and now marketed as the 5% Deposit Scheme for
@@ -217,14 +244,14 @@ export default function FirstHomeBuyerGuidePage() {
         <li>The same property price caps as first home buyers</li>
       </ul>
 
-      <h3>4. Help to Buy (Shared Equity Scheme)</h3>
+      <h3>5. Help to Buy (Shared Equity Scheme)</h3>
       <HelpToBuyNote as="p" />
       <p>
         The government shares in any rise or fall in the home&rsquo;s value in
         proportion to its share, and you can buy it back over time.
       </p>
 
-      <h3>5. First Home Super Saver scheme (FHSS)</h3>
+      <h3>6. First Home Super Saver scheme (FHSS)</h3>
       <FhssNote as="p" />
 
       <h2 id="fhog-by-state">First Home Owner Grant by state</h2>
