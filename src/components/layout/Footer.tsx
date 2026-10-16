@@ -185,7 +185,8 @@ export function Footer() {
               Free guides, tools and plans for buying and selling property in
               Australia. When you want personal help, we introduce one
               participating local agent, with your permission. The agent pays
-              us for the introduction; you pay us nothing.
+              us a flat fee for the introduction, never a share of their
+              commission; you pay us nothing.
             </p>
             <a
               href={`tel:${CONTACT_PHONE_E164}`}

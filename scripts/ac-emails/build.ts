@@ -109,7 +109,7 @@ function shell(e: AcEmail): string {
     <tr><td align="center" style="padding:28px 12px;">
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:100%;background:${C.paper};border:1px solid ${C.line};border-radius:12px;overflow:hidden;font-family:${FONT_SANS};color:${C.ink};">
         <tr>
-          <td style="background:${C.ink};padding:18px 40px;">
+          <td style="background:${C.eucalyptus};padding:18px 40px;">
             <p style="margin:0;color:${C.apricot};font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.22em;font-family:${FONT_SANS};">Your Property Guide</p>
           </td>
         </tr>
@@ -152,7 +152,7 @@ const EMAILS: AcEmail[] = [
     body: bodyBlock(
       [
         "Hi %FIRSTNAME%,",
-        "You said you're planning to sell soon, so here's the single most useful 30 minutes you can book this week: a free appraisal from a top local agent in %YPG_SUBURB_NAME%.",
+        "You said you're planning to sell soon, so here's the single most useful 30 minutes you can book this week: a free appraisal from one local agent in %YPG_SUBURB_NAME%, checked by us.",
         "You get a defensible price range built from real comparable sales near you, not a website estimate. You see what to fix before listing and what to leave alone. And you walk into every agent conversation afterwards already knowing your numbers, which changes who holds the pen.",
         "No listing agreement, no obligation, and nothing is shared without your say-so.",
       ],
@@ -257,7 +257,7 @@ const EMAILS: AcEmail[] = [
         "Hi %FIRSTNAME%,",
         "The trap is called conditioning: quote high to win your listing, then walk you down once you've signed. The defence is simple and free.",
         "Ask every agent for the three comparable sales behind their number. Get at least three appraisals so the flattering outlier exposes itself. And never sign an agency agreement on appraisal day.",
-        "When you're ready to put real numbers on your place, we'll line up a free appraisal from an agent we'd actually recommend:",
+        "When you're ready to put real numbers on your place, we'll line up a free appraisal from one local agent, checked by us:",
       ],
       { label: "Book my free appraisal", url: APPRAISAL },
     ),
@@ -277,7 +277,7 @@ const EMAILS: AcEmail[] = [
       [
         "Hi %FIRSTNAME%,",
         "You've had the guide for a month, which is about when most sellers start talking to agents. The difference is you'll walk in knowing what selling costs, what's negotiable, and which questions expose an average agent inside five minutes.",
-        "If that's you, we'll line up a free appraisal with a top local agent in %YPG_SUBURB_NAME%. You compare, you decide, and nothing proceeds without your say-so.",
+        "If that's you, we'll line up a free appraisal with one local agent in %YPG_SUBURB_NAME%, checked by us. You decide, and nothing proceeds without your say-so.",
         "Not there yet? No problem. The monthly market read keeps coming, and you can pull the trigger whenever.",
       ],
       { label: "Get my free appraisal", url: APPRAISAL },
@@ -470,10 +470,10 @@ const EMAILS: AcEmail[] = [
       [
         "Hi %FIRSTNAME%,",
         "You've had the guide for a month. By now you know what you can really spend, which schemes apply to you, and what the selling side's scripts sound like. That puts you ahead of most buyers at any open home.",
-        "The next move is finance. If you haven't started, a good mortgage broker costs you nothing, is paid by the lender, and routinely finds approvals the bank branch can't. We can introduce you to one we'd actually use.",
+        "The next move is finance. If you haven't started, a good mortgage broker is usually paid by the lender, not you, and compares many lenders at once. Our guide covers what a broker does and what to ask before you sign up with one.",
         "Not there yet? No problem. The tools and the monthly read aren't going anywhere.",
       ],
-      { label: "Find a vetted broker", url: `${SITE}/find-an-expert` },
+      { label: "How to choose a broker", url: `${SITE}/guides/how-to-choose-a-mortgage-broker` },
     ),
   },
   {

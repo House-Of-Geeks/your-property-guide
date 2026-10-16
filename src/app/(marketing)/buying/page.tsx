@@ -90,7 +90,7 @@ const FAQS = [
   {
     question: "Does using Your Property Guide cost anything?",
     answer:
-      "No. The guides, tools and plans are free. If you ask us to introduce you to a buyer’s agent and we can, the agent pays us for the introduction. You agree the agent’s own fee directly with them.",
+      "No. The guides, tools and plans are free. If you ask us to introduce you to a buyer’s agent and we can, the agent pays us a flat fee for the introduction, never a share of their fee. You agree the agent’s own fee directly with them.",
   },
 ];
 

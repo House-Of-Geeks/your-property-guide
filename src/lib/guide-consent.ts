@@ -27,7 +27,7 @@ export const GUIDE_SEQUENCE_LABEL = "Also send me a few short emails for my stag
 // request from a page that loaded before the deploy still records the words
 // that page showed. New pages link to /get-help instead.
 export const AGENT_CALL_CONSENT =
-  "By booking a call you agree we may share your details with one participating local agent, who will call you about selling your property. The agent pays us for the introduction. You pay nothing. We never sell your details to anyone else.";
+  "By booking a call you agree we may share your details with one participating local agent, who will call you about selling your property. The agent pays us a flat fee for the introduction, never a share of their commission. You pay nothing. We never sell your details to anyone else.";
 
 export const YPG_CALL_CONSENT =
   "We’ll use your mobile only to call you ourselves. We never pass it to an agent or sell it.";

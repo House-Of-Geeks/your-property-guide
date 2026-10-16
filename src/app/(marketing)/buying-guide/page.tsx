@@ -19,9 +19,9 @@ import { GuideContents } from "@/components/interactive/GuideContents";
 import { GuideIntroNote } from "@/components/guide-book/GuideIntroNote";
 import { GUIDE_BOOKS } from "@/lib/guide-books";
 
-const META_TITLE = "Free guide to buying property in Australia (2026)";
+const META_TITLE = "Free guide to buying property in Australia: beat the campaign (2026)";
 const META_DESCRIPTION =
-  "The complete buying guide for first home buyers, upgraders, investors and downsizers: what you can really spend, 2026 schemes state by state, and how not to overpay. Free PDF, personalised to your situation.";
+  "Every listing comes with a seller’s campaign. Beat it: what you can really spend, 2026 schemes state by state, and how not to overpay. Free, personalised to your situation.";
 
 export const metadata: Metadata = {
   title: META_TITLE,

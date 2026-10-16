@@ -369,7 +369,7 @@ export function IntroductionForm({ defaultService, defaultSuburb, defaultState, 
                   </div>
                 ))}
                 <p className="text-sm text-ink-muted">
-                  We match on the suburb, the type of property and your timing, and introduce one participating agent per service. <Link href="/get-help#how-we-choose" className="underline underline-offset-4">How we choose agents</Link>
+                  We match on the suburb, the type of property and your timing, and introduce one participating agent for each job. <Link href="/get-help#how-we-choose" className="underline underline-offset-4">How we choose agents</Link>
                 </p>
               </div>
             )}

@@ -55,7 +55,7 @@ export function AgentFinder({ from = "home-finder" }: { from?: string }) {
         Continue <ArrowRight className="h-5 w-5" aria-hidden="true" />
       </button>
       <p className="mt-4 text-sm leading-relaxed text-ink-muted">
-        {`Free for you: the agent pays us for the introduction. They contact you the way you choose, normally ${RESPONSE_WINDOW}. `}
+        {`Free for you: the agent pays us a flat fee for the introduction, never a share of their commission. They contact you the way you choose, normally ${RESPONSE_WINDOW}. `}
         <Link href={HOW_WE_ARE_PAID_HREF} className="font-semibold text-ink underline underline-offset-4">How we’re paid</Link>
       </p>
     </div>

@@ -69,7 +69,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Mortgage Repayments",          href: "/mortgage-calculator",        description: "Run the new loan numbers in detail before switching." },
   { title: "Borrowing Power Calculator",   href: "/borrowing-power-calculator", description: "Confirm a new lender will approve you before you discharge." },
   { title: "Fixed vs Variable Rate Guide", href: "/guides/fixed-vs-variable-rate-guide", description: "Whether to lock the new loan in or stay on variable." },
-  { title: "Get connected",                href: "/find-an-expert?intent=refinancing",  description: "We&rsquo;ll match you with a broker who can compare 30+ lenders." },
+  { title: "How to choose a mortgage broker", href: "/guides/how-to-choose-a-mortgage-broker", description: "What a good broker does, how they’re paid and what to ask before you switch." },
   { title: "First Home Buyer Guide",       href: "/guides/first-home-buyer-guide", description: "If your first loan was via a scheme, check the discharge implications." },
   { title: "Affordability Calculator",     href: "/affordability-calculator",   description: "If refinancing is part of an upgrade plan, model the next purchase." },
 ];

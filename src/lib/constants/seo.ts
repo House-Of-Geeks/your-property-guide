@@ -11,9 +11,9 @@ export const SITE_DESCRIPTION =
 // Long-form description used inside JSON-LD Organization schema and any
 // AI-citation surface (llms.txt, etc.) where richer context helps.
 export const SITE_DESCRIPTION_LONG =
-  "Your Property Guide helps Australians sell and buy property with confidence. We publish free, practical guides on pricing, agent fees, choosing an agent, contracts and settlement for every state, with calculators for commission, selling costs, stamp duty and borrowing. When someone wants personal help and gives permission, we introduce one participating local agent: a selling agent for a free appraisal, or a buyer's agent where we can. The agent pays us for the introduction; it costs the buyer or seller nothing and doesn't change what they pay the agent.";
+  "Your Property Guide gives every Australian home the campaign that sells $20 million homes, free. We publish practical guides on pricing, agent fees, choosing an agent, contracts and settlement for every state, with calculators for commission, selling costs, stamp duty and borrowing. When someone wants personal help and gives permission, we introduce one participating local agent for each job, checked by us: a selling agent for a free appraisal, or a buyer's agent where we can. The agent pays us a flat fee for the introduction, never a share of their commission; it costs the buyer or seller nothing and doesn't change what they pay the agent.";
 
-export const SITE_TAGLINE = "Property, explained by people.";
+export const SITE_TAGLINE = "It’s the campaign that wins. Not the market.";
 export const DEFAULT_OG_IMAGE = "/og-image.jpg";
 
 // Topics we claim authority on — used in OrganizationJsonLd `knowsAbout`

@@ -16,9 +16,9 @@ import { GuideContents } from "@/components/interactive/GuideContents";
 import { GuideIntroNote } from "@/components/guide-book/GuideIntroNote";
 import { GUIDE_BOOKS } from "@/lib/guide-books";
 
-const META_TITLE = "Free guide to selling your property in Australia (2026)";
+const META_TITLE = "Free guide to selling your home in Australia: the $20 million campaign";
 const META_DESCRIPTION =
-  "The agent you pick is a $20,000 decision. This free guide shows you how to pick well: real selling costs by state, fee negotiation, and the 10 questions that expose an average agent. Personalised to your suburb.";
+  "The campaign that sells $20 million homes, for yours: your number, the top buyer, the right agent, the launch and the negotiation. Free, personalised to your suburb.";
 
 export const metadata: Metadata = {
   title: META_TITLE,

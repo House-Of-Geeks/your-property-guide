@@ -96,8 +96,8 @@ const ledger: Array<{ feature: string; us: string; them: string }> = [
   },
   {
     feature: "Exclusivity",
-    us: "One lead goes to one agent. Never shared, never resold, never recycled as aged data six weeks later.",
-    them: "Shared with three to five agents. Then sold again as \"aged\".",
+    us: "One lead goes to one agent: this introduction is yours alone. Never shared, never resold, never recycled as aged data six weeks later.",
+    them: "Some suppliers send one lead to several agents, or sell it again later as \"aged\".",
   },
   {
     feature: "Service area",
@@ -106,8 +106,8 @@ const ledger: Array<{ feature: string; us: string; them: string }> = [
   },
   {
     feature: "What it costs you",
-    us: "A per-lead price, agreed in writing before the first lead. Nothing on settlement.",
-    them: "Referral platforms take 20 to 30 per cent of your commission, or a flat fee, when the property sells.",
+    us: "A flat price per lead, agreed in writing before the first lead. Nothing on settlement, and never a share of your commission.",
+    them: "Referral platforms are usually paid a share of your commission, or a fee, when the property sells.",
   },
   {
     feature: "Who receives them",
@@ -174,8 +174,8 @@ const supplierQuestions: Array<{ q: string; a: string }> = [
 ];
 
 // Worked numbers for the break-even table in the terms chapter. Commission figures are
-// illustrative inputs, not market averages; referral-fee models are the
-// platforms' published structures as described on our own commission guide.
+// illustrative inputs, not market averages, and so are the 20% and 30%
+// commission shares (what-ifs, not a claim about any platform; 16 Oct 2026).
 const SALE = 850_000;
 const RATE = 0.022;
 const COMMISSION = SALE * RATE; // $18,700
@@ -200,12 +200,12 @@ const faqs = [
   {
     question: "How much do real estate leads cost in Australia?",
     answer:
-      "It depends on how you pay. Pay-per-lead suppliers charge a fixed price for each lead: Get Listings publishes \"from $69 per lead, GST included\", and PrimeLeads agrees a fixed price up front without publishing it. Portal seller leads from realestate.com.au come with a residential subscription rather than a per-lead price. Referral platforms charge nothing up front but take a share of your commission when the property sells, commonly 20 to 30 per cent, or a flat fee. Telemarketing services and marketing agencies charge for the calling or by the month, plus ad spend, whether or not anything lists. Ours is pay per lead, priced by lead type, suburb and weekly volume, with no platform fee, no minimum and no share of your commission; register and we quote in writing within one business day. Supplier figures are as published on their websites in September 2026.",
+      "It depends on how you pay. Pay-per-lead suppliers charge a fixed price for each lead: Get Listings publishes \"from $69 per lead, GST included\", and PrimeLeads agrees a fixed price up front without publishing it. Portal seller leads from realestate.com.au come with a residential subscription rather than a per-lead price. Referral platforms charge nothing up front but are usually paid a share of your commission, or a fee, when the property sells. Telemarketing services and marketing agencies charge for the calling or by the month, plus ad spend, whether or not anything lists. Ours is pay per lead, priced by lead type, suburb and weekly volume, with no platform fee, no minimum and no share of your commission; register and we quote in writing within one business day. Supplier figures are as published on their websites in September 2026.",
   },
   {
     question: "Is it worth paying for real estate leads?",
     answer:
-      "It depends on three numbers you already know: your average commission, what you pay per lead, and how many leads it takes you to win a listing. Divide the per-lead price by your lead-to-listing rate to get your cost per listing, then compare it with what a referral platform would take (20 to 30 per cent of the commission, or a flat fee). Paid leads are worth it when that cost per listing is lower than the alternative and you have the time to call them fast. They are not worth it if leads sit in an inbox for two days.",
+      "It depends on three numbers you already know: your average commission, what you pay per lead, and how many leads it takes you to win a listing. Divide the per-lead price by your lead-to-listing rate to get your cost per listing, then compare it with what a referral platform would take (check its terms: usually a share of the commission, or a fee). Paid leads are worth it when that cost per listing is lower than the alternative and you have the time to call them fast. They are not worth it if leads sit in an inbox for two days.",
   },
   {
     question: "What is a good cost per lead for real estate agents?",
@@ -315,8 +315,9 @@ export default function RealEstateLeadsPage() {
           Every lead on this page began as someone reading. A suburb
           profile, a commission guide, a selling-costs calculator, and
           then a separate decision: yes, I want a local agent to call me.
-          One lead, one agent, matched to your suburbs. Pay per lead. No
-          lock-in, and no share of your commission.
+          One lead, one agent, matched to your suburbs: this introduction
+          is yours alone. A flat price per lead, no lock-in, and no share
+          of your commission.
         </HeroLead>
         <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
           <a href="#register" className={CTA_CLASS}>
@@ -602,8 +603,9 @@ export default function RealEstateLeadsPage() {
           <div className={s.prose} style={{ maxWidth: "68ch", marginTop: 48 }} id="cost-per-listing" data-reveal>
             <h3 className={s.subhead}>Against a commission share</h3>
             <p>
-              Referral platforms charge nothing up front and take 20 to 30 per
-              cent of your commission when the property sells. On an{" "}
+              Referral platforms charge nothing up front and are usually paid
+              a share of your commission when the property sells. Say that
+              share is 20 or 30 per cent: on an{" "}
               {aud(SALE)} sale at {(RATE * 100).toFixed(1)} per cent, that is{" "}
               {aud(COMMISSION * 0.2)} to {aud(COMMISSION * 0.3)} per listing.
               Paying per lead costs less for as long as you list at least one

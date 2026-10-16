@@ -158,7 +158,7 @@ export function SellingCostsCalculator({
             Commission is the line you can move. Most sellers never try
           </h3>
           <p className="text-sm text-ink-muted leading-relaxed mb-4">
-            Our free selling guide covers how to compare agents on results instead of rate, the questions to ask before
+            Our free selling guide covers how to choose an agent on results instead of rate, the questions to ask before
             you sign, and the fee negotiation tactics that work. Personalised to your suburb.
           </p>
           <Link href="/selling-guide" className="inline-flex items-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 text-sm transition-colors">

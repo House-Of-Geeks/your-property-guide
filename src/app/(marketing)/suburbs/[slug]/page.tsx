@@ -697,8 +697,9 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             <p>
               <span className="font-semibold text-ink">How we&rsquo;re paid.</span>{" "}
               The guides and this page are free. When a seller asks, we introduce
-              one local agent, and the agent pays us for the introduction; it
-              costs the seller nothing. If a figure looks wrong,{" "}
+              one local agent, and the agent pays us a flat fee for the
+              introduction, never a share of their commission; it costs the
+              seller nothing. If a figure looks wrong,{" "}
               <Link href="/contact" className={TEXT_LINK}>
                 tell us
               </Link>{" "}

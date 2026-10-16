@@ -12,10 +12,10 @@ export const metadata: Metadata = {
   // Aligned with the education-led repositioning (2026-05). The about
   // page is the canonical "why we exist" — and the answer is now
   // education, not reference.
-  title: `About ${SITE_NAME}: plain-English Australian property education`,
-  description: "Why this site exists, who writes it, how we stay independent, and how we make money. Property in plain English so Australians can make better decisions, not pushed to a form.",
+  title: `About ${SITE_NAME}: Andy McMaster and the $20 million campaign`,
+  description: "Andy McMaster sold $10 million to $20 million homes across Australia, then advised big property companies. Why every home deserves the same campaign, and how we’re paid.",
   alternates: { canonical: `${SITE_URL}/about` },
-  openGraph: { url: `${SITE_URL}/about`, title: `About ${SITE_NAME}`, description: "Why this site exists, who writes it, how we stay independent, and how we make money.", type: "website" },
+  openGraph: { url: `${SITE_URL}/about`, title: `About ${SITE_NAME}: Andy McMaster and the $20 million campaign`, description: "Why every home deserves a $20 million campaign, who writes the guides, and how we’re paid.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

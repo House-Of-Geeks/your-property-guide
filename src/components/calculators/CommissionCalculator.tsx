@@ -183,7 +183,7 @@ export function CommissionCalculator({
           Commission is negotiable. Most sellers never ask
         </h3>
         <p className="text-sm text-ink-muted leading-relaxed mb-4">
-          Our free selling guide covers how to compare agents on results
+          Our free selling guide covers how to choose an agent on results
           instead of rate, the 10 questions to ask before you sign, and the
           fee negotiation tactics that actually work. Personalised to your
           suburb, in your inbox in 60 seconds.
