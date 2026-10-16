@@ -16,7 +16,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "WA tenant rights: bond, rent increases, repairs, entry rights, and ending a tenancy under the Residential Tenancies Act 1987, plus how disputes work in WA without a tribunal.",
   slug: "renters-rights-wa",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "Maximum bond is 4 weeks rent (up to 6 weeks for furnished or higher-rent properties). Lodged with the WA Bond Administrator within 14 days.",
-  "Rent increases on periodic tenancies require 60 days written notice. WA does not yet enforce a 12-month statutory minimum between increases (unlike NSW, VIC, QLD).",
+  "Since 29 July 2024, rent can only go up once every 12 months, with at least 60 days written notice.",
   "WA still permits no-grounds evictions on periodic tenancies, with 60 days notice.",
   "Urgent repairs (burst pipe, gas leak, roof damage) must be addressed immediately. Tenants can self-arrange up to $1,000 if landlord can't be reached.",
   "Routine inspections capped at 4 per year, with 7 to 14 days written notice required.",
@@ -71,7 +71,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can my landlord raise the rent every few months in WA?",
     answer:
-      "Possibly. WA requires 60 days written notice for rent increases on periodic tenancies, but it doesn't (yet) impose a 12-month statutory minimum between increases the way NSW, VIC, and QLD do. Always verify the current rule with Consumer Protection WA before assuming an increase is unlawful.",
+      "No. Since 29 July 2024, rent can only go up once every 12 months, on periodic and fixed-term agreements, and the landlord must give at least 60 days written notice (Form 10). A fixed-term lease signed before 29 July 2024 can keep the increases written into it until the term ends. Check Consumer Protection WA if you're unsure.",
   },
   {
     question: "Can my landlord still evict me without grounds?",
@@ -96,9 +96,9 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "NSW also still permits no-grounds evictions." },
+  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "NSW has required a reason to end a tenancy since May 2025." },
   { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms abolished no-grounds evictions." },
-  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD's 2024 reforms toward grounds-based evictions." },
+  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD ended no-grounds evictions in October 2022." },
   { title: "Renter's Rights in SA",       href: "/guides/renters-rights-sa",  description: "SA tenant rules and SACAT dispute resolution." },
   { title: "First Home Buyer Guide WA",   href: "/guides/first-home-buyer-wa", description: "When you're ready to stop renting and buy your first home." },
 ];
@@ -145,7 +145,7 @@ export default function RentersRightsWAPage() {
       <ul>
         <li><strong>Maximum bond:</strong> Generally 4 weeks rent. Up to 6 weeks for furnished properties or those with weekly rent above a set threshold, check Consumer Protection WA for the current threshold.</li>
         <li><strong>Lodgement:</strong> Lodged with the WA Bond Administrator within 14 days of receipt.</li>
-        <li><strong>Refund:</strong> If both parties agree, the bond is refunded at the end of tenancy. Disputes go to the Magistrates Court.</li>
+        <li><strong>Refund:</strong> Any tenant, landlord or agent can apply to release the bond. If everyone agrees, it’s paid out as requested. Since March 2026, if anyone disputes the application or doesn’t respond, the Commissioner for Consumer Protection decides. You have 7 days to appeal that decision to the Magistrates Court.</li>
       </ul>
       <p>
         Always complete the property condition report and take photos on day
@@ -156,14 +156,14 @@ export default function RentersRightsWAPage() {
       <h2 id="rent-increases">Rent increases</h2>
       <ul>
         <li>
-          <strong>Periodic tenancies:</strong> At least 60 days written notice.
-          Unlike NSW, QLD, and VIC, WA doesn’t yet have a statutory minimum of
-          12 months between increases for periodic tenancies. Always verify
-          the current rule.
+          <strong>Periodic tenancies:</strong> At least 60 days written notice,
+          and no more than one increase every 12 months (since 29 July 2024).
         </li>
         <li>
           <strong>Fixed-term tenancies:</strong> Rent can only be increased if
-          the amount or method is specified in the agreement.
+          the amount or method is specified in the agreement. The 12-month
+          limit applies here too, but a fixed term signed before 29 July 2024
+          can keep the increases written into it until it ends.
         </li>
       </ul>
       <p>
@@ -230,7 +230,7 @@ export default function RentersRightsWAPage() {
       <p>WA doesn’t have a dedicated residential tenancy tribunal. Disputes go through:</p>
       <ul>
         <li><strong>Consumer Protection WA:</strong> Free conciliation and mediation. Contact 1300 304 054.</li>
-        <li><strong>Magistrates Court:</strong> For disputes that can’t be resolved through mediation, including bond claims and repair orders.</li>
+        <li><strong>Magistrates Court:</strong> For disputes that can’t be resolved through mediation, including repair orders, bond claims for more than the bond, and appeals against a Commissioner bond decision.</li>
       </ul>
 
       <h2 id="resources">Resources and contacts</h2>

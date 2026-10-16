@@ -22,7 +22,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Auction vs private treaty in Australia: how each method works end-to-end, the real cost differences, 2026 clearance-rate context, cooling-off and underquoting rules by state, and a decision framework for choosing the right method for your property.",
   slug: "auction-vs-private-treaty",
   publishedAt: "2026-07-03",
-  updatedAt: "2026-07-03",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -54,7 +54,7 @@ const TLDR = [
   "Auction removes the buyer's cooling-off period entirely: the contract is unconditional the moment the hammer falls, with the deposit paid on the day. That certainty is the method's biggest vendor advantage.",
   "Auction costs more: an auctioneer fee (roughly $400 to $1,000) on top of commission, plus a compressed, advertising-heavy campaign that you pay for whether or not the property sells.",
   "Clearance rates are the market's live temperature gauge. In mid-2026 the combined-capitals preliminary clearance rate dipped to 47.4%, the weakest since April 2020, which means auctions currently only suit genuinely competitive properties.",
-  "Underquoting rules differ sharply by state: NSW regulates the price guide against the agent's written estimate, Victoria requires a Statement of Information with three comparable sales, and Queensland bans auction price guides outright.",
+  "Underquoting rules differ sharply by state: NSW regulates the price guide against the agent's written estimate, Victoria requires a Statement of Information with three comparable sales and, from 16 October 2026, a published reserve for auctions, and Queensland bans auction price guides outright.",
   "The right method comes down to scarcity, local auction culture, current clearance rates and your risk tolerance. Asking each agent to justify their recommended method with recent evidence is one of the best agent-selection tests there is.",
 ];
 
@@ -285,7 +285,7 @@ export default function AuctionVsPrivateTreatyPage() {
         The trajectory matters as much as the level. In late March 2026 the
         combined-capitals rate was 62.7% across 2,857 auctions. By late June it
         had slid under 50% on much thinner volumes (1,869 auctions), with the
-        cash rate at 4.35% and the RBA still flagging possible further rises.
+        cash rate at 4.35% and the RBA still flagging possible further rises (it raised again, to 4.60%, on 29 September).
         Fewer bidders can finance an unconditional bid, and it shows.
       </p>
       <p>
@@ -406,10 +406,11 @@ export default function AuctionVsPrivateTreatyPage() {
           advertised below it. Price ranges can span at most 10% from bottom
           to top, and phrases like &ldquo;offers over $X&rdquo; are banned.
           Current penalties run to $22,000 plus forfeiture of the entire
-          commission, and in March 2026 the NSW Government announced
-          legislation to lift fines to $110,000 or three times the commission,
-          whichever is greater, with dummy-bidding penalties doubled to
-          $110,000.
+          commission. A new law has now passed: its first stage
+          started on 29 June 2026, lifting dummy-bidding penalties to up to
+          $110,000 for a company and $55,000 for an individual, and the second
+          stage, expected towards the end of 2026, lifts underquoting fines to
+          $110,000 or three times the commission, whichever is greater.
         </li>
         <li>
           <strong>VIC:</strong>{" "}Agents must publish a Statement of Information
@@ -417,7 +418,10 @@ export default function AuctionVsPrivateTreatyPage() {
           (within 6 months and 2km in metro Melbourne; 18 months and 5km
           outside). Advertising below the estimate, the vendor&rsquo;s asking
           price, or a rejected written offer is underquoting, with penalties
-          above $48,000 plus possible loss of commission.
+          above $48,000 plus possible loss of commission. For auctions and
+          fixed-date sales from 16 October 2026, the seller’s reserve must
+          also be published as a single dollar figure at least 7 days before
+          the auction, or the auction cannot go ahead.
         </li>
         <li>
           <strong>QLD:</strong> The strictest twist: for auction listings,
@@ -541,6 +545,8 @@ const AUCTION_VS_TREATY_SOURCES: readonly SourceItem[] = [
   { label: "Domain: national auction results", href: "https://www.domain.com.au/auction-results/", note: "Live weekly clearance rates by city" },
   { label: "NSW Fair Trading: underquoting guidance for property professionals", href: "https://www.nsw.gov.au/housing-and-construction/property-professionals/working-as-an-agent/underquoting-guidance", note: "Estimated selling price rules and current penalties" },
   { label: "NSW Government: underquoting crackdown announcement", href: "https://www.nsw.gov.au/ministerial-releases/nsw-cracks-down-on-underquoting-tough-new-laws", note: "Proposed $110,000 penalties, March 2026" },
+  { label: "NSW Fair Trading: changes to property and stock agents laws", href: "https://www.nsw.gov.au/departments-and-agencies/fair-trading/news/changes-to-property-and-stock-agents-laws", note: "Amendment Act 2026: first stage from 29 June 2026, underquoting penalties in the second stage, expected late 2026" },
+  { label: "Consumer Affairs Victoria: new changes to property sales and underquoting laws", href: "https://www.consumer.vic.gov.au/licensing-and-registration/estate-agents/new-changes-to-property-sales-and-underquoting-laws", note: "Published reserve at least 7 days before auctions and fixed-date sales from 16 October 2026" },
   { label: "Consumer Affairs Victoria: underquoting information for estate agents", href: "https://www.consumer.vic.gov.au/licensing-and-registration/estate-agents/running-your-business/underquoting-information-for-real-estate-agents", note: "Statement of Information requirements and penalties" },
   { label: "Queensland Government: buying a home at auction", href: "https://www.qld.gov.au/law/housing-and-neighbours/buying-and-selling-a-property/buying-a-home/ways-to-buy-your-home/buying-at-auction", note: "No cooling-off at auction and the auction price-guide ban" },
 ];

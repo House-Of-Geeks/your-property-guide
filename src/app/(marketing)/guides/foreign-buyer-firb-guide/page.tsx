@@ -32,7 +32,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Who counts as a foreign buyer, what properties you can purchase, FIRB application process and fees, state-by-state foreign-buyer surcharges, and tax implications.",
   slug: "foreign-buyer-firb-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-14",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 12,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -61,9 +61,9 @@ export const metadata: Metadata = {
 
 const TLDR = [
   "FIRB approval is required for most foreign-person purchases of Australian residential property. Approval typically takes 30 days; lodge before signing or with a FIRB-conditional clause.",
-  "Non-resident foreign buyers can generally buy new dwellings or vacant land, but NOT established homes (with very limited exceptions, plus a 2025 to 2027 ban announced by government).",
-  "Temporary residents (student, working holiday, partner visas) can buy ONE established home as principal residence, but must sell when leaving Australia permanently.",
-  "FIRB application fees are tiered by purchase price, $14,100 on a $1M property, $84,600+ on $4M, and are non-refundable.",
+  "Non-resident foreign buyers can generally buy new dwellings or vacant land, but NOT established homes (with very limited exceptions, plus a ban on foreign persons buying established homes from 1 April 2025 to 30 June 2029).",
+  "Temporary residents (student, working holiday, partner visas) can buy new dwellings or vacant land, but NOT an established home, even one to live in: the ban from 1 April 2025 to 30 June 2029 covers them too, with only narrow exceptions.",
+  "FIRB application fees are tiered by purchase price, $15,600 on a new home up to $1M and $93,900 on one up to $4M (2026 to 2027), and are non-refundable.",
   `All states except the ACT and the NT charge a foreign-buyer stamp duty surcharge of ${RATE_RANGE} on top of standard duty. Most also charge an annual foreign land-tax surcharge.`,
   "On a $1M NSW purchase, total foreign-buyer charges (FIRB fee + surcharge + standard duty) can exceed $130,000 before any other costs.",
 ];
@@ -89,7 +89,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can foreign non-residents buy established homes?",
     answer:
-      "Generally no. Foreign non-residents can buy new dwellings or vacant land for development, but NOT established (existing) homes, with very limited exceptions. The Australian Government also announced in April 2025 a temporary ban on foreign investors purchasing established dwellings; check firb.gov.au for the current status of that measure.",
+      "Generally no. Foreign non-residents can buy new dwellings or vacant land for development, but NOT established (existing) homes, with very limited exceptions. The Australian Government also announced in February 2025 a temporary ban on foreign persons purchasing established dwellings. It started on 1 April 2025 and has been extended to 30 June 2029; check firb.gov.au for the current status of that measure.",
   },
   {
     question: "What's the foreign buyer stamp duty surcharge?",
@@ -99,7 +99,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How long does FIRB approval take?",
     answer:
-      "FIRB has 30 days to decide from when the complete application is received. The Treasurer can extend this to 90 days. In practice, straightforward residential applications often clear faster, but plan for the full 30 days at least. Most contracts are made conditional on FIRB approval to manage timing.",
+      "The ATO, which handles residential applications for the Treasurer, has 30 days to decide once the full fee is paid. That can be extended to 90 days. In practice, straightforward residential applications often clear faster, but plan for the full 30 days at least. Most contracts are made conditional on FIRB approval to manage timing.",
   },
   {
     question: "Are New Zealand citizens classed as foreign buyers?",
@@ -132,7 +132,7 @@ export default function ForeignBuyerFIRBGuidePage() {
         steps={[
           { name: "Determine your eligibility category", text: "Temporary residents, foreign non-residents, and Australian citizens overseas have different FIRB rules and surcharges." },
           { name: "Apply to FIRB before signing a contract", text: "FIRB approval is required before contracts exchange. Standard processing time: 30 days. Application fee scales with property price." },
-          { name: "Pay the FIRB application fee", text: "Tiered by property price, for a $1M property, around $14,000+. Non-refundable even if FIRB declines." },
+          { name: "Pay the FIRB application fee", text: "Tiered by property price, for a new $1M property, $15,600 (2026 to 2027). Non-refundable even if FIRB declines." },
           { name: "Sign contract subject to FIRB approval", text: "Most foreign buyer contracts include a FIRB-approval clause that lets you rescind if FIRB declines." },
           { name: "Pay state foreign buyer stamp duty surcharge", text: `On top of standard stamp duty, foreign buyers pay an additional ${RATE_RANGE} in every state except the ACT and the NT: ${RATE_LIST}.` },
           { name: "Settle as a normal Australian property purchase", text: "Once FIRB approval is granted and contracts are unconditional, settlement proceeds the same as any other purchase." },
@@ -186,14 +186,18 @@ export default function ForeignBuyerFIRBGuidePage() {
       <h3>Temporary residents (including temporary visa holders)</h3>
       <p>Temporary residents <strong>may</strong> purchase:</p>
       <ul>
-        <li>One established (existing) dwelling, provided it will be used as their principal place of residence while they live in Australia. They <strong>must sell the property</strong> when they leave Australia permanently, FIRB will impose this condition.</li>
         <li>New dwellings (subject to FIRB approval).</li>
         <li>Vacant land for development (subject to FIRB approval and construction conditions).</li>
       </ul>
       <p>
-        Temporary residents <strong>cannot</strong>{" "}buy established dwellings
-        as investment properties or holiday homes. The &ldquo;must live in
-        it&rdquo; and &ldquo;must sell when leaving&rdquo; conditions are firm.
+        Temporary residents <strong>cannot</strong>{" "}buy an established
+        dwelling from 1 April 2025 to 30 June 2029, even one they would live
+        in as their main home. The only exceptions are narrow ones, such as a
+        redevelopment that adds at least 20 dwellings, or housing for workers
+        from Pacific Island countries and Timor-Leste. A temporary resident
+        who bought an established home before 1 April 2025 must keep living
+        in it and sell it within 6 months once it stops being their main home
+        or they stop being a temporary resident.
       </p>
 
       <h3>Non-residents (living offshore)</h3>
@@ -209,11 +213,12 @@ export default function ForeignBuyerFIRBGuidePage() {
         homes.
       </p>
 
-      <Callout variant="warning" title="Temporary ban on established dwellings (2025)">
+      <Callout variant="warning" title="Temporary ban on established dwellings (2025 to 2029)">
         <p>
-          In April 2025, the Australian Government announced a temporary ban
+          In February 2025, the Australian Government announced a temporary ban
           preventing foreign investors (including temporary residents) from
-          purchasing established dwellings for a two-year period. Check
+          purchasing established dwellings, with limited exceptions. It started
+          on 1 April 2025 and has been extended to 30 June 2029. Check
           firb.gov.au for the current status of this measure, as it may
           affect your purchasing options.
         </p>
@@ -235,11 +240,11 @@ export default function ForeignBuyerFIRBGuidePage() {
         solicitor.
       </p>
       <ol>
-        <li><strong>Determine if approval is required.</strong> Use FIRB&rsquo;s online tool at firb.gov.au.</li>
-        <li><strong>Lodge the application.</strong> Apply at firb.gov.au. You will need details of the proposed purchase, your visa status, and supporting documents.</li>
+        <li><strong>Determine if approval is required.</strong> Check the guidance at foreigninvestment.gov.au (firb.gov.au now redirects there).</li>
+        <li><strong>Lodge the application.</strong> Residential applications go to the{" "}<a href="https://www.ato.gov.au/individuals-and-families/investments-and-assets/foreign-resident-investments/foreign-investment-in-australia/residential-property-application-for-foreign-investors" target="_blank" rel="noopener noreferrer">ATO</a>, through its Online services for foreign investors. You will need details of the proposed purchase, your visa status, and supporting documents.</li>
         <li><strong>Pay the application fee.</strong> The fee is based on the purchase price and is non-refundable even if approval is denied.</li>
-        <li><strong>Wait for a decision.</strong> FIRB has 30 days to decide; the Treasurer can extend to 90 days.</li>
-        <li><strong>Conditions on approval.</strong> Approval is typically granted with conditions, for example, temporary residents will have a condition requiring them to sell when they permanently leave Australia.</li>
+        <li><strong>Wait for a decision.</strong> The ATO has 30 days to decide once the fee is paid, and that can be extended to 90 days.</li>
+        <li><strong>Conditions on approval.</strong> Approval is typically granted with conditions, for example, a temporary resident who bought an established home before 1 April 2025 must sell it within 6 months once it is no longer their main home.</li>
       </ol>
 
       <Callout variant="warning" title="Penalties for non-compliance are severe">
@@ -250,10 +255,11 @@ export default function ForeignBuyerFIRBGuidePage() {
         </p>
       </Callout>
 
-      <h2 id="firb-fees">FIRB application fees (2025 to 2026)</h2>
+      <h2 id="firb-fees">FIRB application fees (2026 to 2027)</h2>
       <p>
         FIRB fees are tiered by property value. Fees are indexed annually. The
-        2025 to 2026 fees for residential land are:
+        fees from 1 July 2026 to 30 June 2027 for new dwellings and vacant
+        residential land are:
       </p>
       <table>
         <thead>
@@ -263,14 +269,19 @@ export default function ForeignBuyerFIRBGuidePage() {
           </tr>
         </thead>
         <tbody>
-          <tr><td>Up to $75,000</td><td>$4,200</td></tr>
-          <tr><td>$75,001 to $1,000,000</td><td>$14,100</td></tr>
-          <tr><td>$1,000,001 to $2,000,000</td><td>$28,200</td></tr>
-          <tr><td>$2,000,001 to $3,000,000</td><td>$56,400</td></tr>
-          <tr><td>$3,000,001 to $4,000,000</td><td>$84,600</td></tr>
-          <tr><td>Each additional $1M above $3M</td><td>+$28,200</td></tr>
+          <tr><td>Under $75,000</td><td>$4,600</td></tr>
+          <tr><td>$75,000 to $1,000,000</td><td>$15,600</td></tr>
+          <tr><td>$1,000,001 to $2,000,000</td><td>$31,300</td></tr>
+          <tr><td>$2,000,001 to $3,000,000</td><td>$62,600</td></tr>
+          <tr><td>$3,000,001 to $4,000,000</td><td>$93,900</td></tr>
+          <tr><td>Each additional $1M above $3M</td><td>+$31,300</td></tr>
         </tbody>
       </table>
+      <p>
+        Where an exception to the ban lets a foreign person buy an
+        established dwelling, the fee is three times these amounts ($46,800
+        up to $1M).
+      </p>
       <p>
         These fees are substantial and non-refundable. They are not a tax,
         they are an administrative fee for processing the application. Always
@@ -331,10 +342,10 @@ export default function ForeignBuyerFIRBGuidePage() {
         charge on top of standard land tax.
       </p>
       <ul>
-        <li><strong>NSW.</strong> 4% annual surcharge on the land value of residential properties owned by foreign persons</li>
-        <li><strong>VIC.</strong> 2% absentee owner surcharge (rising to 4% for those with interests in multiple properties)</li>
-        <li><strong>QLD.</strong> 2% surcharge land tax on all Queensland land owned by foreign persons</li>
-        <li><strong>SA.</strong> 0.5% surcharge on the taxable value</li>
+        <li><strong>NSW.</strong> 5% annual surcharge on the land value of residential properties owned by foreign persons (from the 2025 land tax year; it was 4%)</li>
+        <li><strong>VIC.</strong> 4% absentee owner surcharge (from the 2024 land tax year; it was 2%), on top of general land tax</li>
+        <li><strong>QLD.</strong> 3% surcharge on the taxable value above $350,000 of Queensland land owned by absentees and foreign companies or trusts</li>
+        <li><strong>SA.</strong> Check{" "}<a href="https://www.revenuesa.sa.gov.au" target="_blank" rel="noopener noreferrer">RevenueSA</a>{" "}for any land tax surcharge on foreign owners before you buy</li>
         <li><strong>WA.</strong> No specific foreign-owner land tax surcharge (but standard land tax applies)</li>
       </ul>
       <p>
@@ -352,7 +363,7 @@ export default function ForeignBuyerFIRBGuidePage() {
         property are subject to Australian tax:
       </p>
       <ul>
-        <li>Non-residents pay tax at 32.5% on the first $135,000 of Australian-sourced income (2025 to 2026 rates), with no tax-free threshold available to non-residents.</li>
+        <li>Non-residents pay tax at 30% on the first $135,000 of Australian-sourced income (2025 to 2026 rates), with no tax-free threshold available to non-residents.</li>
         <li>Rental expenses (interest, management fees, rates, insurance, depreciation) are still deductible, reducing the taxable rental income.</li>
         <li>You must lodge an Australian tax return each year you earn Australian income.</li>
         <li>Withholding agents (property managers) may be required to withhold tax from rent in some circumstances.</li>

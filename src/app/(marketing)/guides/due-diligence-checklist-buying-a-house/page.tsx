@@ -23,7 +23,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Every check, document, and red flag to investigate before you sign a contract on an Australian residential property. Use as a pre-offer and pre-settlement playbook.",
   slug: "due-diligence-checklist-buying-a-house",
   publishedAt: "2026-05-13",
-  updatedAt: "2026-05-13",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 13,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -86,7 +86,7 @@ const FAQS: FaqItem[] = [
   {
     question: "When should I do due diligence?",
     answer:
-      "Before signing a contract. For private treaty purchases, you can typically negotiate the contract subject to building and pest inspection and finance, then do the checks during the cooling-off period (varies by state, 3 to 14 days). For auctions, you must do everything before auction day because the contract is unconditional from the fall of the hammer. This means paying for inspections on properties you might not win. Frustrating but unavoidable in active auction markets.",
+      "Before signing a contract. For private treaty purchases, you can typically negotiate the contract subject to building and pest inspection and finance, then do the checks during the cooling-off period (2 to 5 business days, depending on the state; none in WA or Tasmania). For auctions, you must do everything before auction day because the contract is unconditional from the fall of the hammer. This means paying for inspections on properties you might not win. Frustrating but unavoidable in active auction markets.",
   },
   {
     question: "Do I really need a building and pest inspection?",
@@ -111,7 +111,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I get out of a contract if due diligence reveals problems?",
     answer:
-      "Depends on the contract structure. Auction contracts are unconditional from the hammer; you can't withdraw, period. Private treaty contracts can be made subject to building and pest, finance, and other conditions; if those conditions aren't met, you can walk with deposit refunded (or partial refund depending on state and contract wording). The cooling-off period (3–5 days in NSW, 3 days in VIC, 5 days in QLD private treaty) lets you withdraw for any reason with a small penalty (typically 0.25% of price in NSW, 0.2% in VIC). Read your specific contract carefully.",
+      "Depends on the contract structure. Auction contracts are unconditional from the hammer; you can't withdraw, period. Private treaty contracts can be made subject to building and pest, finance, and other conditions; if those conditions aren't met, you can walk with deposit refunded (or partial refund depending on state and contract wording). The cooling-off period (5 business days in NSW, 3 clear business days in VIC, 5 business days in QLD private treaty) lets you withdraw for any reason with a small penalty (typically 0.25% of price in NSW, 0.2% in VIC). Read your specific contract carefully.",
   },
 ];
 
@@ -188,8 +188,8 @@ export default function DueDiligenceChecklistPage() {
         You can typically include the property contract as subject to
         building and pest inspection and subject to finance. Once your
         offer is accepted, you have the{" "}
-        <Link href="/guides/cooling-off-period-by-state-australia">cooling-off period</Link> (3–14 days
-        depending on state and contract) plus any subject-to deadlines to
+        <Link href="/guides/cooling-off-period-by-state-australia">cooling-off period</Link> (2 to 5 business
+        days, depending on the state; none in WA or Tasmania) plus any subject-to deadlines to
         complete due diligence. If the inspections reveal serious issues or
         finance falls through, you can withdraw with deposit refunded (or
         partial penalty depending on state).
@@ -386,7 +386,7 @@ export default function DueDiligenceChecklistPage() {
 
 const DUE_DILIGENCE_SOURCES: readonly SourceItem[] = [
   { label: "ASIC's Moneysmart: Buying a home", href: "https://moneysmart.gov.au/home-loans/buying-a-home", note: "Pre-purchase checks and contract framing" },
-  { label: "NSW Fair Trading: Property contracts and cooling-off", href: "https://www.fairtrading.nsw.gov.au/", note: "Property Stock and Business Agents Act 2002 (NSW) cooling-off rules" },
+  { label: "NSW Fair Trading: Property contracts and cooling-off", href: "https://www.fairtrading.nsw.gov.au/", note: "Conveyancing Act 1919 (NSW) cooling-off rules (s 66S onwards)" },
   { label: "Consumer Affairs Victoria: Section 32 vendor statements", href: "https://www.consumer.vic.gov.au/", note: "VIC Sale of Land Act 1962 disclosure obligations" },
   { label: "Queensland Government: Property Law Act 2023 seller disclosure", href: "https://www.qld.gov.au/", note: "QLD disclosure statement regime from 1 August 2025" },
   { label: "Australian Standard AS 4349.1: Pre-purchase inspections of buildings", note: "Industry standard cited in the building-inspection section" },

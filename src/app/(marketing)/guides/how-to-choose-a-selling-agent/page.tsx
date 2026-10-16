@@ -19,7 +19,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "A practical guide to picking the right real estate agent to sell your home: how to interview, what questions to ask, the appraisal trap, fee structures, and how to negotiate the listing agreement.",
   slug: "how-to-choose-a-selling-agent",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-05-06",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -87,7 +87,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Sole agency vs general agency, what's the difference?",
     answer:
-      "Sole agency: one agent has the exclusive right to sell during the agency period. They get paid even if you find the buyer yourself. General agency: multiple agents can list the property simultaneously, only the one who finds the buyer earns commission. Sole agency is the norm and aligns the agent's incentive to actually market your property; general agency tends to result in less effort from any individual agent.",
+      "Sole agency: one agent has the right to sell during the agency period. They get paid if another agent sells, but not if you find the buyer yourself. An exclusive agency, the more common listing, pays them whoever finds the buyer, including you. General agency: multiple agents can list the property simultaneously, only the one who finds the buyer earns commission. A single-agent listing (sole or exclusive) is the norm and aligns the agent's incentive to actually market your property; general agency tends to result in less effort from any individual agent.",
   },
   {
     question: "How much should I spend on marketing?",

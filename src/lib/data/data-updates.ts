@@ -21,6 +21,14 @@ export interface DataUpdate {
 
 export const DATA_UPDATES: DataUpdate[] = [
   {
+    date: "2026-10-16",
+    kind: "data",
+    title: "Cash rate tracker updated: 4.60% after the September rise",
+    description:
+      "The RBA held the cash rate at 4.35% on 11 August and raised it to 4.60% on 29 September, its fourth rise of 2026. The cash rate tracker and our fixed vs variable guide now show both decisions.",
+    href: "/rba-cash-rate",
+  },
+  {
     date: "2026-06-16",
     kind: "data",
     title: "June 2026 RBA decision: cash rate held at 4.35%",

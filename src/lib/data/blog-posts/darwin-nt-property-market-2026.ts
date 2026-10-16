@@ -17,7 +17,7 @@ export const post: BlogPost = {
 <p>Established Darwin suburbs in the inner northern suburbs (Nightcliff, Rapid Creek, Coconut Grove, Fannie Bay) continue to attract demand for character housing with bay outlooks. The Stuart Park and Larrakeyah inner ring also remains tightly held. Newer estates through Palmerston (Bellamack, Johnston, Zuccoli) provide accessible price points and have stabilised after several years of softness.</p>
 
 <h2>The unique NT property considerations</h2>
-<p>Land tenure in the NT is different from southern states. A significant share of NT land operates under leasehold rather than freehold, particularly in remote areas and on community land governed by the Aboriginal Land Rights (Northern Territory) Act. In established Darwin suburbs, most residential land is on Crown Lease and operates similarly to freehold. Always engage an NT-qualified conveyancer who understands the local tenure landscape.</p>
+<p>Land tenure in the NT is different from southern states. Outside the towns, most NT land is either pastoral leasehold or Aboriginal freehold, which is held by land trusts under the Aboriginal Land Rights (Northern Territory) Act and can't be sold. In established Darwin suburbs, the average house block is ordinary freehold, as it is down south. Always engage an NT-qualified conveyancer who understands the local tenure landscape.</p>
 
 <h2>Climate considerations</h2>
 <p>Darwin's tropical climate creates property considerations that don't apply elsewhere. Cyclone-rated construction (post-Cyclone Tracy 1974), air conditioning, insulation, and flood/inundation exposure are all material to property selection. Buyers should always commission building inspections that explicitly cover cyclone-zone compliance and check the suburb's storm surge and flood mapping.</p>
@@ -37,12 +37,12 @@ export const post: BlogPost = {
 <li>Climate-resilient construction premiums likely to widen as insurance costs rise</li>
 </ul>
 
-<p>The NT in 2026 is not a market for casual interstate investors. The leasehold complexities, climate considerations, and historical volatility all require local expertise. But for owner-occupiers and patient investors with NT context, the combination of strong yields, lower entry prices, and the largest first home grant in Australia on a new home makes a compelling case.</p>`,
+<p>The NT in 2026 is not a market for casual interstate investors. The tenure complexities outside Darwin, climate considerations, and historical volatility all require local expertise. But for owner-occupiers and patient investors with NT context, the combination of strong yields, lower entry prices, and the largest first home grant in Australia on a new home makes a compelling case.</p>`,
   coverImage: "/images/blog/cover-darwin-nt-property-market-2026.jpg",
   author: { name: "Andy McMaster", image: "/images/agents/andy-mcmaster.jpg" },
   category: "Market Update",
   tags: ["darwin", "northern territory", "nt", "market update", "2026"],
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-14",
+  updatedAt: "2026-10-16",
   readingTime: 7,
 };

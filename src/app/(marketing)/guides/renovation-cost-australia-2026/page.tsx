@@ -44,7 +44,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Renovation costs in Australia at September 2026: kitchens, bathrooms, laundries, extensions and rebuilds by finish level, per m² by state, and a calculator.",
   slug: "renovation-cost-australia-2026",
   publishedAt: "2026-05-13",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 17,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -305,7 +305,7 @@ export default function RenovationCostAustralia2026Page() {
       </ul>
       <p>
         Tiling labour alone is $60–$120/m² for floors and walls, with materials
-        on top. A bathroom with 25m² of tiling can absorb $4,000–$5,000 in
+        on top. A bathroom with 25m² of tiling can absorb $1,500–$3,000 in
         tiling labour. <strong>Waterproofing is not the place to cut
         corners</strong>. It&rsquo;s legally required, it&rsquo;s the most
         common source of subsequent insurance claims, and remediation when it

@@ -25,7 +25,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "The mortgage feature most Australians use wrong. What an offset account actually does, how it saves interest mechanically, when it's worth the package fee, redraw vs offset, and how to use it as a deposit-builder for the next purchase.",
   slug: "offset-accounts-explained-australia",
   publishedAt: "2026-05-18",
-  updatedAt: "2026-05-18",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 11,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -261,8 +261,8 @@ export default function OffsetAccountsExplainedPage() {
         a 6.5 per cent loan saving. It isn&rsquo;t, once you tax it.
       </p>
       <p>
-        HISA interest is fully taxable as ordinary income. On a 32.5
-        per cent marginal rate, 4.5 per cent gross becomes 3.04 per
+        HISA interest is fully taxable as ordinary income. On a 30
+        per cent marginal rate, 4.5 per cent gross becomes 3.15 per
         cent after tax. On a 37 per cent marginal rate, 2.84 per cent
         after tax. On a 47 per cent marginal rate (including
         Medicare), 2.39 per cent after tax.

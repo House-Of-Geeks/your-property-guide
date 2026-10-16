@@ -14,10 +14,10 @@ import { guideOgImages } from "@/lib/og/helpers";
 const FRONTMATTER: GuideFrontmatter = {
   title: "Renter's Rights in Queensland: Complete Guide (2026)",
   description:
-    "QLD tenant rights: bond, rent increases, repairs, entry, pet ownership reforms, and the 2024 grounds-based eviction laws. Includes RTA and QCAT dispute info.",
+    "QLD tenant rights: bond, rent increases, repairs, entry, pet rules, and grounds-based evictions (no-grounds notices ended in October 2022). Includes RTA and QCAT dispute info.",
   slug: "renters-rights-qld",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -44,10 +44,10 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "QLD's 2024 reforms moved toward grounds-based evictions (similar to VIC 2021), and made it harder to unreasonably refuse pets.",
+  "No-grounds evictions ended in QLD on 1 October 2022. Landlords need an approved reason to end a tenancy (the end of a fixed term still counts as one, with 2 months notice), and can only refuse a pet on reasonable grounds.",
   "Maximum bond is 4 weeks rent. Lodged with the Residential Tenancies Authority (RTA) within 10 days.",
   "Rent increases capped at one per 12 months with at least 2 months (60 days) written notice.",
-  "Three repair tiers: emergency (immediate), urgent (24 to 48 hours), non-urgent (reasonable time, often 7 days for minor issues).",
+  "Two repair types: emergency (immediate; if the landlord can't be reached, tenants can arrange them up to the value of 4 weeks rent) and routine (within a reasonable time).",
   "Routine inspections require 7 days notice and the first inspection can't occur until 3 months after the tenancy starts. Max 4 per year.",
   "Two-step dispute resolution: free RTA conciliation first, then QCAT if it fails.",
 ];
@@ -58,9 +58,9 @@ const TOC: GuideTOCEntry[] = [
   { id: "rent-increases", label: "Rent increases" },
   { id: "repairs",        label: "Repairs and maintenance" },
   { id: "entry-rights",   label: "Landlord entry rights" },
-  { id: "pets",           label: "Pet ownership (2024 reforms)" },
+  { id: "pets",           label: "Pet ownership (since 2022)" },
   { id: "ending-tenancy", label: "Ending a tenancy" },
-  { id: "grounds-reform", label: "Grounds for ending tenancy (2024)" },
+  { id: "grounds-reform", label: "Grounds for ending a tenancy" },
   { id: "disputes",       label: "Resolving disputes (RTA & QCAT)" },
   { id: "resources",      label: "Resources and contacts" },
 ];
@@ -69,12 +69,12 @@ const FAQS: FaqItem[] = [
   {
     question: "Can my QLD landlord still issue a no-grounds eviction?",
     answer:
-      "Increasingly no. The 2024 reforms moved Queensland toward grounds-based evictions (similar to VIC's 2021 model). Implementation has been phased in, so transitional rules may still apply in some scenarios. Always verify current rules with the RTA before relying on a notice.",
+      "No. Since 1 October 2022, a landlord must give an approved reason on a Notice to leave (Form 12). The end of a fixed term agreement is still an approved reason, with at least 2 months notice. Other reasons include a sale contract, the owner moving in, and significant renovations, also with 2 months notice. Check the full list with the RTA before relying on a notice.",
   },
   {
     question: "How fast must emergency repairs be done in QLD?",
     answer:
-      "Immediately. Emergencies include burst water pipes, gas leaks, serious roof damage, breakdown of essential services. If the landlord can't be reached, you can arrange emergency repairs up to $300 yourself and reclaim the cost. Urgent (non-emergency) repairs must be addressed within 24 to 48 hours.",
+      "Immediately. Emergencies include burst water pipes, gas leaks, serious roof damage, breakdown of essential services. If the landlord can't be reached, you can arrange emergency repairs yourself up to the value of 4 weeks rent, and the landlord must reimburse you within 7 days of getting the receipts. All other repairs are routine repairs, which must be done within a reasonable time.",
   },
   {
     question: "Can my landlord refuse to let me have a pet?",
@@ -89,7 +89,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How does the RTA dispute resolution service work?",
     answer:
-      "It's a free, phone-based conciliation service. Either party can request it. Most disputes are resolved here without going to QCAT. If conciliation fails, you can apply to QCAT for a formal decision. Contact the RTA on 1800 512 888.",
+      "It's a free, phone-based conciliation service. Either party can request it. Most disputes are resolved here without going to QCAT. If conciliation fails, you can apply to QCAT for a formal decision. Contact the RTA on 1300 366 311.",
   },
   {
     question: "Can rent be increased during a fixed-term lease in QLD?",
@@ -99,8 +99,8 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "Compare QLD reforms to NSW where no-grounds evictions remain." },
-  { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms that QLD is moving toward." },
+  { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "NSW also ended no-grounds evictions, in May 2025." },
+  { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "Compare QLD with VIC's 2021 rental reforms." },
   { title: "Renter's Rights in WA",       href: "/guides/renters-rights-wa",  description: "WA's Residential Tenancies Act and entry rules." },
   { title: "Renter's Rights in SA",       href: "/guides/renters-rights-sa",  description: "SA tenant rules and SACAT dispute resolution." },
   { title: "First Home Buyer Guide QLD",  href: "/guides/first-home-buyer-qld", description: "When you're ready to stop renting and buy your first home." },
@@ -127,12 +127,13 @@ export default function RentersRightsQLDPage() {
         </p>
       </Callout>
 
-      <Callout variant="info" title="2024 QLD reforms">
+      <Callout variant="info" title="QLD rental law reforms">
         <p>
-          QLD introduced new laws in 2024 requiring landlords to have valid
-          grounds for ending a tenancy (similar to Victoria’s 2021 reforms) and
-          making it harder to unreasonably refuse pets. Implementation has been
-          phased, so check the RTA for the current position on each provision.
+          Since 1 October 2022, QLD landlords need an approved reason to end a
+          tenancy and can only refuse a pet on reasonable grounds. Changes from
+          6 June 2024 banned rent bidding and tied the 12-month limit on rent
+          increases to the property, not the tenancy. Further changes started
+          in 2025, so check the RTA for the current position on each provision.
         </p>
       </Callout>
 
@@ -146,8 +147,8 @@ export default function RentersRightsQLDPage() {
       <p>
         The Act is administered by the Residential Tenancies Authority (RTA),
         which also provides dispute resolution and manages rental bonds.
-        Queensland updated its tenancy laws in 2024, introducing grounds-based
-        eviction rules and enhanced pet rights.
+        Queensland ended no-grounds evictions and introduced pet rules on 1
+        October 2022, with further changes in 2024 and 2025.
       </p>
 
       <h2 id="bond">Bond rules</h2>
@@ -174,34 +175,33 @@ export default function RentersRightsQLDPage() {
       </p>
 
       <h2 id="repairs">Repairs and maintenance</h2>
-      <p>QLD categorises repairs into three levels:</p>
+      <p>QLD law sorts repairs into two types: emergency and routine.</p>
 
       <h3>Emergency repairs</h3>
       <p>
         Must be addressed <strong>immediately</strong>. Examples: burst water
         pipe, gas leak, serious roof damage after storm, breakdown of essential
-        services. If the landlord can’t be reached, tenants can arrange
-        emergency repairs themselves up to $300 and reclaim the cost.
+        services, and a broken hot water system, stove or heater. Repairs
+        needed to meet the minimum housing standards also count. If the
+        landlord can’t be reached, tenants can arrange emergency repairs
+        themselves up to the value of <strong>4 weeks rent</strong>. The
+        landlord must reimburse you within 7 days of getting the receipts.
       </p>
 
-      <h3>Urgent repairs</h3>
+      <h3>Routine repairs</h3>
       <p>
-        Must be attended to within <strong>24 to 48 hours</strong>. Examples:
-        broken water heater, fridge failure (if included in lease), broken pool
-        gate.
-      </p>
-
-      <h3>Non-urgent repairs</h3>
-      <p>
-        Should be addressed within a <strong>reasonable time</strong>, typically
-        7 days after written notice for minor repairs, longer for complex works.
-        Always request repairs in writing and keep copies.
+        Any repair that isn’t an emergency repair is a routine repair. It
+        should be done within a <strong>reasonable time</strong> after written
+        notice. If it isn’t, you can give a Notice to remedy breach (Form 11)
+        allowing at least 7 days, then use RTA dispute resolution or apply to
+        QCAT for a repair order. Always request repairs in writing and keep
+        copies.
       </p>
 
       <h2 id="entry-rights">Landlord entry rights</h2>
       <ul>
         <li><strong>Routine inspections:</strong> Maximum 4 per year. The first inspection can’t occur until at least 3 months after tenancy starts. <strong>7 days written notice</strong> required.</li>
-        <li><strong>General entry for repairs:</strong> 24 hours notice required</li>
+        <li><strong>General entry for repairs:</strong> 48 hours notice required (up from 24 hours on 1 May 2025)</li>
         <li><strong>Emergency:</strong> No notice required</li>
       </ul>
       <p>
@@ -210,9 +210,9 @@ export default function RentersRightsQLDPage() {
         necessary.
       </p>
 
-      <h2 id="pets">Pet ownership, 2024 reforms</h2>
+      <h2 id="pets">Pet ownership rules</h2>
       <p>
-        Following the 2024 reforms, Queensland landlords <strong>cannot
+        Since 1 October 2022, Queensland landlords <strong>cannot
         unreasonably refuse</strong> a tenant’s request to keep a pet.
         Acceptable grounds for refusal:
       </p>
@@ -233,32 +233,33 @@ export default function RentersRightsQLDPage() {
           <tr><th>Situation</th><th>Tenant notice</th><th>Landlord notice</th></tr>
         </thead>
         <tbody>
-          <tr><td>End of fixed term</td><td>2 weeks (14 days)</td><td>Must have valid reason (post-2024)</td></tr>
-          <tr><td>Periodic, no grounds (pre-2024 rules)</td><td>2 weeks</td><td>2 months (transitional)</td></tr>
-          <tr><td>With grounds (e.g. serious breach)</td><td>-</td><td>1 month (or as specified)</td></tr>
+          <tr><td>End of fixed term</td><td>2 weeks (14 days)</td><td>2 months (the end of the fixed term is itself an approved reason)</td></tr>
+          <tr><td>Periodic</td><td>2 weeks</td><td>2 months, with an approved reason (e.g. sale contract, owner moving in, renovations)</td></tr>
+          <tr><td>Unremedied breach (after a Notice to remedy breach)</td><td>7 days</td><td>14 days (7 days for rent arrears)</td></tr>
         </tbody>
       </table>
       <p>
-        Check with the RTA for current notice periods; transitional provisions
-        from the 2024 reforms may still apply.
+        Check with the RTA for current notice periods and the full list of
+        approved reasons.
       </p>
 
-      <h2 id="grounds-reform">Grounds for ending tenancy, 2024 reforms</h2>
+      <h2 id="grounds-reform">Grounds for ending a tenancy</h2>
       <p>
-        QLD introduced legislation in 2024 requiring landlords to have valid
-        grounds to end a tenancy, moving toward the model adopted by Victoria
-        in 2021. Valid grounds include:
+        Since 1 October 2022, QLD landlords must have an approved reason to end
+        a tenancy. The option to end a tenancy without grounds was removed.
+        Approved reasons include:
       </p>
       <ul>
+        <li>End of a fixed term agreement (at least 2 months notice)</li>
         <li>Property sold requiring vacant possession</li>
         <li>Owner or family member moving into the property</li>
         <li>Major renovations or demolition</li>
         <li>Serious or repeated breach of the agreement by the tenant</li>
       </ul>
       <p>
-        Implementation has been phased. Visit{" "}
+        Visit{" "}
         <a href="https://www.rta.qld.gov.au" target="_blank" rel="noopener noreferrer">rta.qld.gov.au</a>{" "}
-        for the current status of all 2024 reform provisions.
+        for the full list of approved reasons and notice periods.
       </p>
 
       <h2 id="disputes">Resolving disputes, RTA &amp; QCAT</h2>
@@ -277,8 +278,8 @@ export default function RentersRightsQLDPage() {
       </ol>
 
       <KeyFigure
-        value="1800 512 888"
-        label="The RTA Dispute Resolution Service number, free to use."
+        value="1300 366 311"
+        label="The RTA’s contact number (cost of a local call). Its dispute resolution service is free."
         context="Most QLD tenancy disputes are resolved without going to QCAT"
       />
 

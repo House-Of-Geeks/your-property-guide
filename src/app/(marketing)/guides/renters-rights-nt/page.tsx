@@ -16,7 +16,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "NT tenant rights: bond rules, rent increases (30 days notice), tropical-climate urgent repairs, remote community housing, and NTCAT dispute resolution.",
   slug: "renters-rights-nt",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -43,10 +43,10 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Maximum bond is 4 weeks rent. Lodged with NT Consumer Affairs within 7 days of receipt.",
-  "Rent increases on periodic tenancies require 30 days written notice. Unlike NSW, VIC, TAS, the NT does NOT have a 12-month minimum between increases.",
+  "Maximum bond is 4 weeks rent. The NT has no central bond authority: the landlord or agent holds the bond in trust in a bank or agent trust account.",
+  "Rent increases need at least 30 days written notice, and can't take effect within 6 months of the tenancy starting or the last increase.",
   "Air conditioning breakdown is an urgent repair in the NT, particularly during the wet season or extreme heat.",
-  "Periodic tenancy notice: 14 days from tenant, 42 days from landlord (no grounds), 14 days from either side with grounds.",
+  "Periodic tenancy notice: 14 days from tenant, 60 days from landlord (no grounds), 14 days from either side with grounds.",
   "Disputes go to the NT Civil and Administrative Tribunal (NTCAT), accessible without legal representation for most matters.",
   "Remote Aboriginal community housing operates under different frameworks. Contact NAAJA or CAALAS for specialist advice.",
 ];
@@ -68,7 +68,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can my landlord raise my rent every month in the NT?",
     answer:
-      "Theoretically yes, in a periodic tenancy. The NT requires 30 days written notice but doesn't impose a statutory 12-month minimum between increases (unlike NSW, VIC, and TAS). If you're facing frequent increases, you can negotiate, accept, or give 14 days notice to vacate. Contact NT Consumer Affairs if you suspect retaliation.",
+      "No. An increase can't take effect earlier than 6 months after the tenancy started or after the last increase, and needs at least 30 days written notice. That's a shorter gap than the 12 months in NSW, VIC and TAS. If you think the rent is too high, you can negotiate, apply to NTCAT to have it declared excessive, or give 14 days notice to vacate on a periodic tenancy. Contact NT Consumer Affairs if you suspect retaliation.",
   },
   {
     question: "Is air conditioning a 'right' in NT rentals?",
@@ -83,7 +83,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How much bond can be charged in the NT?",
     answer:
-      "Maximum 4 weeks rent for most circumstances. Special cases like pet bonds may allow more. The bond must be lodged with NT Consumer Affairs within 7 days of the landlord receiving it, and you should get a receipt confirming lodgement.",
+      "Maximum 4 weeks rent, and a landlord can't ask for more than one bond, so there's no separate pet bond. There is no central bond authority in the NT. The landlord holds the bond in trust in a bank or agent trust account, and must give you a receipt (straight away for cash, cheque or card, otherwise within 2 business days).",
   },
   {
     question: "Can I break my fixed-term lease early?",
@@ -100,7 +100,7 @@ const FAQS: FaqItem[] = [
 const RELATED: RelatedGuide[] = [
   { title: "Renter's Rights in NSW",      href: "/guides/renters-rights-nsw", description: "Compare NT to NSW where 12-month rent-increase minimum applies." },
   { title: "Renter's Rights in Victoria", href: "/guides/renters-rights-vic", description: "VIC's 2021 reforms abolished no-grounds evictions." },
-  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD's 2024 reforms toward grounds-based evictions." },
+  { title: "Renter's Rights in Queensland", href: "/guides/renters-rights-qld", description: "QLD ended no-grounds evictions in October 2022." },
   { title: "Renter's Rights in WA",       href: "/guides/renters-rights-wa",  description: "WA's Residential Tenancies Act and no dedicated tribunal." },
   { title: "First Home Buyer Guide NT",   href: "/guides/first-home-buyer-nt", description: "When you're ready to stop renting and buy your first home." },
 ];
@@ -168,8 +168,8 @@ export default function RentersRightsNTPage() {
 
       <h2 id="bond">Bond rules</h2>
       <ul>
-        <li><strong>Maximum bond:</strong> 4 weeks rent. Special circumstances (e.g. pet bond) may allow more.</li>
-        <li><strong>Lodgement:</strong> Must be lodged with NT Consumer Affairs within 7 days of receipt. You should receive a confirmation receipt.</li>
+        <li><strong>Maximum bond:</strong> 4 weeks rent. A landlord can’t ask for more than one bond, so there’s no separate pet bond.</li>
+        <li><strong>Who holds it:</strong> There’s no central bond authority in the NT. The landlord must hold the bond in trust in a bank or agent trust account, and give you a receipt.</li>
         <li><strong>Condition report:</strong> Complete a thorough ingoing condition report at the start. Critical for protecting against unfair bond deductions.</li>
         <li><strong>Refund:</strong> The full bond must be refunded if the property is in the same condition as on move-in (allowing fair wear and tear). Deductions must be for legitimate repairs or cleaning.</li>
       </ul>
@@ -182,18 +182,18 @@ export default function RentersRightsNTPage() {
       <ul>
         <li><strong>Notice required:</strong> At least 30 days written notice before any rent increase</li>
         <li>
-          <strong>No minimum period between increases:</strong> Unlike NSW,
-          VIC, and TAS, the NT does not specify a minimum period between
-          increases for periodic tenancies. Landlords can technically increase
-          every 30 days on a periodic tenancy with proper notice.
+          <strong>Minimum period between increases:</strong> 6 months. An
+          increase can’t take effect earlier than 6 months after the tenancy
+          started or after the last increase. That’s shorter than the 12 months
+          in NSW, VIC and TAS.
         </li>
         <li><strong>Fixed term:</strong> Rent can’t be increased unless the agreement specifies the amount or method</li>
       </ul>
       <p>
-        No rent caps. If you’re in a periodic tenancy and facing frequent
-        increases, your options are to negotiate, accept, or give 14 days
-        notice to vacate. Contact NT Consumer Affairs if you believe the
-        increase is retaliatory.
+        No rent caps. If an increase seems too high, your options are to
+        negotiate, accept, apply to NTCAT to have the rent declared excessive,
+        or give 14 days notice to vacate on a periodic tenancy. Contact NT
+        Consumer Affairs if you believe the increase is retaliatory.
       </p>
 
       <h2 id="inspections">Routine inspections</h2>
@@ -246,9 +246,9 @@ export default function RentersRightsNTPage() {
           <tr><th>Situation</th><th>Tenant notice</th><th>Landlord notice</th></tr>
         </thead>
         <tbody>
-          <tr><td>Periodic, no grounds</td><td>14 days</td><td>42 days</td></tr>
+          <tr><td>Periodic, no grounds</td><td>14 days</td><td>60 days</td></tr>
           <tr><td>Periodic, with grounds (breach)</td><td>14 days</td><td>14 days</td></tr>
-          <tr><td>Fixed term, end of term</td><td>Per agreement</td><td>Per agreement</td></tr>
+          <tr><td>Fixed term, end of term</td><td>14 days</td><td>60 days</td></tr>
         </tbody>
       </table>
       <p>

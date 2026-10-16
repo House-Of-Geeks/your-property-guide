@@ -205,6 +205,6 @@ describe("the guide page", () => {
     expect(src).toContain("PropertyManagementFeesCalculator");
     expect(src).toContain("stateFeeAnswer(");
     expect(src).toContain("faqs={PM_FEES_FAQS}");
-    expect(src).toContain('updatedAt: "2026-09-30"');
+    expect(src).toContain('updatedAt: "2026-10-16"');
   });
 });

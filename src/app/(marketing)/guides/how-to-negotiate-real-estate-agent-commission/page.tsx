@@ -22,7 +22,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Agent commission is not set by law anywhere in Australia, every rate is an opening offer. Average commission by state, what's actually negotiable, tiered structures, word-for-word scripts, and when a cheap agent costs more than they save.",
   slug: "how-to-negotiate-real-estate-agent-commission",
   publishedAt: "2026-07-03",
-  updatedAt: "2026-07-03",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -430,9 +430,9 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
       </p>
 
       <KeyFigure
-        value="$11,200"
+        value="$10,848"
         label="What you'd be ahead on an $800,000 sale if a 2.2% agent achieves 2% more on price than a 1.6% discount agent."
-        context="$16,000 extra price minus $4,800 extra fee"
+        context="$16,000 extra price minus $5,152 extra fee (2.2% of $816,000 against 1.6% of $800,000)"
       />
 
       <p>Warning signs that a low rate will cost you at the sale price:</p>

@@ -17,7 +17,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Victoria's renter rights: no-grounds evictions abolished, pet ownership, modification rights, bond rules, rent increases, and VCAT disputes.",
   slug: "renters-rights-vic",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 10,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -95,12 +95,12 @@ const FAQS: FaqItem[] = [
   {
     question: "What happens to a fixed-term lease at the end of the term?",
     answer:
-      "If you stay without signing a new lease, it automatically becomes periodic on the same terms. Unlike NSW, the landlord can't issue a no-grounds notice on a periodic tenancy in Victoria; they still need a valid reason and the appropriate notice period (typically 60 days).",
+      "If you stay without signing a new lease, it automatically becomes periodic on the same terms. The landlord can't issue a no-grounds notice on a periodic tenancy in Victoria; they still need a valid reason and the appropriate notice period (typically 60 days).",
   },
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Renter's Rights in NSW",          href: "/guides/renters-rights-nsw", description: "Compare to NSW where no-grounds evictions are still permitted." },
+  { title: "Renter's Rights in NSW",          href: "/guides/renters-rights-nsw", description: "NSW also ended no-grounds evictions, in May 2025." },
   { title: "Renter's Rights in Queensland",   href: "/guides/renters-rights-qld", description: "QLD tenant entitlements and the Residential Tenancies Authority." },
   { title: "Renter's Rights in WA",           href: "/guides/renters-rights-wa",  description: "WA's Residential Tenancies Act and entry rules." },
   { title: "Renter's Rights in SA",           href: "/guides/renters-rights-sa",  description: "SA tenant rules and SACAT dispute resolution." },
@@ -280,7 +280,7 @@ export default function RentersRightsVICPage() {
       <KeyFigure
         value="0"
         label="No-grounds evictions allowed in Victoria since March 2021."
-        context="NSW still permits them on periodic tenancies"
+        context="NSW followed in May 2025"
       />
 
       <p>

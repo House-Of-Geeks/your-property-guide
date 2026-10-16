@@ -22,7 +22,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "How to pick a mortgage broker who works for you, not their lender panel. The questions to ask, what 'best interests duty' actually means, how brokers are paid, and the red flags worth walking away from.",
   slug: "how-to-choose-a-mortgage-broker",
   publishedAt: "2026-05-13",
-  updatedAt: "2026-05-13",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 11,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -55,7 +55,7 @@ const TLDR = [
   "Interview at least two brokers. Compare their lender panel size, how they explain BID, the quality of their borrowing-capacity assessment, and whether they push you toward any particular lender.",
   "Red flags: tiny lender panel (under 20), pushes one specific lender every time, can't explain BID clearly, vague on their commission structure, pressures you to sign before you've compared options.",
   "Bring three documents to your first meeting: payslips (last two), bank statements (last three months), and ID. A good broker will give you a real borrowing-capacity range within an hour.",
-  "A great broker shaves 0.10–0.40% off your rate vs. walking into your own bank. Over a 30-year loan, that's $30,000–$120,000 in saved interest on a $600,000 mortgage.",
+  "A great broker shaves 0.10–0.40% off your rate vs. walking into your own bank. Over a 30-year loan at about 6%, that's roughly $14,000–$55,000 in saved interest on a $600,000 mortgage.",
 ];
 
 const TOC: GuideTOCEntry[] = [
@@ -100,7 +100,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Are all mortgage brokers regulated the same way?",
     answer:
-      "Yes. Every mortgage broker in Australia must hold an Australian Credit Licence (ACL) or operate under one as a Credit Representative, be a member of either MFAA (Mortgage and Finance Association of Australia) or FBAA (Finance Brokers Association), have an external dispute resolution scheme (AFCA), and comply with the National Consumer Credit Protection Act and Best Interests Duty. ASIC has investigated and prosecuted brokers who breach these obligations. You can verify any broker's licence on ASIC's public register.",
+      "Yes. Every mortgage broker in Australia must hold an Australian Credit Licence (ACL) or operate under one as a Credit Representative, be covered by membership of the external dispute resolution scheme, AFCA (Australian Financial Complaints Authority), and comply with the National Consumer Credit Protection Act and Best Interests Duty. Many also belong to an industry association, MFAA (Mortgage and Finance Association of Australia) or FBAA (Finance Brokers Association), but that is not a legal requirement. ASIC has investigated and prosecuted brokers who breach these obligations. You can verify any broker's licence on ASIC's public register.",
   },
   {
     question: "Can a mortgage broker help if I'm self-employed?",
@@ -210,9 +210,9 @@ export default function HowToChooseMortgageBrokerPage() {
         These rates vary by lender and by aggregator but the structure is
         consistent across the industry. Importantly, brokers do <em>not</em>{" "}
         receive volume bonuses based on writing more loans to a specific
-        lender (that practice was banned in 2019). Best Interests Duty also
-        requires brokers to disclose their commission structure to you in
-        the credit proposal document.
+        lender (the law has banned that since 1 January 2021). Best
+        Interests Duty also requires brokers to disclose their commission
+        structure to you in the credit proposal document.
       </p>
       <p>
         Some specialist brokers (commercial property, SMSF lending, very
@@ -300,9 +300,10 @@ export default function HowToChooseMortgageBrokerPage() {
       </p>
       <p>
         Whatever source you use, verify each broker&rsquo;s licence on the{" "}
-        <a href="https://moneysmart.gov.au/financial-advice/financial-advisers-register" target="_blank" rel="nofollow noopener">
-          ASIC public register
+        <a href="https://www.asic.gov.au/online-services/search-asic-s-registers/professional-registers/" target="_blank" rel="nofollow noopener">
+          ASIC professional registers
         </a>{" "}
+        (the credit licensee and credit representative registers)
         or via MFAA&rsquo;s find-a-broker tool before your first meeting.
         Confirm: current ACL or Credit Representative status, MFAA or FBAA
         membership, no current disciplinary action.

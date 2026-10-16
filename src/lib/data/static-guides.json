@@ -6,7 +6,7 @@
       "title": "Auction vs Private Treaty: Which Way Should You Sell? (2026)",
       "description": "Auction vs private treaty in Australia: how each method works end-to-end, the real cost differences, 2026 clearance-rate context, cooling-off and underquoting rules by state, and a decision framework for choosing the right method for your property.",
       "publishedAt": "2026-07-03",
-      "updatedAt": "2026-07-03",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 10,
       "persona": "selling"
     },
@@ -60,7 +60,7 @@
       "title": "Building and Pest Inspection Cost in Australia (2026): Prices by City and Property Type",
       "description": "What a building and pest inspection costs in Sydney, Melbourne, Brisbane, Perth, Adelaide, Hobart, Canberra and Darwin, by unit, house and large property, combined or separate, from inspectors' own price lists, plus who pays and what the report covers.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-09-30",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 11,
       "persona": "first-home"
     },
@@ -69,7 +69,7 @@
       "title": "How Much Does a Buyer's Agent Cost in Australia? (2026)",
       "description": "Buyer's agent fees in Australia: fixed fees vs percentage commissions, typical ranges by market, what's included, and when paying $10K to $25K is worth it.",
       "publishedAt": "2026-05-06",
-      "updatedAt": "2026-05-06",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 8,
       "persona": "investing"
     },
@@ -78,7 +78,7 @@
       "title": "How to buy property in Australia: the complete step-by-step guide (2026)",
       "description": "Everything you need to know about buying property in Australia. From assessing your finances and researching suburbs through to inspections, exchange, and settlement.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 15,
       "persona": "first-home"
     },
@@ -87,7 +87,7 @@
       "title": "Capital growth vs cash flow: how Australian property investors actually choose (2026)",
       "description": "The investor decision that gets oversimplified into one sentence. What capital growth and cash flow really mean for an Australian property portfolio, how to model the trade-off, and which strategy fits which life stage.",
       "publishedAt": "2026-05-18",
-      "updatedAt": "2026-05-18",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 14,
       "persona": "investing"
     },
@@ -114,7 +114,7 @@
       "title": "Cooling-Off Period in Victoria (2026)",
       "description": "The Victorian cooling-off period explained: how long you have, when it applies (and when it doesn't), the penalty if you withdraw, and how it interacts with auctions and Section 32 statements.",
       "publishedAt": "2026-05-13",
-      "updatedAt": "2026-05-13",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
@@ -141,7 +141,7 @@
       "title": "Downsizer's guide to Australian property: super contributions and concessions (2026)",
       "description": "How the $300,000 downsizer super contribution works, stamp duty concessions, retirement village contracts, CGT, Centrelink implications, and practical considerations.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-06",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 7,
       "persona": "upgrading"
     },
@@ -150,7 +150,7 @@
       "title": "Due Diligence Checklist for Buying a House in Australia (2026)",
       "description": "Every check, document, and red flag to investigate before you sign a contract on an Australian residential property. Use as a pre-offer and pre-settlement playbook.",
       "publishedAt": "2026-05-13",
-      "updatedAt": "2026-05-13",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 13,
       "persona": "first-home"
     },
@@ -177,7 +177,7 @@
       "title": "10 First Home Buyer Mistakes to Avoid (and How to Fix Them), Australia 2026",
       "description": "The 10 most expensive mistakes Australian first home buyers make in 2026, from over-stretching on a deposit to skipping building inspections. Each mistake explained with the simple fix.",
       "publishedAt": "2026-05-06",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 9,
       "persona": "first-home"
     },
@@ -276,7 +276,7 @@
       "title": "Fixed vs variable rate home loans: which is better in 2026?",
       "description": "Pros and cons of fixed and variable rate home loans in Australia. Split loans explained, break costs that surprise borrowers, the RBA rate context for 2026, and the questions to ask before fixing.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 6,
       "persona": "first-home"
     },
@@ -285,7 +285,7 @@
       "title": "Buying property in Australia as a foreign buyer: complete FIRB guide (2026)",
       "description": "Who counts as a foreign buyer, what properties you can purchase, FIRB application process and fees, state-by-state foreign-buyer surcharges, and tax implications.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-14",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 12,
       "persona": "investing"
     },
@@ -294,7 +294,7 @@
       "title": "Granny Flat Guide NSW: Rules, Costs & Rental Returns (2026)",
       "description": "Everything you need to know about building a granny flat in NSW: complying development rules, build costs, rental income, and how to maximise your return.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 8,
       "persona": "investing"
     },
@@ -319,9 +319,9 @@
     {
       "slug": "granny-flat-guide-vic",
       "title": "Granny Flat Guide Victoria: Rules, Costs & Approvals (2026)",
-      "description": "Building a secondary dwelling in Victoria: planning permits, ResCode, council rules, costs, and what makes VIC slower and more expensive than NSW.",
+      "description": "Building a small second dwelling (granny flat) in Victoria: when you still need a planning permit, ResCode, overlays, council rules, costs and rental returns.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 7,
       "persona": "investing"
     },
@@ -384,7 +384,7 @@
       "title": "Home Loan Pre-approval in Australia (2026)",
       "description": "What home loan pre-approval actually means, how to get it, how long it lasts, and the difference between conditional pre-approval and formal approval. Plain English, no bank jargon.",
       "publishedAt": "2026-05-13",
-      "updatedAt": "2026-05-13",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 10,
       "persona": "first-home"
     },
@@ -411,7 +411,7 @@
       "title": "How Long Does It Take to Buy a House in Australia? Realistic 2026 Timelines",
       "description": "From pre-approval to keys in hand, how long does buying a house in Australia really take? A realistic week-by-week breakdown with the typical delays that catch first-time buyers off guard.",
       "publishedAt": "2026-05-06",
-      "updatedAt": "2026-05-06",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 8,
       "persona": "first-home"
     },
@@ -447,7 +447,7 @@
       "title": "How to Choose a Mortgage Broker in Australia (2026)",
       "description": "How to pick a mortgage broker who works for you, not their lender panel. The questions to ask, what 'best interests duty' actually means, how brokers are paid, and the red flags worth walking away from.",
       "publishedAt": "2026-05-13",
-      "updatedAt": "2026-05-13",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 11,
       "persona": "first-home"
     },
@@ -456,7 +456,7 @@
       "title": "How to Choose a Selling Agent in Australia (2026)",
       "description": "A practical guide to picking the right real estate agent to sell your home: how to interview, what questions to ask, the appraisal trap, fee structures, and how to negotiate the listing agreement.",
       "publishedAt": "2026-05-06",
-      "updatedAt": "2026-05-06",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 9,
       "persona": "selling"
     },
@@ -474,7 +474,7 @@
       "title": "How to negotiate property price in Australia: the buyer's playbook (2026)",
       "description": "Practical, agent-aware negotiation tactics for buying property in Australia. Opening offers, counter-offer logic, conditional clauses, walk-away triggers and the mistakes that cost real money.",
       "publishedAt": "2026-05-18",
-      "updatedAt": "2026-05-18",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 13,
       "persona": "first-home"
     },
@@ -483,7 +483,7 @@
       "title": "How to Negotiate Real Estate Agent Commission in Australia (2026)",
       "description": "Agent commission is not set by law anywhere in Australia, every rate is an opening offer. Average commission by state, what's actually negotiable, tiered structures, word-for-word scripts, and when a cheap agent costs more than they save.",
       "publishedAt": "2026-07-03",
-      "updatedAt": "2026-07-03",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 10,
       "persona": "selling"
     },
@@ -510,7 +510,7 @@
       "title": "Lenders Mortgage Insurance: What it costs and how to avoid it (2026)",
       "description": "Complete guide to LMI in Australia. What it is (and isn't), when it applies, what it costs, who provides it (Helia, Arch), how to capitalise it into your loan, and four ways to avoid it.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 7,
       "persona": "first-home"
     },
@@ -528,7 +528,7 @@
       "title": "Offset accounts explained: how they work, what they save, and when they don't (2026)",
       "description": "The mortgage feature most Australians use wrong. What an offset account actually does, how it saves interest mechanically, when it's worth the package fee, redraw vs offset, and how to use it as a deposit-builder for the next purchase.",
       "publishedAt": "2026-05-18",
-      "updatedAt": "2026-05-18",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 11,
       "persona": "first-home"
     },
@@ -537,7 +537,7 @@
       "title": "Property auctions in Australia: how to bid and how to sell (2026)",
       "description": "How auctions actually work in Australia. The reserve price, vendor bids, what 'passed in' means, why finance must be unconditional before auction day, and bidding strategies that don't lose you money.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-09-20",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 9,
       "persona": "selling"
     },
@@ -555,7 +555,7 @@
       "title": "Property Management Fees in Australia 2026: Rates by State, With Calculator",
       "description": "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), letting fees in weeks, renewal, inspection and statement charges, sourced and dated, with an annual cost calculator.",
       "publishedAt": "2026-05-06",
-      "updatedAt": "2026-09-30",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 12,
       "persona": "investing"
     },
@@ -654,7 +654,7 @@
       "title": "Renovation Cost in Australia (2026): Tables and Calculator",
       "description": "Renovation costs in Australia at September 2026: kitchens, bathrooms, laundries, extensions and rebuilds by finish level, per m² by state, and a calculator.",
       "publishedAt": "2026-05-13",
-      "updatedAt": "2026-09-30",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 17,
       "persona": "renovating"
     },
@@ -663,7 +663,7 @@
       "title": "Renter's Rights in the ACT: Complete Guide for Canberra Tenants (2026)",
       "description": "ACT tenant rights: bond, rent increases (8 weeks notice, 12 months between), no-grounds eviction protections, pet rights, minimum standards, and ACAT dispute resolution.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 10
     },
     {
@@ -671,7 +671,7 @@
       "title": "Renter's Rights in NSW: Complete Guide for Tenants (2026)",
       "description": "Everything NSW tenants need to know: bond rules, rent increases, repairs, entry rights, ending a tenancy, and how to resolve disputes through NCAT.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 10
     },
     {
@@ -679,15 +679,15 @@
       "title": "Renter's Rights in the Northern Territory: Complete Guide (2026)",
       "description": "NT tenant rights: bond rules, rent increases (30 days notice), tropical-climate urgent repairs, remote community housing, and NTCAT dispute resolution.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 9
     },
     {
       "slug": "renters-rights-qld",
       "title": "Renter's Rights in Queensland: Complete Guide (2026)",
-      "description": "QLD tenant rights: bond, rent increases, repairs, entry, pet ownership reforms, and the 2024 grounds-based eviction laws. Includes RTA and QCAT dispute info.",
+      "description": "QLD tenant rights: bond, rent increases, repairs, entry, pet rules, and grounds-based evictions (no-grounds notices ended in October 2022). Includes RTA and QCAT dispute info.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 10
     },
     {
@@ -695,15 +695,15 @@
       "title": "Renter's Rights in South Australia: Complete Guide (2026)",
       "description": "SA tenant rights: bond, rent increases, repairs, entry rights, and ending a tenancy under the Residential Tenancies Act 1995, plus SACAT dispute resolution.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 8
     },
     {
       "slug": "renters-rights-tas",
       "title": "Renter's Rights in Tasmania: Complete Guide for Tenants (2026)",
-      "description": "Tasmania tenant rights: bond rules, rent increases (12-month minimum, 42 days notice), inspections, repairs, ending a tenancy, and CBOS / Magistrates Court dispute resolution.",
+      "description": "Tasmania tenant rights: bond rules, rent increases (12-month minimum, 60 days notice), inspections, repairs, ending a tenancy, and CBOS / Magistrates Court dispute resolution.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 9
     },
     {
@@ -711,7 +711,7 @@
       "title": "Renter's Rights in Victoria: Complete Guide (2026)",
       "description": "Victoria's renter rights: no-grounds evictions abolished, pet ownership, modification rights, bond rules, rent increases, and VCAT disputes.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 10
     },
     {
@@ -719,7 +719,7 @@
       "title": "Renter's Rights in Western Australia: Complete Guide (2026)",
       "description": "WA tenant rights: bond, rent increases, repairs, entry rights, and ending a tenancy under the Residential Tenancies Act 1987, plus how disputes work in WA without a tribunal.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 8
     },
     {
@@ -727,7 +727,7 @@
       "title": "Rentvesting in Australia: A Practical Guide (2026)",
       "description": "Rent where you want to live, buy where it makes financial sense. How rentvesting actually works in Australia, the maths, the tax position, the first home buyer scheme trade-off, and when it's the right call.",
       "publishedAt": "2026-05-13",
-      "updatedAt": "2026-10-07",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 12,
       "persona": "investing"
     },
@@ -745,7 +745,7 @@
       "title": "What happens on settlement day in Australia (2026 walkthrough)",
       "description": "Settlement day in plain English: who does what, the order things happen, what can delay it, the final inspection, the funds flow and when you actually get the keys. State-by-state notes for NSW, VIC, QLD, WA, SA, TAS, ACT and NT.",
       "publishedAt": "2026-05-18",
-      "updatedAt": "2026-05-18",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 12,
       "persona": "first-home"
     },
@@ -763,7 +763,7 @@
       "title": "Buying property in an SMSF: complete guide (2026)",
       "description": "How SMSFs invest in property: the sole purpose test, residential vs commercial rules, LRBA borrowing, costs, tax advantages including 0% in pension phase, and the risks.",
       "publishedAt": "2026-04-01",
-      "updatedAt": "2026-04-15",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 10,
       "persona": "investing"
     },
@@ -772,7 +772,7 @@
       "title": "Sydney vs Melbourne Property Market: Which Should You Buy In? (2026)",
       "description": "Sydney vs Melbourne in 2026: median prices, capital growth, rental yields, affordability, and lifestyle compared. The honest case for each market and who each suits.",
       "publishedAt": "2026-05-06",
-      "updatedAt": "2026-05-06",
+      "updatedAt": "2026-10-16",
       "readingTimeMinutes": 9,
       "persona": "investing"
     },

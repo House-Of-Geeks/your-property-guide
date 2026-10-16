@@ -253,7 +253,7 @@ export default function NegativeGearingPage() {
       </Callout>
       <p>
         If this property grows at 5% a year, it would be worth approximately
-        $1,128,000 after 10 years, a gain of $428,000, well exceeding the
+        $1,140,000 after 10 years, a gain of about $440,000, well exceeding the
         cumulative holding costs of approximately $70,330 over the decade.
       </p>
 

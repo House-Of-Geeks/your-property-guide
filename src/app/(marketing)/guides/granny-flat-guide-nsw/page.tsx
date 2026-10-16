@@ -18,7 +18,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Everything you need to know about building a granny flat in NSW: complying development rules, build costs, rental income, and how to maximise your return.",
   slug: "granny-flat-guide-nsw",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "NSW has the most streamlined granny flat approval pathway in Australia: complying development under the Low Rise Housing Diversity Code (formerly SEPP 2009), with approvals as fast as 10 to 20 days via a private certifier.",
+  "NSW has the most streamlined granny flat approval pathway in Australia: complying development under the Housing SEPP 2021 (which took over from the Affordable Rental Housing SEPP 2009), with approvals as fast as 10 to 20 days via a private certifier.",
   "Minimum lot size 450m², minimum lot width 12m, max secondary-dwelling floor area 60m².",
   "Build costs range from ~$100,000 (basic 1-bed) to $280,000+ (premium 60m² 2-bed). Prefab options can come in lower.",
   "Typical western Sydney rents of $350 to $500/week deliver gross yields of 12 to 15% on construction cost, well above standalone investment property yields.",
@@ -77,7 +77,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How fast can I get a granny flat approved in NSW?",
     answer:
-      "If your site qualifies for complying development under the Low Rise Housing Diversity Code, a private certifier can issue the Complying Development Certificate (CDC) in roughly 10 to 20 days. If you need a council DA (e.g. heritage area, undersized lot), expect 2 to 6 months.",
+      "If your site qualifies for complying development under the Housing SEPP, a private certifier can issue the Complying Development Certificate (CDC) in roughly 10 to 20 days. If you need a council DA (e.g. heritage area, undersized lot), expect 2 to 6 months.",
   },
   {
     question: "What's the maximum size for a granny flat in NSW?",
@@ -102,7 +102,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "Granny Flat Guide VIC",       href: "/guides/granny-flat-guide-vic", description: "Victoria's secondary dwelling rules and Class 1a/SDA pathways." },
+  { title: "Granny Flat Guide VIC",       href: "/guides/granny-flat-guide-vic", description: "Victoria's small second dwelling rules and when you need a planning permit." },
   { title: "Granny Flat Guide QLD",       href: "/guides/granny-flat-guide-qld", description: "Auxiliary dwellings and what's allowed in QLD." },
   { title: "Negative Gearing in Australia", href: "/guides/negative-gearing-australia", description: "Tax treatment of investment property and granny flat income." },
   { title: "Property Depreciation Guide",   href: "/guides/property-depreciation-guide", description: "Maximising deductions on a new granny flat build." },
@@ -142,11 +142,12 @@ export default function GrannyFlatGuideNSWPage() {
         living area.
       </p>
       <p>
-        Secondary dwellings are governed primarily by the <strong>Low Rise
-        Housing Diversity Code</strong> (formerly the Affordable Rental Housing
-        SEPP 2009). This state-wide code allows granny flats to be approved as
-        complying development on eligible lots, bypassing the need for a council
-        DA in most cases.
+        Secondary dwellings are governed primarily by the <strong>State
+        Environmental Planning Policy (Housing) 2021</strong>{" "}(the Housing
+        SEPP), which took over the secondary dwelling rules from the Affordable
+        Rental Housing SEPP 2009. This state-wide policy allows granny flats to
+        be approved as complying development on eligible lots, bypassing the
+        need for a council DA in most cases.
       </p>
       <p>
         The secondary dwelling must be <strong>subordinate</strong>{" "}to the main
@@ -155,10 +156,12 @@ export default function GrannyFlatGuideNSWPage() {
 
       <h2 id="complying-dev">Complying development, NSW&rsquo;s fast-track approval</h2>
       <p>
-        NSW is unique in having a state-wide complying development pathway for
-        granny flats. Under the Low Rise Housing Diversity Code, granny flats
-        meeting the criteria can be approved in <strong>10 to 20 days</strong> by
-        a private certifier, without going through council.
+        NSW has a state-wide complying development pathway for granny flats.
+        Under the Housing SEPP, granny flats meeting the criteria can be
+        approved in <strong>10 to 20 days</strong> by a private certifier,
+        without going through council. Victoria has taken a different route
+        since December 2023: a small second dwelling there usually needs no
+        planning permit at all, only a building permit.
       </p>
 
       <KeyFigure

@@ -34,7 +34,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), letting fees in weeks, renewal, inspection and statement charges, sourced and dated, with an annual cost calculator.",
   slug: "property-management-fees-australia",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 12,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -396,8 +396,9 @@ export default function PropertyManagementFeesGuide() {
         A 5% manager who lets rent slip into 14-day arrears, or whose vacancies
         stretch from one week to four, easily costs more than an 8% manager who
         keeps the property tenanted and chases late rent on day one. One extra
-        week empty on a $600 property is $600, the same as a full percentage
-        point of management fee for a year.
+        week empty on a $600-a-week property is $600, close to two percentage
+        points of management fee for a year (1% of $31,200 in annual rent is
+        $312).
       </p>
       <p>
         Ask each candidate for their average vacancy period in days and their

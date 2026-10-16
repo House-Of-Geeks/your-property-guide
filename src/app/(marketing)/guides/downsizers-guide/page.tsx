@@ -18,7 +18,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "How the $300,000 downsizer super contribution works, stamp duty concessions, retirement village contracts, CGT, Centrelink implications, and practical considerations.",
   slug: "downsizers-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-06",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 7,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -70,12 +70,12 @@ const FAQS: FaqItem[] = [
   {
     question: "How much can I contribute to super when I downsize?",
     answer:
-      "Up to $300,000 per person ($600,000 per couple) under the Downsizer Super Contribution scheme. This is on top of, and exempt from, the normal $110,000 a year non-concessional cap. You must be 55+, have owned the home for 10+ years, and make the contribution within 90 days of settlement. It's a one-off contribution, you can only do it once per person.",
+      "Up to $300,000 per person ($600,000 per couple) under the Downsizer Super Contribution scheme. This is on top of, and exempt from, the normal $130,000 a year non-concessional cap (from 1 July 2026). You must be 55+, have owned the home for 10+ years, and make the contribution within 90 days of settlement. It's a one-off contribution, you can only do it once per person.",
   },
   {
     question: "Can both members of a couple make the downsizer contribution?",
     answer:
-      "Yes, if both have lived in the home as principal residence for 10+ years and both are 55+, they can each contribute $300,000 ($600,000 total) regardless of which spouse legally owned the property. The 10-year ownership requirement is checked across both partners, not just the legal owner.",
+      "Yes, if both are 55+ and the home was owned by one or both of them for 10+ years, they can each contribute $300,000 ($600,000 total) regardless of which spouse legally owned the property. The 10-year ownership requirement is checked across both partners, not just the legal owner, and the sale must qualify (fully or partly) for the main residence CGT exemption.",
   },
   {
     question: "Will downsizing affect my Age Pension?",
@@ -173,8 +173,8 @@ export default function DownsizersGuidePage() {
 
       <p>
         The downsizer contribution is treated as a non-concessional
-        contribution (after-tax) but is exempt from the standard $110,000 a
-        year non-concessional contribution cap. This makes it an exceptionally
+        contribution (after-tax) but is exempt from the standard $130,000 a
+        year non-concessional contribution cap (from 1 July 2026). This makes it an exceptionally
         powerful super-boosting mechanism for older Australians who may have
         limited other ways to contribute to super.
       </p>
@@ -194,7 +194,7 @@ export default function DownsizersGuidePage() {
       </p>
       <p>Key eligibility rules:</p>
       <ul>
-        <li><strong>Both people in a couple qualify</strong> if the home is jointly owned or owned by one partner, both can contribute up to $300,000 each, provided both have lived in the home as their principal residence for at least 10 years.</li>
+        <li><strong>Both people in a couple qualify</strong> if the home is jointly owned or owned by one partner, both can contribute up to $300,000 each, provided one or both of them owned it for at least 10 years and the sale qualifies (fully or partly) for the main residence CGT exemption.</li>
         <li><strong>Only one downsizer contribution per person.</strong> You can only make a downsizer contribution once in your lifetime.</li>
         <li><strong>The home must be in Australia.</strong></li>
       </ul>

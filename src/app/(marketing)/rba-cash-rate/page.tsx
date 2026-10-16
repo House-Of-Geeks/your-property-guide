@@ -37,6 +37,8 @@ interface RateEntry {
 }
 
 const rateHistory: RateEntry[] = [
+  { date: "2026-09-29", rate: 4.60, change: 0.25,  note: "Hike" },
+  { date: "2026-08-11", rate: 4.35, change: 0,     note: "Hold" },
   { date: "2026-06-16", rate: 4.35, change: 0,     note: "Hold" },
   { date: "2026-05-05", rate: 4.35, change: 0.25,  note: "Hike" },
   { date: "2026-03-17", rate: 4.10, change: 0.25,  note: "Hike" },
@@ -79,8 +81,6 @@ const rateHistory: RateEntry[] = [
 ];
 
 const upcomingMeetings2026 = [
-  { dates: "10–11 August",    decision: "Aug 11" },
-  { dates: "28–29 September", decision: "Sep 29" },
   { dates: "2–3 November",    decision: "Nov 3" },
   { dates: "7–8 December",    decision: "Dec 8" },
 ];
@@ -161,8 +161,8 @@ export default function RBACashRatePage() {
               As of {formatRateDate(currentRate.date)}, {currentRate.note}
             </p>
             <p className="mt-5 flex items-start gap-2 border-t border-line pt-5 text-sm text-ink-muted">
-              <Minus className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
-              Held at 4.35% on 16 June 2026 after three consecutive hikes this year
+              <TrendingUp className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
+              Raised to 4.60% on 29 September 2026, the fourth rise this year, after holds in June and August
             </p>
             {/* Link to latest decision analysis */}
             <Link

@@ -20,6 +20,12 @@ import {
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { calculateStampDuty } from "@/lib/utils/stamp-duty";
+import { money } from "@/lib/policy/first-home";
+
+// Owner-occupier duty (not a first home buyer) from the site’s stamp duty engine, so the example matches the calculator.
+const ownerOccupierDuty = (price: number, state: "QLD" | "NSW") =>
+  calculateStampDuty(price, state, false, false, false).total;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "How to buy property in Australia: the complete step-by-step guide (2026)",
@@ -27,7 +33,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Everything you need to know about buying property in Australia. From assessing your finances and researching suburbs through to inspections, exchange, and settlement.",
   slug: "buying-property-australia",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-04-15",
+  updatedAt: "2026-10-16",
   readingTimeMinutes: 15,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -59,7 +65,7 @@ const TLDR = [
   "Most lenders require a minimum 5% to 10% deposit; 20% avoids LMI. First home buyer schemes can let you buy with 5% deposit and no LMI.",
   "Budget an additional 3% to 5% of purchase price for upfront transaction costs (stamp duty, conveyancing, inspections, insurance).",
   "Pre-approval typically lasts 90 days and is conditional on the property valuing correctly and your circumstances not changing. It's not a guarantee.",
-  "Cooling-off periods exist in most states (3 to 5 business days) but never apply to auction purchases, which are unconditional from the moment the hammer falls.",
+  "Cooling-off periods exist in most states and territories (2 to 5 business days; WA and Tasmania have none) but never apply to auction purchases, which are unconditional from the moment the hammer falls.",
   "A building and pest inspection costs $400 to $800 and can save you from buying a structurally compromised property. Never skip it.",
   "Settlement usually occurs 30 to 90 days after exchange and happens electronically via PEXA. You don't need to attend, just collect the keys when it clears.",
 ];
@@ -108,7 +114,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What's the cooling-off period after exchange of contracts?",
     answer:
-      "It varies by state and never applies to auction purchases. NSW: 5 business days (0.25% penalty); VIC: 3 business days (0.2% penalty); QLD: 5 business days (0.25% penalty); SA: 2 business days; TAS: 3 business days; ACT: 5 business days. WA and NT have no statutory cooling-off period for residential property.",
+      "It varies by state and never applies to auction purchases. NSW: 5 business days (0.25% penalty); VIC: 3 clear business days (penalty: the greater of $100 or 0.2%); QLD: 5 business days (0.25% penalty); SA: 2 clear business days (the vendor can keep no more than $100 of your deposit); ACT: 5 business days; NT: 4 business days. WA and Tasmania have no statutory cooling-off period for residential property.",
   },
 ];
 
@@ -259,7 +265,7 @@ export default function BuyingPropertyAustraliaPage() {
         the following:
       </p>
       <ul>
-        <li><strong>Stamp duty (transfer duty).</strong> The largest upfront cost after the deposit. Use our <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link> to estimate the amount for your state, it varies significantly. For a $700,000 property in QLD, expect around $14,175 (owner-occupier); in NSW, approximately $26,857.</li>
+        <li><strong>Stamp duty (transfer duty).</strong> The largest upfront cost after the deposit. Use our <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link> to estimate the amount for your state, it varies significantly. For a $700,000 property in QLD, expect around {money(ownerOccupierDuty(700_000, "QLD"))} (owner-occupier); in NSW, approximately {money(ownerOccupierDuty(700_000, "NSW"))}.</li>
         <li><strong>Conveyancing fees.</strong> $1,000 to $3,000 depending on state and complexity.</li>
         <li><strong>Building and pest inspection.</strong> $400 to $800. Essential, do not skip this.</li>
         <li><strong>Lenders Mortgage Insurance (LMI).</strong> If your deposit is below 20%, potentially $5,000 to $30,000+.</li>
@@ -415,13 +421,13 @@ export default function BuyingPropertyAustraliaPage() {
       </p>
       <ul>
         <li><strong>NSW.</strong> 5 business days (penalty: 0.25% of purchase price)</li>
-        <li><strong>VIC.</strong> 3 business days (penalty: 0.2% of purchase price)</li>
+        <li><strong>VIC.</strong> 3 clear business days (penalty: the greater of $100 or 0.2% of purchase price)</li>
         <li><strong>QLD.</strong> 5 business days (penalty: 0.25% of purchase price)</li>
-        <li><strong>SA.</strong> 2 business days (penalty: 0.25% of purchase price)</li>
+        <li><strong>SA.</strong> 2 clear business days (the vendor can keep no more than $100 of your deposit)</li>
         <li><strong>WA.</strong> No statutory cooling-off period for residential property</li>
-        <li><strong>TAS.</strong> 3 business days (penalty: 0.25% of purchase price)</li>
+        <li><strong>TAS.</strong> No statutory cooling-off period (the standard contract lets buyer and seller agree to one)</li>
         <li><strong>ACT.</strong> 5 business days</li>
-        <li><strong>NT.</strong> No statutory cooling-off period</li>
+        <li><strong>NT.</strong> 4 business days (not for auction sales)</li>
       </ul>
 
       <Callout variant="warning" title="Auctions have no cooling-off period">
