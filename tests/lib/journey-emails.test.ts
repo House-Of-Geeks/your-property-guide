@@ -31,8 +31,9 @@ describe("introduction emails", () => {
     expect(html).toContain("by phone");
     expect(html).toContain(FEE_DISCLOSURE.replace(/’/g, "’"));
     expect(html).toContain("/feedback/tok123456789");
-    expect(html).toContain("Sam &lt;b&gt;");
+    expect(html).toContain("Hi Sam,");
     expect(html).not.toContain("Sam <b>");
+    expect(html).not.toContain("<b>");
 
     const held = [{ leadId: "l2", service: "selling-agent" as const, status: "held" as const, reason: "no suburb: team to confirm the area" }];
     const heldHtml = buildIntroConfirmationHtml(person, ctx, held);
@@ -44,6 +45,8 @@ describe("introduction emails", () => {
     const outcomes = [{ leadId: "l2", service: "selling-agent" as const, status: "held" as const, reason: "selling more than six months out: team to follow up" }];
     expect(introTeamSubject(person, ctx, outcomes)).toMatch(/^\[ACTION\] Introduction request: selling agent/);
     const html = buildIntroTeamEmailHtml(person, ctx, outcomes, [["Landing page", "/guides/real-estate-agent-fees-australia"]]);
+    expect(html).toContain("Sam &lt;b&gt;");
+    expect(html).not.toContain("Sam <b>");
     expect(html).toContain("Yes, introduce me to one participating local selling agent");
     expect(html).toContain("Preferred contact");
     expect(html).toContain("Phone call");

@@ -1,3 +1,5 @@
+import { escapeHtml } from "@/lib/email-format";
+
 // Shared email palette + layout, brand v6 (15 Oct 2026, "It's the campaign
 // that wins"). Hex values match the tokens in src/app/globals.css (email
 // clients can't read CSS variables). Key names are kept from v3 so existing
@@ -72,7 +74,7 @@ export function emailLayout({
   // Padded with hair spaces so trailing body text doesn't leak into the
   // preview in clients that keep reading.
   const preheaderHtml = preheader
-    ? `<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">${preheader}${"&#8199;&#847; ".repeat(30)}</div>`
+    ? `<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">${escapeHtml(preheader)}${"&#8199;&#847; ".repeat(30)}</div>`
     : "";
 
   return `<!DOCTYPE html>
@@ -87,7 +89,7 @@ export function emailLayout({
   ${preheaderHtml}
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.sunken};">
     <tr><td align="center" style="padding:28px 12px;">
-      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:100%;background:${C.paper};border:1px solid ${cardBorder};border-radius:12px;overflow:hidden;font-family:${FONT_SANS};color:${C.ink};">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:${C.paper};border:1px solid ${cardBorder};border-radius:12px;overflow:hidden;font-family:${FONT_SANS};color:${C.ink};">
         <tr>
           <td style="background:${headerBg};padding:22px 28px;${alert ? "" : `border-bottom:1px solid ${C.line};`}">
             ${alert ? "" : `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 12px;"><tr>
@@ -118,7 +120,7 @@ export function emailLayout({
 export function emailButton(label: string, url: string): string {
   return `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0;"><tr>
     <td style="background:${C.terracotta};border-radius:6px;">
-      <a href="${url}" style="display:inline-block;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:13px 26px;font-family:${FONT_SANS};">${label}</a>
+      <a href="${escapeHtml(url)}" style="display:inline-block;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:13px 26px;font-family:${FONT_SANS};">${label}</a>
     </td></tr></table>`;
 }
 
@@ -126,7 +128,7 @@ export function emailButton(label: string, url: string): string {
 export function emailButtonOutline(label: string, url: string): string {
   return `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0;"><tr>
     <td style="border:1px solid ${C.ink};border-radius:6px;background:${C.paper};">
-      <a href="${url}" style="display:inline-block;color:${C.ink};text-decoration:none;font-size:14px;font-weight:600;padding:11px 22px;font-family:${FONT_SANS};">${label}</a>
+      <a href="${escapeHtml(url)}" style="display:inline-block;color:${C.ink};text-decoration:none;font-size:14px;font-weight:600;padding:11px 22px;font-family:${FONT_SANS};">${label}</a>
     </td></tr></table>`;
 }
 
