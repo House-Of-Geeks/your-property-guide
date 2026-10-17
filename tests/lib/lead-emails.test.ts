@@ -217,7 +217,7 @@ describe("HTML escaping of lead fields", () => {
   it("guide confirmation escapes the first name in the hero headline", () => {
     const html = buildConfirmationHtml(hostile);
     expect(html).not.toContain('<img src="https://evil.example');
-    expect(html).toContain("Your guide is ready, &lt;img");
+    expect(html).toContain("Your guide is ready, &lt;Img.");
   });
 
   it("plain confirmation escapes name, suburb and address in the copy", () => {
@@ -229,7 +229,7 @@ describe("HTML escaping of lead fields", () => {
     });
     expect(html).not.toContain("<b>Sam</b>");
     expect(html).not.toContain("<script>");
-    expect(html).toContain("Thanks &lt;b&gt;Sam&lt;/b&gt;.");
+    expect(html).toContain("Hi &lt;b&gt;Sam&lt;/b&gt;,");
     expect(html).toContain("12 &lt;script&gt;x&lt;/script&gt; St");
   });
 
@@ -241,7 +241,13 @@ describe("HTML escaping of lead fields", () => {
       suburb: "Bray Park & District",
     });
     expect(copy.subject).toContain("Bray Park & District");
-    expect(copy.intro).toContain("Bray Park &amp; District");
+    expect(copy.intro).toContain("Bray Park & District");
+    expect(buildConfirmationHtml({
+      type: "suburb-alert",
+      firstName: "Sam",
+      email: "sam@example.com",
+      suburb: "Bray Park & District",
+    })).toContain("Bray Park &amp; District");
   });
 
   it("failure alert escapes lead fields and the SMTP error message", () => {
@@ -261,7 +267,7 @@ describe("rental-appraisal (landlord) copy", () => {
     expect(labelFor("rental-appraisal")).toBe("Rental Appraisal Request (landlord)");
     const c = confirmationCopy({ type: "rental-appraisal", firstName: "Priya", email: "p@example.com", appraisalAddress: "15 Smith St" });
     expect(c.subject).toBe("Your rental appraisal request is in");
-    expect(c.intro).toBe("Thanks Priya. We've received your rental appraisal request for 15 Smith St.");
+    expect(c.intro).toBe("Hi Priya, we've received your rental appraisal request for 15 Smith St.");
     expect(c.next).toContain("property manager");
     expect(c.next).toContain("no commitment until you decide to appoint them");
     expect(c.next).not.toMatch(/\u2014/);

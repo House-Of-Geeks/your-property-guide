@@ -48,7 +48,7 @@ async function sendSequences(now: Date): Promise<{ sent: number; failed: number 
       continue;
     }
     try {
-      await sendMail({ to: lead.email, replyTo: ANDY_EMAIL, subject: email.subject, html: email.html });
+      await sendMail({ to: lead.email, replyTo: ANDY_EMAIL, subject: email.subject, html: email.html, text: email.text });
       await db.lead.update({ where: { id: lead.id }, data: { sequenceStep: step + 1, sequenceNextAt: dueAt(seq, step + 1, lead.createdAt) } });
       await db.leadEvent.create({ data: { leadId: lead.id, type: "sequence-email", actor: "system", detail: { sequence: seq, step } } });
       sent++;
@@ -77,13 +77,13 @@ async function sendCheckIns(now: Date): Promise<{ sent: number; failed: number }
   let sent = 0;
   let failed = 0;
   for (const lead of due) {
-    const { subject, html } = buildCheckInEmailHtml({
+    const { subject, html, text } = buildCheckInEmailHtml({
       firstName: lead.firstName,
       service: (lead.service as IntroService) ?? "selling-agent",
       feedbackUrl: `${SITE_URL}/feedback/${lead.token}`,
     });
     try {
-      await sendMail({ to: lead.email, replyTo: ANDY_EMAIL, subject, html });
+      await sendMail({ to: lead.email, replyTo: ANDY_EMAIL, subject, html, text });
       await db.leadEvent.create({ data: { leadId: lead.id, type: "check-in-sent", actor: "system" } });
       sent++;
     } catch (err) {

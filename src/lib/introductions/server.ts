@@ -32,7 +32,9 @@ import {
 import { decideIntroduction, outcomeCopy, type IntroStatus, type ProStatus, type Timeframe } from "./rules";
 import {
   buildIntroConfirmationHtml,
+  buildIntroConfirmationText,
   buildIntroTeamEmailHtml,
+  buildIntroTeamEmailText,
   introConfirmationSubject,
   introTeamSubject,
   type IntroEmailContext,
@@ -327,6 +329,7 @@ async function createIntroductions(
       cc: LEADS_CC_EMAIL,
       subject: introTeamSubject(person, emailCtx, results),
       html: buildIntroTeamEmailHtml(person, emailCtx, results, attributionRowsFor(attribution)),
+      text: buildIntroTeamEmailText(person, emailCtx, results, attributionRowsFor(attribution)),
     });
   } catch (err) {
     console.error("Introduction team email failed (rows saved):", { groupId, error: err instanceof Error ? err.message : String(err) });
@@ -337,6 +340,7 @@ async function createIntroductions(
       replyTo: ANDY_EMAIL,
       subject: introConfirmationSubject(results),
       html: buildIntroConfirmationHtml(person, emailCtx, results),
+      text: buildIntroConfirmationText(person, emailCtx, results),
     });
   } catch (err) {
     console.error("Introduction confirmation email failed:", { groupId, error: err instanceof Error ? err.message : String(err) });

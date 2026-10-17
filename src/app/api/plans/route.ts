@@ -8,7 +8,7 @@ import { attributionFromRequest, attributionJson } from "@/lib/attribution-serve
 import { SITE_URL } from "@/lib/constants/seo";
 import { answersFromParams, stageOf } from "@/lib/plans/questions";
 import { buildPlan, planHref } from "@/lib/plans/engine";
-import { buildPlanEmailHtml, planEmailSubject } from "@/lib/journey-emails";
+import { buildPlanEmailHtml, buildPlanEmailText, planEmailSubject } from "@/lib/journey-emails";
 import { SEQUENCES, dueAt, sequenceFor } from "@/lib/email-sequences";
 
 // POST /api/plans: email someone the next-step plan they just made (the
@@ -83,17 +83,19 @@ export async function POST(request: Request) {
 
     let emailed = false;
     try {
+      const planMail = {
+        firstName: input.firstName,
+        plan,
+        planUrl: `${SITE_URL}${planHref(answers)}`,
+        sequenceLabel: sequence ? SEQUENCES[sequence].label : null,
+        unsubscribeUrl: sequence ? `${SITE_URL}/api/unsubscribe?t=${token}` : null,
+      };
       await sendMail({
         to: input.email.trim(),
         replyTo: ANDY_EMAIL,
         subject: planEmailSubject(plan),
-        html: buildPlanEmailHtml({
-          firstName: input.firstName,
-          plan,
-          planUrl: `${SITE_URL}${planHref(answers)}`,
-          sequenceLabel: sequence ? SEQUENCES[sequence].label : null,
-          unsubscribeUrl: sequence ? `${SITE_URL}/api/unsubscribe?t=${token}` : null,
-        }),
+        html: buildPlanEmailHtml(planMail),
+        text: buildPlanEmailText(planMail),
       });
       emailed = true;
       await db.leadEvent.create({ data: { leadId: row.id, type: "plan-emailed", actor: "system" } });

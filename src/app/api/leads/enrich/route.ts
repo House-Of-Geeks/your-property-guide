@@ -2,7 +2,8 @@ import { NextResponse, after } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { sendMail, ANDY_EMAIL, LEADS_CC_EMAIL } from "@/lib/email";
-import { buildPhoneAddedHtml } from "@/lib/lead-emails";
+import { visitorSubjectName } from "@/lib/email-format";
+import { buildPhoneAddedHtml, buildPhoneAddedText } from "@/lib/lead-emails";
 import { normalizePhone } from "@/lib/utils/phone";
 import { checkRateLimit, ipKeyFromRequest } from "@/lib/rate-limit";
 
@@ -76,8 +77,9 @@ export async function POST(request: Request) {
         await sendMail({
           to: ANDY_EMAIL,
           cc: lead.type === "match-request" ? undefined : LEADS_CC_EMAIL,
-          subject: `Phone added: ${lead.firstName}${lead.lastName ? ` ${lead.lastName}` : ""}${lead.suburb ? ` (${lead.suburb})` : ""}`,
+          subject: `Phone added: ${visitorSubjectName(lead.firstName, lead.lastName) || "A lead"}${lead.suburb ? ` (${lead.suburb})` : ""}`,
           html: buildPhoneAddedHtml(lead, phone),
+          text: buildPhoneAddedText(lead, phone),
         });
       } catch (mailErr) {
         console.error("Phone-added notification failed (phone saved to DB):", {

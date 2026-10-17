@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { sendMail, ANDY_EMAIL } from "@/lib/email";
 import { EMAIL_COLORS, emailLayout } from "@/lib/email-theme";
+import { escapeHtml } from "@/lib/email-format";
 import { leadKind } from "@/lib/lead-kinds";
 
 // GET /api/cron/leads-health
@@ -61,7 +62,7 @@ function buildHeartbeatHtml(count: number, windowHours: number, newsletterCount:
     eyebrow: `${count} lead${count === 1 ? "" : "s"} in the last ${windowHours}h`,
     body: `
     <div style="padding:18px 24px;font-size:14px;color:${C.ink};line-height:1.55;">
-      <p style="margin:0;">Daily lead-health check ran OK — <strong>${count}</strong> submission${count === 1 ? "" : "s"} captured in the last ${windowHours} hours.</p>
+      <p style="margin:0;">Daily lead-health check ran OK. <strong>${count}</strong> submission${count === 1 ? "" : "s"} captured in the last ${windowHours} hours.</p>
       ${split ? `<p style="margin:10px 0 0;">Introduction requests: <strong>${split.introductions}</strong> · Guides and plans (learning): <strong>${split.learning}</strong> · Other enquiries: <strong>${split.enquiries}</strong></p>` : ""}
       <p style="margin:12px 0 0;font-size:13px;color:${C.inkSubtle};">You get this every day so a silent failure is obvious: no email at all means the check didn't run.</p>
       ${newsletterNote(newsletterCount, windowHours)}
@@ -79,8 +80,8 @@ function buildFailureHtml(windowHours: number, detail: string): string {
     eyebrow: `Lead-health check FAILED`,
     body: `
     <div style="padding:18px 24px;font-size:14px;color:${C.ink};line-height:1.55;">
-      <p style="margin:0 0 12px;">The daily lead-health check <strong>could not read the database</strong> (after retries) for the last ${windowHours} hours. This usually means the production database is down or unreachable — in which case <strong>lead capture is also failing and enquiries are being lost.</strong></p>
-      <p style="margin:0 0 12px;font-size:13px;color:${C.inkMuted};">Error: ${detail}</p>
+      <p style="margin:0 0 12px;">The daily lead-health check <strong>could not read the database</strong> (after retries) for the last ${windowHours} hours. This usually means the production database is down or unreachable. In that case <strong>lead capture is also failing and enquiries are being lost.</strong></p>
+      <p style="margin:0 0 12px;font-size:13px;color:${C.inkMuted};">Error: ${escapeHtml(detail)}</p>
       <p style="margin:0;font-size:13px;color:${C.inkSubtle};">Things to check:</p>
       <ul style="margin:6px 0 0;padding-left:18px;font-size:13px;color:${C.inkMuted};">
         <li>Railway: is the Postgres-PostGIS service running?</li>

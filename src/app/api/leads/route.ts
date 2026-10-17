@@ -3,6 +3,7 @@ import { z } from "zod";
 import { routeLead } from "@/lib/utils/lead-routing";
 import { db } from "@/lib/db";
 import { sendMail, ANDY_EMAIL, LEADS_CC_EMAIL } from "@/lib/email";
+import { visitorSubjectName } from "@/lib/email-format";
 import {
   scoreGuideLead,
   labelFor,
@@ -13,8 +14,11 @@ import {
   confirmationCopy,
   formatSignDate,
   buildAdminEmailHtml,
+  buildAdminEmailText,
   buildConfirmationHtml,
+  buildConfirmationText,
   buildFailureAlertHtml,
+  buildFailureAlertText,
 } from "@/lib/lead-emails";
 import { checkRateLimit, ipKeyFromRequest } from "@/lib/rate-limit";
 import { normalizePhone } from "@/lib/utils/phone";
@@ -357,7 +361,8 @@ export async function POST(request: Request) {
               ? `[Signs ${formatSignDate(lead.signDate)}] `
               : "";
     const callLabel = callKind === "agent" ? "Appraisal call: " : callKind === "ypg" ? "Call from YPG (not for agents): " : "";
-    const subject     = `${scorePrefix}${callLabel}${typeLabel}, ${lead.firstName}${lead.lastName ? ` ${lead.lastName}` : ""}${lead.suburb ? ` (${lead.suburb})` : ""}`;
+    const subjectName = visitorSubjectName(lead.firstName, lead.lastName);
+    const subject = `${scorePrefix}${callLabel}${typeLabel}${subjectName ? `, ${subjectName}` : ""}${lead.suburb ? ` (${lead.suburb})` : ""}`;
 
     // Match-request leads (the homepage MatchAgent flow) go ONLY to
     // andy@theandylife.com, no CC. Per Andy 2026-05-10. Other lead
@@ -376,6 +381,7 @@ export async function POST(request: Request) {
           cc: isMatchRequest ? undefined : CC_EMAIL,
           subject,
           html: buildAdminEmailHtml(notifyLead, agentName, routing?.reason ?? "", attributionRowsFor(attribution), deliveryRows),
+          text: buildAdminEmailText(notifyLead, agentName, routing?.reason ?? "", attributionRowsFor(attribution), deliveryRows),
         });
       } catch (mailErr) {
         console.error("Lead notification email failed (lead saved to DB):", {
@@ -391,6 +397,7 @@ export async function POST(request: Request) {
             to: NOTIFY_EMAIL,
             subject: `ALERT: Lead notification failed (${saved.id})`,
             html: buildFailureAlertHtml(saved.id, notifyLead, mailErr),
+            text: buildFailureAlertText(saved.id, notifyLead, mailErr),
           });
         } catch (alertErr) {
           console.error("Lead failure-alert email ALSO failed:", {
@@ -443,6 +450,7 @@ export async function POST(request: Request) {
             replyTo: ANDY_EMAIL,
             subject: confirmationCopy(lead).subject,
             html: buildConfirmationHtml(lead),
+            text: buildConfirmationText(lead),
           });
           emailOnItsWay = true;
           guideEmail = "Sent by YPG";
@@ -540,6 +548,7 @@ export async function POST(request: Request) {
         replyTo: ANDY_EMAIL,
         subject: confirmSubject,
         html: buildConfirmationHtml(confirmLead),
+        text: buildConfirmationText(confirmLead),
       });
     } catch (confirmErr) {
       console.error("Lead confirmation email failed:", {

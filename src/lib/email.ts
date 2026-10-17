@@ -23,21 +23,55 @@ export interface SendMailOptions {
   cc?: string;
   subject: string;
   html: string;
+  /** Plain-text alternative. Visitor emails set this so clients that
+      prefer text still get a tidy copy. */
+  text?: string;
   from?: string;
   /** Where replies land. Customer-facing sends set this so "reply to this
       email" is a real call to action instead of a bounce. */
   replyTo?: string;
+  /** Extra SMTP headers. Merged with the click-tracking header below. */
+  headers?: Record<string, string>;
+}
+
+// SendGrid SMTP has no trackingSettings field. The X-SMTPAPI header is the
+// per-message backstop that keeps links off SendGrid's shared click domain.
+const CLICKTRACK_OFF = { enable: 0, enable_text: 0 } as const;
+
+export function withClickTrackingDisabled(headers?: Record<string, string>): Record<string, string> {
+  const merged: Record<string, string> = { ...(headers ?? {}) };
+  let payload: Record<string, unknown> = {};
+  const existing = merged["X-SMTPAPI"];
+  if (existing) {
+    try {
+      const parsed: unknown = JSON.parse(existing);
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        payload = parsed as Record<string, unknown>;
+      }
+    } catch {
+      payload = {};
+    }
+  }
+  const filters =
+    payload.filters && typeof payload.filters === "object" && !Array.isArray(payload.filters)
+      ? { ...(payload.filters as Record<string, unknown>) }
+      : {};
+  filters.clicktrack = { settings: { ...CLICKTRACK_OFF } };
+  payload.filters = filters;
+  merged["X-SMTPAPI"] = JSON.stringify(payload);
+  return merged;
 }
 
 // Thin wrapper around transporter.sendMail. Caller is expected to
 // try/catch — we never want a mail failure to take down a request that
 // has already persisted the canonical data (lead row) to the DB.
 export async function sendMail(opts: SendMailOptions): Promise<void> {
+  const headers = withClickTrackingDisabled(opts.headers);
   // EMAIL_TRANSPORT=log (local runs, tests and staging checks): record the
   // email instead of sending it, so an end-to-end test can't email Andy, Jos
   // or a real address. MAIL_LOG_DIR keeps a JSON copy of each for inspection.
   if (process.env.EMAIL_TRANSPORT === "log") {
-    const record = { at: new Date().toISOString(), from: opts.from ?? DEFAULT_FROM, ...opts };
+    const record = { at: new Date().toISOString(), from: opts.from ?? DEFAULT_FROM, ...opts, headers };
     console.info(`[mail:log] to=${opts.to}${opts.cc ? ` cc=${opts.cc}` : ""} subject=${JSON.stringify(opts.subject)}`);
     const dir = process.env.MAIL_LOG_DIR;
     if (dir) {
@@ -54,5 +88,7 @@ export async function sendMail(opts: SendMailOptions): Promise<void> {
     replyTo: opts.replyTo,
     subject: opts.subject,
     html: opts.html,
+    text: opts.text,
+    headers,
   });
 }

@@ -1,4 +1,5 @@
 import { EMAIL_COLORS, emailLayout, emailButton, emailCoverHero } from "@/lib/email-theme";
+import { escapeHtml, textBlocks, visitorGreeting, visitorGreetingName, visitorSubjectName } from "@/lib/email-format";
 
 // Lead email rendering + scoring, extracted from /api/leads so it can be
 // unit-tested and previewed without booting the route (which imports the
@@ -159,15 +160,10 @@ const BUYERS_AGENT_URL = "https://www.yourpropertyguide.com.au/buyers-agents";
 // /api/leads). Escape them before they land inside an email template:
 // injected markup in the internal notification reads as phishing, and
 // the confirmation email would reflect it back to any address the
-// attacker typed in. Server-generated values (labelFor, scores, routing
-// reasons, our own URLs) stay unescaped.
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
+// attacker typed in.
+
+const LABEL_CELL = `padding:7px 12px 7px 24px;font-weight:600;vertical-align:top;width:140px;max-width:140px;color:`;
+const VALUE_CELL = `padding:7px 24px 7px 12px;overflow-wrap:anywhere;word-break:break-word;color:`;
 
 export function buildAdminEmailHtml(
   lead: LeadEmailData,
@@ -208,15 +204,15 @@ export function buildAdminEmailHtml(
     lead.address          && ["Address",           escapeHtml(lead.address)],
     lead.propertyType     && ["Property type",     escapeHtml(lead.propertyType)],
     lead.bedrooms         && ["Bedrooms",          escapeHtml(lead.bedrooms)],
-    agentName             && ["Routed to",         `${agentName} (${routedReason})`],
+    agentName             && ["Routed to",         `${escapeHtml(agentName)} (${escapeHtml(routedReason)})`],
     lead.source           && ["Source",            escapeHtml(lead.source)],
     ...deliveryRows.map(([label, value]): [string, string] => [escapeHtml(label), escapeHtml(value)]),
   ]
     .filter((r): r is [string, string] => Array.isArray(r))
     .map(([label, value]) =>
       `<tr>
-        <td style="padding:7px 12px 7px 24px;font-weight:600;white-space:nowrap;color:${C.inkMuted};background:${C.cream};border-bottom:1px solid ${C.line};">${label}</td>
-        <td style="padding:7px 24px 7px 12px;color:${C.ink};border-bottom:1px solid ${C.line};">${value}</td>
+        <td style="${LABEL_CELL}${C.inkMuted};background:${C.cream};border-bottom:1px solid ${C.line};">${label}</td>
+        <td style="${VALUE_CELL}${C.ink};border-bottom:1px solid ${C.line};">${value}</td>
        </tr>`
     )
     .join("");
@@ -228,8 +224,8 @@ export function buildAdminEmailHtml(
       ${attributionRows
         .map(
           ([label, value]) => `<tr>
-        <td style="padding:6px 12px 6px 24px;font-weight:600;white-space:nowrap;color:${C.inkMuted};background:${C.cream};border-bottom:1px solid ${C.line};">${escapeHtml(label)}</td>
-        <td style="padding:6px 24px 6px 12px;color:${C.ink};border-bottom:1px solid ${C.line};word-break:break-all;">${escapeHtml(value)}</td>
+        <td style="${LABEL_CELL}${C.inkMuted};background:${C.cream};border-bottom:1px solid ${C.line};">${escapeHtml(label)}</td>
+        <td style="${VALUE_CELL}${C.ink};border-bottom:1px solid ${C.line};">${escapeHtml(value)}</td>
        </tr>`,
         )
         .join("")}
@@ -248,27 +244,26 @@ export function buildAdminEmailHtml(
 
 // Subject line + intro for the user-facing confirmation, by lead type.
 // Plain, direct copy. No em dashes. No "we're excited" / AI-sounding phrasing.
+// intro and next are plain text. buildConfirmationHtml escapes them.
 export function confirmationCopy(lead: LeadEmailData): { subject: string; intro: string; next: string; cta?: { label: string; url: string }; preheader?: string } {
-  // intro/next render inside HTML emails, so client-controlled fields are
-  // escaped here. Subjects are plain-text headers and keep the raw values.
-  const firstName = escapeHtml(lead.firstName);
-  const suburb = lead.suburb ? escapeHtml(lead.suburb) : "your area";
-  const rawAddr = lead.appraisalAddress || lead.address;
-  const addr = rawAddr && escapeHtml(rawAddr);
+  const hi = visitorGreeting(lead.firstName);
+  const suburb = lead.suburb?.trim() ? lead.suburb.trim() : "your area";
+  const rawAddr = (lead.appraisalAddress || lead.address)?.trim();
+  const addr = rawAddr || "";
   switch (lead.type) {
     case "guide-download": {
       // A call request from the guide thanks page: they already have the guide.
       if (lead.callKind === "agent") {
         return {
           subject: "Your free appraisal call is booked",
-          intro: `Thanks ${firstName}. We've passed your request to one participating local agent.`,
+          intro: `${hi} we've passed your request to one participating local agent.`,
           next: "They should call you within one business day to arrange your free appraisal. If you haven't heard by then, reply to this email and we'll follow up. No obligation: nothing happens unless you decide to go ahead.",
         };
       }
       if (lead.callKind === "ypg") {
         return {
           subject: "We'll give you a call",
-          intro: `Thanks ${firstName}. Your call request is in.`,
+          intro: `${hi} your call request is in.`,
           next: "Someone from Your Property Guide will call you soon. We use your number only for that call, and we never pass it to an agent.",
         };
       }
@@ -282,7 +277,7 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
               : "Buying well starts long before the inspections. Chapter 1 works out which buyer you are and the playbook that follows. Keep the guide handy, the numbers will still be true when you're ready.";
         return {
           subject: "Your buying guide + what you can really spend",
-          intro: `Thanks ${firstName}. Your copy is ready, all ten chapters, matched to your situation.`,
+          intro: `${hi} your copy is ready, all ten chapters, matched to your situation.`,
           next,
           cta: { label: "Download your guide (PDF)", url: BUYING_GUIDE_PDF_URL },
           preheader: "Ten chapters before you sign anything. Start with what you can actually spend.",
@@ -301,7 +296,7 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
               : "No deadline means you get to do this the smart way. Chapter 1 shows you how to read your market and pick your moment. Keep the guide handy. The numbers in it will still be true when you're ready.";
       return {
         subject: "Your selling guide + the $20,000 question",
-        intro: `Thanks ${firstName}. Your copy is ready, all ten chapters, personalised pointers included.`,
+        intro: `${hi} your copy is ready, all ten chapters, personalised pointers included.`,
         next,
         cta: { label: "Download your guide (PDF)", url: GUIDE_PDF_URL },
         preheader: "Ten chapters, in order. Start with the costs and the questions to ask agents.",
@@ -310,21 +305,21 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
     case "appraisal-request":
       return {
         subject: "Your appraisal request is in",
-        intro: `Thanks ${firstName}. We've received your free appraisal request${addr ? ` for ${addr}` : ""}.`,
+        intro: `${hi} we've received your free appraisal request${addr ? ` for ${addr}` : ""}.`,
         next: "A local agent will be in touch within one business day to arrange the appraisal. No commitment until you decide to take it further.",
       };
     case "rental-appraisal":
       return {
         subject: "Your rental appraisal request is in",
-        intro: `Thanks ${firstName}. We've received your rental appraisal request${addr ? ` for ${addr}` : ""}.`,
+        intro: `${hi} we've received your rental appraisal request${addr ? ` for ${addr}` : ""}.`,
         next: "A property manager who works in your suburb will be in touch within one business day to arrange it. They will give you a rent figure and their fee schedule; there is no commitment until you decide to appoint them.",
       };
     case "agreement-check": {
       // A call from our team, not an agent (AGREEMENT_CHECK in service-model).
-      const when = lead.signDate ? ` before ${escapeHtml(formatSignDate(lead.signDate))}, the date you plan to sign,` : "";
+      const when = lead.signDate ? ` before ${formatSignDate(lead.signDate)}, the date you plan to sign,` : "";
       return {
         subject: "We'll call you about your agency agreement",
-        intro: `Thanks ${firstName}. Your free agreement check is in.`,
+        intro: `${hi} your free agreement check is in.`,
         next: `Someone from our team will call you${when} to go through the agreement with you: the commission, the marketing spend, the term and the exit clause. It takes about 15 minutes, so have the agreement in front of you if you can. It's general information, not legal advice, and we never pass your details to an agent.`,
       };
     }
@@ -333,39 +328,39 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
       // right next step for anyone else. No profile email (directory paused).
       return {
         subject: "Your request is in",
-        intro: `Thanks ${firstName}. Your request is in.`,
+        intro: `${hi} your request is in.`,
         next: `Our team will be in touch within one business day. If you're selling, we'll introduce you to one local agent who sells in ${suburb}; if we don't have one there yet, we'll tell you.`,
       };
     case "suburb-alert":
       return {
-        subject: `You're on the alert list for ${lead.suburb || "your suburb"}`,
-        intro: `Thanks ${firstName}. You're now on the property alert list for ${lead.suburb ? escapeHtml(lead.suburb) : "your suburb"}.`,
+        subject: `You're on the alert list for ${lead.suburb?.trim() || "your suburb"}`,
+        intro: `${hi} you're now on the property alert list for ${lead.suburb?.trim() || "your suburb"}.`,
         next: "We'll email you when new listings hit the market. One email per match, no roundup spam. Unsubscribe anytime.",
       };
     case "off-market-register":
       return {
         subject: "You're registered for off-market alerts",
-        intro: `Thanks ${firstName}. You're registered for off-market alerts in ${suburb}.`,
+        intro: `${hi} you're registered for off-market alerts in ${suburb}.`,
         next: "We'll email you matching properties as they come in. One email per match.",
       };
     case "house-and-land-enquiry":
       return {
         subject: "Your house & land enquiry is in",
-        intro: `Thanks ${firstName}. We've received your enquiry.`,
+        intro: `${hi} we've received your enquiry.`,
         next: "A specialist will be in touch within one business day with the details and next steps.",
       };
     case "property-enquiry":
     case "property-interest":
       return {
         subject: "We've received your enquiry",
-        intro: `Thanks ${firstName}. Your enquiry is in.`,
+        intro: `${hi} your enquiry is in.`,
         next: "The listing agent will be in touch within one business day.",
       };
     case "general-contact":
     default:
       return {
         subject: "We've received your message",
-        intro: `Thanks ${firstName}. Your message is in.`,
+        intro: `${hi} your message is in.`,
         next: "We'll get back to you within one business day.",
       };
   }
@@ -428,6 +423,8 @@ function buyingHighlightsHtml(): string {
 export function buildConfirmationHtml(lead: LeadEmailData): string {
   const C = EMAIL_COLORS;
   const { intro, next, cta, preheader } = confirmationCopy(lead);
+  const introHtml = escapeHtml(intro);
+  const nextHtml = escapeHtml(next);
 
   // Guide delivery gets the full treatment: cover-art hero, centred
   // download button, chapter on-ramp, score-aware next step. Everything
@@ -471,7 +468,7 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
     return emailLayout({
       preheader,
       body: `
-      ${emailCoverHero(buying ? BUYING_GUIDE_COVER_URL : GUIDE_COVER_URL, `Your guide is ready, ${escapeHtml(lead.firstName)}.`, buying ? "Ten chapters on buying well, from budget to settlement. Free, and yours to keep." : "Ten chapters on selling well, from costs to settlement. Free, and yours to keep.")}
+      ${emailCoverHero(buying ? BUYING_GUIDE_COVER_URL : GUIDE_COVER_URL, `Your guide is ready, ${escapeHtml(visitorGreetingName(lead.firstName))}.`, buying ? "Ten chapters on buying well, from budget to settlement. Free, and yours to keep." : "Ten chapters on selling well, from costs to settlement. Free, and yours to keep.")}
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         <tr><td align="center" style="padding:26px 28px 6px;">
           ${emailButton("Download your guide (PDF)", buying ? BUYING_GUIDE_PDF_URL : GUIDE_PDF_URL)}
@@ -479,7 +476,7 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
         </td></tr>
         <tr><td style="padding:18px 28px 26px;">
           ${buying ? buyingHighlightsHtml() : guideHighlightsHtml()}
-          <p style="margin:0;font-size:14px;line-height:1.65;color:${C.ink};">${next}</p>
+          <p style="margin:0;font-size:14px;line-height:1.65;color:${C.ink};">${nextHtml}</p>
           ${appraisalPanel}
           ${psLine}
           <p style="margin:22px 0 0;font-size:14px;line-height:1.5;color:${C.inkMuted};">Happy reading,<br/><span style="font-size:15px;color:${C.ink};">The team at Your Property Guide</span></p>
@@ -494,9 +491,9 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
     preheader,
     body: `
     <div style="padding:24px 28px;">
-      <p style="margin:0 0 14px;font-size:15px;line-height:1.55;color:${C.ink};">${intro}</p>
+      <p style="margin:0 0 14px;font-size:15px;line-height:1.55;color:${C.ink};">${introHtml}</p>
       ${ctaHtml}
-      <p style="margin:0 0 18px;font-size:15px;line-height:1.55;color:${C.ink};">${next}</p>
+      <p style="margin:0 0 18px;font-size:15px;line-height:1.55;color:${C.ink};">${nextHtml}</p>
       <p style="margin:0 0 6px;font-size:13px;color:${C.inkSubtle};line-height:1.55;">If you didn't submit this enquiry, you can ignore this email.</p>
     </div>`,
   });
@@ -516,7 +513,7 @@ export function buildFailureAlertHtml(leadId: string, lead: LeadEmailData, mailE
     <div style="padding:18px 24px;font-size:14px;color:${C.ink};line-height:1.55;">
       <p style="margin:0 0 12px;">A lead was saved to the database but the standard notification email did not send. Details below so nothing is lost.</p>
       <ul style="margin:0;padding-left:18px;">
-        <li><strong>Lead ID:</strong> ${leadId}</li>
+        <li><strong>Lead ID:</strong> ${escapeHtml(leadId)}</li>
         <li><strong>Type:</strong> ${labelFor(lead.type)}</li>
         <li><strong>Name:</strong> ${fullName}</li>
         <li><strong>Email:</strong> <a href="mailto:${email}" style="color:${C.terracottaDark};">${email}</a></li>
@@ -541,22 +538,124 @@ export function buildPhoneAddedHtml(
 ): string {
   const C = EMAIL_COLORS;
   const fullName = escapeHtml(lead.lastName ? `${lead.firstName} ${lead.lastName}` : lead.firstName);
+  const pretty = escapeHtml(visitorSubjectName(lead.firstName, lead.lastName) || "A lead");
   const email = escapeHtml(lead.email);
+  const safePhone = escapeHtml(phone);
   return emailLayout({
     eyebrow: "Lead upgraded",
-    title: `${fullName} added a phone number`,
+    title: `${pretty} added a phone number`,
     body: `
     <div style="padding:18px 24px;font-size:14px;color:${C.ink};line-height:1.55;">
-      <p style="margin:0 0 12px;">An existing lead just added their mobile — they want the call. Worth moving to the top of the follow-up list.</p>
+      <p style="margin:0 0 12px;">An existing lead just added their mobile. They want the call. Worth moving to the top of the follow-up list.</p>
       <ul style="margin:0;padding-left:18px;">
-        <li><strong>Phone:</strong> <a href="tel:${phone}" style="color:${C.terracottaDark};">${phone}</a></li>
+        <li><strong>Phone:</strong> <a href="tel:${safePhone}" style="color:${C.terracottaDark};">${safePhone}</a></li>
         <li><strong>Name:</strong> ${fullName}</li>
         <li><strong>Email:</strong> <a href="mailto:${email}" style="color:${C.terracottaDark};">${email}</a></li>
         <li><strong>Original lead:</strong> ${labelFor(lead.type)}</li>
         ${lead.suburb ? `<li><strong>Suburb:</strong> ${escapeHtml(lead.suburb)}</li>` : ""}
         ${lead.source ? `<li><strong>Source:</strong> ${escapeHtml(lead.source)}</li>` : ""}
-        <li><strong>Lead ID:</strong> ${lead.id}</li>
+        <li><strong>Lead ID:</strong> ${escapeHtml(lead.id)}</li>
       </ul>
     </div>`,
   });
+}
+
+export function buildConfirmationText(lead: LeadEmailData): string {
+  const { intro, next, cta } = confirmationCopy(lead);
+  const extra: string[] = [];
+  if (lead.type === "guide-download" && !lead.callKind) {
+    const buying = lead.guideType === "buying";
+    const score = scoreGuideLead(lead);
+    if (buying) {
+      if (score === "HOT" || score === "WARM") extra.push("Run my borrowing power\n" + BORROWING_URL);
+      extra.push("What a buyer's agent does\n" + BUYERS_AGENT_URL);
+    } else if (score !== "DO-NOT-CONTACT") {
+      extra.push("How introductions work\n" + APPRAISAL_URL);
+    }
+  }
+  return textBlocks([
+    intro,
+    next,
+    cta ? `${cta.label}\n${cta.url}` : null,
+    ...extra,
+    "Your Property Guide\nhttps://www.yourpropertyguide.com.au",
+  ]);
+}
+
+export function buildAdminEmailText(
+  lead: LeadEmailData,
+  agentName: string | null,
+  routedReason: string,
+  attributionRows: Array<[string, string]> = [],
+  deliveryRows: Array<[string, string]> = [],
+): string {
+  const fullName = lead.lastName ? `${lead.firstName} ${lead.lastName}` : lead.firstName;
+  const score = lead.type === "guide-download" ? scoreGuideLead(lead) : null;
+  const lines: string[] = [labelFor(lead.type, lead.guideType), ""];
+  const push = (label: string, value: string | null | undefined) => {
+    if (value) lines.push(`${label}: ${value}`);
+  };
+  if (score) push("Lead score", score);
+  push("Name", fullName);
+  push("Email", lead.email);
+  push("Phone", lead.phone);
+  push("Buyer type", lead.buyerPersona && (BUYER_PERSONA_LABELS[lead.buyerPersona] ?? lead.buyerPersona));
+  push("Timeframe", lead.sellingTimeframe && (TIMEFRAME_LABELS[lead.sellingTimeframe] ?? lead.sellingTimeframe));
+  push("Finance", lead.financeStatus && (FINANCE_STATUS_LABELS[lead.financeStatus] ?? lead.financeStatus));
+  push("Budget", lead.budget);
+  push("Agent status", lead.agentStatus && (AGENT_STATUS_LABELS[lead.agentStatus] ?? lead.agentStatus));
+  push("Reason for selling", lead.motivation);
+  push("Price expectation", lead.priceExpectation);
+  if (lead.marketingConsent !== undefined) push("Marketing consent", lead.marketingConsent ? "Yes (opted in)" : "No");
+  push("Currently tenanted", lead.tenanted && (TENANTED_LABELS[lead.tenanted] ?? lead.tenanted));
+  push("Wants a manager", lead.managerTimeframe && (MANAGER_TIMEFRAME_LABELS[lead.managerTimeframe] ?? lead.managerTimeframe));
+  push("Message", lead.message);
+  push("Property ID", lead.propertyId);
+  push("Suburb", lead.suburb);
+  push("Appraisal address", lead.appraisalAddress);
+  push("Address", lead.address);
+  push("Property type", lead.propertyType);
+  push("Bedrooms", lead.bedrooms);
+  if (agentName) push("Routed to", `${agentName} (${routedReason})`);
+  push("Source", lead.source);
+  for (const [label, value] of deliveryRows) lines.push(`${label}: ${value}`);
+  if (attributionRows.length) {
+    lines.push("", "How they found us");
+    for (const [label, value] of attributionRows) lines.push(`${label}: ${value}`);
+  }
+  return lines.join("\n").trim();
+}
+
+export function buildFailureAlertText(leadId: string, lead: LeadEmailData, mailErr: unknown): string {
+  const errMsg = mailErr instanceof Error ? mailErr.message : String(mailErr);
+  const fullName = lead.lastName ? `${lead.firstName} ${lead.lastName}` : lead.firstName;
+  return textBlocks([
+    "Lead notification failed",
+    "A lead was saved to the database but the standard notification email did not send.",
+    `Lead ID: ${leadId}`,
+    `Type: ${labelFor(lead.type)}`,
+    `Name: ${fullName}`,
+    `Email: ${lead.email}`,
+    lead.phone ? `Phone: ${lead.phone}` : null,
+    lead.suburb ? `Suburb: ${lead.suburb}` : null,
+    lead.source ? `Source: ${lead.source}` : null,
+    `SMTP error: ${errMsg}`,
+  ]);
+}
+
+export function buildPhoneAddedText(
+  lead: { id: string; type: string; firstName: string; lastName: string | null; email: string; suburb: string | null; source: string | null },
+  phone: string,
+): string {
+  const fullName = lead.lastName ? `${lead.firstName} ${lead.lastName}` : lead.firstName;
+  return textBlocks([
+    "An existing lead just added their mobile. They want the call.",
+    `Phone: ${phone}`,
+    `Name: ${fullName}`,
+    `Email: ${lead.email}`,
+    `Original lead: ${labelFor(lead.type)}`,
+    lead.suburb ? `Suburb: ${lead.suburb}` : null,
+    lead.source ? `Source: ${lead.source}` : null,
+    `Lead ID: ${lead.id}`,
+  ]);
 }
