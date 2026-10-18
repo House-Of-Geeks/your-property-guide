@@ -63,7 +63,7 @@ export const batch9: ArticleCampaignBatch = {
     cta: "selling-plan",
   },
   "best-value-regional-towns-family-home-under-500000-australia-2026": {
-    hook: "A low median is a shortlist, not a result. Check that a town’s schools, hospital and jobs suit your family, then buy on current local prices, because the seller’s agent in every one of these towns is running a campaign aimed at you.",
+    hook: "A cheap town still comes with a sales campaign. Every seller’s agent is working for the highest price, so check the schools, hospital and local jobs first, then compare recent sales before you make an offer.",
     cta: "buying-plan",
   },
 };
