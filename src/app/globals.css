@@ -669,7 +669,17 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   margin: 3em 0;
 }
 
-/* Tables */
+/* Tables. processContent wraps each one in .table-scroll, so a table wider
+   than the article column scrolls sideways instead of running into the
+   sidebar or off a phone screen. */
+.prose-ypg .table-scroll {
+  margin: 2em 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.prose-ypg .table-scroll table {
+  margin: 0;
+}
 .prose-ypg table {
   width: 100%;
   margin: 2em 0;
@@ -686,7 +696,6 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   color: var(--ink);
   padding: 0.75em 1em;
   font-size: 0.875rem;
-  white-space: nowrap;
 }
 .prose-ypg td {
   padding: 0.85em 1em;

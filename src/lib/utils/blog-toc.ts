@@ -12,6 +12,7 @@ export interface TocItem {
  * - Adds `id` attributes to h2/h3 tags + extracts the table-of-contents
  * - Auto-links the first occurrence of each glossary term to /glossary/[slug]
  *   (skips already-linked text, headings, code blocks)
+ * - Wraps each table in a horizontally scrolling container
  *
  * Returns the modified HTML alongside a list of TOC items for the sticky
  * sidebar.
@@ -48,7 +49,15 @@ export function processContent(html: string): { html: string; toc: TocItem[] } {
     }
   );
 
-  return { html: processed, toc };
+  // Pass 3: wrap each table in a scroll container so a wide table scrolls
+  // inside the article column instead of running into the sidebar (or off
+  // the edge of a phone). Styles: .table-scroll in globals.css.
+  const wrapped = processed.replace(
+    /<table\b[\s\S]*?<\/table>/gi,
+    (table) => `<div class="table-scroll" role="region" aria-label="Table" tabindex="0">${table}</div>`,
+  );
+
+  return { html: wrapped, toc };
 }
 
 // Block elements a cut must not land inside. Article HTML is a flat run of
