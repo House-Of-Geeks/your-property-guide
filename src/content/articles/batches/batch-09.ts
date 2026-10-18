@@ -62,4 +62,8 @@ export const batch9: ArticleCampaignBatch = {
     hook: "A falling market doesn’t set your price; the campaign does. With values down six months running and stock building, a seller needs a number from recent sales and a campaign that reaches the buyers still active, and a buyer has room to negotiate.",
     cta: "selling-plan",
   },
+  "best-value-regional-towns-family-home-under-500000-australia-2026": {
+    hook: "A low median is a shortlist, not a result. Check that a town’s schools, hospital and jobs suit your family, then buy on current local prices, because the seller’s agent in every one of these towns is running a campaign aimed at you.",
+    cta: "buying-plan",
+  },
 };

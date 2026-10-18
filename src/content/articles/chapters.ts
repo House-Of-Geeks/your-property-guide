@@ -139,6 +139,7 @@ const BUYING: Readonly<Record<string, number>> = {
   "australian-rents-record-highs-mid-2026": 4,
   "best-brisbane-suburbs-for-families-2026": 4,
   "best-time-to-buy-property-australia": 4,
+  "best-value-regional-towns-family-home-under-500000-australia-2026": 4,
   "brisbane-property-market-2026": 4,
   "building-approvals-slump-housing-supply-2026": 4,
   "buying-property-australia": 4,
