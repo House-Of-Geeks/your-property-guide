@@ -2,6 +2,7 @@
 // publication order the site relies on: newest first. blogs.ts re-exports
 // this array, so importers are unchanged.
 import type { BlogPost } from "@/types";
+import { post as best_value_regional_towns_family_home_under_500000_australia_2026 } from "./best-value-regional-towns-family-home-under-500000-australia-2026";
 import { post as are_house_prices_crashing_in_australia } from "./are-house-prices-crashing-in-australia";
 import { post as house_price_forecasts_2026_2027_by_capital_city } from "./house-price-forecasts-2026-2027-by-capital-city";
 import { post as real_estate_agency_agreements_by_state } from "./real-estate-agency-agreements-by-state";
@@ -62,6 +63,7 @@ import { post as negative_gearing_changes_2026_budget } from "./negative-gearing
 import { post as cgt_changes_2026_budget } from "./cgt-changes-2026-budget";
 
 export const blogPosts: BlogPost[] = [
+  best_value_regional_towns_family_home_under_500000_australia_2026,
   are_house_prices_crashing_in_australia,
   house_price_forecasts_2026_2027_by_capital_city,
   real_estate_agency_agreements_by_state,

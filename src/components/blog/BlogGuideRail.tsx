@@ -96,6 +96,11 @@ const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
     { href: "/find-your-suburb",                             title: "Find your suburb (quiz)",            description: "Filter by your budget and priority." },
     { href: "/guides/how-much-deposit-to-buy-a-house",       title: "How much deposit do you need?",     description: "Affordable doesn't mean no deposit needed." },
   ],
+  "best-value-regional-towns-family-home-under-500000-australia-2026": [
+    { href: "/best-suburbs/most-affordable",                 title: "Most affordable suburbs ranking",   description: "Live ranking based on current median prices." },
+    { href: "/stamp-duty-calculator",                        title: "Stamp duty calculator",              description: "The upfront cost on top of a $450,000 house." },
+    { href: "/regions",                                      title: "Browse Australian regions",          description: "Suburb profiles, region by region." },
+  ],
   "best-regional-towns-invest-australia-2026": [
     { href: "/guides/house-vs-apartment-investment-australia", title: "House vs apartment investment",   description: "How regional houses compare to capital city units." },
     { href: "/find-your-suburb",                             title: "Find your suburb (quiz)",            description: "Run the matcher with regional priorities." },

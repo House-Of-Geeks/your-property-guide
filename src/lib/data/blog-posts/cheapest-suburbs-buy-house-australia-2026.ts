@@ -41,7 +41,9 @@ export const post: BlogPost = {
 <li><strong>Buyer's agent or local expert.</strong> Cheap doesn't mean low-effort. The cheaper end of the market often requires more local knowledge to navigate</li>
 </ul>
 
-<p>Cheap suburbs in 2026 are still findable across every state. The question isn't whether you can buy a house under $500,000 in Australia, you can, but whether the right one for your situation exists at that price. Use suburb data, check the fundamentals, and make sure the price reflects opportunity rather than risk.</p>`,
+<p>Cheap suburbs in 2026 are still findable across every state. The question isn't whether you can buy a house under $500,000 in Australia, you can, but whether the right one for your situation exists at that price. Use suburb data, check the fundamentals, and make sure the price reflects opportunity rather than risk.</p>
+
+<p>Buying a family home rather than hunting for the lowest price? See our guide to the <a href="/guides/best-value-regional-towns-family-home-under-500000-australia-2026">best value regional towns for a family home under $500,000</a>, which uses published suburb medians and covers schools, rents and hospital access.</p>`,
   coverImage: "/images/blog/cover-cheapest-suburbs-buy-house-australia-2026.jpg",
   author: { name: "Bec Ramirez", image: "/images/agents/bec-ramirez.jpg" },
   category: "Buying Guide",
