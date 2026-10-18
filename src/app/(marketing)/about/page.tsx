@@ -389,8 +389,9 @@ export default function AboutPage() {
           <h3 className={`${h3} mb-3`}>How we write, source, and update</h3>
           <div className="prose-ypg">
             <p>
-              Every guide goes through the same three steps: a named writer
-              drafts against a published outline, a domain reviewer (broker,
+              Every guide goes through the same three steps: a draft is
+              prepared with AI assistance against a published outline, a
+              domain reviewer (broker,
               agent, accountant or conveyancer depending on topic)
               sanity-checks the technical claims, and the editor signs off on
               plain-English clarity. Drafts are not published until all three
@@ -407,10 +408,10 @@ export default function AboutPage() {
               industry data) and never opinion blogs.
             </p>
             <p>
-              <strong>AI usage.</strong>{" "}We don&rsquo;t publish AI-generated
-              copy. AI may be used for research summarisation and outline
-              drafting by the editor, but every word that ships through our
-              site is written and edited by named humans.
+              <strong>AI usage.</strong>{" "}Our guides are drafted with AI
+              assistance, then checked and edited by Andy McMaster, our
+              founder and editor, before they’re published. Nothing goes live
+              without his sign-off.
             </p>
             <p>
               <strong>Updates.</strong> Guides are reviewed at least annually,

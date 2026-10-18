@@ -236,7 +236,8 @@ export default function MethodologyPage() {
           <div className="mt-8 prose-ypg">
             <p>
               Every guide and every data refresh goes through the same three
-              steps: a writer drafts to a published outline, a domain reviewer
+              steps: a draft is prepared to a published outline with AI
+              assistance, a domain reviewer
               (broker, agent, accountant, or planner depending on the topic)
               sanity-checks the technical claims, and the editor signs off
               for plain-English clarity.

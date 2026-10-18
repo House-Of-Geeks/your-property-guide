@@ -12,7 +12,6 @@ Severity:
 
 | Severity | Where | Claim | Why it's flagged |
 |---|---|---|---|
-| Review | `src/app/(marketing)/about/page.tsx`, Editorial standards | “We don’t publish AI-generated copy … every word that ships through our site is written and edited by named humans.” | The October 2026 rewrite of the guides and articles was drafted with AI assistance (Claude) and reviewed by the editor. The statement needs rewording to match how the site is actually written, or a human edit of every page before launch. |
 | Review | `about/page.tsx`, Editorial standards | “a domain reviewer (broker, agent, accountant or conveyancer depending on topic) sanity-checks the technical claims” | Confirm this review step happens for every guide. If not, remove it. |
 | Review | `about/page.tsx`, Who writes the guides; 26 article bylines | Bec Ramirez and Ellie Johnston, with detailed career bios and photos | Flagged on 13 Oct as unconfirmed. If they aren’t real people who agreed to be named, the bylines and bios need to change before launch. |
 | Review | `about/page.tsx`, Corrections | Acknowledge within 48 hours, correct within 7 days | Confirm someone is staffed to meet these. |
