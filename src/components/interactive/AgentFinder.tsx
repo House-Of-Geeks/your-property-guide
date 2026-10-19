@@ -6,12 +6,15 @@ import Link from "next/link";
 import { ArrowRight, Minus, Plus } from "lucide-react";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
 import { HOW_WE_ARE_PAID_HREF, PARTNER_CHECKS, RESPONSE_WINDOW } from "@/lib/service-model";
+import { availabilityNote, stateFromSuburbSlug } from "@/lib/introductions/rules";
 import { Segmented } from "./Segmented";
 import { useMove } from "./move-context";
 
 // The way to an agent (v5, 14 Oct 2026): pick the kind of agent, name the
 // suburb, and land on /get-help with both filled in. Nothing is sent from
-// here; the permission and contact details are asked on that page.
+// here; the permission and contact details are asked on that page. Since
+// 19 Oct 2026 the coverage for that state shows as soon as a suburb is
+// picked, before anyone moves on.
 
 type Service = "selling-agent" | "buyers-agent";
 const SERVICES = [
@@ -30,6 +33,7 @@ export function AgentFinder({ from = "home-finder" }: { from?: string }) {
     setService(fromMove());
   }
   const [suburb, setSuburb] = useState<string | null>(null);
+  const coverage = suburb ? availabilityNote(service, stateFromSuburbSlug(suburb)) : null;
 
   const href = `/get-help?service=${service}${suburb ? `&suburb=${encodeURIComponent(suburb)}` : ""}&from=${from}`;
   return (
@@ -46,6 +50,14 @@ export function AgentFinder({ from = "home-finder" }: { from?: string }) {
           onSelectLocation={(slug) => setSuburb(slug)}
           onClear={() => setSuburb(null)}
         />
+      </div>
+      <div aria-live="polite">
+        {coverage && (
+          <p className={`mt-3 rounded-lg border p-3.5 text-sm leading-relaxed text-ink ${coverage.level === "direct" ? "border-line" : "border-warning/40 bg-surface-warm"}`}>
+            <strong className="block">{`${service === "selling-agent" ? "Selling agents" : "Buyer’s agents"} in ${stateFromSuburbSlug(suburb) ?? "your state"}`}</strong>
+            {coverage.text}
+          </p>
+        )}
       </div>
       <button
         type="button"

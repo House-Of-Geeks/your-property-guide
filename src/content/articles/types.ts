@@ -4,8 +4,8 @@
 
 /** Which end-of-article call to action fits the article. */
 export type CampaignCtaKind =
-  | "selling-plan" // build my campaign plan (selling)
-  | "buying-plan" // build my buying plan
+  | "selling-plan" // build my next-step plan (selling)
+  | "buying-plan" // build my next-step plan (buying)
   | "moving-plan" // buying and selling
   | "agreement-check" // before you sign an agency agreement
   | "selling-agent" // one selling agent who runs the campaign

@@ -81,6 +81,7 @@ export function ChoiceGroup<T extends string>({
   error,
   name,
   size = "md",
+  optional,
 }: {
   legend: ReactNode;
   hint?: ReactNode;
@@ -91,6 +92,8 @@ export function ChoiceGroup<T extends string>({
   error?: string | null;
   name?: string;
   size?: "md" | "lg";
+  /** Says "(optional)" after the question. */
+  optional?: boolean;
 }) {
   const auto = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const group = name ?? `choice-${auto}`;
@@ -101,6 +104,7 @@ export function ChoiceGroup<T extends string>({
     <fieldset aria-describedby={error ? `${group}-error` : hint ? `${group}-hint` : undefined}>
       <legend className={`${size === "lg" ? "text-xl sm:text-2xl" : "text-[17px] sm:text-lg"} font-bold text-ink leading-snug tracking-[-0.015em]`}>
         {legend}
+        {optional && <span className="ml-1.5 text-[15px] font-normal tracking-normal text-ink-muted">(optional)</span>}
       </legend>
       {hint && (
         <p id={`${group}-hint`} className="mt-1 text-sm text-ink-muted leading-relaxed">

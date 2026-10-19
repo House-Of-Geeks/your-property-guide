@@ -69,7 +69,7 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
   if (copy.timeframe) helpQs.set("timeframe", copy.timeframe);
 
   const nextSteps = [
-    { href: `/plan/result?${planQs.toString()}`, label: "Your selling plan", sub: "Your next three steps, a checklist and the questions to settle" },
+    { href: `/plan/result?${planQs.toString()}`, label: "Your next-step plan", sub: "Your next three steps, a checklist and the questions to settle" },
     listed
       ? { href: "/guides/cooling-off-period-by-state-australia", label: "Cooling-off periods by state", sub: "Know the contract rules before the offers arrive" }
       : { href: "/tools/agent-proposal-worksheet", label: "Agent proposal worksheet", sub: "Compare agents’ proposals side by side, in dollars" },

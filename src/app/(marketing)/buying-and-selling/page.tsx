@@ -112,7 +112,7 @@ export default function BuyingAndSellingPage() {
         </HeroLead>
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3">
           <Link href={PLAN_HREF} className={`${BUTTON_PRIMARY} justify-center`}>
-            Make your moving plan
+            Build my next-step plan
           </Link>
           <Link href={HELP_HREF} className={`${BUTTON_SECONDARY} justify-center`}>
             Ask for personal help
@@ -224,10 +224,10 @@ export default function BuyingAndSellingPage() {
           </div>
           <div className="lg:col-span-5 lg:pt-10">
             <p className="text-base text-ink-muted leading-relaxed">
-              {`Your moving plan adds the guides and costs for your state, and a version you can print or email to yourself.`}
+              {`Your next-step plan adds the guides and costs for your state, and a version you can print or email to yourself.`}
             </p>
             <Link href={PLAN_HREF} className={`mt-3 inline-flex items-center gap-1.5 ${LINK}`}>
-              Make your moving plan <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              Build my next-step plan <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
         </div>
@@ -284,7 +284,7 @@ export default function BuyingAndSellingPage() {
               Ask for personal help <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
             <Link href={PLAN_HREF} className={`${BUTTON_SECONDARY} justify-center`}>
-              Make your moving plan
+              Build my next-step plan
             </Link>
           </div>
         </div>

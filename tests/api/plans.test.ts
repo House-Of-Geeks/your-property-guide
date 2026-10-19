@@ -32,7 +32,7 @@ describe("POST /api/plans (the learning path)", () => {
     expect(data.phone).toBeUndefined();
     const mail = m.sendMail.mock.calls[0][0];
     expect(mail.to).toBe("pat@example.com");
-    expect(mail.subject).toBe("Your selling plan: getting ready to sell");
+    expect(mail.subject).toBe("Your next-step plan: getting ready to sell");
     expect(mail.html).toContain("This is a one-off email");
     // Never a team notification for a learning request.
     expect(m.sendMail).toHaveBeenCalledTimes(1);

@@ -47,7 +47,7 @@ export default async function BuyingGuideThanksPage({ searchParams }: PageProps)
   if (state) planQs.set("s", state);
 
   const nextSteps = [
-    { href: `/plan/result?${planQs.toString()}`, label: "Your buying plan", sub: "Your next three steps, a checklist and the questions to settle" },
+    { href: `/plan/result?${planQs.toString()}`, label: "Your next-step plan", sub: "Your next three steps, a checklist and the questions to settle" },
     who === "first-home"
       ? { href: state ? `/guides/first-home-buyer-${state}` : "/guides/first-home-buyer-guide", label: "First home buyer rules", sub: "Grants, duty concessions and schemes for your state" }
       : { href: "/guides/due-diligence-checklist-buying-a-house", label: "Due diligence checklist", sub: "What to check before you commit" },

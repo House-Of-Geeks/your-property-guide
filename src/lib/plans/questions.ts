@@ -97,6 +97,21 @@ export function suburbParam(v: string | null | undefined): string | null {
   return v && v.length <= 80 && SUBURB_SLUG.test(v) ? v : null;
 }
 
+/** "hamilton-qld-4007" → "Hamilton, QLD 4007" (for display when the database name isn't to hand). */
+export function suburbSlugLabel(slug: string): string {
+  const parts = slug.split("-");
+  if (parts.length < 3) return slug;
+  const postcode = parts[parts.length - 1];
+  const state = parts[parts.length - 2].toUpperCase();
+  const name = parts.slice(0, -2).map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
+  return `${name}, ${state} ${postcode}`;
+}
+
+/** The state in a suburb slug, or null. */
+export function stateOfSuburb(slug: string | null | undefined): AustralianState | null {
+  return stateParam(slug?.match(/-([a-z]{2,3})-\d{4}$/)?.[1]);
+}
+
 /** A state from the URL ("qld"), or null. */
 export function stateParam(v: string | null | undefined): AustralianState | null {
   return pick(STATE_OPTIONS, v?.toUpperCase());
@@ -118,6 +133,18 @@ export function answersFromParams(get: (key: string) => string | null | undefine
     order: pick(MOVE_ORDERS, get("o")),
     suburb: suburbParam(get("sub")),
   };
+}
+
+/**
+ * The planner's address for changing a finished plan (19 Oct 2026): every
+ * answer, so "Change my answers" reopens them instead of starting again.
+ */
+export function editPlanHref(a: PlanAnswers, open?: "state"): string {
+  const qs = answersToParams(a);
+  qs.set("edit", "1");
+  // Open one question straight away (the result's "Add a suburb" opens the state and suburb).
+  if (open) qs.set("q", open);
+  return `/plan?${qs.toString()}`;
 }
 
 /** The inverse of answersFromParams. */

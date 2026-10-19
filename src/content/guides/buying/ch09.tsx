@@ -19,9 +19,9 @@ export const chapter: Chapter = {
   ],
   cta: {
     kind: "plan",
-    title: "Build your buying plan",
+    title: "Build your next-step plan",
     body: "Your next three steps for where you’re up to, with the checklists and calculators for your state.",
-    label: "Build my buying plan",
+    label: "Build my next-step plan",
     href: "/plan?j=buying&bs=offer&from=buying-guide-ch9",
   },
   checked: "Cooling-off settings as at mid-2026. These get amended, so confirm the current rules when you sign.",

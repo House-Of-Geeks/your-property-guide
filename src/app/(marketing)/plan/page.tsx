@@ -3,7 +3,8 @@ import { Suspense } from "react";
 import { PhotoHero, HeroTitle, HeroLead, Band, SectionHeading, RuleGrid, RuleItem } from "@/components/premium";
 import { PlanBuilder } from "@/components/journeys/PlanBuilder";
 import { SITE_URL } from "@/lib/constants";
-import { ListChecks, Calculator, HelpCircle } from "lucide-react";
+import { PLAN_NAME, PLAN_TERMS } from "@/lib/plans/name";
+import { Check, ListChecks, Calculator, HelpCircle } from "lucide-react";
 
 // /plan: the next-step plan (Oct 2026). A few questions, then a plan built
 // from our own guides and calculators. No sign-up; email is offered after.
@@ -26,12 +27,20 @@ export default function PlanPage() {
           </Suspense>
         }
       >
-        <HeroTitle>What should you do next?</HeroTitle>
+        <HeroTitle>{`Your free ${PLAN_NAME}`}</HeroTitle>
         <HeroLead>
-          {`Answer four to six quick questions and get a plan for where you’re up to: your next three steps, the calculators and guides for your state, a checklist, and the questions worth settling before you commit.`}
+          {`A few quick questions about where you’re up to, then a plan for it: your next three steps, the calculators and guides for your state and suburb, a checklist, and the questions worth settling before you commit.`}
         </HeroLead>
+        <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-base font-semibold text-ink">
+          {PLAN_TERMS.map((t) => (
+            <li key={t} className="inline-flex items-center gap-2">
+              <Check className="h-4 w-4 text-primary" strokeWidth={3} aria-hidden="true" />
+              {t}
+            </li>
+          ))}
+        </ul>
         <p className="mt-6 max-w-xl text-base text-ink-muted leading-relaxed">
-          {`It’s general information built from your answers, not advice and not a valuation. No sign-up, and nobody contacts you.`}
+          {`It’s general information built from your answers, not advice and not a valuation. Nobody contacts you.`}
         </p>
       </PhotoHero>
       <Band spacing="compact">

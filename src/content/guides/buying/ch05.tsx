@@ -19,9 +19,9 @@ export const chapter: Chapter = {
   ],
   cta: {
     kind: "plan",
-    title: "Build your buying plan",
+    title: "Build your next-step plan",
     body: "Tell us where you’re up to and get your next three steps, with the checklists and calculators for your state.",
-    label: "Build my buying plan",
+    label: "Build my next-step plan",
     href: "/plan?j=buying&bs=searching&from=buying-guide-ch5",
   },
   checked: "Inspection and repair costs are typical ranges as at mid-2026.",

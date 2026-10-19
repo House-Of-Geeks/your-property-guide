@@ -20,9 +20,9 @@ export const chapter: Chapter = {
   ],
   cta: {
     kind: "plan",
-    title: "Build your campaign plan",
+    title: "Build your next-step plan",
     body: "Tell us where you’re up to and get your next three steps, in order, with the guides and tools for your state.",
-    label: "Build my campaign plan",
+    label: "Build my next-step plan",
     href: "/plan?j=selling&ss=preparing&from=selling-guide-ch4",
   },
   checked: "Costs are typical ranges as at mid-2026.",

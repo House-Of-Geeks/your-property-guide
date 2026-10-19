@@ -400,6 +400,20 @@ export const getSuburbBySlug = cache(async (slug: string): Promise<Suburb | null
   return toSuburb({ ...row, schools }, freshness, rentalRentHouse, rentalRentUnit, hazard, climate, salesPeriodEnds, rentalRentAll);
 });
 
+/**
+ * A suburb's name for a slug, or null if there's no such page (19 Oct 2026,
+ * for the plan result's context line). One small query; a database error
+ * reads as "not found", so the plan still renders.
+ */
+export async function getSuburbName(slug: string): Promise<{ slug: string; name: string; state: string; postcode: string } | null> {
+  if (isHiddenSlug(slug)) return null;
+  try {
+    return await db.suburb.findUnique({ where: { slug }, select: { slug: true, name: true, state: true, postcode: true } });
+  } catch {
+    return null;
+  }
+}
+
 export async function getAllSuburbSlugs(): Promise<string[]> {
   const rows = await db.suburb.findMany({ where: LOCALITIES_ONLY, select: { slug: true } });
   return rows.map((r) => r.slug);

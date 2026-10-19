@@ -167,7 +167,7 @@ function sellingPlan(a: PlanAnswers): Plan {
 
   if (stage === "listed") {
     return {
-      title: "Your selling plan: from campaign to settlement",
+      title: "Your next-step plan: from campaign to settlement",
       intro: "You’ve chosen your agent, so we won’t introduce another. Here’s what helps between now and handing over the keys.",
       nextSteps: [
         {
@@ -206,14 +206,14 @@ function sellingPlan(a: PlanAnswers): Plan {
         services: [],
         headline: "We won’t introduce another selling agent",
         body: "You’re signed with an agent, so introducing another wouldn’t be fair to you or to them. If you’re also buying, the buying plan covers the purchase.",
-        cta: { label: "See the buying and selling plan", href: "/plan?j=buying-and-selling" },
+        cta: { label: "Build a next-step plan for both", href: "/plan?j=buying-and-selling" },
       },
     };
   }
 
   if (stage === "choosing-agent") {
     return {
-      title: "Your selling plan: choosing the right agent",
+      title: "Your next-step plan: choosing the right agent",
       intro: "The agent you choose affects your price, your costs and how the sale feels. Compare them on evidence and in dollars, not on the highest estimate.",
       nextSteps: [
         {
@@ -282,7 +282,7 @@ function sellingPlan(a: PlanAnswers): Plan {
 
   if (stage === "preparing") {
     return {
-      title: "Your selling plan: getting ready to sell",
+      title: "Your next-step plan: getting ready to sell",
       intro: "This is where a few hours of preparation pay off most: know your costs, prepare for appraisals, and meet more than one agent.",
       nextSteps: [
         {
@@ -338,7 +338,7 @@ function sellingPlan(a: PlanAnswers): Plan {
 
   // thinking
   return {
-    title: "Your selling plan: working out whether and when",
+    title: "Your next-step plan: working out whether and when",
     intro: "You don’t need an agent yet. The useful work now is knowing your numbers and what would make the property easier to sell.",
     nextSteps: [
       {
@@ -404,14 +404,13 @@ function buyingPlan(a: PlanAnswers): Plan {
   const stage = a.buyStage ?? "starting";
   const type = a.buyerType ?? "next-home";
   const firstHome = type === "first-home";
-  const who = firstHome ? "first home" : type === "investing" ? "investment" : type === "downsizing" ? "downsizing" : "buying";
 
   const typeGuide: PlanLink =
     firstHome ? L.firstHome(s) : type === "investing" ? L.investing : type === "downsizing" ? L.downsizers : L.deposit;
 
   if (stage === "offer") {
     return {
-      title: `Your ${who} plan: making an offer`,
+      title: "Your next-step plan: making an offer",
       intro: "You’ve found one, or you’re close. Now it’s about paying the right price on terms that protect you.",
       nextSteps: [
         { title: "Set your limit before you negotiate", body: "Base it on what similar homes actually sold for, not the price guide. Decide what would make you walk away.", link: { label: "Negotiating the price", href: L.negotiatePrice.href } },
@@ -438,7 +437,7 @@ function buyingPlan(a: PlanAnswers): Plan {
 
   if (stage === "searching") {
     return {
-      title: `Your ${who} plan: inspecting and shortlisting`,
+      title: "Your next-step plan: inspecting and shortlisting",
       intro: "Inspections are where expensive problems hide. A consistent checklist and real sales data keep you from falling for the wrong place.",
       nextSteps: [
         { title: "Use the same checklist at every inspection", body: "Water damage, structure, noise, orientation and strata health are cheaper to spot now than to fix later.", link: { label: "Due diligence checklist", href: L.dueDiligence.href } },
@@ -466,7 +465,7 @@ function buyingPlan(a: PlanAnswers): Plan {
 
   if (stage === "finance") {
     return {
-      title: `Your ${who} plan: sorting your finance`,
+      title: "Your next-step plan: sorting your finance",
       intro: "Pre-approval tells you your real price range, and the right scheme can lower the deposit you need.",
       nextSteps: [
         { title: "Get pre-approval", body: "It shows what a lender will likely lend and makes your offers credible. Ask what conditions apply and how long it lasts.", link: { label: "Home loan pre-approval", href: L.preApproval.href } },
@@ -495,7 +494,7 @@ function buyingPlan(a: PlanAnswers): Plan {
 
   // starting
   return {
-    title: firstHome ? "Your first home plan: working out your budget" : `Your ${who} plan: working out your budget`,
+    title: "Your next-step plan: working out your budget",
     intro: "Before you inspect anything, know three numbers: what a lender might lend, what you can comfortably repay, and the upfront costs on top of the deposit.",
     nextSteps: [
       { title: "Estimate your borrowing power", body: "A rough figure in two minutes, with no credit check. A lender’s figure comes later, at pre-approval.", link: { label: "Borrowing power calculator", href: L.borrowingCalc.href } },
@@ -576,7 +575,7 @@ function bothPlan(a: PlanAnswers): Plan {
         : "We can tell you whether a participating buyer’s agent covers your area. We’re still building that network, so we won’t promise one.";
 
   return {
-    title: "Your moving plan: selling and buying",
+    title: "Your next-step plan: selling and buying",
     intro: "Selling and buying at once is mostly a timing problem. Get the order and the money right, and the rest follows.",
     nextSteps: steps[order] ?? steps.undecided,
     tools: [L.sellingCostsCalc, L.bridgingCalc, L.stampDutyCalc, L.borrowingCalc],

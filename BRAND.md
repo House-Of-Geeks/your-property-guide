@@ -1,6 +1,6 @@
 # BRAND.md — Your Property Guide
 
-**Status:** v6 (15 Oct 2026, "It's the campaign that wins"). Andy's founder story and the campaign idea, in a premium editorial look: cream and sand pages, eucalyptus dark bands, copper for actions and accents, a serif for the big headings. It replaces v5 (one grotesk, white page, roof tile) on purpose. **v6 brings back things v4–v5 banned — a serif, an italic accent, uppercase eyebrows, a gradient over a photo, pill buttons, numbered steps — and only where §14 allows them. Don't "fix" them back to v5.** Earlier versions: v5 and v4 (13–14 Oct), v3 (cream, Fraunces, terracotta).
+**Status:** v6 (15 Oct 2026, "It's the campaign that wins"), with the homepage re-ordered on 19 Oct 2026 (§14) for clearer messaging, real evidence and a shorter path to useful help. Andy's founder story and the campaign idea, in a premium editorial look: cream and sand pages, eucalyptus dark bands, copper for actions and accents, a serif for the big headings. It replaces v5 (one grotesk, white page, roof tile) on purpose. **v6 brings back things v4–v5 banned — a serif, an italic accent, uppercase eyebrows, a gradient over a photo, pill buttons, numbered steps — and only where §14 allows them. Don't "fix" them back to v5.** Earlier versions: v5 and v4 (13–14 Oct), v3 (cream, Fraunces, terracotta).
 
 **What we are:** a property education service built on one idea: the campaign is what wins, not the market, not luck, not a slack agent. Free guides, tools and next-step plans for selling, buying or both, then, with permission, one participating agent for each job (a selling agent, and a buyer's agent where one takes part). Agents pay a flat fee per introduction; we take none of their commission. We are not a portal or a data tool: suburb data supports the guides, it is not the headline.
 
@@ -82,10 +82,11 @@ Rules:
 
 ## 6. Imagery
 
-- **Homepage:** full-bleed, large photography is the point. It covers the hero, both homes in "same playbook" and the five steps, and lives in `src/components/campaign/photos.ts`. The images were generated with ImagineArt (Nano Banana Pro, 2K) on 15 Oct 2026 to match what each band says: a sandstone home on Sydney Harbour, a harbourfront 5-bed, a Brisbane brick-veneer 3-bed, and a living room styled for sale. They're stored in `public/images/campaign/`.
+- **Homepage:** the hero is a full-bleed photo (`src/components/campaign/photos.ts`), generated with ImagineArt (Nano Banana Pro, 2K) on 15 Oct 2026: a sandstone home on Sydney Harbour. The two "Example" homes and the styled living room left the homepage on 19 Oct 2026 with the bands that used them; the files stay in `public/images/campaign/`.
+- **Case studies:** real projects only, with their real photographs. The Hamilton example (§14) runs without imagery until Andy supplies the apartment's own photos. A generated or library image must never stand in for a before-and-after.
 - **Under a wash:** only the homepage hero puts text over a photo. It sits under a eucalyptus gradient that is dark on the text side and opens to the photo on the right; on phones the wash is even.
 - **Everywhere else:** documentary photography of real Australian places, as v5 (`public/images/photos/`, `PHOTOS` in `src/components/premium`): soft daylight, true colours, Australian vernacular. Prestige homes may be warmer and more polished, but they must still read as Australian.
-- **Never present a generated or library image as a real sale, a real agent, our team or a customer.** The $18.5M and $640K homes are labelled "Example".
+- **Never present a generated or library image as a real sale, a real project, a real agent, our team or a customer.**
 - Real people: Andy's own photo (`FOUNDER.photo` in `src/lib/founder.ts`) for the founder sections, forms and bylines.
 
 ## 7. Voice and facts
@@ -111,9 +112,11 @@ Rules:
 
 Two paths, never mixed (unchanged from 14 Oct 2026):
 
-- **Learning path** (guides, plans, calculators, the tips series): useful before any contact details, email only, phone optional, and it never reaches an agent. The homepage field opens the plan with the move, the state and the suburb filled in (`/plan?j=&s=&sub=`); only the suburb or postcode is looked up, never a street address.
+- **Learning path** (guides, plans, calculators, the tips series): useful before any contact details, email only, phone optional, and it never reaches an agent. The homepage field opens the plan with the move, the state and the suburb filled in (`/plan?j=&s=&sub=`); only the suburb or postcode is looked up, never a street address. The planner takes up every answer in its URL, shows what's already chosen, and "Change my answers" reopens them all (`editPlanHref`); the result shows the move, state and suburb and links the suburb's profile.
+- **One name for the plan:** the "next-step plan", everywhere (`src/lib/plans/name.ts`). Not a campaign plan, a selling plan or a moving plan. Every plan button says it's free, a few quick questions and no sign-up (`PLAN_TERMS`).
+- **One first step per journey:** the header's solid button, the homepage hero and the phone bar's first button are all the next-step plan for the page's move; on the homepage they follow the move picked in the hero (`MoveProvider publish`). The second action is the agent for that move.
 - **Introduction path** (`/get-help`, the appraisal and agent pages): one participating agent for each job, a separate permission tick for each, and coverage shown before anything is sent.
-- **The agreement check** (`/agreement-check`): a free 15-minute call with our team before someone signs an agency agreement. It's general information, not legal advice, and it never sends anyone to an agent.
+- **The agreement check** (`/agreement-check`): a free 15-minute call with our team before someone signs an agency agreement. It's general information, not legal advice, and it never sends anyone to an agent. With the selling-costs calculator and the agent proposal worksheet it's one of the three tools that "settle the next decision" for sellers: each says what it helps you decide, on the homepage and in the Selling menu.
 - Promises come from `src/lib/service-model.ts` only:
   - `PROMISE`
   - `ONE_AGENT`: "One agent for each job you ask us to help with. Never a list."
@@ -192,35 +195,27 @@ Measurement goes through `src/lib/analytics.ts` (an allow-list, nothing personal
 
 ## 13. Things people use
 
-The number tools (`NumbersPanel`), the agent finder (`AgentFinder`, `AgentChecks`), the 3D guide books and the switches all stay, as v5 built them. The homepage's tools band features the live selling-costs panel. `PlanBuilderLive` and `GuideShelf` were retired with the v5 homepage.
+The number tools (`NumbersPanel`), the agent finder (`AgentFinder`, `AgentChecks`), the 3D guide books and the switches all stay, as v5 built them. The homepage's "Try it now" band shows the number tools for the move picked in the hero. The agent finder shows coverage for the state as soon as a suburb is picked, and so does `/get-help`. `PlanBuilderLive` and `GuideShelf` were retired with the v5 homepage.
 
-## 14. The campaign homepage (v6, 15 Oct 2026)
+## 14. The homepage (19 Oct 2026, replacing the 15 Oct order)
 
-The order is fixed by Andy's brief:
+Andy's 19 Oct brief changed the order: understand the offer, use something, see the evidence, choose the next step. The campaign line, the palette, the serif, Andy's presence and the education-first paths stay. Don't put back the old order (same playbook, five steps, tools far down).
 
 1. **Hero:**
-   - a full-bleed photo under the eucalyptus wash;
-   - the eyebrow "The $20 million playbook, for every home";
-   - the core line with "Not the market." in light-copper italic;
-   - Andy's lead;
-   - one address-or-suburb field with "Build my campaign plan";
-   - selling, buying and both as underline tabs;
-   - the stat bar ($4B+, 1 agent, 0%, the live count).
+   - the full-bleed photo under the eucalyptus wash;
+   - the eyebrow and the core line, with "Not the market." in light-copper italic;
+   - straight under it, what you get (`PROMISE.offer`, and `PROMISE.receive` from `sm`): free guidance, a next-step plan, and one participating agent only if you ask;
+   - Andy in one line beside his photo, linking to /about;
+   - the plan card: "What are you planning?" (selling, buying, both) **before** the field it controls, a message for that move, the optional suburb field, "Build my next-step plan" with `PLAN_TERMS` beside it, and a preview of the plan (the next three steps, tools and a checklist) cut from a real plan for that move (`planPreview`).
 
-   The header sits clear over it until the page scrolls.
-2. **Same playbook, any price:** two homes labelled as examples, joined by an "=" badge, sharing `CAMPAIGN_CHECKLIST`.
-3. **The five steps:** numbered 01–05 because they're a real sequence, each linking to its selling-guide chapter (`chapterHref`).
-4. **Founder band** on eucalyptus: portrait, Andy's words, the pull quote, his name in serif italic, $4B+, and a link to /about.
-5. **Tools:** the live selling-costs panel, featured large, then stamp duty, borrowing power, the proposal worksheet and suburb profiles.
-6. **One agent:**
-   - the commission comparison;
-   - the four checks with licence-register links;
-   - the agent finder;
-   - the partner card (real data only, else nothing).
-7. **The agreement check** banner.
-8. **The two guides** with their chapters.
-9. **The closing line,** on cream so it never stacks on the dark footer.
+   The move re-points the rest of the page through `MoveProvider` (`src/components/campaign/moves.ts` holds what each move says and offers). The header sits clear over the hero until the page scrolls.
+2. **Try it now:** the live number tools for the move, and the three tools that settle the next decision, each with "Helps you decide". Sellers: the selling-costs calculator, the agent proposal worksheet and the free agreement check (with its general-information line). Buyers: borrowing power, first home rules, the due diligence checklist. Both: sell first or buy first, the bridging calculator, the agreement check.
+3. **A real example, Hamilton, Queensland** (`src/lib/case-studies.ts`, Andy's supplied facts only): an older two-bedroom apartment, outdated with a boxy layout, redesigned with a cost-conscious renovation. Three figures side by side: $490,000 expected before, $38,000 renovation spend, $820,000 expected after. Both prices are **expected** sale prices: never call $820,000 an achieved sale, a settled result or a valuation, and the $330,000 is an increase in expected sale price, not profit. Then what to take from it (assess, layout and presentation, where to spend), each linked to its guide, and a line that most renovations won't move a price this far. No address, details, dates, buyer feedback, testimonial or outcome beyond those facts.
+4. **Founder band** on eucalyptus: portrait, Andy's words, the pull quote, his name in serif italic, and the site's headline figures ($4B+, 1 agent, 0%, the live count).
+5. **One agent:** the commission comparison, the four checks with licence-register links, the agent finder (which shows coverage once the suburb is known) and the partner card (real data only, else nothing).
+6. **The two guides** with their chapters.
+7. **The closing line,** on cream, with the plan button and the agent for the move (and the agreement check link for sellers).
 
 Eyebrows (uppercase, letter-spaced, copper) label bands on the homepage, about, agreement check and guide chapters. They aren't for every section on every page.
 
-*End of BRAND.md v6.*
+*End of BRAND.md v6 (homepage order: 19 Oct 2026).*

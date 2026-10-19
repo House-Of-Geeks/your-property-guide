@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { ArrowLeft, ArrowRight, Check, Info } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Info } from "lucide-react";
 import { track } from "@/lib/analytics";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
 import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
@@ -32,6 +32,12 @@ import { CheckField, ChoiceGroup, Field, Honeypot, INPUT_CLASS, SubmitButton, de
 // whether we can help in their area before they send anything, take a
 // separate permission for each introduction, and then say exactly what
 // happened, from the server's real status. A guide or plan never comes here.
+//
+// 19 Oct 2026: coverage shows as soon as the place is known (on the first
+// step when a suburb or state came with the link, otherwise straight under
+// the suburb field), the optional questions say so, and the best time and the
+// note sit behind one "add" toggle. The permissions and the "what happens
+// next" wording are unchanged.
 
 export type ServiceChoice = IntroService | "both";
 
@@ -152,6 +158,7 @@ export function IntroductionForm({ defaultService, defaultSuburb, defaultState, 
   const [preferred, setPreferred] = useState<ContactMethod | null>(null);
   const [bestTime, setBestTime] = useState<BestTime>("any");
   const [notes, setNotes] = useState("");
+  const [extrasOpen, setExtrasOpen] = useState(false);
 
   // Permission
   const [consents, setConsents] = useState<Partial<Record<IntroService, boolean>>>({});
@@ -186,6 +193,16 @@ export function IntroductionForm({ defaultService, defaultSuburb, defaultState, 
   };
 
   const availability = useMemo(() => introducible.map((s) => ({ service: s, ...availabilityNote(s, state) })), [introducible.join(","), state]); // eslint-disable-line react-hooks/exhaustive-deps
+  const coverage = availability.length > 0 && state && (
+    <div className="space-y-2" aria-live="polite">
+      {availability.map((a) => (
+        <p key={a.service} className={`rounded-lg border p-4 text-[15px] leading-relaxed ${a.level === "direct" ? "border-line" : "border-warning/40 bg-surface-warm"}`}>
+          <strong className="block text-ink">{`${SERVICES[a.service].label} in ${state}`}</strong>
+          {a.text}
+        </p>
+      ))}
+    </div>
+  );
 
   const validateStep = (): boolean => {
     const e: Record<string, string> = {};
@@ -371,6 +388,7 @@ export function IntroductionForm({ defaultService, defaultSuburb, defaultState, 
                 <p className="text-sm text-ink-muted">
                   We match on the suburb, the type of property and your timing, and introduce one participating agent for each job. <Link href="/get-help#how-we-choose" className="underline underline-offset-4">How we choose agents</Link>
                 </p>
+                {coverage}
               </div>
             )}
           </>
@@ -440,13 +458,14 @@ export function IntroductionForm({ defaultService, defaultSuburb, defaultState, 
                     onChange={setStateChoice}
                   />
                 )}
+                {coverage}
                 {selling && !signedSeller && (
-                  <ChoiceGroup legend="What type of property?" options={PROPERTY_TYPES} columns={2} value={propertyType} onChange={setPropertyType} />
+                  <ChoiceGroup legend="What type of property?" optional options={PROPERTY_TYPES} columns={2} value={propertyType} onChange={setPropertyType} />
                 )}
                 {buying && !signedBuyer && (
                   <>
-                    <ChoiceGroup legend="What are you buying?" options={BUYER_TYPES} columns={2} value={buyerType} onChange={setBuyerType} />
-                    <ChoiceGroup legend="Roughly what budget?" hint="A range is fine. It helps match you with someone who works at that price." options={BUDGETS} columns={2} value={budget} onChange={setBudget} />
+                    <ChoiceGroup legend="What are you buying?" optional options={BUYER_TYPES} columns={2} value={buyerType} onChange={setBuyerType} />
+                    <ChoiceGroup legend="Roughly what budget?" optional hint="A range is fine. It helps match you with someone who works at that price." options={BUDGETS} columns={2} value={budget} onChange={setBudget} />
                   </>
                 )}
                 <ChoiceGroup
@@ -457,16 +476,6 @@ export function IntroductionForm({ defaultService, defaultSuburb, defaultState, 
                   onChange={setTimeframe}
                   error={errors.timeframe}
                 />
-                {availability.length > 0 && (state || suburb) && (
-                  <div className="space-y-2" aria-live="polite">
-                    {availability.map((a) => (
-                      <p key={a.service} className={`rounded-lg border p-4 text-[15px] leading-relaxed ${a.level === "direct" ? "border-line" : "border-warning/40 bg-surface-warm"}`}>
-                        <strong className="block text-ink">{SERVICES[a.service].label}{state ? ` in ${state}` : ""}</strong>
-                        {a.text}
-                      </p>
-                    ))}
-                  </div>
-                )}
               </>
             )}
           </>
@@ -500,16 +509,26 @@ export function IntroductionForm({ defaultService, defaultSuburb, defaultState, 
               />
             </Field>
             <ChoiceGroup legend="How would you like to be contacted first?" options={CONTACT_METHODS} columns={3} value={preferred} onChange={setPreferred} error={errors.preferred} />
-            <Field id="intro-time" label="Best time to reach you">
-              <select id="intro-time" value={bestTime} onChange={(e) => setBestTime(e.target.value as BestTime)} className={INPUT_CLASS}>
-                {BEST_TIMES.map((t) => (
-                  <option key={t.id} value={t.id}>{t.label}</option>
-                ))}
-              </select>
-            </Field>
-            <Field id="intro-notes" label="Anything the agent should know?" optional hint="For example, a deadline, a tenant in the property, or what matters most to you. Please don’t include bank or ID details.">
-              <textarea id="intro-notes" rows={3} maxLength={500} value={notes} onChange={(e) => setNotes(e.target.value)} aria-describedby="intro-notes-hint" className={INPUT_CLASS} />
-            </Field>
+            <details className="group rounded-lg border border-line" open={extrasOpen} onToggle={(e) => setExtrasOpen(e.currentTarget.open)}>
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-[15px] font-semibold text-ink [&::-webkit-details-marker]:hidden">
+                <span>
+                  Add a best time or a note <span className="font-normal text-ink-muted">(optional)</span>
+                </span>
+                <ChevronDown className="h-4 w-4 shrink-0 text-ink-muted transition-transform group-open:rotate-180 motion-reduce:transition-none" aria-hidden="true" />
+              </summary>
+              <div className="space-y-5 border-t border-line px-4 pb-4 pt-4">
+                <Field id="intro-time" label="Best time to reach you">
+                  <select id="intro-time" value={bestTime} onChange={(e) => setBestTime(e.target.value as BestTime)} className={INPUT_CLASS}>
+                    {BEST_TIMES.map((t) => (
+                      <option key={t.id} value={t.id}>{t.label}</option>
+                    ))}
+                  </select>
+                </Field>
+                <Field id="intro-notes" label="Anything the agent should know?" optional hint="For example, a deadline, a tenant in the property, or what matters most to you. Please don’t include bank or ID details.">
+                  <textarea id="intro-notes" rows={3} maxLength={500} value={notes} onChange={(e) => setNotes(e.target.value)} aria-describedby="intro-notes-hint" className={INPUT_CLASS} />
+                </Field>
+              </div>
+            </details>
           </>
         )}
 

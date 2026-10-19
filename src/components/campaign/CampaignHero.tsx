@@ -1,91 +1,105 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight, Check, MapPin } from "lucide-react";
 import { PROMISE } from "@/lib/service-model";
+import { FOUNDER } from "@/lib/founder";
 import { pickSuburb, suburbQuery, suburbTerms, type SuburbSearchHit } from "@/lib/address";
 import { track } from "@/lib/analytics";
+import { PLAN_CTA, PLAN_NAME, PLAN_TERMS } from "@/lib/plans/name";
+import type { PlanPreview } from "@/lib/plans/preview";
 import type { SuggestResponse } from "@/types/suggest";
+import { Segmented } from "@/components/interactive/Segmented";
+import { DEFAULT_MOVE, journeyForMove, useMove, type Move } from "@/components/interactive/move-context";
+import { HOME_MOVES, MOVE_ORDER } from "./moves";
 import { CAMPAIGN_PHOTOS } from "./photos";
 import { SHELL } from "./shell";
 
-// The homepage's first screen (v6, 15 Oct 2026): a full-bleed photo under a
-// eucalyptus gradient, the core line, Andy's lead, and one field. Type an
-// address or a suburb, pick selling, buying or both, and "Build my campaign
-// plan" opens the next-step planner with the move, the state and the suburb
-// filled in. Only the suburb or postcode is looked up; a street address never
-// leaves the browser. The stat bar sits on the photo's foot.
+// The homepage's first screen (19 Oct 2026, after the v6 campaign hero). The
+// campaign line stays, and straight under it the page says what you get:
+// free guidance, a next-step plan built from a few answers, and an
+// introduction to one agent only if you ask. The plan card puts the choice
+// first (selling, buying or both), then the place, then the button, with
+// what it costs and asks beside it and a preview of the plan underneath, cut
+// from a real plan for that move. The choice also re-points the rest of the
+// page (MoveProvider): the calculator, the tools and the header's button.
+// Only the suburb or postcode is looked up; a street address never leaves
+// the browser.
 
-type Move = "selling" | "buying" | "both";
+const MOVE_OPTIONS = MOVE_ORDER.map((id) => ({ id, label: HOME_MOVES[id].label }));
 
-const MOVES: { id: Move; label: string; journey: "selling" | "buying" | "buying-and-selling"; placeholder: string }[] = [
-  { id: "selling", label: "I’m selling", journey: "selling", placeholder: "Enter your address or suburb" },
-  { id: "buying", label: "I’m buying", journey: "buying", placeholder: "Where are you buying? Suburb or postcode" },
-  { id: "both", label: "Both", journey: "buying-and-selling", placeholder: "Enter your address or suburb" },
-];
-
-export interface HeroStat {
-  value: string;
-  label: string;
-}
-
-export function CampaignHero({ stats }: { stats: readonly HeroStat[] }) {
+export function CampaignHero({ previews }: { previews: Record<Move, PlanPreview> }) {
   const photo = CAMPAIGN_PHOTOS.hero;
   return (
     <section aria-labelledby="campaign-hero-title" className="tone-dark relative isolate overflow-hidden bg-eucalyptus-deep">
-      <Image
-        src={photo.src}
-        alt=""
-        fill
-        preload
-        sizes="100vw"
-        className={`-z-20 object-cover ${photo.position}`}
-      />
-      {/* Dark on the text side, opening to the photo on the right. On phones
-          the text runs full width, so the wash is heavier and runs top to
-          bottom. */}
+      <Image src={photo.src} alt="" fill preload sizes="100vw" className={`-z-20 object-cover ${photo.position}`} />
+      {/* Dark on the text side, opening to the photo behind the plan card.
+          On phones the text runs full width, so the wash is even. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(10_46_34/0.78)_0%,rgb(10_46_34/0.84)_55%,rgb(10_46_34/0.94)_100%)] lg:bg-[linear-gradient(90deg,rgb(10_46_34/0.94)_0%,rgb(10_46_34/0.82)_38%,rgb(10_46_34/0.35)_68%,rgb(10_46_34/0.12)_100%)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(10_46_34/0.8)_0%,rgb(10_46_34/0.86)_55%,rgb(10_46_34/0.94)_100%)] lg:bg-[linear-gradient(90deg,rgb(10_46_34/0.95)_0%,rgb(10_46_34/0.84)_45%,rgb(10_46_34/0.45)_75%,rgb(10_46_34/0.3)_100%)]"
       />
-      {/* A fade under the clear header, so its links read on a bright sky. */}
       <div aria-hidden="true" className="absolute inset-x-0 top-0 -z-10 h-44 bg-[linear-gradient(180deg,rgb(10_46_34/0.7)_0%,rgb(10_46_34/0)_100%)]" />
 
-      <div className={`${SHELL} pb-14 pt-28 sm:pb-20 sm:pt-36 lg:pb-24 lg:pt-40`}>
-        <p className="text-[12px] font-semibold uppercase tracking-[0.22em] text-primary sm:text-[13px]">{PROMISE.eyebrow}</p>
-        <h1 id="campaign-hero-title" className="mt-5 max-w-[46rem] text-[44px] leading-[1.02] tracking-[-0.02em] text-ink sm:text-[64px] lg:text-[84px]">
-          {PROMISE.lead} <em className="font-normal italic text-primary">{PROMISE.accent}</em>
-        </h1>
-        <p className="mt-6 max-w-[40rem] text-[17px] leading-relaxed text-ink-muted sm:text-xl">{PROMISE.support}</p>
-        <CampaignPlanForm />
-      </div>
+      <div className={`${SHELL} grid gap-x-12 gap-y-8 pb-12 pt-20 sm:gap-y-10 sm:pb-20 sm:pt-32 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:pb-20 lg:pt-32 xl:gap-x-16`}>
+        <div className="lg:col-span-7 lg:pt-6">
+          <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-primary sm:text-[13px] sm:tracking-[0.22em]">{PROMISE.eyebrow}</p>
+          <h1 id="campaign-hero-title" className="mt-4 max-w-[42rem] text-[38px] leading-[1.03] tracking-[-0.02em] text-ink sm:text-[56px] lg:text-[68px]">
+            {PROMISE.lead} <em className="font-normal italic text-primary">{PROMISE.accent}</em>
+          </h1>
+          <p className="mt-5 max-w-[36rem] text-[17px] leading-relaxed text-ink sm:mt-6 sm:text-xl">{PROMISE.offer}</p>
+          {/* On phones the plan card's preview shows the same, so the card comes up sooner. */}
+          <ul className="mt-6 hidden max-w-[36rem] gap-2.5 text-base text-ink-muted sm:grid">
+            {PROMISE.receive.map((r) => (
+              <li key={r} className="flex gap-2.5">
+                <Check className="mt-1 h-4 w-4 shrink-0 text-primary" strokeWidth={2.5} aria-hidden="true" />
+                {r}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <div className="border-t border-line bg-eucalyptus-deep/80 backdrop-blur-sm">
-        <dl className={`${SHELL} grid grid-cols-2 lg:grid-cols-4`}>
-          {stats.map((s, i) => (
-            <div
-              key={s.label}
-              className={`flex flex-col-reverse justify-end gap-1.5 py-6 sm:py-8 ${i % 2 === 1 ? "border-l border-line pl-5 sm:pl-8" : "pr-4"} ${i >= 2 ? "border-t border-line lg:border-t-0" : ""} ${i === 2 ? "lg:border-l lg:pl-8" : ""}`}
-            >
-              <dt className="max-w-[15rem] text-sm leading-snug text-ink-muted">{s.label}</dt>
-              <dd className="font-display text-[34px] leading-none tracking-[-0.01em] text-primary sm:text-[42px]">{s.value}</dd>
-            </div>
-          ))}
-        </dl>
+        <div className="lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1">
+          <PlanCard previews={previews} />
+        </div>
+
+        {/* Andy, in one line: the founder band further down tells the story. */}
+        <div className="flex max-w-[36rem] items-center gap-4 border-t border-line pt-6 lg:col-span-7 lg:self-start">
+          <Image src={FOUNDER.photo} alt="" width={52} height={52} className="h-[52px] w-[52px] shrink-0 rounded-full object-cover object-top ring-2 ring-line-strong" />
+          <p className="text-[15px] leading-snug text-ink-muted">
+            <span className="font-semibold text-ink">{`${FOUNDER.name}, founder.`}</span>{" "}
+            {PROMISE.founderLine}{" "}
+            <Link href="/about" className="font-semibold text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+              Andy’s story
+            </Link>
+          </p>
+        </div>
       </div>
     </section>
   );
 }
 
-/** The address-or-suburb field, the move tabs and the plan button. */
-function CampaignPlanForm() {
+/** The plan card: the move, the place, the button and its terms, then the preview. */
+function PlanCard({ previews }: { previews: Record<Move, PlanPreview> }) {
   const router = useRouter();
+  const ctx = useMove();
+  const [localMove, setLocalMove] = useState<Move>(DEFAULT_MOVE);
+  const move = ctx?.move ?? localMove;
+  const setMove = (m: Move) => {
+    if (m === move) return;
+    (ctx?.setMove ?? setLocalMove)(m);
+    track("journey_selected", { journey: journeyForMove(m), placement: "home-hero" });
+  };
+  const m = HOME_MOVES[move];
+  const preview = previews[move];
+
   const uid = useId();
   const inputId = `${uid}-place`;
   const listId = `${uid}-suburbs`;
-  const [move, setMove] = useState<Move>("selling");
+  const termsId = `${uid}-terms`;
   const [text, setText] = useState("");
   const [hits, setHits] = useState<SuburbSearchHit[]>([]);
   const [open, setOpen] = useState(false);
@@ -93,8 +107,6 @@ function CampaignPlanForm() {
   const [picked, setPicked] = useState<SuburbSearchHit | null>(null);
   const [going, setGoing] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const m = MOVES.find((x) => x.id === move)!;
 
   // Suggest suburbs for what's typed: only the suburb name or the postcode is
   // sent, never the street.
@@ -162,116 +174,162 @@ function CampaignPlanForm() {
     }
   };
 
-  const onTabKey = (e: KeyboardEvent<HTMLButtonElement>, i: number) => {
-    const step = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
-    if (!step) return;
-    e.preventDefault();
-    const next = (i + step + MOVES.length) % MOVES.length;
-    setMove(MOVES[next].id);
-    tabRefs.current[next]?.focus();
-  };
-
   const submit = (e: FormEvent) => {
     e.preventDefault();
     if (going) return;
     setGoing(true);
+    const journey = journeyForMove(move);
     const suburb = picked ?? pickSuburb(suburbTerms(text), hits);
-    const qs = new URLSearchParams({ j: m.journey });
+    const qs = new URLSearchParams({ j: journey });
     if (suburb) {
       qs.set("s", suburb.state.toLowerCase());
       qs.set("sub", suburb.slug);
     }
     qs.set("from", "home-hero");
-    track("plan_started", { placement: "home-hero", journey: m.journey, state: suburb?.state ?? null });
+    track("plan_started", { placement: "home-hero", journey, state: suburb?.state ?? null });
     router.push(`/plan?${qs.toString()}`);
   };
 
   return (
-    <form onSubmit={submit} className="mt-9 max-w-[40rem]" role="search" aria-label="Build my campaign plan">
-      <div
-        ref={boxRef}
-        className="tone-light relative flex flex-col gap-2 rounded-[28px] bg-white p-2 shadow-[0_30px_60px_-30px_rgb(0_0_0/0.55)] transition-shadow focus-within:shadow-[0_0_0_4px_rgb(233_176_124/0.45)] sm:flex-row sm:items-center sm:rounded-full"
-      >
-        <label htmlFor={inputId} className="sr-only">
-          Your address or suburb
+    <div className="tone-light overflow-hidden rounded-3xl bg-white text-ink shadow-[0_40px_80px_-40px_rgb(0_0_0/0.7)]">
+      <form onSubmit={submit} className="p-5 sm:p-7" aria-label={`Build your ${PLAN_NAME}`}>
+        <p className="font-display text-[26px] leading-tight tracking-[-0.01em] text-ink sm:text-[28px]">{`Your free ${PLAN_NAME}`}</p>
+
+        <p className="mt-5 text-[15px] font-semibold text-ink" aria-hidden="true">
+          What are you planning?
+        </p>
+        <Segmented label="What are you planning?" options={MOVE_OPTIONS} value={move} onChange={setMove} className="mt-2" />
+        <p className="mt-3 min-h-[4.5rem] text-[15px] leading-relaxed text-ink-muted sm:min-h-[3rem]" aria-live="polite">
+          {m.message}
+        </p>
+
+        <label htmlFor={inputId} className="mt-4 block text-[15px] font-semibold text-ink">
+          {m.fieldLabel} <span className="font-normal text-ink-muted">(optional)</span>
         </label>
-        <input
-          id={inputId}
-          type="text"
-          role="combobox"
-          aria-autocomplete="list"
-          aria-expanded={open}
-          aria-controls={listId}
-          aria-activedescendant={active >= 0 ? `${listId}-${active}` : undefined}
-          autoComplete="off"
-          enterKeyHint="go"
-          value={text}
-          onChange={(e) => onText(e.target.value)}
-          onFocus={() => hits.length > 0 && !picked && setOpen(true)}
-          onKeyDown={onKey}
-          placeholder={m.placeholder}
-          className="h-12 min-w-0 flex-1 rounded-full bg-transparent px-5 text-[17px] text-ink outline-none placeholder:text-ink-subtle sm:h-14"
-        />
+        <div ref={boxRef} className="relative mt-2">
+          <MapPin className="pointer-events-none absolute left-4 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-ink-subtle" aria-hidden="true" />
+          <input
+            id={inputId}
+            type="text"
+            role="combobox"
+            aria-autocomplete="list"
+            aria-expanded={open}
+            aria-controls={listId}
+            aria-activedescendant={active >= 0 ? `${listId}-${active}` : undefined}
+            aria-describedby={`${uid}-place-hint`}
+            autoComplete="off"
+            enterKeyHint="go"
+            value={text}
+            onChange={(e) => onText(e.target.value)}
+            onFocus={() => hits.length > 0 && !picked && setOpen(true)}
+            onKeyDown={onKey}
+            placeholder={m.placeholder}
+            className="h-[52px] w-full rounded-xl border border-line-strong bg-white pl-11 pr-4 text-[16px] text-ink outline-none transition-[border-color,box-shadow] placeholder:text-ink-subtle focus:border-cta focus:ring-[3px] focus:ring-cta/20"
+          />
+          <ul
+            id={listId}
+            role="listbox"
+            aria-label="Suburbs"
+            hidden={!open}
+            className="absolute left-0 right-0 top-full z-30 mt-2 overflow-hidden rounded-2xl border border-line bg-white py-1.5 shadow-[0_24px_48px_-24px_rgb(20_32_27/0.45)]"
+          >
+            {hits.map((h, i) => (
+              <li
+                key={h.slug}
+                id={`${listId}-${i}`}
+                role="option"
+                aria-selected={i === active}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  choose(h);
+                }}
+                onMouseEnter={() => setActive(i)}
+                className={`flex cursor-pointer items-center gap-3 px-4 py-2.5 text-[15px] text-ink ${i === active ? "bg-surface-warm" : ""}`}
+              >
+                <MapPin className="h-4 w-4 shrink-0 text-ink-subtle" aria-hidden="true" />
+                <span>
+                  <span className="font-semibold">{h.name}</span>
+                  <span className="text-ink-muted">{`, ${h.state} ${h.postcode}`}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <p id={`${uid}-place-hint`} className="mt-1.5 text-[13px] leading-snug text-ink-muted">
+          It sets your state’s rules and links your suburb’s profile. Only the suburb or postcode is looked up.
+        </p>
+
         <button
           type="submit"
           disabled={going}
-          className="press inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-cta px-6 text-base font-semibold text-white transition-colors hover:bg-cta-hover disabled:opacity-70 sm:h-14 sm:px-7"
+          aria-describedby={termsId}
+          className="press mt-5 inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-cta px-6 text-[17px] font-semibold text-white transition-colors hover:bg-cta-hover disabled:opacity-70"
         >
-          Build my campaign plan <ArrowRight className="h-[18px] w-[18px] sm:hidden" aria-hidden="true" />
+          {going ? "Opening your questions…" : PLAN_CTA} <ArrowRight className="h-[18px] w-[18px]" aria-hidden="true" />
         </button>
-
-        <ul
-          id={listId}
-          role="listbox"
-          aria-label="Suburbs"
-          hidden={!open}
-          className="absolute left-0 right-0 top-full z-30 mt-2 overflow-hidden rounded-2xl border border-line bg-white py-1.5 shadow-[0_24px_48px_-24px_rgb(20_32_27/0.45)]"
-        >
-          {hits.map((h, i) => (
-            <li
-              key={h.slug}
-              id={`${listId}-${i}`}
-              role="option"
-              aria-selected={i === active}
-              onMouseDown={(e) => {
-                e.preventDefault();
-                choose(h);
-              }}
-              onMouseEnter={() => setActive(i)}
-              className={`flex cursor-pointer items-center gap-3 px-5 py-2.5 text-[15px] text-ink ${i === active ? "bg-surface-warm" : ""}`}
-            >
-              <MapPin className="h-4 w-4 shrink-0 text-ink-subtle" aria-hidden="true" />
-              <span>
-                <span className="font-semibold">{h.name}</span>
-                <span className="text-ink-muted">{`, ${h.state} ${h.postcode}`}</span>
-              </span>
+        <ul id={termsId} className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1 text-[14px] font-medium text-ink-muted" aria-label="About the plan">
+          {PLAN_TERMS.map((t) => (
+            <li key={t} className="inline-flex items-center gap-1.5">
+              <Check className="h-3.5 w-3.5 text-success" strokeWidth={3} aria-hidden="true" />
+              {t}
             </li>
           ))}
         </ul>
+      </form>
+
+      <PreviewPanel preview={preview} note={m.sampleNote} place={picked ? `${picked.name}, ${picked.state}` : null} />
+    </div>
+  );
+}
+
+/** What the plan holds: the next three steps, the tools and the checklist, from a real plan for the move. */
+function PreviewPanel({ preview, note, place }: { preview: PlanPreview; note: string; place: string | null }) {
+  return (
+    <section aria-label="Preview of your plan" className="border-t border-line bg-surface-warm px-5 pb-6 pt-5 sm:px-7">
+      <div className="flex items-baseline justify-between gap-3">
+        <h2 className="shrink-0 whitespace-nowrap text-[13px] font-semibold uppercase tracking-[0.16em] text-primary">What you’ll get</h2>
+        <p className="truncate text-[13px] text-ink-muted">{place ? `For ${place}` : `Sample: ${preview.focus}`}</p>
       </div>
 
-      <div role="radiogroup" aria-label="What are you planning?" className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
-        {MOVES.map((x, i) => {
-          const on = x.id === move;
-          return (
-            <button
-              key={x.id}
-              ref={(el) => {
-                tabRefs.current[i] = el;
-              }}
-              type="button"
-              role="radio"
-              aria-checked={on}
-              tabIndex={on ? 0 : -1}
-              onClick={() => setMove(x.id)}
-              onKeyDown={(e) => onTabKey(e, i)}
-              className={`border-b-2 pb-1 text-[15px] font-semibold transition-colors ${on ? "border-primary text-ink" : "border-transparent text-ink-muted hover:text-ink"}`}
-            >
-              {x.label}
-            </button>
-          );
-        })}
+      <h3 className="mt-4 text-[14px] font-semibold text-ink">Your next three steps</h3>
+      <ol className="mt-2 space-y-1.5">
+        {preview.steps.map((s, i) => (
+          <li key={s.title} className="flex items-start gap-2.5 text-[15px] leading-snug text-ink">
+            <span className="mt-px inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-eucalyptus text-[11px] font-bold text-white" aria-hidden="true">
+              {i + 1}
+            </span>
+            {s.title}
+          </li>
+        ))}
+      </ol>
+
+      <div className="mt-4 grid gap-4 sm:grid-cols-2 sm:gap-5">
+        <div>
+          <h3 className="text-[14px] font-semibold text-ink">Tools for your numbers</h3>
+          <ul className="mt-2 flex flex-wrap gap-1.5">
+            {preview.tools.map((t) => (
+              <li key={t.href}>
+                <Link href={t.href} className="inline-flex rounded-full border border-line-strong bg-white px-3 py-1 text-[13px] font-semibold text-ink hover:border-ink">
+                  {t.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-[14px] font-semibold text-ink">{preview.checklist.title}</h3>
+          <ul className="mt-2 space-y-1.5">
+            {preview.checklist.items.map((it) => (
+              <li key={it} className="flex gap-2 text-[13px] leading-snug text-ink-muted">
+                <span className="mt-0.5 inline-block h-3.5 w-3.5 shrink-0 rounded-[3px] border border-line-strong bg-white" aria-hidden="true" />
+                {it}
+              </li>
+            ))}
+            {preview.checklist.more > 0 && <li className="pl-[1.375rem] text-[13px] text-ink-muted">{`+ ${preview.checklist.more} more`}</li>}
+          </ul>
+        </div>
       </div>
-    </form>
+      <p className="mt-4 text-[12px] leading-snug text-ink-muted">{note}</p>
+    </section>
   );
 }

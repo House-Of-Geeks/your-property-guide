@@ -102,7 +102,7 @@ export default function BuyingHubPage() {
         <HeroTitle>Buying property: where to start</HeroTitle>
         <HeroLead>{`Your budget, the help you qualify for, and every step from pre-approval to the keys.`}</HeroLead>
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3">
-          <Link href="/plan?j=buying" className={`${BUTTON_PRIMARY} justify-center`}>Make a buying plan</Link>
+          <Link href="/plan?j=buying" className={`${BUTTON_PRIMARY} justify-center`}>Build my next-step plan</Link>
           <Link href="/buying-guide?from=buying" className={`${BUTTON_SECONDARY} justify-center`}>Free buying guide (PDF)</Link>
         </div>
         <p className="mt-4 text-sm text-ink-muted">Free to read and use, no sign-up.</p>
