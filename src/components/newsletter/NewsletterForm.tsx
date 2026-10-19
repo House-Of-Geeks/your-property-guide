@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
+import { NEWSLETTER_CONSENT } from "@/lib/newsletter";
 import { ArrowRight, Check } from "lucide-react";
 import { subscribeToNewsletter } from "./actions";
 
@@ -92,7 +93,7 @@ export function NewsletterForm({ variant = "footer" }: NewsletterFormProps) {
         </button>
       </div>
       <p className={`text-xs font-sans ${isFooter ? "text-white/70" : "text-ink-subtle"}`}>
-        Quarterly market updates only. No spam. Unsubscribe anytime.
+        {NEWSLETTER_CONSENT}
       </p>
       {status === "err" && errorMessage && (
         <p className={`text-xs font-sans ${isFooter ? "text-red-300" : "text-red-700"}`}>

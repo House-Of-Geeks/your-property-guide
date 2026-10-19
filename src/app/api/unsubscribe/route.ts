@@ -1,17 +1,26 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
-// GET /api/unsubscribe?t=<token>: stop the optional guidance series (and
-// record it). POST is the one-click form mail clients use. Always lands on
+// GET /api/unsubscribe?t=<token>: stop the optional guidance series and any
+// other marketing email (and record it). Since 20 Oct 2026 it covers every
+// row with the same email address, not just the one whose link was used, so
+// a newsletter signup and a guide download can't keep one alive. POST is the one-click form mail clients use. Always lands on
 // /unsubscribed, whether or not the token matched, so it can't be used to
 // test which tokens exist.
 
 async function unsubscribe(token: string | null): Promise<void> {
   if (!token || token.length < 10) return;
-  const lead = await db.lead.findUnique({ where: { token }, select: { id: true, unsubscribedAt: true } });
+  const lead = await db.lead.findUnique({ where: { token }, select: { id: true, email: true, unsubscribedAt: true } });
   if (!lead || lead.unsubscribedAt) return;
-  await db.lead.update({ where: { id: lead.id }, data: { unsubscribedAt: new Date(), sequenceNextAt: null, marketingConsent: false } });
-  await db.leadEvent.create({ data: { leadId: lead.id, type: "unsubscribed", actor: "customer" } });
+  const now = new Date();
+  await db.lead.update({ where: { id: lead.id }, data: { unsubscribedAt: now, sequenceNextAt: null, marketingConsent: false } });
+  if (lead.email) {
+    await db.lead.updateMany({
+      where: { email: lead.email, id: { not: lead.id }, unsubscribedAt: null },
+      data: { unsubscribedAt: now, sequenceNextAt: null, marketingConsent: false },
+    });
+  }
+  await db.leadEvent.create({ data: { leadId: lead.id, type: "unsubscribed", actor: "customer", detail: { allRowsForEmail: true } } });
 }
 
 export async function GET(request: Request) {

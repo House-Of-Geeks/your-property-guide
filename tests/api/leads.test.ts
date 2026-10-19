@@ -40,7 +40,7 @@ vi.mock("@/lib/email", () => ({
 }));
 
 import { POST } from "@/app/api/leads/route";
-import { AGENT_CALL_CONSENT, BUYING_EMAIL_CONSENT, SELLING_EMAIL_CONSENT } from "@/lib/guide-consent";
+import { AGENT_CALL_CONSENT, BUYING_EMAIL_CONSENT_PLAIN, SELLING_EMAIL_CONSENT, SELLING_EMAIL_CONSENT_PLAIN } from "@/lib/guide-consent";
 import { AGENT_ENQUIRY_TYPES } from "@/components/agent/enquiry-types";
 
 function makeRequest(body: unknown, headers: Record<string, string> = {}): Request {
@@ -271,6 +271,27 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
   const s247 = (status: number, body: unknown) =>
     fetchMock.mockResolvedValue(new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } }));
 
+  describe("the optional tips series (20 Oct 2026)", () => {
+    it("ignores a series tick while the series is switched off, and says so to the thanks page", async () => {
+      const res = await POST(makeRequest({ ...seller, wantsSequence: true }));
+      expect((await res.json()).sequence).toBe(false);
+      const data = dbLeadCreate.mock.calls[0][0].data;
+      expect(data.marketingConsent).toBe(false);
+      expect(data.sequence ?? null).toBeNull();
+      expect(data.consentText).toBe(SELLING_EMAIL_CONSENT_PLAIN);
+    });
+
+    it("starts the series and stores the statement with the box when the series is on", async () => {
+      vi.stubEnv("GUIDANCE_SEQUENCE_ENABLED", "true");
+      const res = await POST(makeRequest({ ...seller, wantsSequence: true }));
+      expect((await res.json()).sequence).toBe(true);
+      const data = dbLeadCreate.mock.calls[0][0].data;
+      expect(data.marketingConsent).toBe(true);
+      expect(data.sequence).toBeTruthy();
+      expect(data.consentText).toBe(SELLING_EMAIL_CONSENT);
+    });
+  });
+
   describe("a download (no phone)", () => {
     it("is saved, YPG emails the guide while Sent 24/7 is off, and the team hears after the response", async () => {
       const res = await POST(makeRequest(seller));
@@ -307,7 +328,8 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       });
       expect(body.lead).toMatchObject({ email: "Sarah@Example.com", first_name: "Sarah", postcode: "4505", state: "QLD" });
       expect("phone" in body.lead).toBe(false);
-      expect(body.consent).toMatchObject({ email_consent: true, consent_text: SELLING_EMAIL_CONSENT });
+      // The series is off by default, so the statement mentions no box (20 Oct 2026).
+      expect(body.consent).toMatchObject({ email_consent: true, consent_text: SELLING_EMAIL_CONSENT_PLAIN });
       expect(body.custom_fields).toMatchObject({ reference_id: "lead_test_123", lead_score: "HOT" });
     });
 
@@ -317,7 +339,7 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       await POST(makeRequest({ ...seller, guideType: "buying", agentStatus: undefined, buyerPersona: "first-home" }));
       const body = JSON.parse(fetchMock.mock.calls[0][1].body);
       expect(body.magnet.slug).toBe("buying-guide");
-      expect(body.consent.consent_text).toBe(BUYING_EMAIL_CONSENT);
+      expect(body.consent.consent_text).toBe(BUYING_EMAIL_CONSENT_PLAIN);
     });
 
     it("falls back to YPG's guide email when Sent 24/7 has no series to start", async () => {
@@ -365,7 +387,7 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       expect(url).toBe("https://api.sent247.com/api/v1/lead-magnets");
       const body = JSON.parse(init.body);
       expect(JSON.stringify(body)).not.toContain("491570156");
-      expect(body.consent.consent_text).toBe(SELLING_EMAIL_CONSENT);
+      expect(body.consent.consent_text).toBe(SELLING_EMAIL_CONSENT_PLAIN);
       await runDeferred();
       expect(fetchMock.mock.calls.map(([u]) => u)).not.toContain("https://api.sent247.com/api/v1/leads");
     });

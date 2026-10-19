@@ -13,6 +13,7 @@
 //      real status).
 
 import { randomBytes, randomUUID } from "node:crypto";
+import { budgetLabel, buyerTypeLabel } from "./labels";
 import { db } from "@/lib/db";
 import { sendMail, ANDY_EMAIL, LEADS_CC_EMAIL } from "@/lib/email";
 import { attributionJson, attributionRowsFor, type LeadAttribution } from "@/lib/attribution-server";
@@ -103,31 +104,47 @@ function itemFrom(row: { id: string; service: string | null; status: string | nu
   return { leadId: row.id, service, status, ...copy };
 }
 
-const DUP_SELECT = { id: true, service: true, status: true, statusReason: true, suburb: true, preferredContact: true, groupId: true } as const;
+const DUP_SELECT = { id: true, service: true, status: true, statusReason: true, suburb: true, preferredContact: true, groupId: true, introConsent: true } as const;
+type DupRow = { id: string; service: string | null; status: string | null; statusReason: string | null; suburb: string | null; preferredContact: string | null; groupId: string | null; introConsent?: boolean | null };
 
-async function findDuplicate(input: IntroRequestInput): Promise<IntroResult | null> {
+/**
+ * The part of a request we've already handled. A double submit (the same
+ * requestKey) matches in full. A repeat by email within 30 minutes matches
+ * only the services asked for again with the same permission answer, so a
+ * newly added service or a newly ticked box is handled, not dropped
+ * (20 Oct 2026). `fresh` is what's left to process.
+ */
+async function findDuplicate(input: IntroRequestInput): Promise<{ matched: DupRow[]; fresh: IntroService[] } | null> {
   const keys = input.services.map((s) => `${input.requestKey}:${s}`);
-  const byKey = await db.lead.findMany({ where: { requestKey: { in: keys } }, select: DUP_SELECT });
-  const recent =
-    byKey.length > 0
-      ? byKey
-      : await db.lead.findMany({
-          where: {
-            type: "introduction-request",
-            email: input.email.trim().toLowerCase(),
-            service: { in: input.services },
-            createdAt: { gte: new Date(Date.now() - DUPLICATE_WINDOW_MS) },
-          },
-          select: DUP_SELECT,
-          orderBy: { createdAt: "desc" },
-          take: input.services.length,
-        });
-  if (recent.length === 0) return null;
+  const byKey: DupRow[] = await db.lead.findMany({ where: { requestKey: { in: keys } }, select: DUP_SELECT });
+  let matched: DupRow[];
+  if (byKey.length > 0) {
+    matched = byKey;
+  } else {
+    const recent: DupRow[] = await db.lead.findMany({
+      where: {
+        type: "introduction-request",
+        email: input.email.trim().toLowerCase(),
+        service: { in: input.services },
+        createdAt: { gte: new Date(Date.now() - DUPLICATE_WINDOW_MS) },
+      },
+      select: DUP_SELECT,
+      orderBy: { createdAt: "desc" },
+    });
+    // The latest row per service, and only when the permission answer is the same.
+    matched = input.services
+      .map((service) => recent.find((r) => r.service === service))
+      .filter((r): r is DupRow => !!r && (r.introConsent ?? false) === (input.consents[r.service as IntroService] === true));
+  }
+  if (matched.length === 0) return null;
   await db.leadEvent.createMany({
-    data: recent.map((r) => ({ leadId: r.id, type: "duplicate-submit", actor: "system", detail: { requestKey: input.requestKey } })),
+    data: matched.map((r) => ({ leadId: r.id, type: "duplicate-submit", actor: "system", detail: { requestKey: input.requestKey } })),
   });
-  return { groupId: recent[0].groupId ?? recent[0].id, duplicate: true, items: recent.map(itemFrom) };
+  const done = new Set(matched.map((r) => r.service));
+  return { matched, fresh: byKey.length > 0 ? [] : input.services.filter((s) => !done.has(s)) };
 }
+
+const duplicateResult = (rows: DupRow[]): IntroResult => ({ groupId: rows[0].groupId ?? rows[0].id, duplicate: true, items: rows.map(itemFrom) });
 
 async function deliver(
   service: IntroService,
@@ -171,6 +188,11 @@ async function deliver(
       preferred_contact: input.preferredContact,
       ...(input.bestTime ? { best_time: BEST_TIME_LABELS[input.bestTime] } : {}),
       ...(input.timeframe ? { timeframe: TIMEFRAME_LABELS[input.timeframe] ?? input.timeframe } : {}),
+      // What the person told the agent (20 Oct 2026): until then only the
+      // team email carried these. The form asks for no bank or ID details.
+      ...(service === "buyers-agent" && input.buyerType ? { buyer_type: buyerTypeLabel(input.buyerType)! } : {}),
+      ...(service === "buyers-agent" && input.budget ? { budget: budgetLabel(input.budget)! } : {}),
+      ...(input.notes?.trim() ? { notes: input.notes.trim().slice(0, 500) } : {}),
     },
   });
   if (outcome.kind === "accepted") return { status: "sent", reason: "accepted by the partner channel", delivery: describeSent247(outcome), outcome };
@@ -191,15 +213,18 @@ export async function handleIntroductionRequest(
   ctx: RequestContext,
 ): Promise<IntroResult> {
   const duplicate = await findDuplicate(input);
-  if (duplicate) return duplicate;
+  if (duplicate && duplicate.fresh.length === 0) return duplicateResult(duplicate.matched);
+  const toCreate = duplicate ? { ...input, services: duplicate.fresh } : input;
   try {
-    return await createIntroductions(input, attribution, ctx);
+    const created = await createIntroductions(toCreate, attribution, ctx);
+    // Part of it was a repeat: answer with the earlier outcome for those services too.
+    return duplicate ? { ...created, items: [...duplicate.matched.map(itemFrom), ...created.items] } : created;
   } catch (err) {
     // Two copies of the same submission arrived together: the first one's
     // rows exist now, so answer with them rather than an error.
     if (isUniqueViolation(err)) {
       const first = await findDuplicate(input);
-      if (first) return first;
+      if (first) return duplicateResult(first.matched);
     }
     throw err;
   }

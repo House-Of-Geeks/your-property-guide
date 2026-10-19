@@ -22,7 +22,7 @@ import { normalizePhone } from "@/lib/utils/phone";
 // A call request from a seller YPG may sell is a lead: POST /api/v1/leads to
 // the vendor campaign, which hands it to one agent. Any lead with an email and
 // a phone also stops that address's guide series in Sent 24/7. A download's
-// mobile (required on the email step since 13 Oct 2026) is for the YPG team
+// mobile (optional on the email step since 14 Oct 2026) is for the YPG team
 // only: the lead magnet body never carries it, and /api/leads posts a lead
 // only for an explicit call request (call: true from the thanks page).
 //

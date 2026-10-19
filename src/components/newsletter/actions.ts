@@ -1,9 +1,11 @@
 "use server";
 
+import { randomBytes } from "node:crypto";
 import { z } from "zod";
 import { headers } from "next/headers";
 import { db } from "@/lib/db";
 import { checkRateLimit, ipKeyFromHeaders } from "@/lib/rate-limit";
+import { NEWSLETTER_CONSENT } from "@/lib/newsletter";
 
 const NewsletterSchema = z.object({
   email: z
@@ -83,6 +85,13 @@ export async function subscribeToNewsletter(
         email: normalised,
         phone: "0000000000", // Lead schema requires phone; sentinel for newsletter rows
         source: "newsletter-signup",
+        // What they agreed to, and a token so an update can carry an
+        // unsubscribe link (20 Oct 2026). A learning row: never to an agent.
+        kind: "learning",
+        marketingConsent: true,
+        consentText: NEWSLETTER_CONSENT,
+        token: randomBytes(18).toString("base64url"),
+        events: { create: { type: "submitted", actor: "customer", detail: { lead: "newsletter" } } },
       },
     });
 

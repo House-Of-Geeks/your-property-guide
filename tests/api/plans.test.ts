@@ -1,10 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 const m = vi.hoisted(() => ({ findUnique: vi.fn(), create: vi.fn(), eventCreate: vi.fn(), sendMail: vi.fn() }));
 vi.mock("@/lib/db", () => ({ db: { lead: { findUnique: m.findUnique, create: m.create }, leadEvent: { create: m.eventCreate } } }));
 vi.mock("@/lib/email", () => ({ sendMail: m.sendMail, ANDY_EMAIL: "andy@theandylife.com", LEADS_CC_EMAIL: "cc@example.com", transporter: {}, DEFAULT_FROM: "f" }));
 
 import { POST } from "@/app/api/plans/route";
+import { PLAN_EMAIL_CONSENT, PLAN_EMAIL_CONSENT_PLAIN } from "@/lib/plans/consent";
 
 const req = (body: unknown) =>
   new Request("https://example.com/api/plans", {
@@ -22,6 +23,9 @@ beforeEach(() => {
   m.eventCreate.mockResolvedValue({});
   m.sendMail.mockResolvedValue(undefined);
 });
+afterEach(() => {
+  vi.unstubAllEnvs();
+});
 
 describe("POST /api/plans (the learning path)", () => {
   it("emails the plan, stores a learning row, and starts no series without the tick", async () => {
@@ -29,6 +33,8 @@ describe("POST /api/plans (the learning path)", () => {
     expect(body).toMatchObject({ ok: true, emailed: true, sequence: null });
     const data = m.create.mock.calls[0][0].data;
     expect(data).toMatchObject({ type: "plan-email", kind: "learning", journey: "selling", state: "QLD", stage: "preparing", marketingConsent: false, sequence: null });
+    // The words the form showed (20 Oct 2026); the series is off, so no box was offered.
+    expect(data.consentText).toBe(PLAN_EMAIL_CONSENT_PLAIN);
     expect(data.phone).toBeUndefined();
     const mail = m.sendMail.mock.calls[0][0];
     expect(mail.to).toBe("pat@example.com");
@@ -38,11 +44,21 @@ describe("POST /api/plans (the learning path)", () => {
     expect(m.sendMail).toHaveBeenCalledTimes(1);
   });
 
-  it("starts the right series only with the separate tick, with an unsubscribe link", async () => {
+  it("ignores a series tick while the series is switched off, so nobody waits for emails that never come", async () => {
+    const body = await (await POST(req({ ...base, wantsSequence: true }))).json();
+    expect(body.sequence).toBeNull();
+    const data = m.create.mock.calls[0][0].data;
+    expect(data).toMatchObject({ marketingConsent: false, sequence: null, sequenceNextAt: null });
+    expect(m.sendMail.mock.calls[0][0].html).not.toContain("email series");
+  });
+
+  it("starts the right series only with the separate tick, with an unsubscribe link, when the series is on", async () => {
+    vi.stubEnv("GUIDANCE_SEQUENCE_ENABLED", "true");
     const body = await (await POST(req({ ...base, wantsSequence: true }))).json();
     expect(body.sequence).toBe("seller-early");
     const data = m.create.mock.calls[0][0].data;
     expect(data.marketingConsent).toBe(true);
+    expect(data.consentText).toBe(PLAN_EMAIL_CONSENT);
     expect(data.sequenceNextAt).toBeInstanceOf(Date);
     expect(m.sendMail.mock.calls[0][0].html).toContain("/api/unsubscribe?t=");
   });

@@ -5,13 +5,17 @@ import { track } from "@/lib/analytics";
 import type { PlanAnswers } from "@/lib/plans/questions";
 import { answersToParams, stageOf } from "@/lib/plans/questions";
 import { SEQUENCES, sequenceFor } from "@/lib/email-sequences";
+import { planEmailConsent } from "@/lib/plans/consent";
+import { useSiteFlags } from "@/components/flags/FlagsProvider";
 import { CheckField, Field, Honeypot, INPUT_CLASS, SubmitButton, describedBy, useRequestKey } from "./fields";
 
 // "Email me this plan" (the learning path). Offered after the plan is on
-// screen. Email only; no phone. The short series is its own unticked box.
+// screen. Email only; no phone. The short series is its own unticked box,
+// offered only while the series really sends (src/lib/flags.ts, 20 Oct 2026).
 
 export function PlanEmailForm({ answers }: { answers: PlanAnswers }) {
   const requestKey = useRequestKey();
+  const { series } = useSiteFlags();
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [wantsSequence, setWantsSequence] = useState(false);
@@ -44,7 +48,7 @@ export function PlanEmailForm({ answers }: { answers: PlanAnswers }) {
           answers: Object.fromEntries(answersToParams(answers).entries()),
           email: value,
           firstName: firstName.trim() || undefined,
-          wantsSequence,
+          wantsSequence: series && wantsSequence,
           requestKey,
           source: "plan-result",
           website,
@@ -86,7 +90,7 @@ export function PlanEmailForm({ answers }: { answers: PlanAnswers }) {
       <div>
         <h2 className="text-xl font-bold text-ink">Email me this plan</h2>
         <p className="mt-1 text-[15px] text-ink-muted leading-relaxed">
-          One email with your steps, links and checklist. Nothing else unless you tick the box. We don’t pass these details to anyone.
+          {planEmailConsent(series)}
         </p>
       </div>
       <Honeypot value={website} onChange={setWebsite} />
@@ -109,9 +113,11 @@ export function PlanEmailForm({ answers }: { answers: PlanAnswers }) {
           <input id="plan-name" type="text" autoComplete="given-name" value={firstName} onChange={(e) => setFirstName(e.target.value)} className={INPUT_CLASS} />
         </Field>
       </div>
-      <CheckField id="plan-sequence" checked={wantsSequence} onChange={setWantsSequence} hint={seq.promise}>
-        Also send me a few short emails for my stage
-      </CheckField>
+      {series && (
+        <CheckField id="plan-sequence" checked={wantsSequence} onChange={setWantsSequence} hint={seq.promise}>
+          Also send me a few short emails for my stage
+        </CheckField>
+      )}
       {formError && (
         <p className="text-sm font-medium text-danger" role="alert">
           {formError}

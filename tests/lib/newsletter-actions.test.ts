@@ -17,6 +17,7 @@ vi.mock("next/headers", () => ({ headers: headersMock }));
 
 // Rate limiter is the REAL in-memory implementation — we exercise it for real.
 import { subscribeToNewsletter } from "@/components/newsletter/actions";
+import { NEWSLETTER_CONSENT } from "@/lib/newsletter";
 
 // Give each test a unique source IP so the shared rate-limit buckets don't
 // bleed across cases. Tests that specifically probe rate limiting pin their
@@ -46,6 +47,15 @@ describe("subscribeToNewsletter", () => {
       email: "reader@example.com",
       source: "newsletter-signup",
     });
+  });
+
+  it("stores the words the form showed, the consent and a token for unsubscribe links (20 Oct 2026)", async () => {
+    await subscribeToNewsletter({ email: "pat@example.com" });
+    const data = dbCreate.mock.calls[0][0].data;
+    expect(data).toMatchObject({ type: "newsletter", kind: "learning", marketingConsent: true, consentText: NEWSLETTER_CONSENT });
+    expect(typeof data.token).toBe("string");
+    expect(data.token.length).toBeGreaterThan(10);
+    expect(NEWSLETTER_CONSENT).not.toMatch(/quarterly|weekly|monthly/i);
   });
 
   it("normalises the stored email to lowercase", async () => {
