@@ -934,3 +934,11 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   .swap-in { animation: none; }
   .ypg-range::-webkit-slider-thumb { transition: none; }
 }
+
+/* Phones (20 Oct 2026): the sticky "Next steps" bar sits over the foot of
+   the screen, so anything scrolled or focused into view stops above it. */
+@media (max-width: 639px) {
+  html {
+    scroll-padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  }
+}

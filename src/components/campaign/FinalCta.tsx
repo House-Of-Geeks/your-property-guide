@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PROMISE, AGREEMENT_CHECK } from "@/lib/service-model";
 import { PLAN_CTA, PLAN_TERMS } from "@/lib/plans/name";
+import { planStartHref } from "@/lib/plans/start";
 import { DEFAULT_MOVE, journeyForMove, useMove } from "@/components/interactive/move-context";
 import { HOME_MOVES } from "./moves";
 import { SHELL } from "./shell";
@@ -14,7 +15,8 @@ import { SHELL } from "./shell";
 // stacks on the dark footer.
 
 export function FinalCta() {
-  const move = useMove()?.move ?? DEFAULT_MOVE;
+  const ctx = useMove();
+  const move = ctx?.move ?? DEFAULT_MOVE;
   const m = HOME_MOVES[move];
   const sells = move !== "buying";
   return (
@@ -24,7 +26,7 @@ export function FinalCta() {
           {PROMISE.closing}
         </h2>
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link href={`/plan?j=${journeyForMove(move)}&from=home-final`} className="press inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-cta px-8 text-base font-semibold text-white transition-colors hover:bg-cta-hover sm:w-auto">
+          <Link href={planStartHref({ journey: journeyForMove(move), place: ctx?.place, from: "home-final" })} className="press inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-cta px-8 text-base font-semibold text-white transition-colors hover:bg-cta-hover sm:w-auto">
             {PLAN_CTA} <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
           <Link href={`/get-help?service=${m.agent.service}&from=home-final`} className="inline-flex h-14 w-full items-center justify-center rounded-full border border-ink px-8 text-base font-semibold text-ink transition-colors hover:bg-ink hover:text-ink-inverse sm:w-auto">

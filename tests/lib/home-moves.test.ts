@@ -101,3 +101,25 @@ describe("the Hamilton case study", () => {
     }
   });
 });
+
+describe("starting a plan", () => {
+  // Every plan button (hero, closing band, header, phone menu, phone bar) builds its link here.
+  it("carries the move, the state and the suburb, or only the move when no suburb is picked", async () => {
+    const { planStartHref } = await import("@/lib/plans/start");
+    const hamilton = { slug: "hamilton-qld-4007", state: "QLD" };
+    for (const journey of ["selling", "buying", "buying-and-selling"] as const) {
+      const withPlace = new URLSearchParams(planStartHref({ journey, place: hamilton, from: "bar-home" }).split("?")[1]);
+      expect(Object.fromEntries(withPlace)).toEqual({ j: journey, s: "qld", sub: "hamilton-qld-4007", from: "bar-home" });
+      const noPlace = new URLSearchParams(planStartHref({ journey, place: null }).split("?")[1]);
+      expect(Object.fromEntries(noPlace)).toEqual({ j: journey });
+    }
+    expect(planStartHref({ journey: null })).toBe("/plan");
+  });
+
+  it("gives the planner what it needs to skip the move and state questions", async () => {
+    const { planStartHref } = await import("@/lib/plans/start");
+    const qs = new URLSearchParams(planStartHref({ journey: "buying", place: { slug: "hamilton-qld-4007", state: "QLD" } }).split("?")[1]);
+    const a = answersFromParams((k) => qs.get(k));
+    expect(a).toMatchObject({ journey: "buying", state: "QLD", suburb: "hamilton-qld-4007" });
+  });
+});

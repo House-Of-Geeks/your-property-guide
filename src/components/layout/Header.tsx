@@ -7,7 +7,8 @@ import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
 import { Logo } from "@/components/brand/Logo";
 import { moveForPath } from "@/lib/journey-paths";
 import { PLAN_CTA_SHORT } from "@/lib/plans/name";
-import { DEFAULT_MOVE, journeyForMove, usePublishedMove } from "@/components/interactive/move-context";
+import { planStartHref } from "@/lib/plans/start";
+import { DEFAULT_MOVE, journeyForMove, usePublishedMove, usePublishedPlace } from "@/components/interactive/move-context";
 
 // Oct 2026 ("confident moves"): the nav follows the move people are making
 // (buying, selling, or both), then guides and tools, then getting help.
@@ -110,11 +111,19 @@ export function Header() {
   const navRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
   // The page's move; on the homepage, the one picked in the hero.
+  // On the homepage, the move and the suburb picked in the hero (20 Oct
+  // 2026), through the same planStartHref as the hero's own button.
   const published = usePublishedMove();
+  const publishedPlace = usePublishedPlace();
   const move = moveForPath(pathname) ?? (pathname === "/" ? journeyForMove(published ?? DEFAULT_MOVE) : null);
-  const planHref = move ? `/plan?j=${move}` : "/plan";
+  const planHref = planStartHref({ journey: move, place: pathname === "/" ? publishedPlace : null, from: "header" });
   const onPlan = pathname === "/plan" || pathname.startsWith("/plan/");
-  const helpHref = move === "buying" ? "/get-help?service=buyers-agent" : move === "selling" ? "/get-help?service=selling-agent" : move === "buying-and-selling" ? "/get-help?service=both" : "/get-help";
+  const helpService = move === "buying" ? "buyers-agent" : move === "selling" ? "selling-agent" : move === "buying-and-selling" ? "both" : null;
+  const helpPlace = pathname === "/" ? publishedPlace : null;
+  const helpQs = new URLSearchParams();
+  if (helpService) helpQs.set("service", helpService);
+  if (helpPlace) helpQs.set("suburb", helpPlace.slug);
+  const helpHref = helpQs.toString() ? `/get-help?${helpQs.toString()}` : "/get-help";
   const helpLabel = move === "buying" ? "Find a buyer’s agent" : "Find an agent";
   const [openGroup, setOpenGroup] = useState<string | null>(null);
 
