@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   description:
     "How much data sits behind every page on Your Property Guide, live counts of suburbs, schools, properties, hazards, and the named source behind each.",
   alternates: { canonical: `${SITE_URL}/data` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/data`,
     title: "Our Data, Sources & Live Numbers",
     description:

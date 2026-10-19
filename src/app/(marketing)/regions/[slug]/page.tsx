@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
@@ -77,7 +78,7 @@ export async function generateMetadata({ params }: RegionPageProps): Promise<Met
     title,
     description,
     alternates: { canonical },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       url: canonical,
       // og titles don't get the root title.template — brand them explicitly
       title: `${title} | ${SITE_NAME}`,

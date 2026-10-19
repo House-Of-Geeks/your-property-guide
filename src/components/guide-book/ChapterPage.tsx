@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -37,7 +38,7 @@ export function chapterMetadata(guide: GuideBookId, slug: string): Metadata {
     title,
     description: c.standfirst,
     alternates: { canonical: url },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       title: c.title,
       description: c.standfirst,
       url,

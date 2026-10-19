@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   description:
     "Browse Australian property data by postcode. Find suburb profiles, median house prices, schools and market statistics for every postcode.",
   alternates: { canonical: `${SITE_URL}/postcodes` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/postcodes`,
     title: "Australian Postcode Property Guide | Your Property Guide",
     description:

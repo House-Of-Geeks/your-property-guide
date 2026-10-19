@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
   description:
     "Compare any two Australian suburbs head to head, median prices, growth, schools, walkability, and risk. Free, fast, no sign-up.",
   alternates: { canonical: `${SITE_URL}/compare` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/compare`,
     title: "Compare Suburbs Side by Side",
     description:

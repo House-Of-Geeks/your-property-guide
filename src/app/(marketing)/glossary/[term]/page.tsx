@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -96,7 +97,7 @@ export async function generateMetadata({ params }: TermPageProps): Promise<Metad
     title: `${entry.term}, Australian Property Glossary`,
     description: meta,
     alternates: { canonical: `${SITE_URL}/glossary/${entry.slug}` },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       url: `${SITE_URL}/glossary/${entry.slug}`,
       title: `${entry.term}, Australian property definition`,
       description: meta,

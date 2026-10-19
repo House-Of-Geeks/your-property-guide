@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   description:
     "The latest property market analysis, capital city updates, RBA cash rate moves, and data refreshes from Your Property Guide. Updated weekly.",
   alternates: { canonical: `${SITE_URL}/insights` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/insights`,
     title: "Australian Property Insights",
     description:

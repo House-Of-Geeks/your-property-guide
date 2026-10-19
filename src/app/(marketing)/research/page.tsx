@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   description:
     "Free property research tools for Australian buyers and investors. Price guides, calculators, suburb profiles, school catchments and more.",
   alternates: { canonical: `${SITE_URL}/research` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/research`,
     title: "Property Research Tools | Your Property Guide",
     description:

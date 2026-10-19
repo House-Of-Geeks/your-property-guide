@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { AgencyCard } from "@/components/agent/AgencyCard";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -31,7 +32,7 @@ export async function generateMetadata({ searchParams }: AgenciesPageProps): Pro
     title,
     description,
     alternates: { canonical: `${SITE_URL}/real-estate-agencies` },
-    openGraph: { url: `${SITE_URL}/real-estate-agencies`, title, description, type: "website" },
+    openGraph: { ...DEFAULT_OG, url: `${SITE_URL}/real-estate-agencies`, title, description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

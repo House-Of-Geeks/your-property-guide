@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
   title: META_TITLE,
   description: META_DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/buying-guide` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     title: META_TITLE,
     description: META_DESCRIPTION,
     type: "website",

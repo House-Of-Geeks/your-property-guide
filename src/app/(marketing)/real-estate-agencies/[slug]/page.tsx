@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -47,7 +48,7 @@ export async function generateMetadata({ params }: AgencyDetailPageProps): Promi
       title,
       description,
       alternates: { canonical: `${SITE_URL}/real-estate-agencies/${slug}` },
-      openGraph: { url: `${SITE_URL}/real-estate-agencies/${slug}`, title, description, type: "website" },
+      openGraph: { ...DEFAULT_OG, url: `${SITE_URL}/real-estate-agencies/${slug}`, title, description, type: "website" },
       ...(agencies.length === 0 ? { robots: { index: false, follow: true } } : {}),
     };
   }
@@ -64,7 +65,7 @@ export async function generateMetadata({ params }: AgencyDetailPageProps): Promi
     title,
     description,
     alternates: { canonical: `${SITE_URL}/real-estate-agencies/${slug}` },
-    openGraph: { url: `${SITE_URL}/real-estate-agencies/${slug}`, title, description, images: [{ url: image }], type: "website" },
+    openGraph: { ...DEFAULT_OG, url: `${SITE_URL}/real-estate-agencies/${slug}`, title, description, images: [{ url: image }], type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

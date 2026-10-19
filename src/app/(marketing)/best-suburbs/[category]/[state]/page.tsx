@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
@@ -91,7 +92,7 @@ async function cityEditionMetadata(category: RankingCategory, city: CapitalCity)
     description,
     alternates: { canonical },
     robots: hasCityEdition(category, city.state, edition.suburbs.length) ? undefined : { index: false, follow: true },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       url: canonical,
       title: `${title} | ${SITE_NAME}`,
       description,
@@ -127,7 +128,7 @@ export async function generateMetadata({
     // A state with nothing to rank (no 12-month change, no suburb-level
     // rent) says so and stays out of the index until there is.
     robots: isRanked(category, upperState) ? undefined : { index: false, follow: true },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       url: canonical,
       // og titles don't get the root title.template — brand them explicitly
       title: `${title} | ${SITE_NAME}`,

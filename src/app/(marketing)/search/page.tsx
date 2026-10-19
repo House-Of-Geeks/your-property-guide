@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, MapPin, GraduationCap, BookOpen, FileText, Search as SearchIcon } from "lucide-react";
@@ -30,7 +31,7 @@ export async function generateMetadata({
     // We canonicalise to the param-less /search to avoid query-string indexing pollution
     alternates: { canonical: `${SITE_URL}/search` },
     robots: query ? { index: false, follow: true } : { index: true, follow: true },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       url: `${SITE_URL}/search`,
       // og titles don't get the root title.template — brand them explicitly
       // (the no-query title already ends with the site name, so skip it there)

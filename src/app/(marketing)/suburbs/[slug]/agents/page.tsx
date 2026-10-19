@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
@@ -46,7 +47,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     // local figure; the page still serves a visitor but stays out of the
     // index (and the sitemap, see subpages/sitemap.ts).
     robots: data.model.indexable ? undefined : { index: false, follow: true },
-    openGraph: { url: canonical, title: `${data.model.title} | ${SITE_NAME}`, description: data.model.description, type: "website" },
+    openGraph: { ...DEFAULT_OG, url: canonical, title: `${data.model.title} | ${SITE_NAME}`, description: data.model.description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

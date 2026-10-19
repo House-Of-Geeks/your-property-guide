@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { TrendingUp, TrendingDown } from "lucide-react";
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   description:
     "Compare median house and unit prices across Australian suburbs. Updated quarterly from official government data.",
   alternates: { canonical: `${SITE_URL}/price-guide` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/price-guide`,
     title: "Property Price Guide | Australian Suburb Median Prices",
     description:

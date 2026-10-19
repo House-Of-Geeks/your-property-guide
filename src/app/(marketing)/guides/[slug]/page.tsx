@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -56,7 +57,7 @@ export async function generateMetadata({ params }: BlogDetailPageProps): Promise
     title: blogTitle(post),
     description: post.excerpt,
     alternates: { canonical: `${SITE_URL}/guides/${slug}` },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       url: `${SITE_URL}/guides/${slug}`,
       title: post.title,
       description: post.excerpt,

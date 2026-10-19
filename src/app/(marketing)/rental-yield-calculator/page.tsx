@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { Fragment } from "react";
 import Link from "next/link";
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
   title: META_TITLE,
   description: META_DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/${FRONTMATTER.slug}` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/${FRONTMATTER.slug}`,
     title: META_TITLE,
     description: META_DESCRIPTION,

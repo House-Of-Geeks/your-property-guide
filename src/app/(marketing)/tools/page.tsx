@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
   description:
     `All our free property tools in one place: ${CALCULATORS.length} calculators, the agent proposal worksheet, the suburb match quiz and the suburb comparison tool. No sign-up.`,
   alternates: { canonical: `${SITE_URL}/tools` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/tools`,
     title: "Free Australian Property Tools, Quizzes & Calculators",
     description:

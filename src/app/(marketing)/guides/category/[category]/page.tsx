@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading, type PhotoKey } from "@/components/premium";
@@ -50,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${label} Articles | Property Blog`,
     description: `Browse all ${label} articles and guides from the ${SITE_NAME} property research blog.`,
     alternates: { canonical: `${SITE_URL}/guides/category/${slug}` },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       url: `${SITE_URL}/guides/category/${slug}`,
       title: `${label} Articles | Property Blog | ${SITE_NAME}`,
       description: `Browse all ${label} articles and guides from the ${SITE_NAME} property research blog.`,

@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -34,7 +35,7 @@ export async function generateMetadata(props: { params: Promise<{ type: string }
     title: { absolute: page.title },
     description: page.description,
     alternates: { canonical: url },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       title: page.title,
       description: page.description,
       url,

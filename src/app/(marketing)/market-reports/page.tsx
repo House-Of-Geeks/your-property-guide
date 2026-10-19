@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
   description:
     "State-by-state Australian property market reports with median prices, growth trends, and suburb rankings. Updated quarterly.",
   alternates: { canonical: `${SITE_URL}/market-reports` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/market-reports`,
     title: `Australian Property Market Reports | ${SITE_NAME}`,
     description:

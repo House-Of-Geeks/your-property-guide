@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Database, BookOpen, Wrench, AlertCircle } from "lucide-react";
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   description:
     "Every significant data refresh, guide release, tool launch, and correction logged with date and source. Full transparency on what changed and when.",
   alternates: { canonical: `${SITE_URL}/data-updates` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/data-updates`,
     title: "Data Updates & Changelog",
     description:

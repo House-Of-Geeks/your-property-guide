@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FHSS_RELEASE_BUSINESS_DAYS, FHSS_TAX_PCT, FHSS_TIMING } from "@/lib/data/fhss";
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
   title: FRONTMATTER.title,
   description: FRONTMATTER.description,
   alternates: { canonical: `${SITE_URL}/guides/${FRONTMATTER.slug}` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/guides/${FRONTMATTER.slug}`,
     title: FRONTMATTER.title,
     description: FRONTMATTER.description,

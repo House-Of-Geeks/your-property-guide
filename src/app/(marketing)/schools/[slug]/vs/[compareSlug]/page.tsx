@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -49,7 +50,7 @@ export async function generateMetadata({ params }: SchoolVsPageProps): Promise<M
     description,
     alternates: { canonical },
     // og titles don't get the root title.template — brand them explicitly
-    openGraph: { url: canonical, title: `${title} | ${SITE_NAME}`, description, type: "website" },
+    openGraph: { ...DEFAULT_OG, url: canonical, title: `${title} | ${SITE_NAME}`, description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -104,7 +105,7 @@ export async function generateMetadata({ params }: SuburbDetailPageProps): Promi
     description: suburbDescription(suburb),
     alternates: { canonical: `${SITE_URL}/suburbs/${slug}` },
     robots: thin ? { index: false, follow: true } : undefined,
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       url: `${SITE_URL}/suburbs/${slug}`,
       title: suburbTitle(suburb),
       description: suburbDescription(suburb),

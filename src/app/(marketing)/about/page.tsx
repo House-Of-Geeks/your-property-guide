@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   title: `About ${SITE_NAME}: Andy McMaster and the $20 million campaign`,
   description: "Andy McMaster sold $10 million to $20 million homes across Australia, then advised big property companies. Why every home deserves the same campaign, and how we’re paid.",
   alternates: { canonical: `${SITE_URL}/about` },
-  openGraph: { url: `${SITE_URL}/about`, title: `About ${SITE_NAME}: Andy McMaster and the $20 million campaign`, description: "Why every home deserves a $20 million campaign, who writes the guides, and how we’re paid.", type: "website" },
+  openGraph: { ...DEFAULT_OG, url: `${SITE_URL}/about`, title: `About ${SITE_NAME}: Andy McMaster and the $20 million campaign`, description: "Why every home deserves a $20 million campaign, who writes the guides, and how we’re paid.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   title: "Find a School | Browse 9,600+ Australian Schools",
   description: "Browse 9,600+ schools across Australia. Filter by type, sector, and state. Click any school to view its catchment area and nearby properties.",
   alternates: { canonical: `${SITE_URL}/schools` },
-  openGraph: { url: `${SITE_URL}/schools`, title: "Find a School | Browse 9,600+ Australian Schools", description: "Browse 9,600+ schools across Australia. Filter by type, sector, and state.", type: "website" },
+  openGraph: { ...DEFAULT_OG, url: `${SITE_URL}/schools`, title: "Find a School | Browse 9,600+ Australian Schools", description: "Browse 9,600+ schools across Australia. Filter by type, sector, and state.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

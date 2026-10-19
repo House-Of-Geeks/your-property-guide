@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -47,7 +48,7 @@ export async function generateMetadata({
     title,
     description,
     alternates: { canonical: `${SITE_URL}/market-reports/${state}` },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       url: `${SITE_URL}/market-reports/${state}`,
       // og titles don't get the root title.template — brand them explicitly
       title: `${title} | ${SITE_NAME}`,

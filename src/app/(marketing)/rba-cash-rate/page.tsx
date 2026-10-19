@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { TrendingDown, TrendingUp, Minus, ArrowRight, Info } from "lucide-react";
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   description:
     "Track the RBA cash rate history and understand how interest rate changes affect Australian property prices. Updated with each RBA decision.",
   alternates: { canonical: `${SITE_URL}/rba-cash-rate` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/rba-cash-rate`,
     title: `RBA Cash Rate History & Property Market Impact | ${SITE_NAME}`,
     description:

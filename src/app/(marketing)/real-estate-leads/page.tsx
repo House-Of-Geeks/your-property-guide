@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
   title: { absolute: META_TITLE },
   description: META_DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/real-estate-leads` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     title: META_TITLE,
     description: META_DESCRIPTION,
     url: `${SITE_URL}/real-estate-leads`,

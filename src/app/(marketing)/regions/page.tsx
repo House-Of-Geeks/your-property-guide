@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   description:
     "Browse real estate market data, median house prices, and properties for sale across every region in Australia.",
   alternates: { canonical: `${SITE_URL}/regions` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/regions`,
     title: "Property Regions Across Australia",
     description: "Browse real estate and suburb profiles across every Australian region.",

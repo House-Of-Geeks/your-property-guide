@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   description:
     "Free Australian property guides covering buying, investing, renting, selling, and moving. Plain-English, ungated, updated for 2026.",
   alternates: { canonical: `${SITE_URL}/guides` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/guides`,
     title: `Property Guides | ${SITE_NAME}`,
     description:

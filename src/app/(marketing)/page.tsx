@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { CampaignHomepage } from "@/components/campaign/CampaignHomepage";
 import { ALL_GUIDES } from "@/lib/guides/registry";
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   title: { absolute: `Your Property Guide: ${META_TITLE.charAt(0).toLowerCase()}${META_TITLE.slice(1)}` },
   description: META_DESCRIPTION,
   alternates: { canonical: SITE_URL },
-  openGraph: { title: META_TITLE, description: META_DESCRIPTION, type: "website" },
+  openGraph: { ...DEFAULT_OG, title: META_TITLE, description: META_DESCRIPTION, type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
