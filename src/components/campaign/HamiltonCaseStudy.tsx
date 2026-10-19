@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { HAMILTON, dollars, expectedIncrease } from "@/lib/case-studies";
@@ -9,8 +10,9 @@ import { SHELL } from "./shell";
 // the facts Andy supplied (src/lib/case-studies.ts): the place, the
 // property, its starting condition, the work, the spend and the two expected
 // sale prices. The three figures sit side by side so they're easy to compare,
-// and the small print says what they are and aren't. No photographs until
-// real ones of the apartment exist.
+// and the small print says what they are and aren't. The pictures are
+// labelled illustrations (the buyer doesn't want photos of her apartment
+// online), drawn in paint so they can't be mistaken for photographs.
 
 const LESSONS = [
   {
@@ -51,7 +53,20 @@ export function HamiltonCaseStudy() {
           </BandLead>
         </div>
 
-        <dl className="mt-10 grid overflow-hidden rounded-3xl border border-line bg-white sm:grid-cols-3">
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 sm:gap-6">
+          {c.illustrations.map((im) => (
+            <figure key={im.src} className="overflow-hidden rounded-3xl border border-line bg-white">
+              <div className="relative aspect-[4/3] bg-surface-warm">
+                <Image src={im.src} alt={im.alt} fill sizes="(min-width: 1280px) 600px, (min-width: 640px) 48vw, 100vw" className="object-cover" />
+                <span className="absolute left-3 top-3 rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-ink shadow-sm">Illustration</span>
+              </div>
+              <figcaption className="px-5 py-3 text-[15px] text-ink-muted">{im.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+        <p className="mt-3 text-sm text-ink-muted">These are illustrations, not photographs of the Hamilton apartment or the work done.</p>
+
+        <dl className="mt-8 grid overflow-hidden rounded-3xl border border-line bg-white sm:grid-cols-3">
           {figures.map((f, i) => (
             <div
               key={f.label}
