@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -66,7 +67,7 @@ export async function generateMetadata({ params }: PostcodePageProps): Promise<M
     title,
     description,
     alternates: { canonical: `${SITE_URL}/postcodes/${postcode}` },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       url: `${SITE_URL}/postcodes/${postcode}`,
       title,
       description,

@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ExternalLink, Home, Plus, UserCheck } from "lucide-react";
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: `${SITE_URL}${PATH}` },
-  openGraph: { url: `${SITE_URL}${PATH}`, title: TITLE, description: DESCRIPTION, type: "article" },
+  openGraph: { ...DEFAULT_OG, url: `${SITE_URL}${PATH}`, title: TITLE, description: DESCRIPTION, type: "article" },
   twitter: { card: "summary_large_image" },
 };
 

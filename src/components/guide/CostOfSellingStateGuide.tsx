@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Callout, GuideArticleLayout, SellingCostTable, Sources, type GuideTOCEntry, type RelatedGuide } from "@/components/guide";
@@ -18,7 +19,7 @@ export function costOfSellingMetadata(state: StateCode): Metadata {
     title: f.title,
     description: f.description,
     alternates: { canonical: `${SITE_URL}/guides/${f.slug}` },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       url: `${SITE_URL}/guides/${f.slug}`,
       title: f.title,
       description: f.description,

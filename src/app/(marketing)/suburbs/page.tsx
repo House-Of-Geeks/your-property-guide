@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { CloudSun, Footprints, GraduationCap, House, ShieldAlert, TrendingUp } from "lucide-react";
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   title: "Browse All Australian Suburbs | Property Data & Profiles",
   description: "Search every Australian suburb for property market data, median prices, school catchments, climate, walkability, and local insights.",
   alternates: { canonical: `${SITE_URL}/suburbs` },
-  openGraph: { url: `${SITE_URL}/suburbs`, title: "Browse All Australian Suburbs", description: "Search every Australian suburb for property market data.", type: "website" },
+  openGraph: { ...DEFAULT_OG, url: `${SITE_URL}/suburbs`, title: "Browse All Australian Suburbs", description: "Search every Australian suburb for property market data.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

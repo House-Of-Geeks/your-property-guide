@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   description:
     "Discover the best Australian suburbs ranked by schools, growth, affordability, walkability, flood risk, and rental yield. Find your perfect suburb.",
   alternates: { canonical: `${SITE_URL}/best-suburbs` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/best-suburbs`,
     title: "Best Suburbs in Australia | Your Property Guide",
     description:

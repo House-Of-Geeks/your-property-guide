@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import Link from "next/link";
@@ -95,7 +96,7 @@ export async function generateMetadata({ params }: ComparePageProps): Promise<Me
     title,
     description,
     alternates: { canonical: canonicalUrl },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       url: canonicalUrl,
       title,
       description,

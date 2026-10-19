@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
   description:
     "Every figure on Your Property Guide is sourced, dated, and replaceable when we get better data. Here's where each one comes from, how often it refreshes, and the gaps we're honest about.",
   alternates: { canonical: `${SITE_URL}/methodology` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/methodology`,
     title: "How we source the data, and what we don't claim to know",
     description: "Every figure on Your Property Guide is sourced, dated, and replaceable when we get better data.",

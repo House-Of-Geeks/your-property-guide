@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }: StatePageProps): Promise<Meta
     title,
     description,
     alternates: { canonical: `${SITE_URL}/states/${state.toLowerCase()}` },
-    openGraph: {
+    openGraph: { ...DEFAULT_OG,
       url: `${SITE_URL}/states/${state.toLowerCase()}`,
       // og titles don't get the root title.template — brand them explicitly.
       title: `${title} | ${SITE_NAME}`,

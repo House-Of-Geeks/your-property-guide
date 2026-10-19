@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -54,7 +55,7 @@ export async function generateMetadata({ params }: SchoolPageProps): Promise<Met
     title,
     description,
     alternates: { canonical: `${SITE_URL}/schools/${slug}` },
-    openGraph: { url: `${SITE_URL}/schools/${slug}`, title, description, type: "website" },
+    openGraph: { ...DEFAULT_OG, url: `${SITE_URL}/schools/${slug}`, title, description, type: "website" },
     twitter: { card: "summary_large_image" },
   };
 }

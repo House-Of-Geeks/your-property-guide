@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
   description:
     "Complete glossary of Australian property and real estate terms. Plain English definitions for buyers, sellers, investors and renters.",
   alternates: { canonical: `${SITE_URL}/glossary` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/glossary`,
     title: "Property Glossary: A-Z of Australian Real Estate Terms",
     description:

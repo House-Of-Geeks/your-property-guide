@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   description:
     "Answer four questions and we'll match you with five Australian suburbs that fit your budget, priorities, and lifestyle. Free, free of sign-up, instant results.",
   alternates: { canonical: `${SITE_URL}/find-your-suburb` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/find-your-suburb`,
     title: "Find Your Suburb: 30-Second Australian Property Quiz",
     description:

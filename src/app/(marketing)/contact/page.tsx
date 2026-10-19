@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Phone, Mail, Clock, ArrowRight } from "lucide-react";
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title: `Contact ${SITE_NAME}`,
   description: "Get in touch with Your Property Guide. We read every message ourselves and reply within one business day.",
   alternates: { canonical: `${SITE_URL}/contact` },
-  openGraph: { url: `${SITE_URL}/contact`, title: `Contact ${SITE_NAME}`, description: "Get in touch with Your Property Guide.", type: "website" },
+  openGraph: { ...DEFAULT_OG, url: `${SITE_URL}/contact`, title: `Contact ${SITE_NAME}`, description: "Get in touch with Your Property Guide.", type: "website" },
 };
 
 const CONTACTS = [

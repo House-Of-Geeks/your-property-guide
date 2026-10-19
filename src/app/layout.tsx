@@ -3,6 +3,7 @@ import { Schibsted_Grotesk, Source_Serif_4 } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/constants";
+import { DEFAULT_OG_IMAGES } from "@/lib/og/defaults";
 import { Providers } from "@/components/analytics/Providers";
 
 // Two faces (v6, 15 Oct 2026): Schibsted Grotesk for body text, labels and
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "en_AU",
     url: SITE_URL,
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: `${SITE_NAME}: it’s the campaign that wins. Not the market.` }],
+    images: DEFAULT_OG_IMAGES,
   },
   twitter: {
     card: "summary_large_image",

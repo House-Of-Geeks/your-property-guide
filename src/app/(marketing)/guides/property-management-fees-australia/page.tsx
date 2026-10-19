@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import {
   GuideArticleLayout,
@@ -51,7 +52,7 @@ export const metadata: Metadata = {
   title: SEO_TITLE,
   description: FRONTMATTER.description,
   alternates: { canonical: `${SITE_URL}/guides/${FRONTMATTER.slug}` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/guides/${FRONTMATTER.slug}`,
     title: SEO_TITLE,
     description: FRONTMATTER.description,

@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MapPin, Home, TrendingUp } from "lucide-react";
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   description:
     "Explore property markets across all Australian states and territories. Suburb data, median prices, and local insights for QLD, NSW, VIC, WA, SA, TAS, NT, and ACT.",
   alternates: { canonical: `${SITE_URL}/states` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/states`,
     title: "Australian States Property Guide | Your Property Guide",
     description:

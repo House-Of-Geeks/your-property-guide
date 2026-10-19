@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
   description:
     "Browse every section of Your Property Guide on a single page. Suburb data, calculators, guides, and tools.",
   alternates: { canonical: `${SITE_URL}/site-map` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/site-map`,
     title: "Site Map | Your Property Guide",
     description: "Every section of Your Property Guide on one page.",

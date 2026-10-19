@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: AgentProfilePageProps): Promi
     title,
     description,
     alternates: { canonical: `${SITE_URL}/agents/${slug}` },
-    openGraph: { url: `${SITE_URL}/agents/${slug}`, title, description, images: [{ url: image }], type: "profile" },
+    openGraph: { ...DEFAULT_OG, url: `${SITE_URL}/agents/${slug}`, title, description, images: [{ url: image }], type: "profile" },
     twitter: { card: "summary_large_image" },
   };
 }

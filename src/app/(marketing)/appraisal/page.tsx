@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ArrowRight, CheckCircle } from "lucide-react";
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   title: "Free Property Appraisal from a Local Agent | No Obligation",
   description: "Ask for a free property appraisal from one participating agent who sells in your suburb: what an appraisal is, how it differs from a bank valuation or online estimate, what to have ready, and exactly what happens after you ask.",
   alternates: { canonical: `${SITE_URL}/appraisal` },
-  openGraph: { url: `${SITE_URL}/appraisal`, title: "Free Property Appraisal from a Local Agent | No Obligation", description: "Ask for a free property appraisal from one participating local agent, only with your permission.", type: "website" },
+  openGraph: { ...DEFAULT_OG, url: `${SITE_URL}/appraisal`, title: "Free Property Appraisal from a Local Agent | No Obligation", description: "Ask for a free property appraisal from one participating local agent, only with your permission.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

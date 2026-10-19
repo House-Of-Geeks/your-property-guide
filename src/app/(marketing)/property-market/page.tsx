@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -39,7 +40,7 @@ export const metadata: Metadata = {
   description:
     "House prices and market data for every Australian capital: Sydney, Melbourne, Brisbane, Perth, Adelaide, Hobart, Canberra and Darwin. Suburb medians, growth and rankings from verified sales data.",
   alternates: { canonical: `${SITE_URL}/property-market` },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     url: `${SITE_URL}/property-market`,
     title: "Australian Property Market 2026 — City House Prices & Growth",
     description:

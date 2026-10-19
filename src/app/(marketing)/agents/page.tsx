@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
     robots: { index: false, follow: true },
   description: "Browse experienced local real estate agents across Australia.",
   alternates: { canonical: `${SITE_URL}/agents` },
-  openGraph: { url: `${SITE_URL}/agents`, title: "Find a Real Estate Agent", description: "Browse experienced local real estate agents across Australia.", type: "website" },
+  openGraph: { ...DEFAULT_OG, url: `${SITE_URL}/agents`, title: "Find a Real Estate Agent", description: "Browse experienced local real estate agents across Australia.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 

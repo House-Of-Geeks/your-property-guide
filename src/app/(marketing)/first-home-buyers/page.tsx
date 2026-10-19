@@ -1,3 +1,4 @@
+import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { PersonaHubLayout } from "@/components/journey";
 import { PERSONA_BY_ID } from "@/lib/constants/journey";
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   title: content.metaTitle,
   description: content.metaDescription,
   alternates: { canonical: persona.hubPath },
-  openGraph: {
+  openGraph: { ...DEFAULT_OG,
     title: content.metaTitle,
     description: content.metaDescription,
     type: "website",
