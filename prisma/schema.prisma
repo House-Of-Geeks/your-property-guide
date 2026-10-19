@@ -632,7 +632,7 @@ model Lead {
   bestTime         String?
   // Introductions: where the request is up to. Set from real outcomes only
   // (Sent 24/7's response, the team or the partner recording it), never
-  // from a click. See src/lib/introductions/status.ts.
+  // from a click. See INTRO_STATUSES in src/lib/introductions/rules.ts.
   status           String?
   statusReason     String?
   statusAt         DateTime?
@@ -666,7 +666,7 @@ model LeadEvent {
   id        String   @id @default(cuid())
   leadId    String
   lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  // src/lib/introductions/status.ts LEAD_EVENT_TYPES
+  // LEAD_EVENT_TYPES in src/lib/introductions/rules.ts
   type      String
   // "system" | "team" | "partner" | "customer"
   actor     String

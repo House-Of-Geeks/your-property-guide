@@ -119,8 +119,10 @@ export const INTRODUCTION_STEPS = [
     body: `The agent contacts you the way you asked, normally ${RESPONSE_WINDOW}. You decide whether to meet them. There’s no obligation.`,
   },
   {
-    title: "We check it was useful",
-    body: "A short email afterwards asks how it went. It tells us which agents keep their place.",
+    // True whether or not the check-in email is switched on: the
+    // confirmation always carries the feedback link (20 Oct 2026).
+    title: "Tell us how it went",
+    body: "Your confirmation email has a link to tell us how the introduction went, any time. It tells us which agents keep their place.",
   },
 ] as const;
 

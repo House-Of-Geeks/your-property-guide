@@ -168,6 +168,44 @@ describe("POST /api/introductions", () => {
     expect(m.eventCreateMany).toHaveBeenCalledWith({ data: [expect.objectContaining({ leadId: "lead_existing", type: "duplicate-submit" })] });
   });
 
+  it("handles a newly added service within 30 minutes instead of dropping it, and doesn't resend the first", async () => {
+    // Earlier: a selling request with permission. Now: the same person adds a buyer's agent.
+    m.findMany
+      .mockResolvedValueOnce([]) // requestKey lookup
+      .mockResolvedValueOnce([
+        { id: "lead_earlier", service: "selling-agent", status: "sent", statusReason: "accepted", suburb: "burpengary-qld-4505", preferredContact: "sms", groupId: "g1", introConsent: true },
+      ]);
+    const both = { ...seller, services: ["selling-agent", "buyers-agent"], consents: { "selling-agent": true, "buyers-agent": true }, journey: "buying-and-selling", buyerStatus: "not-started", requestKey: "key-second-1" };
+    const body = await (await POST(req(both))).json();
+    expect(m.create).toHaveBeenCalledTimes(1);
+    expect(m.create.mock.calls[0][0].data.service).toBe("buyers-agent");
+    expect(fetchMock).not.toHaveBeenCalled(); // the selling request isn't sent twice; buyer's agents are held
+    expect(body.items.map((i: { leadId: string }) => i.leadId)).toEqual(["lead_earlier", expect.stringContaining("buyers-agent")]);
+    expect(m.eventCreateMany).toHaveBeenCalledWith({ data: [expect.objectContaining({ leadId: "lead_earlier", type: "duplicate-submit" })] });
+  });
+
+  it("handles a newly ticked permission within 30 minutes instead of returning the earlier refusal", async () => {
+    m.findMany
+      .mockResolvedValueOnce([]) // requestKey lookup
+      .mockResolvedValueOnce([
+        { id: "lead_no_tick", service: "selling-agent", status: "not-introduced", statusReason: "no permission given", suburb: "burpengary-qld-4505", preferredContact: "sms", groupId: "g0", introConsent: false },
+      ]);
+    const body = await (await POST(req({ ...seller, requestKey: "key-second-2" }))).json();
+    expect(body.duplicate).toBe(false);
+    expect(m.create).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(body.items[0]).toMatchObject({ status: "sent" });
+  });
+
+  it("passes the person's note to the agent, alongside their answers", async () => {
+    await POST(req({ ...seller, notes: "Tenant in place until March", requestKey: "key-notes-1" }));
+    const sent = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(sent.custom_fields.notes).toBe("Tenant in place until March");
+    // Buyer-only answers never ride on a selling request.
+    expect(sent.custom_fields.buyer_type).toBeUndefined();
+    expect(sent.custom_fields.budget).toBeUndefined();
+  });
+
   it("answers a simultaneous double submit with the first request's outcome, not an error", async () => {
     // Both copies passed the duplicate check; the database's unique key stops the second.
     m.findMany

@@ -10,6 +10,8 @@ import { answersFromParams, stageOf } from "@/lib/plans/questions";
 import { buildPlan, planHref } from "@/lib/plans/engine";
 import { buildPlanEmailHtml, buildPlanEmailText, planEmailSubject } from "@/lib/journey-emails";
 import { SEQUENCES, dueAt, sequenceFor } from "@/lib/email-sequences";
+import { guidanceSeriesEnabled } from "@/lib/flags";
+import { planEmailConsent } from "@/lib/plans/consent";
 
 // POST /api/plans: email someone the next-step plan they just made (the
 // learning path, Oct 2026). The plan is already on their screen; this only
@@ -52,7 +54,11 @@ export async function POST(request: Request) {
 
     const plan = buildPlan(answers);
     const stage = stageOf(answers);
-    const sequence = input.wantsSequence ? sequenceFor(answers.journey, stage) : null;
+    // The series only while it really sends: a tick from a page built
+    // before it was switched off is ignored (20 Oct 2026).
+    const series = guidanceSeriesEnabled();
+    const wantsSequence = series && input.wantsSequence;
+    const sequence = wantsSequence ? sequenceFor(answers.journey, stage) : null;
     const now = new Date();
     const token = randomBytes(18).toString("base64url");
     const attribution = attributionFromRequest(request);
@@ -68,7 +74,9 @@ export async function POST(request: Request) {
         firstName: input.firstName?.trim() || "",
         email: input.email.trim().toLowerCase(),
         source: input.source ?? "plan",
-        marketingConsent: input.wantsSequence,
+        marketingConsent: wantsSequence,
+        // The words the form showed, as the guides and the agreement check store theirs.
+        consentText: planEmailConsent(series),
         sequence,
         sequenceStep: sequence ? 0 : null,
         sequenceNextAt: sequence ? dueAt(sequence, 0, now) : null,

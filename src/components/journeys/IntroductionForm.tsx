@@ -22,6 +22,7 @@ import {
   type IntroService,
 } from "@/lib/service-model";
 import { availabilityNote, type Timeframe } from "@/lib/introductions/rules";
+import { INTRO_BUDGETS, INTRO_BUYER_TYPES } from "@/lib/introductions/labels";
 import { TIMEFRAMES } from "@/lib/plans/questions";
 import type { AustralianState } from "@/lib/utils/stamp-duty";
 import type { Journey } from "@/lib/lead-kinds";
@@ -85,21 +86,9 @@ const BUYER_STATUS: ChoiceOption<"not-started" | "comparing" | "already-engaged"
   { id: "already-engaged", label: "Yes, I’ve engaged one", sub: "I’ve signed with a buyer’s agent" },
 ];
 
-const BUYER_TYPES: ChoiceOption<string>[] = [
-  { id: "first-home", label: "My first home" },
-  { id: "next-home", label: "My next home" },
-  { id: "investing", label: "An investment" },
-  { id: "downsizing", label: "Downsizing" },
-];
-
-const BUDGETS: ChoiceOption<string>[] = [
-  { id: "under-600k", label: "Under $600k" },
-  { id: "600k-900k", label: "$600k to $900k" },
-  { id: "900k-1.3m", label: "$900k to $1.3m" },
-  { id: "1.3m-2m", label: "$1.3m to $2m" },
-  { id: "over-2m", label: "Over $2m" },
-  { id: "unsure", label: "Not sure yet" },
-];
+// Shared with the Sent 24/7 payload (src/lib/introductions/labels.ts).
+const BUYER_TYPES: ChoiceOption<string>[] = [...INTRO_BUYER_TYPES];
+const BUDGETS: ChoiceOption<string>[] = [...INTRO_BUDGETS];
 
 const stateFromSlug = (slug: string | null): AustralianState | null => {
   const m = slug?.match(/-([a-z]{2,3})-\d{4}$/);

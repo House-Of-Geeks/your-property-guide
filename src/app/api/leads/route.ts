@@ -28,6 +28,7 @@ import { kindForType } from "@/lib/lead-kinds";
 import { AGREEMENT_CHECK } from "@/lib/service-model";
 import { addressFromSuburbSlug } from "@/lib/sent247";
 import { SEQUENCES, dueAt, sequenceFor } from "@/lib/email-sequences";
+import { guidanceSeriesEnabled } from "@/lib/flags";
 import { randomBytes } from "node:crypto";
 import {
   describeSent247,
@@ -182,8 +183,8 @@ export async function POST(request: Request) {
     const ctx = requestContext(request);
 
     // Guide leads (Oct 2026, Why Solar's ebook flow): a download gets the
-    // guide, and since 13 Oct carries a mobile for the YPG team to call (its
-    // consent covers that, not agents). Only a call request from the thanks
+    // guide, and may carry a mobile (optional since 14 Oct) for the YPG team
+    // to call (its consent covers that, not agents). Only a call request from the thanks
     // page (call: true, sent when the visitor presses the call card's
     // button) is a call, and only a call can reach an agent, via the Sent
     // 24/7 vendor campaign. Who that call goes to (one agent, or YPG
@@ -284,9 +285,11 @@ export async function POST(request: Request) {
     // The path, journey and consent as columns (14 Oct 2026), so learning rows
     // and introduction requests can't be confused in reports or delivery.
     // Guide downloads: the tips series only with its own tick (wantsSequence,
-    // or marketingConsent from a page loaded before this deploy).
+    // or marketingConsent from a page loaded before this deploy), and only
+    // while the series really sends (src/lib/flags.ts, 20 Oct 2026).
     const kind = kindForType(lead.type, { call: guideCall });
-    const wantsSequence = lead.type === "guide-download" && !guideCall && (lead.wantsSequence ?? lead.marketingConsent ?? false);
+    const series = guidanceSeriesEnabled();
+    const wantsSequence = series && lead.type === "guide-download" && !guideCall && (lead.wantsSequence ?? lead.marketingConsent ?? false);
     const journey =
       lead.type === "guide-download" ? (lead.guideType === "buying" ? "buying" : "selling") : lead.type === "agreement-check" ? "selling" : undefined;
     const stage = lead.stage ?? (lead.type === "guide-download" ? (lead.guideType === "buying" ? undefined : lead.agentStatus) : undefined);
@@ -300,7 +303,7 @@ export async function POST(request: Request) {
       timeframe: lead.sellingTimeframe,
       marketingConsent: lead.type === "guide-download" ? wantsSequence : lead.marketingConsent,
       consentText: guideDownload
-        ? downloadConsentText(lead.guideType)
+        ? downloadConsentText(lead.guideType, series)
         : callKind
           ? callConsentText(callKind)
           : lead.type === "agreement-check"
@@ -426,7 +429,7 @@ export async function POST(request: Request) {
             lead,
             campaignId: cfg.vendorCampaignId,
             referenceId: saved.id,
-            consentText: downloadConsentText(lead.guideType),
+            consentText: downloadConsentText(lead.guideType, series),
             attribution,
             ctx,
           },
@@ -480,7 +483,7 @@ export async function POST(request: Request) {
         // No request scope (unit tests): fire and forget instead.
         void notify();
       }
-      return NextResponse.json({ success: true, message: "Enquiry submitted successfully", id: saved.id, emailOnItsWay });
+      return NextResponse.json({ success: true, message: "Enquiry submitted successfully", id: saved.id, emailOnItsWay, sequence: !!sequence });
     }
 
     // A guide call request from a seller YPG may sell goes to the Sent 24/7

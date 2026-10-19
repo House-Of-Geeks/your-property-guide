@@ -12,11 +12,12 @@ import {
   GUIDE_PHONE_NOTE,
   GUIDE_SEQUENCE_LABEL,
   GUIDE_THANKS_KEY,
-  SELLING_EMAIL_CONSENT,
   type GuideThanksContext,
+  downloadConsentText,
 } from "@/lib/guide-consent";
 import { GUIDE_PDF_PATH } from "@/lib/guide-pdfs";
 import { SEQUENCES, sequenceFor } from "@/lib/email-sequences";
+import { useSiteFlags } from "@/components/flags/FlagsProvider";
 
 // ----- Option sets ---------------------------------------------------------
 // Since 14 Oct 2026 ("confident moves") the guide is a learning request:
@@ -95,6 +96,9 @@ export function SellingGuideFunnel({
   const [phoneError, setPhoneError] = useState<string | null>(null);
   const [wantsSequence, setWantsSequence] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [firstNameError, setFirstNameError] = useState<string | null>(null);
+  // The tips series box only while the series really sends (src/lib/flags.ts, 20 Oct 2026).
+  const { series } = useSiteFlags();
   // Stops a double click or a retry making two rows (/api/leads requestKey).
   const [requestKey] = useState(() =>
     typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `k${Date.now()}${Math.random().toString(36).slice(2)}`,
@@ -143,6 +147,12 @@ export function SellingGuideFunnel({
     e.preventDefault();
     if (inFlight.current || submitted) return;
     if (!timeframe || !agentStatus) return;
+    // The server needs a first name; say so here rather than "Something went wrong".
+    if (!firstName.trim()) {
+      setFirstNameError("Enter your first name.");
+      return;
+    }
+    setFirstNameError(null);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
       setEmailError("Enter an email address like name@example.com.");
       return;
@@ -171,8 +181,8 @@ export function SellingGuideFunnel({
         stage: agentStatus,
         // The tips series is its own unticked box; requesting the guide
         // sends the guide and nothing else.
-        wantsSequence,
-        marketingConsent: wantsSequence,
+        wantsSequence: series && wantsSequence,
+        marketingConsent: series && wantsSequence,
         requestKey,
         // ?c= from a Sent 24/7 email link: credits that email.
         resumeClickId: params.get("c") ?? undefined,
@@ -188,13 +198,14 @@ export function SellingGuideFunnel({
         const body = await res.json().catch(() => null);
         throw new Error(body?.error ?? "Submit failed");
       }
-      const saved = (await res.json().catch(() => null)) as { emailOnItsWay?: boolean } | null;
+      const saved = (await res.json().catch(() => null)) as { emailOnItsWay?: boolean; sequence?: boolean } | null;
       // Tell the thanks page whether the email is on its way (sessionStorage,
       // this tab only). Nothing personal: the thanks page sends nothing.
       const handoff: GuideThanksContext = {
         guide: "selling",
         emailOnItsWay: saved?.emailOnItsWay === true,
-        sequence: wantsSequence,
+        // What the server actually started, not just the tick.
+        sequence: saved?.sequence === true,
       };
       try {
         sessionStorage.setItem(GUIDE_THANKS_KEY, JSON.stringify(handoff));
@@ -409,7 +420,8 @@ export function SellingGuideFunnel({
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label htmlFor="guide-first" className="block text-sm font-medium text-ink mb-1">First name</label>
-                <input id="guide-first" type="text" required autoComplete="given-name" value={firstName} onChange={(e) => setFirstName(e.target.value)} className={fieldClass} />
+                <input id="guide-first" type="text" required autoComplete="given-name" value={firstName} onChange={(e) => { setFirstName(e.target.value); if (firstNameError) setFirstNameError(null); }} aria-invalid={firstNameError ? true : undefined} aria-describedby={firstNameError ? "guide-first-error" : undefined} className={fieldClass} />
+                {firstNameError && <p id="guide-first-error" className="mt-1.5 text-sm text-danger" role="alert">{firstNameError}</p>}
               </div>
               <div>
                 <label htmlFor="guide-last" className="block text-sm font-medium text-ink mb-1">Last name <span className="font-normal text-ink-muted">(optional)</span></label>
@@ -455,13 +467,15 @@ export function SellingGuideFunnel({
                 <p id="guide-phone-note" className="mt-1.5 text-[13px] text-ink-muted leading-relaxed">{GUIDE_PHONE_NOTE}</p>
               )}
             </div>
-            <div className="flex items-start gap-3">
-              <input id="guide-sequence" type="checkbox" checked={wantsSequence} onChange={(e) => setWantsSequence(e.target.checked)} aria-describedby="guide-sequence-hint" className="mt-0.5 h-5 w-5 shrink-0 accent-[var(--cta)]" />
-              <div>
-                <label htmlFor="guide-sequence" className="text-[15px] text-ink cursor-pointer">{GUIDE_SEQUENCE_LABEL}</label>
-                <p id="guide-sequence-hint" className="text-[13px] text-ink-muted leading-relaxed">{seq.promise} Optional. Unsubscribe anytime.</p>
+            {series && (
+              <div className="flex items-start gap-3">
+                <input id="guide-sequence" type="checkbox" checked={wantsSequence} onChange={(e) => setWantsSequence(e.target.checked)} aria-describedby="guide-sequence-hint" className="mt-0.5 h-5 w-5 shrink-0 accent-[var(--cta)]" />
+                <div>
+                  <label htmlFor="guide-sequence" className="text-[15px] text-ink cursor-pointer">{GUIDE_SEQUENCE_LABEL}</label>
+                  <p id="guide-sequence-hint" className="text-[13px] text-ink-muted leading-relaxed">{seq.promise} Optional. Unsubscribe anytime.</p>
+                </div>
               </div>
-            </div>
+            )}
 
             {error && <p className="text-sm text-danger" role="alert">{error}</p>}
 
@@ -488,7 +502,7 @@ export function SellingGuideFunnel({
               )}
             </button>
             <p className="text-[13px] text-ink-muted leading-relaxed">
-              {SELLING_EMAIL_CONSENT}{" "}
+              {downloadConsentText("selling", series)}{" "}
               <a href="/privacy" className="underline underline-offset-2 hover:text-ink">Privacy policy</a>.
             </p>
           </form>

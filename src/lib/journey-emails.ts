@@ -179,7 +179,7 @@ export function buildIntroConfirmationHtml(
         <p style="margin:0 0 10px;font-size:13px;line-height:1.6;color:${C.inkMuted};">${esc(FEE_DISCLOSURE)}</p>
         <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${C.ink};">What we don’t do</p>
         <ul style="margin:0 0 16px;padding-left:18px;font-size:13px;line-height:1.6;color:${C.inkMuted};">${WHAT_WE_DONT_DO.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
-        ${feedback ? `<p style="margin:0 0 16px;font-size:13px;line-height:1.6;color:${C.inkMuted};">In a week or two we’ll ask whether the introduction was useful. You can also tell us any time: <a href="${esc(abs(`/feedback/${feedback.feedbackToken}`))}" style="color:${C.terracottaDark};">how did it go?</a></p>` : ""}
+        ${feedback ? `<p style="margin:0 0 16px;font-size:13px;line-height:1.6;color:${C.inkMuted};">Tell us any time whether the introduction was useful: <a href="${esc(abs(`/feedback/${feedback.feedbackToken}`))}" style="color:${C.terracottaDark};">how did it go?</a></p>` : ""}
         <p style="margin:0 0 6px;">${emailButtonOutline("Your free guides and tools", abs("/guides"))}</p>
         <p style="margin:18px 0 24px;font-size:14px;line-height:1.5;color:${C.inkMuted};">Questions? Reply to this email and a person will answer.<br/><span style="color:${C.ink};">The team at Your Property Guide</span></p>
       </td></tr>

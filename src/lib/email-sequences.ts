@@ -1,10 +1,11 @@
 // Optional guidance email series (Oct 2026). Short, stage-specific, and only
 // for people who ticked the box for it on a plan or a guide. Separate from
-// the quarterly newsletter: subscribers to that keep getting it as promised,
-// and joining a series doesn't sign anyone up to the newsletter.
+// the newsletter signup (src/lib/newsletter.ts): joining a series doesn't
+// sign anyone up to that.
 //
-// /api/cron/sequences sends the next email when it falls due (switched on by
-// GUIDANCE_SEQUENCE_ENABLED=true), and every email carries an unsubscribe
+// /api/cron/follow-ups sends the next email when it falls due (switched on by
+// GUIDANCE_SEQUENCE_ENABLED=true; src/lib/flags.ts, which also hides the
+// box on the forms while it's off), and every email carries an unsubscribe
 // link (/api/unsubscribe). Each email teaches one thing and links to one
 // guide or tool; none of them asks for an introduction.
 

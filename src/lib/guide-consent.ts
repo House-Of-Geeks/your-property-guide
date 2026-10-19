@@ -16,6 +16,11 @@ export const SELLING_EMAIL_CONSENT =
 export const BUYING_EMAIL_CONSENT =
   "We’ll email you the guide. Nothing else is sent unless you tick the box above, and we never pass your details to any agent from this form.";
 
+// While the tips series is switched off (src/lib/flags.ts) there's no box to
+// tick, so the statement doesn't mention one (20 Oct 2026).
+export const SELLING_EMAIL_CONSENT_PLAIN = "We’ll email you the guide, and we never pass your details to an agent from this form.";
+export const BUYING_EMAIL_CONSENT_PLAIN = "We’ll email you the guide, and we never pass your details to any agent from this form.";
+
 /** Under the optional mobile field. Giving the number is the yes to a call from us, and only that. */
 export const GUIDE_PHONE_NOTE =
   "Optional. Add it only if you’d like someone from our team to call with your questions. We never pass it to an agent.";
@@ -32,8 +37,10 @@ export const AGENT_CALL_CONSENT =
 export const YPG_CALL_CONSENT =
   "We’ll use your mobile only to call you ourselves. We never pass it to an agent or sell it.";
 
-export function downloadConsentText(guideType?: string): string {
-  return guideType === "buying" ? BUYING_EMAIL_CONSENT : SELLING_EMAIL_CONSENT;
+/** The statement the email step shows: with the series box when the series is on, without it when it's off. */
+export function downloadConsentText(guideType?: string, series = false): string {
+  if (guideType === "buying") return series ? BUYING_EMAIL_CONSENT : BUYING_EMAIL_CONSENT_PLAIN;
+  return series ? SELLING_EMAIL_CONSENT : SELLING_EMAIL_CONSENT_PLAIN;
 }
 
 export type GuideCallKind = "agent" | "ypg";

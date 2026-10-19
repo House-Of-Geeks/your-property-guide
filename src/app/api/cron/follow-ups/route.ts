@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { guidanceSeriesEnabled, introCheckInsEnabled } from "@/lib/flags";
 import { db } from "@/lib/db";
 import { sendMail, ANDY_EMAIL } from "@/lib/email";
 import { SITE_URL } from "@/lib/constants/seo";
@@ -99,8 +100,8 @@ export async function GET(request: NextRequest) {
   const now = new Date();
   const out: Record<string, unknown> = {};
   try {
-    out.sequences = process.env.GUIDANCE_SEQUENCE_ENABLED === "true" ? await sendSequences(now) : "off";
-    out.checkIns = process.env.INTRO_CHECKIN_ENABLED === "true" ? await sendCheckIns(now) : "off";
+    out.sequences = guidanceSeriesEnabled() ? await sendSequences(now) : "off";
+    out.checkIns = introCheckInsEnabled() ? await sendCheckIns(now) : "off";
     return NextResponse.json({ ok: true, ...out });
   } catch (err) {
     console.error("Follow-ups cron failed:", err);

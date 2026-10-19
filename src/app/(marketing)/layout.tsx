@@ -3,6 +3,8 @@ import { MotionObserver } from "@/components/motion/MotionObserver";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { OrganizationJsonLd } from "@/components/seo";
+import { FlagsProvider } from "@/components/flags/FlagsProvider";
+import { siteFlags } from "@/lib/flags";
 
 export default function MarketingLayout({
   children,
@@ -19,7 +21,10 @@ export default function MarketingLayout({
       <OrganizationJsonLd />
       <MotionObserver />
       <Header />
-      <main className="flex-1">{children}</main>
+      {/* The server's switches (series, check-ins), so forms only promise what really sends. */}
+      <FlagsProvider flags={siteFlags()}>
+        <main className="flex-1">{children}</main>
+      </FlagsProvider>
       <Footer />
       {/* Mobile-only sticky bottom nav. Spacer below the footer on mobile so
           the last footer rows aren't covered by the sticky bar. */}

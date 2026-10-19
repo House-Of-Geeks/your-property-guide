@@ -8,9 +8,10 @@ import { clarityEvent, clarityTag } from "@/lib/clarity";
 import { track } from "@/lib/analytics";
 import { auMobileError } from "@/lib/utils/au-mobile";
 import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
-import { BUYING_EMAIL_CONSENT, GUIDE_PHONE_NOTE, GUIDE_SEQUENCE_LABEL, GUIDE_THANKS_KEY, type GuideThanksContext } from "@/lib/guide-consent";
+import { GUIDE_PHONE_NOTE, GUIDE_SEQUENCE_LABEL, GUIDE_THANKS_KEY, downloadConsentText, type GuideThanksContext } from "@/lib/guide-consent";
 import { BUYING_GUIDE_PDF_PATH } from "@/lib/guide-pdfs";
 import { SEQUENCES, sequenceFor } from "@/lib/email-sequences";
+import { useSiteFlags } from "@/components/flags/FlagsProvider";
 
 // ----- Option sets ---------------------------------------------------------
 // Since 14 Oct 2026 ("confident moves") the buying guide is a learning
@@ -77,6 +78,9 @@ export function BuyingGuideFunnel({ initialSuburbSlug: propSuburbSlug, source = 
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [firstNameError, setFirstNameError] = useState<string | null>(null);
+  // The tips series box only while the series really sends (src/lib/flags.ts, 20 Oct 2026).
+  const { series } = useSiteFlags();
   // E.164 from the flagged field ("+61491570156"); the API stores 04…
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState<string | null>(null);
@@ -126,6 +130,12 @@ export function BuyingGuideFunnel({ initialSuburbSlug: propSuburbSlug, source = 
     e.preventDefault();
     if (inFlight.current || submitted) return;
     if (!persona || !finance) return;
+    // The server needs a first name; say so here rather than "Something went wrong".
+    if (!firstName.trim()) {
+      setFirstNameError("Enter your first name.");
+      return;
+    }
+    setFirstNameError(null);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
       setEmailError("Enter an email address like name@example.com.");
       return;
@@ -152,8 +162,8 @@ export function BuyingGuideFunnel({ initialSuburbSlug: propSuburbSlug, source = 
         buyerPersona: persona,
         financeStatus: finance,
         stage,
-        wantsSequence,
-        marketingConsent: wantsSequence,
+        wantsSequence: series && wantsSequence,
+        marketingConsent: series && wantsSequence,
         requestKey,
         resumeClickId: params.get("c") ?? undefined,
         source,
@@ -168,8 +178,8 @@ export function BuyingGuideFunnel({ initialSuburbSlug: propSuburbSlug, source = 
         const body = await res.json().catch(() => null);
         throw new Error(body?.error ?? "Submit failed");
       }
-      const saved = (await res.json().catch(() => null)) as { emailOnItsWay?: boolean } | null;
-      const handoff: GuideThanksContext = { guide: "buying", emailOnItsWay: saved?.emailOnItsWay === true, sequence: wantsSequence };
+      const saved = (await res.json().catch(() => null)) as { emailOnItsWay?: boolean; sequence?: boolean } | null;
+      const handoff: GuideThanksContext = { guide: "buying", emailOnItsWay: saved?.emailOnItsWay === true, sequence: saved?.sequence === true };
       try {
         sessionStorage.setItem(GUIDE_THANKS_KEY, JSON.stringify(handoff));
       } catch {
@@ -338,7 +348,8 @@ export function BuyingGuideFunnel({ initialSuburbSlug: propSuburbSlug, source = 
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label htmlFor="buy-guide-first" className="block text-sm font-medium text-ink mb-1">First name</label>
-                  <input id="buy-guide-first" type="text" required autoComplete="given-name" value={firstName} onChange={(e) => setFirstName(e.target.value)} className={fieldClass} />
+                  <input id="buy-guide-first" type="text" required autoComplete="given-name" value={firstName} onChange={(e) => { setFirstName(e.target.value); if (firstNameError) setFirstNameError(null); }} aria-invalid={firstNameError ? true : undefined} aria-describedby={firstNameError ? "buy-guide-first-error" : undefined} className={fieldClass} />
+                {firstNameError && <p id="buy-guide-first-error" className="mt-1.5 text-sm text-danger" role="alert">{firstNameError}</p>}
                 </div>
                 <div>
                   <label htmlFor="buy-guide-last" className="block text-sm font-medium text-ink mb-1">Last name <span className="font-normal text-ink-muted">(optional)</span></label>
@@ -384,13 +395,15 @@ export function BuyingGuideFunnel({ initialSuburbSlug: propSuburbSlug, source = 
                   <p id="buy-guide-phone-note" className="mt-1.5 text-[13px] text-ink-muted leading-relaxed">{GUIDE_PHONE_NOTE}</p>
                 )}
               </div>
-              <div className="flex items-start gap-3">
-                <input id="buy-guide-sequence" type="checkbox" checked={wantsSequence} onChange={(e) => setWantsSequence(e.target.checked)} aria-describedby="buy-guide-sequence-hint" className="mt-0.5 h-5 w-5 shrink-0 accent-[var(--cta)]" />
-                <div>
-                  <label htmlFor="buy-guide-sequence" className="text-[15px] text-ink cursor-pointer">{GUIDE_SEQUENCE_LABEL}</label>
-                  <p id="buy-guide-sequence-hint" className="text-[13px] text-ink-muted leading-relaxed">{seq.promise} Optional. Unsubscribe anytime.</p>
+              {series && (
+                <div className="flex items-start gap-3">
+                  <input id="buy-guide-sequence" type="checkbox" checked={wantsSequence} onChange={(e) => setWantsSequence(e.target.checked)} aria-describedby="buy-guide-sequence-hint" className="mt-0.5 h-5 w-5 shrink-0 accent-[var(--cta)]" />
+                  <div>
+                    <label htmlFor="buy-guide-sequence" className="text-[15px] text-ink cursor-pointer">{GUIDE_SEQUENCE_LABEL}</label>
+                    <p id="buy-guide-sequence-hint" className="text-[13px] text-ink-muted leading-relaxed">{seq.promise} Optional. Unsubscribe anytime.</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {error && <p className="text-sm text-danger" role="alert">{error}</p>}
 
@@ -414,7 +427,7 @@ export function BuyingGuideFunnel({ initialSuburbSlug: propSuburbSlug, source = 
                 )}
               </button>
               <p className="text-[13px] text-ink-muted leading-relaxed">
-                {BUYING_EMAIL_CONSENT}{" "}
+                {downloadConsentText("buying", series)}{" "}
                 <a href="/privacy" className="underline underline-offset-2 hover:text-ink">Privacy policy</a>.
               </p>
             </form>
