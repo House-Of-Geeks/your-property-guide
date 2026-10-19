@@ -49,7 +49,7 @@ export function HamiltonCaseStudy() {
             <span id="case-study-title">Preparation changed where this apartment sat in the market.</span>
           </BandTitle>
           <BandLead className="mt-5">
-            {`${c.property}, ${c.before.charAt(0).toLowerCase()}${c.before.slice(1)}. ${c.work} Here’s how its expected sale price moved.`}
+            {`${c.property} with ${c.before}. ${c.work} Here’s how its expected sale price moved.`}
           </BandLead>
         </div>
 
