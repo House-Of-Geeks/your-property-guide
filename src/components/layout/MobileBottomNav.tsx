@@ -5,13 +5,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { moveForPath } from "@/lib/journey-paths";
 import { PLAN_CTA_BAR } from "@/lib/plans/name";
-import { DEFAULT_MOVE, journeyForMove, usePublishedMove } from "@/components/interactive/move-context";
+import { planStartHref } from "@/lib/plans/start";
+import { DEFAULT_MOVE, journeyForMove, usePublishedMove, usePublishedPlace } from "@/components/interactive/move-context";
 
 // The phone bar (Oct 2026, "confident moves"): two actions that fit the page's
 // move. The first is always the learning step (the next-step plan for that
 // move, the same first step as the header and the homepage hero since
 // 19 Oct 2026); the second is personal help for that move. On the homepage
-// both follow the move picked in the hero. It hides where the page is itself a
+// both follow the move picked in the hero, and (20 Oct 2026) the suburb
+// picked there too, built by the same planStartHref as the hero's button. It hides where the page is itself a
 // form, and while any field has focus, so it never sits over what someone is
 // typing or over the keyboard.
 
@@ -27,11 +29,11 @@ const barEntry = (pathname: string) =>
   `bar-${pathname.replace(/^\/+|\/+$/g, "").replace(/[^a-z0-9]+/gi, "-").toLowerCase() || "home"}`.slice(0, 100);
 
 // Education first: the next-step plan for the page's move, then an agent.
-const ACTIONS = {
-  buying: { planHref: "/plan?j=buying", help: "Find a buyer’s agent", helpHref: "/get-help?service=buyers-agent" },
-  selling: { planHref: "/plan?j=selling", help: "Find an agent", helpHref: "/get-help?service=selling-agent" },
-  "buying-and-selling": { planHref: "/plan?j=buying-and-selling", help: "Find an agent", helpHref: "/get-help?service=both" },
-  none: { planHref: "/plan", help: "Find an agent", helpHref: "/get-help" },
+const HELP = {
+  buying: { label: "Find a buyer’s agent", service: "buyers-agent" },
+  selling: { label: "Find an agent", service: "selling-agent" },
+  "buying-and-selling": { label: "Find an agent", service: "both" },
+  none: { label: "Find an agent", service: null },
 } as const;
 
 export function MobileBottomNav() {
@@ -41,6 +43,7 @@ export function MobileBottomNav() {
   const [pageAudience, setPageAudience] = useState<"buying" | "selling" | null>(null);
   const [typing, setTyping] = useState(false);
   const published = usePublishedMove();
+  const publishedPlace = usePublishedPlace();
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
@@ -65,11 +68,17 @@ export function MobileBottomNav() {
 
   if (HIDE_ON.some((p) => matches(pathname, p))) return null;
 
-  const move = moveForPath(pathname) ?? (pathname === "/" ? journeyForMove(published ?? DEFAULT_MOVE) : pageAudience);
-  const a = ACTIONS[move ?? "none"];
+  const onHome = pathname === "/";
+  const move = moveForPath(pathname) ?? (onHome ? journeyForMove(published ?? DEFAULT_MOVE) : pageAudience);
+  const place = onHome ? publishedPlace : null;
+  const help = HELP[move ?? "none"];
   const from = barEntry(pathname);
-  const planHref = `${a.planHref}${a.planHref.includes("?") ? "&" : "?"}from=${from}`;
-  const helpHref = a.helpHref.includes("?") ? `${a.helpHref}&from=${from}` : a.helpHref;
+  const planHref = planStartHref({ journey: move, place, from });
+  const helpQs = new URLSearchParams();
+  if (help.service) helpQs.set("service", help.service);
+  if (place) helpQs.set("suburb", place.slug);
+  if (help.service) helpQs.set("from", from);
+  const helpHref = helpQs.toString() ? `/get-help?${helpQs.toString()}` : "/get-help";
 
   return (
     <nav
@@ -84,7 +93,7 @@ export function MobileBottomNav() {
           {PLAN_CTA_BAR}
         </Link>
         <Link href={helpHref} className="flex items-center justify-center rounded-md border border-ink text-ink px-2 py-2.5 text-sm font-semibold">
-          {a.help}
+          {help.label}
         </Link>
       </div>
     </nav>

@@ -46,3 +46,14 @@ Andy's brief: clearer messaging, stronger evidence and a shorter path to useful 
 - ~~**Photos of the Hamilton apartment**~~ Done 19 Oct: the buyer doesn't want photos online, so the case study shows two labelled ink-and-watercolour illustrations (`public/images/case-studies/`, ImagineArt Nano Banana Pro), the boxed-in 1980s room and the same room opened up to the city views.
 - **Conversion:** nothing here claims a lift. Measure it from `plan_started` / `plan_completed` (placement `home-hero`) and from qualified introductions (`intro_submitted` with status, and the LeadEvent outcomes) over the next few weeks, against the weeks before 19 Oct.
 - **Unused images:** the example-home and styled-room images are still in `public/images/campaign/`, no longer used on the homepage.
+
+## Follow-up, 20 Oct 2026
+- **Phone bar kept the suburb.** "Next-step plan" in the phone bar used to drop the suburb picked in the hero and ask for the state again. Now every plan button builds its link with `planStartHref` (`src/lib/plans/start.ts`), from the move and suburb the hero publishes through `MoveProvider`. That covers the hero, the closing band, the header, the phone menu and the phone bar. The agent links carry the suburb too. I checked Selling, Buying and Both, with and without a suburb.
+- **Compact phone opening.** At 390 × 844 the main button now ends at about 611px, above the sticky bar at 785px. To get there:
+  - the offer is one shorter line;
+  - the field hint is one line;
+  - the move's message sits under the button on phones;
+  - the sample plan shows its three steps, with the tools and checklist behind a 44px "Show" toggle.
+
+  The bar spacer and the mobile scroll padding now include the safe-area inset. Desktop is unchanged.
+- **Case study leads with the figures.** It opens with a short headline, then the three figures, then one qualification: expected prices, and the $330,000 is not profit or a sale result. The redesign follows in two sentences beside the labelled illustrations. The repeated qualifications and "one property and one result" are gone. No layout plan or itemised breakdown exists, so none is shown.

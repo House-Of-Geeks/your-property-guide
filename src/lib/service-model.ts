@@ -38,7 +38,7 @@ export const PROMISE = {
    * What a visitor gets, said on the first screen (19 Oct 2026): free
    * guidance, a next-step plan, and an introduction only if they ask.
    */
-  offer: "Free property guidance and a next-step plan built from your answers, with an introduction to one participating agent only if you ask for one.",
+  offer: "Free guidance and a next-step plan built from your answers. An introduction to one participating agent only if you ask.",
   receive: [
     "Guides and calculators for your state, free and with no sign-up",
     "Your plan: the next three steps, the right tools and a checklist",
