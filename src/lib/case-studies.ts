@@ -8,9 +8,18 @@
 // or an independent valuation, and the difference is an increase in the
 // expected sale price, not profit.
 //
-// TODO(andy): add the real photographs of the apartment, if you have them.
-// Until then the case study runs without imagery: no generated or library
-// photo may stand in for a before-and-after.
+// Pictures: Andy, 19 Oct 2026: the buyer doesn't want photos of her
+// apartment online, so the page shows two generated ILLUSTRATIONS instead
+// (FLUX.2 Pro on Higgsfield, painted gouache style on purpose so they can't
+// pass for photographs). Every one is labelled "Illustration" on the page,
+// and the captions say they aren't the apartment or the work done. Never
+// swap in photo-realistic images, and never caption these as the real thing.
+
+export interface CaseIllustration {
+  src: string;
+  alt: string;
+  caption: string;
+}
 
 export interface CaseStudy {
   place: string;
@@ -20,6 +29,8 @@ export interface CaseStudy {
   expectedBefore: number;
   spend: number;
   expectedAfter: number;
+  /** Generated illustrations, never photographs of the property. */
+  illustrations: readonly CaseIllustration[];
 }
 
 export const HAMILTON: CaseStudy = {
@@ -30,6 +41,18 @@ export const HAMILTON: CaseStudy = {
   expectedBefore: 490_000,
   spend: 38_000,
   expectedAfter: 820_000,
+  illustrations: [
+    {
+      src: "/images/case-studies/hamilton-before-illustration.jpg",
+      alt: "Illustration of an older two-bedroom apartment: a closed-in kitchen behind a servery hatch, louvre windows and worn carpet",
+      caption: "An older apartment like this one, before",
+    },
+    {
+      src: "/images/case-studies/hamilton-after-illustration.jpg",
+      alt: "Illustration of an apartment after a redesign: the kitchen open to the living room, light floors and a balcony door",
+      caption: "The kind of change a redesign aims for",
+    },
+  ],
 };
 
 /** The increase in the expected sale price (not profit). */

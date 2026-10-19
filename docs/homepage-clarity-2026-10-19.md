@@ -43,6 +43,6 @@ Andy's brief: clearer messaging, stronger evidence and a shorter path to useful 
 - The homepage agent finder shows the state's coverage once a suburb is picked.
 
 ## Still open
-- **Photos of the Hamilton apartment:** none are in the repo, so the case study runs without imagery (`TODO(andy)` in `src/lib/case-studies.ts`).
+- ~~**Photos of the Hamilton apartment**~~ Done 19 Oct: the buyer doesn't want photos online, so the case study shows two labelled, painted illustrations (`public/images/case-studies/`, FLUX.2 Pro on Higgsfield).
 - **Conversion:** nothing here claims a lift. Measure it from `plan_started` / `plan_completed` (placement `home-hero`) and from qualified introductions (`intro_submitted` with status, and the LeadEvent outcomes) over the next few weeks, against the weeks before 19 Oct.
 - **Unused images:** the example-home and styled-room images are still in `public/images/campaign/`, no longer used on the homepage.

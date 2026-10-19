@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { HOME_MOVES, MOVE_ORDER } from "@/components/campaign/moves";
 import { HAMILTON, dollars, expectedIncrease } from "@/lib/case-studies";
@@ -87,5 +89,15 @@ describe("the Hamilton case study", () => {
 
   it("calls the difference an increase in expected sale price", () => {
     expect(expectedIncrease(HAMILTON)).toBe(330_000);
+  });
+
+  it("shows only illustrations, said so in the alt text, and never as the apartment itself", () => {
+    expect(HAMILTON.illustrations.length).toBeGreaterThan(0);
+    for (const im of HAMILTON.illustrations) {
+      expect(im.src).toMatch(/illustration\.jpg$/);
+      expect(existsSync(join(process.cwd(), "public", im.src))).toBe(true);
+      expect(im.alt.startsWith("Illustration of")).toBe(true);
+      expect(im.caption).not.toMatch(/Hamilton|this apartment|the apartment/i);
+    }
   });
 });
