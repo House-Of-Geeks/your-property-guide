@@ -6,10 +6,16 @@ import { BandTitle, Eyebrow } from "./parts";
 import { SHELL } from "./shell";
 
 // Andy's short story (v6): the portrait, his own words from the about page,
-// the pull quote, his name and the one figure about him. Only the facts in
-// src/lib/founder.ts appear here.
+// the pull quote, his name, and the site's only headline figures (moved here
+// from the hero on 19 Oct 2026, so the first screen can say what you get).
+// Only the facts in src/lib/founder.ts appear here.
 
-export function FounderBand() {
+export interface FounderStat {
+  value: string;
+  label: string;
+}
+
+export function FounderBand({ stats }: { stats: readonly FounderStat[] }) {
   return (
     <section aria-labelledby="founder-title" className="tone-dark bg-eucalyptus py-20 sm:py-28">
       <div className={`${SHELL} grid items-center gap-12 lg:grid-cols-12 lg:gap-16`}>
@@ -45,15 +51,17 @@ export function FounderBand() {
             </figcaption>
           </figure>
 
-          <div className="mt-10 flex flex-col gap-6 border-t border-line pt-8 sm:flex-row sm:items-end sm:justify-between">
-            <p>
-              <span className="block font-display text-[44px] leading-none text-primary">{FOUNDER.salesStat.value}</span>
-              <span className="mt-2 block text-sm text-ink-muted">{FOUNDER.salesStat.label}</span>
-            </p>
-            <Link href="/about" className="inline-flex items-center gap-2 rounded-full border border-ink px-6 py-3 text-base font-semibold text-ink transition-colors hover:bg-ink hover:text-ink-inverse">
-              Read Andy’s story <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          </div>
+          <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-line pt-8 sm:grid-cols-4">
+            {stats.map((s) => (
+              <div key={s.label} className="flex flex-col-reverse justify-end gap-2">
+                <dt className="text-sm leading-snug text-ink-muted">{s.label}</dt>
+                <dd className="font-display text-[34px] leading-none text-primary sm:text-[40px]">{s.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <Link href="/about" className="mt-8 inline-flex items-center gap-2 rounded-full border border-ink px-6 py-3 text-base font-semibold text-ink transition-colors hover:bg-ink hover:text-ink-inverse">
+            Read Andy’s story <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
         </div>
       </div>
     </section>

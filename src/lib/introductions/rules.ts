@@ -56,6 +56,12 @@ export function coverageFor(service: IntroService, state: AustralianState | null
 }
 
 /** What the form says about availability before anything is sent. */
+/** The state in a suburb slug ("hamilton-qld-4007" → "QLD"), or null. */
+export function stateFromSuburbSlug(slug: string | null | undefined): AustralianState | null {
+  const s = slug?.match(/-([a-z]{2,3})-\d{4}$/)?.[1]?.toUpperCase();
+  return s && ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"].includes(s) ? (s as AustralianState) : null;
+}
+
 export function availabilityNote(service: IntroService, state: AustralianState | null | undefined): { level: CoverageLevel; text: string } {
   const level = coverageFor(service, state);
   const where = state ?? "your state";

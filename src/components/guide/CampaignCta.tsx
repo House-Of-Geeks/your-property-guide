@@ -4,28 +4,28 @@ import type { ArticleChapterRef, CampaignCtaKind } from "@/content/articles";
 import { GUIDE_BOOKS, chapterHref } from "@/lib/guide-books";
 import { AGREEMENT_CHECK, ONE_AGENT } from "@/lib/service-model";
 
-// The article's campaign call to action (15 Oct 2026): the campaign plan, the
+// The article's campaign call to action (15 Oct 2026): the next-step plan, the
 // agreement check or one agent, whichever fits why people read it. It sits
 // at the end of the article, above the guide offer, so it's an outlined
 // button: the guide stays the one solid action.
 
 const CTA: Record<CampaignCtaKind, { title: string; body: string; label: string; href: (from: string) => string }> = {
   "selling-plan": {
-    title: "Build your campaign plan",
+    title: "Build your next-step plan for the sale",
     body: "Three quick questions about your sale, and your next three steps write themselves, with the tools and guides for your state.",
-    label: "Build my campaign plan",
+    label: "Build my next-step plan",
     href: (from) => `/plan?j=selling&from=${from}`,
   },
   "buying-plan": {
-    title: "Build your buying plan",
+    title: "Build your next-step plan for the purchase",
     body: "Every seller’s agent is running a campaign. Run your own: a few quick questions and your next three steps, with the calculators for your state.",
-    label: "Build my buying plan",
+    label: "Build my next-step plan",
     href: (from) => `/plan?j=buying&from=${from}`,
   },
   "moving-plan": {
     title: "Plan the sale and the purchase together",
     body: "Get the order and the money right: a few quick questions and your next steps for both sides of the move.",
-    label: "Build my moving plan",
+    label: "Build my next-step plan",
     href: (from) => `/plan?j=buying-and-selling&from=${from}`,
   },
   "agreement-check": {

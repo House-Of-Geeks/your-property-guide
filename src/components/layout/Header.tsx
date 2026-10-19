@@ -2,10 +2,12 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, Search, Phone } from "lucide-react";
+import { Menu, X, ChevronDown, Search, Phone, ArrowRight } from "lucide-react";
 import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
 import { Logo } from "@/components/brand/Logo";
 import { moveForPath } from "@/lib/journey-paths";
+import { PLAN_CTA_SHORT } from "@/lib/plans/name";
+import { DEFAULT_MOVE, journeyForMove, usePublishedMove } from "@/components/interactive/move-context";
 
 // Oct 2026 ("confident moves"): the nav follows the move people are making
 // (buying, selling, or both), then guides and tools, then getting help.
@@ -13,11 +15,19 @@ import { moveForPath } from "@/lib/journey-paths";
 // for professionals to find without leading the consumer site. The one solid
 // button is the next-step plan, matched to the page's move; "Get help" is
 // the introduction path.
+//
+// 19 Oct 2026: the solid button is the next-step plan everywhere (it was the
+// free guide), so the header, the homepage hero and the phone bar offer the
+// same first step; on the homepage it follows the move picked in the hero.
+// On phones the menu is four collapsible groups (Buying, Selling, Guides and
+// tools, About) under the plan and "Find an agent", with nothing repeated.
 
 interface NavChild {
   label: string;
   href: string;
   group?: string;
+  /** One line under the link in the phone menu: what it helps you decide. */
+  note?: string;
 }
 
 interface NavLink {
@@ -34,17 +44,16 @@ const NAV_LINKS: NavLink[] = [
     layout: "grouped",
     children: [
       { label: "Buying: where to start",  href: "/buying",                          group: "Start here" },
-      { label: "Make a buying plan",      href: "/plan?j=buying",                   group: "Start here" },
       { label: "First home buyers",       href: "/first-home-buyers",               group: "Start here" },
       { label: "Buyer’s agents",          href: "/buyers-agents",                   group: "Start here" },
       { label: "Buying and selling",      href: "/buying-and-selling",              group: "Start here" },
       { label: "Investing",               href: "/investing",                       group: "Start here" },
-      { label: "Borrowing power",         href: "/borrowing-power-calculator",      group: "Tools" },
-      { label: "Stamp duty",              href: "/stamp-duty-calculator",           group: "Tools" },
+      { label: "Free buying guide",       href: "/buying-guide",                    group: "Start here" },
+      { label: "Borrowing power",         href: "/borrowing-power-calculator",      group: "Tools", note: "The price range to search in" },
+      { label: "Stamp duty",              href: "/stamp-duty-calculator",           group: "Tools", note: "The cash you need upfront" },
       { label: "Mortgage repayments",     href: "/mortgage-calculator",             group: "Tools" },
       { label: "Rental yield",            href: "/rental-yield-calculator",         group: "Tools" },
-      { label: "Due diligence checklist", href: "/guides/due-diligence-checklist-buying-a-house", group: "Tools" },
-      { label: "Free buying guide (PDF)", href: "/buying-guide",                    group: "Tools" },
+      { label: "Due diligence checklist", href: "/guides/due-diligence-checklist-buying-a-house", group: "Tools", note: "Whether a property is worth an offer" },
     ],
   },
   {
@@ -53,15 +62,14 @@ const NAV_LINKS: NavLink[] = [
     layout: "grouped",
     children: [
       { label: "Selling: where to start", href: "/selling",                         group: "Start here" },
-      { label: "Make a selling plan",     href: "/plan?j=selling",                  group: "Start here" },
+      { label: "Selling costs calculator", href: "/selling-costs-calculator",       group: "Decide with evidence", note: "Your walk-away number before any quote" },
+      { label: "Agent proposal worksheet", href: "/tools/agent-proposal-worksheet", group: "Decide with evidence", note: "Which agent’s proposal is better value" },
+      { label: "Free 15-minute agreement check", href: "/agreement-check",          group: "Decide with evidence", note: "Whether to sign the agreement you’ve been handed" },
       { label: "Choosing a selling agent", href: "/guides/how-to-choose-a-selling-agent", group: "Start here" },
       { label: "Agent fees and commission", href: "/guides/real-estate-agent-fees-australia", group: "Start here" },
-      { label: "Free agreement check",  href: "/agreement-check",                 group: "Start here" },
       { label: "Buying and selling",      href: "/buying-and-selling",              group: "Start here" },
-      { label: "Selling costs",           href: "/selling-costs-calculator",        group: "Tools" },
-      { label: "Commission calculator",   href: "/real-estate-commission-calculator", group: "Tools" },
-      { label: "Agent proposal worksheet", href: "/tools/agent-proposal-worksheet", group: "Tools" },
-      { label: "Free selling guide (PDF)", href: "/selling-guide",                  group: "Tools" },
+      { label: "Free selling guide",      href: "/selling-guide",                   group: "Start here" },
+      { label: "Commission calculator",   href: "/real-estate-commission-calculator", group: "Decide with evidence" },
     ],
   },
   {
@@ -71,7 +79,6 @@ const NAV_LINKS: NavLink[] = [
     children: [
       { label: "All guides",          href: "/guides" },
       { label: "All calculators",       href: "/tools" },
-      { label: "Your next-step plan", href: "/plan" },
       { label: "Suburb profiles",     href: "/suburbs" },
       { label: "Market reports",      href: "/market-reports" },
       { label: "Property glossary",   href: "/glossary" },
@@ -102,13 +109,14 @@ export function Header() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
-  const move = moveForPath(pathname);
-  // Education first: the solid button is the free guide for the page's move;
-  // the agent route sits beside it as a plain link.
-  const guideHref = move === "buying" ? "/buying-guide" : move === "selling" ? "/selling-guide" : "/guides";
-  const guideLabel = move === "buying" ? "Free buying guide" : move === "selling" ? "Free selling guide" : "Free guides";
+  // The page's move; on the homepage, the one picked in the hero.
+  const published = usePublishedMove();
+  const move = moveForPath(pathname) ?? (pathname === "/" ? journeyForMove(published ?? DEFAULT_MOVE) : null);
   const planHref = move ? `/plan?j=${move}` : "/plan";
-  const planLabel = move === "buying" ? "Your buying plan" : move === "selling" ? "Your selling plan" : move === "buying-and-selling" ? "Your moving plan" : "Make a plan";
+  const onPlan = pathname === "/plan" || pathname.startsWith("/plan/");
+  const helpHref = move === "buying" ? "/get-help?service=buyers-agent" : move === "selling" ? "/get-help?service=selling-agent" : move === "buying-and-selling" ? "/get-help?service=both" : "/get-help";
+  const helpLabel = move === "buying" ? "Find a buyer’s agent" : "Find an agent";
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
 
   const toggle = (label: string) => setOpenMenu((o) => (o === label ? null : label));
 
@@ -218,14 +226,22 @@ export function Header() {
             </a>
             {/* Phones get the plan (and help) in the bottom bar and the menu,
                 so the header doesn't repeat the same solid button. */}
-            <Link
-              href={guideHref}
-              className="hidden sm:inline-flex items-center rounded-full bg-cta hover:bg-cta-hover text-white px-5 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors"
-            >
-              {guideLabel}
-            </Link>
+            {/* Not on the planner itself, where it would only start again. */}
+            {!onPlan && (
+              <Link
+                href={planHref}
+                className="hidden sm:inline-flex items-center rounded-full bg-cta hover:bg-cta-hover text-white px-5 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors"
+              >
+                {PLAN_CTA_SHORT}
+              </Link>
+            )}
             <button
-              onClick={() => setMobileOpen(!mobileOpen)}
+              onClick={() => {
+                // On a buying or selling page the menu opens on that group; elsewhere all four start closed.
+                const own = moveForPath(pathname);
+                if (!mobileOpen) setOpenGroup(own === "buying" ? "Buying" : own === "selling" ? "Selling" : null);
+                setMobileOpen(!mobileOpen);
+              }}
               className="min-[67.5rem]:hidden -mr-1 p-2 text-ink hover:bg-surface-sunken rounded-md cursor-pointer"
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
@@ -237,83 +253,78 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile menu: the three moves first, then the plan and help, then
-          short groups. */}
+      {/* Phone menu: the plan and an agent, then four groups that open one
+          at a time, then the phone number. Every link is in the HTML (closed
+          groups are hidden, not removed). */}
       {mobileOpen && (
         <div id="mobile-menu" className="min-[67.5rem]:hidden border-t border-line bg-cream max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain">
           <nav className="mx-auto max-w-7xl px-4 pt-4 pb-6" aria-label="Main">
-            <div className="grid grid-cols-3 gap-2 mb-3">
-              {[
-                { href: "/buying", label: "Buying" },
-                { href: "/selling", label: "Selling" },
-                { href: "/buying-and-selling", label: "Both" },
-              ].map((m) => (
-                <Link
-                  key={m.href}
-                  href={m.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center rounded-md border border-ink px-2 py-3 text-sm font-semibold text-ink"
-                >
-                  {m.label}
-                </Link>
-              ))}
-            </div>
-            <div className="grid grid-cols-2 gap-2 mb-5">
+            <div className="grid gap-2">
               <Link
                 href={planHref}
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center rounded-md bg-cta hover:bg-cta-hover text-white px-3 py-3 text-sm font-semibold transition-colors"
+                className="flex items-center justify-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white px-4 py-3.5 text-[15px] font-semibold transition-colors"
               >
-                {planLabel}
+                {PLAN_CTA_SHORT} <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
               <Link
-                href="/get-help"
+                href={helpHref}
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center rounded-md border border-line-strong text-ink px-3 py-3 text-sm font-semibold hover:border-ink transition-colors"
+                className="flex items-center justify-center rounded-full border border-ink text-ink px-4 py-3 text-[15px] font-semibold"
               >
-                Get personal help
+                {helpLabel}
               </Link>
             </div>
-            <div className="space-y-5">
-              {NAV_LINKS.map((link) =>
-                link.children ? (
-                  <div key={link.label}>
-                    <p className="px-1 pb-1 text-sm font-semibold text-ink">{link.label}</p>
-                    <div className="grid grid-cols-1">
-                      {link.children
-                        .filter((c, i, all) => all.findIndex((x) => x.href === c.href) === i)
-                        .map((child) => (
+            <ul className="mt-5 border-t border-line">
+              {NAV_LINKS.filter((l) => l.children).map((link) => {
+                const open = openGroup === link.label;
+                const panel = `mobile-group-${link.label.toLowerCase().replace(/[^a-z]+/g, "-")}`;
+                return (
+                  <li key={link.label} className="border-b border-line">
+                    <button
+                      type="button"
+                      aria-expanded={open}
+                      aria-controls={panel}
+                      onClick={() => setOpenGroup(open ? null : link.label)}
+                      className="flex w-full items-center justify-between gap-3 px-1 py-4 text-left text-[17px] font-semibold text-ink"
+                    >
+                      {link.label}
+                      <ChevronDown className={`h-5 w-5 text-ink-muted transition-transform motion-reduce:transition-none ${open ? "rotate-180" : ""}`} aria-hidden="true" />
+                    </button>
+                    <ul id={panel} hidden={!open} className="pb-3">
+                      {link.children!.map((child) => (
+                        <li key={`${child.href}-${child.label}`}>
                           <Link
-                            key={`${child.href}-${child.label}`}
                             href={child.href}
                             onClick={() => setMobileOpen(false)}
-                            className="block px-1 py-2 text-[15px] text-ink-muted hover:text-ink border-b border-line/70"
+                            className="block rounded-md px-3 py-2.5 text-[15px] text-ink hover:bg-surface-sunken"
                           >
                             {child.label}
+                            {child.note && <span className="block text-[13px] leading-snug text-ink-muted">{child.note}</span>}
                           </Link>
-                        ))}
-                    </div>
-                  </div>
-                ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setMobileOpen(false)}
-                    className="block px-1 py-2 text-[15px] font-semibold text-ink border-b border-line/70"
-                  >
-                    {link.label}
-                  </Link>
-                )
-              )}
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="mt-5 grid grid-cols-2 gap-2">
+              <Link
+                href="/search"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-center gap-2 rounded-md border border-line px-3 py-3 text-sm font-semibold text-ink hover:border-ink"
+              >
+                <Search className="w-4 h-4" aria-hidden="true" /> Search
+              </Link>
+              <a
+                href={`tel:${CONTACT_PHONE_E164}`}
+                className="flex items-center justify-center gap-2 rounded-md border border-line px-3 py-3 text-sm font-semibold text-ink hover:border-ink"
+                aria-label={`Call us on ${CONTACT_PHONE_DISPLAY}`}
+              >
+                <Phone className="w-4 h-4" aria-hidden="true" /> {CONTACT_PHONE_DISPLAY}
+              </a>
             </div>
-            <a
-              href={`tel:${CONTACT_PHONE_E164}`}
-              className="mt-6 flex items-center justify-center gap-2 w-full rounded-md border border-line px-4 py-3 text-sm font-semibold text-ink hover:border-ink transition-colors"
-              aria-label={`Call us on ${CONTACT_PHONE_DISPLAY}`}
-            >
-              <Phone className="w-4 h-4" aria-hidden="true" />
-              Call us on {CONTACT_PHONE_DISPLAY}
-            </a>
           </nav>
         </div>
       )}

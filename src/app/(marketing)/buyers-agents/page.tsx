@@ -125,7 +125,7 @@ export default function BuyersAgentsPage() {
             Ask about a buyer’s agent
           </Link>
           <Link href={PLAN_HREF} className={`${BUTTON_SECONDARY} justify-center`}>
-            Make a buying plan
+            Build my next-step plan
           </Link>
         </div>
         <p className="mt-4 max-w-xl text-sm text-ink-muted leading-relaxed">
@@ -276,7 +276,7 @@ export default function BuyersAgentsPage() {
                 Ask about a buyer’s agent <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
               <Link href={PLAN_HREF} className={`${BUTTON_SECONDARY} justify-center`}>
-                Make a buying plan
+                Build my next-step plan
               </Link>
             </div>
           </div>

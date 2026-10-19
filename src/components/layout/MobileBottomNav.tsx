@@ -4,10 +4,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { moveForPath } from "@/lib/journey-paths";
+import { PLAN_CTA_BAR } from "@/lib/plans/name";
+import { DEFAULT_MOVE, journeyForMove, usePublishedMove } from "@/components/interactive/move-context";
 
 // The phone bar (Oct 2026, "confident moves"): two actions that fit the page's
-// move. The first is always the learning step (a plan for that move); the
-// second is personal help for that move. It hides where the page is itself a
+// move. The first is always the learning step (the next-step plan for that
+// move, the same first step as the header and the homepage hero since
+// 19 Oct 2026); the second is personal help for that move. On the homepage
+// both follow the move picked in the hero. It hides where the page is itself a
 // form, and while any field has focus, so it never sits over what someone is
 // typing or over the keyboard.
 
@@ -22,12 +26,12 @@ const matches = (pathname: string, p: string) => pathname === p || pathname.star
 const barEntry = (pathname: string) =>
   `bar-${pathname.replace(/^\/+|\/+$/g, "").replace(/[^a-z0-9]+/gi, "-").toLowerCase() || "home"}`.slice(0, 100);
 
-// Education first: the free guide for the page's move, then an agent.
+// Education first: the next-step plan for the page's move, then an agent.
 const ACTIONS = {
-  buying: { plan: "Free buying guide", planHref: "/buying-guide", help: "Find a buyer’s agent", helpHref: "/get-help?service=buyers-agent" },
-  selling: { plan: "Free selling guide", planHref: "/selling-guide", help: "Find an agent", helpHref: "/get-help?service=selling-agent" },
-  "buying-and-selling": { plan: "Moving plan", planHref: "/plan?j=buying-and-selling", help: "Find an agent", helpHref: "/get-help?service=both" },
-  none: { plan: "Free guides", planHref: "/guides", help: "Find an agent", helpHref: "/get-help" },
+  buying: { planHref: "/plan?j=buying", help: "Find a buyer’s agent", helpHref: "/get-help?service=buyers-agent" },
+  selling: { planHref: "/plan?j=selling", help: "Find an agent", helpHref: "/get-help?service=selling-agent" },
+  "buying-and-selling": { planHref: "/plan?j=buying-and-selling", help: "Find an agent", helpHref: "/get-help?service=both" },
+  none: { planHref: "/plan", help: "Find an agent", helpHref: "/get-help" },
 } as const;
 
 export function MobileBottomNav() {
@@ -36,6 +40,7 @@ export function MobileBottomNav() {
   // the new page has committed so the server HTML still matches.
   const [pageAudience, setPageAudience] = useState<"buying" | "selling" | null>(null);
   const [typing, setTyping] = useState(false);
+  const published = usePublishedMove();
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
@@ -60,10 +65,10 @@ export function MobileBottomNav() {
 
   if (HIDE_ON.some((p) => matches(pathname, p))) return null;
 
-  const move = moveForPath(pathname) ?? pageAudience;
+  const move = moveForPath(pathname) ?? (pathname === "/" ? journeyForMove(published ?? DEFAULT_MOVE) : pageAudience);
   const a = ACTIONS[move ?? "none"];
   const from = barEntry(pathname);
-  const planHref = a.planHref;
+  const planHref = `${a.planHref}${a.planHref.includes("?") ? "&" : "?"}from=${from}`;
   const helpHref = a.helpHref.includes("?") ? `${a.helpHref}&from=${from}` : a.helpHref;
 
   return (
@@ -76,7 +81,7 @@ export function MobileBottomNav() {
     >
       <div className="grid grid-cols-2 gap-2 px-3 py-2">
         <Link href={planHref} className="flex items-center justify-center rounded-md bg-cta hover:bg-cta-hover text-white px-2 py-2.5 text-sm font-semibold">
-          {a.plan}
+          {PLAN_CTA_BAR}
         </Link>
         <Link href={helpHref} className="flex items-center justify-center rounded-md border border-ink text-ink px-2 py-2.5 text-sm font-semibold">
           {a.help}

@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Calculator, BookOpen } from "lucide-react";
+import { ArrowRight, Calculator, BookOpen, MapPin, Pencil } from "lucide-react";
 import { PhotoHero, HeroTitle, HeroLead } from "@/components/premium";
 import { PlanEmailForm } from "@/components/journeys/PlanEmailForm";
 import { PrintButton } from "@/components/journeys/PrintButton";
-import { answersFromParams } from "@/lib/plans/questions";
+import { BUYER_TYPES, BUY_STAGES, MOVE_ORDERS, SELL_STAGES, TIMEFRAMES, answersFromParams, editPlanHref, suburbSlugLabel, type PlanAnswers } from "@/lib/plans/questions";
+import { PLAN_NAME } from "@/lib/plans/name";
+import { getSuburbName } from "@/lib/services/suburb-service";
 import { PLAN_DISCLAIMER, buildPlan } from "@/lib/plans/engine";
 import { BUTTON_PRIMARY, BUTTON_SECONDARY } from "@/components/premium/buttons";
 import { redirect } from "next/navigation";
@@ -12,6 +14,27 @@ import { redirect } from "next/navigation";
 // /plan/result?j=…: the plan itself, built on the server from the answers in
 // the URL (no personal data), so it can be bookmarked, shared and printed.
 // Not indexed: every combination of answers is its own URL.
+//
+// 19 Oct 2026: the move, the state and the suburb carried from the homepage
+// show at the top, the suburb links to its profile, and "Change my answers"
+// reopens every answer (editPlanHref) instead of starting again.
+
+const STATE_NAMES: Record<string, string> = {
+  NSW: "New South Wales", VIC: "Victoria", QLD: "Queensland", WA: "Western Australia", SA: "South Australia", TAS: "Tasmania", ACT: "the ACT", NT: "the Northern Territory",
+};
+const MOVE_NAMES: Record<PlanAnswers["journey"], string> = { selling: "Selling", buying: "Buying", "buying-and-selling": "Selling and buying" };
+
+/** The answers worth showing back, in words: the move, the state, then the stage and timing. */
+function contextOf(a: PlanAnswers): string[] {
+  const find = (opts: readonly { id: string; label: string }[], id: string | null | undefined) => opts.find((o) => o.id === id)?.label;
+  return [
+    MOVE_NAMES[a.journey],
+    a.journey === "buying" ? find(BUYER_TYPES, a.buyerType) : undefined,
+    a.state ? STATE_NAMES[a.state] : undefined,
+    a.journey === "selling" ? find(SELL_STAGES, a.sellStage) : a.journey === "buying" ? find(BUY_STAGES, a.buyStage) : find(MOVE_ORDERS, a.order),
+    find(TIMEFRAMES, a.timeframe),
+  ].filter((x): x is string => !!x);
+}
 
 export const metadata: Metadata = {
   title: "Your next-step plan",
@@ -23,17 +46,40 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
   const answers = answersFromParams((k) => (typeof sp[k] === "string" ? (sp[k] as string) : undefined));
   if (!answers) redirect("/plan");
   const plan = buildPlan(answers);
-  const editHref = `/plan?${new URLSearchParams({ j: answers.journey }).toString()}`;
+  const editHref = editPlanHref(answers);
+  // The suburb from the homepage or the planner, named from the database when it's there.
+  const suburbRow = answers.suburb ? await getSuburbName(answers.suburb) : null;
+  const suburb = answers.suburb
+    ? { label: suburbRow ? `${suburbRow.name}, ${suburbRow.state} ${suburbRow.postcode}` : suburbSlugLabel(answers.suburb), href: suburbRow ? `/suburbs/${suburbRow.slug}` : null }
+    : null;
 
   return (
     <>
       <PhotoHero breadcrumbs={[{ label: "Your plan", href: "/plan" }, { label: "Result" }]}>
-        <p className="text-base font-semibold text-ink-muted">Your next-step plan</p>
-        <HeroTitle>{plan.title}</HeroTitle>
+        <p className="text-base font-semibold text-ink-muted">{`Your ${PLAN_NAME}${suburb ? ` for ${suburb.label}` : answers.state ? ` for ${STATE_NAMES[answers.state]}` : ""}`}</p>
+        <HeroTitle>{plan.title.replace(/^Your next-step plan:\s*/, "").replace(/^./, (c) => c.toUpperCase())}</HeroTitle>
         <HeroLead>{plan.intro}</HeroLead>
-        <div className="mt-8 flex flex-wrap gap-3 print:hidden">
-          <Link href={editHref} className="text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
-            Change my answers
+        <ul className="mt-7 flex flex-wrap gap-2" aria-label="Built from your answers">
+          {contextOf(answers).map((c) => (
+            <li key={c} className="rounded-full border border-line-strong px-3.5 py-1.5 text-sm font-semibold text-ink">{c}</li>
+          ))}
+          {suburb && (
+            <li>
+              {suburb.href ? (
+                <Link href={suburb.href} className="inline-flex items-center gap-1.5 rounded-full border border-ink px-3.5 py-1.5 text-sm font-semibold text-ink hover:bg-ink hover:text-ink-inverse">
+                  <MapPin className="h-3.5 w-3.5" aria-hidden="true" /> {suburb.label}
+                </Link>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-line-strong px-3.5 py-1.5 text-sm font-semibold text-ink">
+                  <MapPin className="h-3.5 w-3.5" aria-hidden="true" /> {suburb.label}
+                </span>
+              )}
+            </li>
+          )}
+        </ul>
+        <div className="mt-6 flex flex-wrap gap-3 print:hidden">
+          <Link href={editHref} className="inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
+            <Pencil className="h-4 w-4" aria-hidden="true" /> Change my answers
           </Link>
         </div>
       </PhotoHero>
@@ -94,6 +140,24 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
         </div>
 
         <aside className="lg:col-span-5 space-y-8">
+          {suburb?.href ? (
+            <div className="rounded-xl border border-line bg-surface-warm p-5 sm:p-6">
+              <h2 className="flex items-center gap-2 text-lg font-bold text-ink"><MapPin className="h-5 w-5 text-primary" aria-hidden="true" /> {suburb.label}</h2>
+              <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
+                {answers.journey === "buying" ? "Recent prices, rents, schools and local data, to judge each price guide against." : "Recent prices and local data, to test any agent’s price against."}
+              </p>
+              <Link href={suburb.href} className="mt-4 inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
+                See the suburb profile <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </div>
+          ) : (
+            !suburb && (
+              <p className="rounded-xl border border-dashed border-line-strong p-5 text-[15px] leading-relaxed text-ink-muted print:hidden">
+                {`Add your suburb and the plan links its profile: recent prices and local data. `}
+                <Link href={editPlanHref(answers, "state")} className="font-semibold text-ink underline underline-offset-4">Add a suburb</Link>
+              </p>
+            )
+          )}
           <div className="rounded-xl border border-line p-5 sm:p-6">
             <h2 className="flex items-center gap-2 text-lg font-bold text-ink"><Calculator className="h-5 w-5 text-primary" aria-hidden="true" /> Tools</h2>
             <ul className="mt-4 divide-y divide-line">

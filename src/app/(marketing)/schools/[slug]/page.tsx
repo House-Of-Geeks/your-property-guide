@@ -145,7 +145,7 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
                 },
                 {
                   href: "/plan",
-                  label: "Make a plan for your move",
+                  label: "Your next-step plan for the move",
                   note: "Three questions, then your next steps, the right tools and a checklist.",
                 },
               ].map((c) => (

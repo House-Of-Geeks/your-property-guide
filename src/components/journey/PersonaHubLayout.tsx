@@ -175,7 +175,7 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
         <HeroLead>{HUB_LEDE[personaId]}</HeroLead>
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3">
           <Link href={`/plan?j=${isBuyingHub ? "buying" : "selling"}`} className={`${BUTTON_PRIMARY} justify-center`}>
-            {isBuyingHub ? "Make a buying plan" : "Make a selling plan"}
+            Build my next-step plan
           </Link>
           <Link href={guideHref} className={`${BUTTON_SECONDARY} justify-center`}>
             {isBuyingHub ? "Free buying guide (PDF)" : "Free selling guide (PDF)"}

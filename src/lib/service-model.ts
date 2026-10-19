@@ -34,6 +34,18 @@ export const PROMISE = {
   eyebrow: "The $20 million playbook, for every home",
   support:
     "I learnt to sell Australia’s $10 to $20 million homes. The campaign that gets top dollar there is the same one that gets it for yours. Learn it free, then meet one agent who runs it in your suburb.",
+  /**
+   * What a visitor gets, said on the first screen (19 Oct 2026): free
+   * guidance, a next-step plan, and an introduction only if they ask.
+   */
+  offer: "Free property guidance and a next-step plan built from your answers, with an introduction to one participating agent only if you ask for one.",
+  receive: [
+    "Guides and calculators for your state, free and with no sign-up",
+    "Your plan: the next three steps, the right tools and a checklist",
+    "An agent only if you ask: one for each job, never a list",
+  ],
+  /** Andy in one line, beside his photo in the hero (facts from src/lib/founder.ts). */
+  founderLine: "He sold $10 million to $20 million homes Australia-wide, then advised some of the biggest companies in property.",
   closing: "Every home deserves a $20 million campaign.",
 } as const;
 
