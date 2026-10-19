@@ -2,13 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { FOUNDER } from "@/lib/founder";
+import { ByMove } from "./ByMove";
 import { BandTitle, Eyebrow } from "./parts";
 import { SHELL } from "./shell";
 
 // Andy's short story (v6): the portrait, his own words from the about page,
 // the pull quote, his name, and the site's only headline figures (moved here
 // from the hero on 19 Oct 2026, so the first screen can say what you get).
-// Only the facts in src/lib/founder.ts appear here.
+// Only the facts in src/lib/founder.ts appear here. With Buying picked in the
+// hero (20 Oct 2026) the heading and one closing line speak to buyers; Andy's
+// own words and figures stay exactly as they are.
 
 export interface FounderStat {
   value: string;
@@ -30,7 +33,9 @@ export function FounderBand({ stats }: { stats: readonly FounderStat[] }) {
         <div className="lg:col-span-7">
           <Eyebrow>From the founder</Eyebrow>
           <BandTitle className="mt-5 max-w-2xl">
-            <span id="founder-title">At the top end, nobody leaves the result to the market.</span>
+            <span id="founder-title">
+              <ByMove buying="Every home you inspect is being sold with a campaign." other="At the top end, nobody leaves the result to the market." />
+            </span>
           </BandTitle>
           <div className="mt-6 max-w-2xl space-y-4 text-lg leading-relaxed text-ink-muted">
             <p>
@@ -39,6 +44,10 @@ export function FounderBand({ stats }: { stats: readonly FounderStat[] }) {
             <p>
               In the past five years, my advice has generated over $4 billion in property sales, and it all comes back to one lesson. The price you get comes down to the campaign.
             </p>
+            <ByMove
+              buying={<p className="text-ink">When you’re buying, that campaign is aimed at you. Knowing how it runs, from the price guide to the final offer, is how you answer it and pay the right price.</p>}
+              other={null}
+            />
           </div>
 
           <figure className="mt-10 max-w-2xl border-l-2 border-primary pl-6">

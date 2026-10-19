@@ -57,3 +57,11 @@ Andy's brief: clearer messaging, stronger evidence and a shorter path to useful 
 
   The bar spacer and the mobile scroll padding now include the safe-area inset. Desktop is unchanged.
 - **Case study leads with the figures.** It opens with a short headline, then the three figures, then one qualification: expected prices, and the $330,000 is not profit or a sale result. The redesign follows in two sentences beside the labelled illustrations. The repeated qualifications and "one property and one result" are gone. No layout plan or itemised breakdown exists, so none is shown.
+- **Buyers further down the page** (the rest of the 20 Oct brief). With Buying picked, three bands change through `ByMove`:
+  - the Hamilton case study adds "why it matters when you're buying" and buyer takeaways: inspecting, renovation costs and suburb sales;
+  - the founder band gets a buyer heading and one closing line;
+  - the agent section explains a buyer's agent against the selling agent, with their fees, the fee disclosure and the honest network note.
+
+  Selling and Both are unchanged. The qualification now says "not profit or an achieved sale result".
+- **Regression guard.** `tests/lib/plan-entry-points.test.ts` fails if a plan entry point stops using `planStartHref` and the shared suburb, or builds a `/plan?j=` link by hand.
+

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { HAMILTON, dollars, expectedIncrease } from "@/lib/case-studies";
 import { chapterHref } from "@/lib/guide-books";
+import { ByMove } from "./ByMove";
 import { BandTitle, Eyebrow } from "./parts";
 import { SHELL } from "./shell";
 
@@ -15,9 +16,13 @@ import { SHELL } from "./shell";
 // sentences beside the labelled illustrations (the buyer doesn't want photos
 // of her apartment online, so they're drawn, never photo-realistic); then
 // what to take from it. No layout plan or itemised renovation breakdown
-// exists, so none is shown.
+// exists, so none is shown. With Buying picked in the hero, one line says why
+// the example matters to a buyer and the takeaways are a buyer's (general
+// guidance, no new facts about the apartment).
 
-const LESSONS = [
+type Lesson = { title: string; body: string; link: { label: string; href: string } };
+
+const LESSONS: readonly Lesson[] = [
   {
     title: "Assess the property first",
     body: "Know what it’s worth as it stands, and what’s holding the price back, before you spend a dollar.",
@@ -33,7 +38,46 @@ const LESSONS = [
     body: "Set a budget, get quotes, and put the money where buyers will see the difference.",
     link: { label: "What to fix before selling", href: "/guides/what-to-fix-before-selling-a-house" },
   },
-] as const;
+];
+
+/** The same lesson, from the buyer's side of the table. */
+const BUYER_LESSONS: readonly Lesson[] = [
+  {
+    title: "Look past the presentation",
+    body: "Judge the layout, the light and the view, not the carpet and the paint.",
+    link: { label: "Inspecting like a professional", href: chapterHref("buying", 5) },
+  },
+  {
+    title: "Price the work before you offer",
+    body: "Get quotes for what you’d change, and count them in the price you’re prepared to pay.",
+    link: { label: "Renovation costs in 2026", href: "/guides/renovation-cost-australia-2026" },
+  },
+  {
+    title: "Check what finished homes sell for",
+    body: "Recent sales of renovated homes nearby show what the work could be worth, and what it couldn’t.",
+    link: { label: "Suburb profiles", href: "/suburbs" },
+  },
+];
+
+function Lessons({ heading, lessons }: { heading: string; lessons: readonly Lesson[] }) {
+  return (
+    <>
+      <h3 className="text-xl text-ink">{heading}</h3>
+      <ol className="mt-6 grid gap-6 md:grid-cols-3 md:gap-8">
+        {lessons.map((l, i) => (
+          <li key={l.title}>
+            <p className="font-display text-[28px] leading-none text-accent-dark" aria-hidden="true">{String(i + 1).padStart(2, "0")}</p>
+            <h4 className="mt-3 text-lg font-bold text-ink">{l.title}</h4>
+            <p className="mt-1.5 text-[15px] leading-relaxed text-ink-muted">{l.body}</p>
+            <Link href={l.link.href} className="mt-3 inline-flex items-center gap-1.5 text-[15px] font-semibold text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+              {l.link.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </li>
+        ))}
+      </ol>
+    </>
+  );
+}
 
 export function HamiltonCaseStudy() {
   const c = HAMILTON;
@@ -67,13 +111,21 @@ export function HamiltonCaseStudy() {
         </dl>
         {/* The one qualification, said once. */}
         <p className="mt-4 max-w-3xl text-[15px] leading-relaxed text-ink-muted">
-          {`Both are expected sale prices, before and after the work. The ${dollars(expectedIncrease(c))} difference is an increase in expected sale price, not profit or a sale result, and most renovations won’t move a price this far.`}
+          {`Both are expected sale prices, before and after the work. The ${dollars(expectedIncrease(c))} difference is an increase in expected sale price, not profit or an achieved sale result, and most renovations won’t move a price this far.`}
         </p>
 
         <div className="mt-12 grid gap-8 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-4">
             <h3 className="text-xl text-ink">The redesign</h3>
             <p className="mt-3 text-[17px] leading-relaxed text-ink">{`${c.property} with ${c.before}. ${c.work}`}</p>
+            <ByMove
+              buying={
+                <p className="mt-4 text-[15px] leading-relaxed text-ink">
+                  <span className="font-semibold">Why it matters when you’re buying:</span> a dated, boxed-in home is priced on how it looks today. What it could become, and what that would cost, is yours to work out before you offer.
+                </p>
+              }
+              other={null}
+            />
             <p className="mt-4 text-sm leading-relaxed text-ink-muted">The pictures are illustrations, not photographs of the apartment or the work done.</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:col-span-8">
@@ -90,19 +142,10 @@ export function HamiltonCaseStudy() {
         </div>
 
         <div className="mt-12 border-t border-line-strong pt-10">
-          <h3 className="text-xl text-ink">What you can take from it</h3>
-          <ol className="mt-6 grid gap-6 md:grid-cols-3 md:gap-8">
-            {LESSONS.map((l, i) => (
-              <li key={l.title}>
-                <p className="font-display text-[28px] leading-none text-accent-dark" aria-hidden="true">{String(i + 1).padStart(2, "0")}</p>
-                <h4 className="mt-3 text-lg font-bold text-ink">{l.title}</h4>
-                <p className="mt-1.5 text-[15px] leading-relaxed text-ink-muted">{l.body}</p>
-                <Link href={l.link.href} className="mt-3 inline-flex items-center gap-1.5 text-[15px] font-semibold text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
-                  {l.link.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-              </li>
-            ))}
-          </ol>
+          <ByMove
+            buying={<Lessons heading="What it means when you’re buying" lessons={BUYER_LESSONS} />}
+            other={<Lessons heading="What you can take from it" lessons={LESSONS} />}
+          />
         </div>
       </div>
     </section>
