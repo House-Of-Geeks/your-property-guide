@@ -12,7 +12,7 @@ const COPY: Record<GuideAudience, { rail: string; heading: string; body: string 
   buying: {
     rail: "What you can really spend, the 2026 schemes by state, and how not to overpay.",
     heading: "Buying soon? Get the free buying guide",
-    body: "What you can really spend, the 2026 schemes state by state, how not to overpay, and how the selling side plays you. Free, personalised to your situation.",
+    body: "What you can really spend, the 2026 schemes state by state, how homes are marketed and sold, and how not to overpay. Free, personalised to your situation.",
   },
 };
 
@@ -50,7 +50,7 @@ export function GuideNextStep({ audience, from, variant = "block", heading, body
         </div>
         <Link
           href={href}
-          className="mt-4 flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-4 py-2.5 text-sm"
+          className="mt-4 flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-cta-ink font-semibold px-4 py-2.5 text-sm"
         >
           Get the free guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
         </Link>
@@ -82,7 +82,7 @@ export function GuideNextStep({ audience, from, variant = "block", heading, body
       <div className="mt-5 sm:pl-[100px]">
         <Link
           href={href}
-          className="flex sm:inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 sm:py-3 text-base"
+          className="flex sm:inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-cta-ink font-semibold px-6 py-3.5 sm:py-3 text-base"
         >
           Get the free {audience} guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
         </Link>

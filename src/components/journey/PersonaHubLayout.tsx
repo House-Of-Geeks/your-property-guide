@@ -10,6 +10,7 @@ import { PERSONAS, getPersonaById, type PersonaId } from "@/lib/constants/journe
 import { PERSONA_HUB_CONTENT } from "@/lib/persona-hub-content";
 import { hubGuideGroups, hubGuideList } from "@/lib/guides/hub-guides";
 import { guideFunnelHref } from "@/lib/guide-funnel";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 import { HelpBand } from "@/components/journeys/ServiceSections";
 import { NumbersPanel, type NumbersTool } from "@/components/interactive/NumbersPanel";
 import {
@@ -18,6 +19,7 @@ import {
   Band,
   HeroLead,
   HeroTitle,
+  LinkRows,
   PhotoHero,
   SectionHeading,
   type PhotoKey,
@@ -41,12 +43,12 @@ const PERSONA_EDITOR_NOTE: Record<PersonaId, React.ReactNode> = {
   ),
   "selling": (
     <p>
-      The seller&rsquo;s mistake I see most often is treating the
-      campaign as the brochure. The campaign is the whole plan: a price
-      you can prove, a home presented for the top buyer, a launch that
-      reaches every one of them, and the negotiation after the open
-      homes. The same campaign wins at every price, and the agent you
-      hire is the person who runs it. Hire the campaign, not the quote.
+      The seller&rsquo;s mistake I see most often is treating the sale
+      as the brochure. A sale is a whole plan: a price you can back with
+      recent sales, a home presented well, marketing that reaches the
+      likely buyers, and careful negotiation after the open homes. The
+      agent you choose runs much of that, so compare agents on evidence,
+      not on the highest quote.
     </p>
   ),
   "upgrading": (
@@ -195,22 +197,10 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
         </div>
       </Band>
 
-      {/* Start here: the three first reads, as cards. */}
+      {/* Start here: the three first reads, under fine rules. */}
       <Band spacing="compact">
-        <h2 className="text-2xl sm:text-3xl text-ink">Start here</h2>
-        <ul className="mt-6 grid gap-4 md:grid-cols-3">
-          {persona.startingPoints.map((sp) => (
-            <li key={sp.href}>
-              <Link href={sp.href} className="group flex h-full flex-col rounded-2xl bg-surface-warm p-6 transition-colors hover:bg-surface-warm-sunken">
-                <span className="text-xl font-bold text-ink">{sp.label}</span>
-                <span className="mt-2 text-base text-ink-muted leading-relaxed">{sp.description}</span>
-                <span className="mt-auto pt-5 inline-flex items-center gap-1.5 font-semibold text-ink">
-                  Open <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <SectionHeading size="md" title="Start here" />
+        <LinkRows items={persona.startingPoints.map((sp) => ({ label: sp.label, href: sp.href, note: sp.description }))} />
       </Band>
 
       {/* The rest of the briefing: depth on what the persona needs to
@@ -280,12 +270,12 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
           <div className="lg:col-span-5">
             <SectionHeading
-              title={isBuyingHub ? "The complete guide to buying property" : "The complete guide to selling your property"}
+              title={GUIDE_BOOKS[isBuyingHub ? "buying" : "selling"].name}
             />
             <p className="mt-6 text-lg text-ink-muted leading-relaxed max-w-md">
               {isBuyingHub
                 ? "Ten chapters for buyers: schemes, finance, inspections and the offer, in order. Free. Tell us where to send it; nothing else is sent unless you ask."
-                : "Ten chapters on selling well, in order: costs, preparation, choosing an agent, the campaign and the contract. Free. Tell us where to send it; nothing else is sent unless you ask."}
+                : "Ten chapters on selling well, in order: costs, preparation, choosing an agent, marketing and the contract. Free. Tell us where to send it; nothing else is sent unless you ask."}
             </p>
           </div>
           <div className="lg:col-span-7">

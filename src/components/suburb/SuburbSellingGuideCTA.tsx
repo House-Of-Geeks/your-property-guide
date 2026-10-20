@@ -24,7 +24,7 @@ export function SuburbSellingGuideCTA({ suburbName, suburbSlug, from = "suburb-p
     <div className="rounded-xl border border-line bg-surface-warm overflow-hidden">
       <div className="flex items-center gap-6 sm:gap-10 p-6 sm:p-10">
         <div className="flex-1 min-w-0">
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink leading-tight tracking-[-0.02em]">
+          <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink leading-tight tracking-[-0.02em]">
             Selling in {suburbName}? Get the free selling guide
           </h2>
           <p className="mt-3 font-sans text-[15px] sm:text-base text-ink-muted leading-relaxed max-w-xl">
@@ -35,7 +35,7 @@ export function SuburbSellingGuideCTA({ suburbName, suburbSlug, from = "suburb-p
           <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-4">
             <Link
               href={guideFunnelHref("selling", { suburb: suburbSlug, from })}
-              className="inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white px-5 py-3 font-semibold transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-cta-ink px-5 py-3 font-semibold transition-colors"
             >
               Get the free selling guide
               <ArrowRight className="w-4 h-4" aria-hidden="true" />

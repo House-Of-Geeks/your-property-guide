@@ -107,7 +107,7 @@ export function PhoneFollowUp({
         <button
           type="submit"
           disabled={state === "saving"}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-4 py-2.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer whitespace-nowrap"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-cta hover:bg-cta-hover text-cta-ink font-medium px-4 py-2.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer whitespace-nowrap"
         >
           {state === "saving" ? "Saving…" : "Call me"}
           {state !== "saving" && <ArrowRight className="w-3.5 h-3.5" />}

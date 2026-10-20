@@ -253,7 +253,7 @@ export default function PropertyValuationPage() {
           </div>
           <aside className="lg:col-span-5">
             <div className="rounded-xl border border-line bg-white p-5 sm:p-6">
-              <h3 className="font-display text-lg font-bold text-ink mb-3">At a glance</h3>
+              <h3 className="font-display text-lg font-normal text-ink mb-3">At a glance</h3>
               <dl className="space-y-4 font-sans text-sm">
                 <div>
                   <dt className="font-medium text-ink">Cost of a licensed valuation</dt>
@@ -373,7 +373,7 @@ export default function PropertyValuationPage() {
           </div>
 
           <div className="mt-12">
-            <h2 className="font-display text-xl font-bold text-ink leading-tight tracking-[-0.02em] mb-4">Sources</h2>
+            <h2 className="font-display text-xl font-normal text-ink leading-tight tracking-[-0.02em] mb-4">Sources</h2>
             <ul className="space-y-2 font-sans text-sm text-ink-muted">
               {SOURCES.map((s) => (
                 <li key={s.href}>

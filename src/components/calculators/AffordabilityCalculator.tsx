@@ -211,7 +211,7 @@ export function AffordabilityCalculator() {
             <div className="grid grid-cols-2 gap-2">
               {(["single", "couple"] as Household[]).map((h) => (
                 <button key={h} type="button" onClick={() => setHouseholdChoice(h)}
-                  className={`py-2 rounded-lg text-sm font-medium border transition-colors ${household === h ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"}`}>
+                  className={`py-2 rounded-lg text-sm font-medium border transition-colors ${household === h ? "bg-forest text-cream border-forest" : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"}`}>
                   {h === "single" ? "Single" : "Couple"}
                 </button>
               ))}
@@ -222,7 +222,7 @@ export function AffordabilityCalculator() {
             <div className="grid grid-cols-2 gap-2">
               {(["capital", "regional"] as Region[]).map((r) => (
                 <button key={r} type="button" onClick={() => setRegion(r)}
-                  className={`py-2 rounded-lg text-sm font-medium border transition-colors ${region === r ? "bg-primary text-white border-primary" : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"}`}>
+                  className={`py-2 rounded-lg text-sm font-medium border transition-colors ${region === r ? "bg-forest text-cream border-forest" : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"}`}>
                   {r === "capital" ? "Capital city" : "Regional"}
                 </button>
               ))}
@@ -242,7 +242,7 @@ export function AffordabilityCalculator() {
                 onClick={() => setDependants(d)}
                 className={`min-w-[2.5rem] py-2 px-3 rounded-lg text-sm font-medium border transition-colors ${
                   dependants === d
-                    ? "bg-primary text-white border-primary"
+                    ? "bg-forest text-cream border-forest"
                     : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
                 }`}
               >
@@ -268,7 +268,7 @@ export function AffordabilityCalculator() {
                 onClick={() => setDepositPct(pct)}
                 className={`py-2 rounded-lg text-sm font-medium border transition-colors ${
                   depositPct === pct
-                    ? "bg-primary text-white border-primary"
+                    ? "bg-forest text-cream border-forest"
                     : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
                 }`}
               >

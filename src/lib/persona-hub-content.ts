@@ -159,7 +159,7 @@ const SELLING: PersonaHubContent = {
   calculatorsBlurb:
     "Run the seller-side numbers before you sign anything.",
   calculators: [
-    { label: "Free selling guide (PDF)",     href: "/selling-guide",              blurb: "The complete 10-chapter selling guide: costs, agent selection, and a 12-week plan. Personalised to your suburb." },
+    { label: "Free selling guide (PDF)",     href: "/selling-guide",              blurb: "Selling a home, the free 10-chapter guide: costs, agent selection, and a 12-week plan. Personalised to your suburb." },
     { label: "Commission calculator",        href: "/real-estate-commission-calculator", blurb: "What an agent costs on your sale price, with typical rates by state." },
     { label: "Property valuation range",     href: "/property-valuation",         blurb: "Appraisal, valuation and online estimate compared, with what homes sell for in your suburb from published medians." },
     { label: "Free property appraisal",      href: "/appraisal",                  blurb: "Independent estimate from a vetted local agent, free, one business day." },

@@ -59,7 +59,7 @@ export default function AgreementCheckPage() {
         <HeroLead>{AGREEMENT_CHECK.summary}</HeroLead>
         <ul className="mt-8 flex flex-wrap gap-2.5">
           {AGREEMENT_CHECK.covers.map((c) => (
-            <li key={c} className="rounded-full border border-line-strong px-4 py-2 text-[15px] font-semibold text-ink">
+            <li key={c} className="rounded-[4px] border border-line-strong px-4 py-2 text-[15px] font-semibold text-ink">
               {c}
             </li>
           ))}
@@ -71,12 +71,12 @@ export default function AgreementCheckPage() {
             {CONTACT_PHONE_DISPLAY}
           </a>
         </p>
-        {/* Andy's own words, from his story on /about. */}
+        {/* Andy's own words (FOUNDER.aim in src/lib/founder.ts). */}
         <figure className="mt-12 hidden max-w-xl items-start gap-5 border-t border-line pt-8 lg:flex">
           <Image src={FOUNDER.photo} alt="" width={64} height={64} className="h-16 w-16 shrink-0 rounded-full object-cover object-top" />
           <div>
             <blockquote className="font-display text-[22px] italic leading-snug text-ink">
-              <p>“A good market won’t save a weak campaign, and a slack agent can’t hide behind a slow one.”</p>
+              <p>“{FOUNDER.aim}”</p>
             </blockquote>
             <figcaption className="mt-3 text-sm text-ink-muted">
               <Link href="/about" className="font-semibold text-ink underline underline-offset-4">{FOUNDER.name}</Link>, founder

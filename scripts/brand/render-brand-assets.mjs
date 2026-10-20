@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-// Regenerates the brand's raster assets in v6 colours (16 Oct 2026) from the
-// same mark as src/components/brand/Logo.tsx and src/app/icon.svg:
+// Regenerates the brand's raster assets (v7 "Clear decisions" colours,
+// 20 Oct 2026) from the same mark as src/components/brand/Logo.tsx and
+// src/app/icon.svg:
 //
-//   src/app/favicon.ico                 16, 32 and 48 px, the eucalyptus tile
+//   src/app/favicon.ico                 16, 32 and 48 px, the forest tile
 //   src/app/apple-icon.png              180 px, full-bleed tile (iOS rounds it)
 //   public/images/brand/mark.svg        the mark alone, copper
 //   public/images/brand/mark-96.png     the mark alone, copper (email header)
@@ -10,6 +11,7 @@
 //   public/images/brand/icon-192.png    the tile, 192 px
 //   public/images/brand/icon-512.png    the tile, 512 px
 //   public/og-image.jpg                 1200 x 630 social card, from /print/og
+//   public/images/guide/<g>-guide-og.jpg  the two guides' social cards, from /print/og?card=<g>
 //
 // The social card needs the site running:
 //   BASE=http://localhost:3000 node scripts/brand/render-brand-assets.mjs
@@ -27,10 +29,10 @@ import { fileURLToPath } from "node:url";
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const BASE = process.env.BASE?.replace(/\/$/, "");
 
-// Brand v6 (BRAND.md): eucalyptus, copper, light copper.
-const EUCALYPTUS = "#0f3d2e";
-const COPPER = "#c47a3a";
-const COPPER_LIGHT = "#e9b07c";
+// Brand v7 (BRAND.md): forest, copper, light copper.
+const EUCALYPTUS = "#244a37";
+const COPPER = "#a9642c";
+const COPPER_LIGHT = "#e1af86";
 const MARK_PATH = "M16 2.5 L28.5 12 L28.5 25 L12.5 25 L6.5 30.5 L7.6 25 L3.5 25 L3.5 12 Z";
 
 const tile = (rounded) =>
@@ -156,19 +158,26 @@ async function main() {
     console.log("BASE not set: skipped public/og-image.jpg (needs the site running).");
     return;
   }
-  await withPage(chrome, async ({ send, evaluate }) => {
-    await send("Emulation.setDeviceMetricsOverride", { width: 1200, height: 630, deviceScaleFactor: 1, mobile: false });
-    await send("Page.navigate", { url: `${BASE}/print/og` });
-    for (let i = 0; i < 120; i++) {
-      if ((await evaluate("document.readyState")) === "complete") break;
-      await sleep(250);
-    }
-    await evaluate("document.fonts.ready.then(() => true)");
-    await evaluate(`(async () => { await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))); document.querySelector('nextjs-portal')?.remove(); return true })()`);
-    await sleep(600);
-    const shot = await send("Page.captureScreenshot", { format: "jpeg", quality: 88, clip: { x: 0, y: 0, width: 1200, height: 630, scale: 1 } });
-    out("public/og-image.jpg", Buffer.from(shot.data, "base64"));
-  });
+  const cards = [
+    { path: "/print/og", file: "public/og-image.jpg" },
+    { path: "/print/og?card=buying", file: "public/images/guide/buying-guide-og.jpg" },
+    { path: "/print/og?card=selling", file: "public/images/guide/selling-guide-og.jpg" },
+  ];
+  for (const card of cards) {
+    await withPage(chrome, async ({ send, evaluate }) => {
+      await send("Emulation.setDeviceMetricsOverride", { width: 1200, height: 630, deviceScaleFactor: 1, mobile: false });
+      await send("Page.navigate", { url: `${BASE}${card.path}` });
+      for (let i = 0; i < 120; i++) {
+        if ((await evaluate("document.readyState")) === "complete") break;
+        await sleep(250);
+      }
+      await evaluate("document.fonts.ready.then(() => true)");
+      await evaluate(`(async () => { await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; }))); document.querySelector('nextjs-portal')?.remove(); return true })()`);
+      await sleep(600);
+      const shot = await send("Page.captureScreenshot", { format: "jpeg", quality: 88, clip: { x: 0, y: 0, width: 1200, height: 630, scale: 1 } });
+      out(card.file, Buffer.from(shot.data, "base64"));
+    });
+  }
 }
 
 main().catch((err) => {

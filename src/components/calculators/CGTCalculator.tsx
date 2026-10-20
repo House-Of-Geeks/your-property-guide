@@ -265,7 +265,7 @@ export function CGTCalculator() {
                 onClick={() => setOwnershipType(t)}
                 className={`py-2 rounded-lg text-sm font-medium border transition-colors ${
                   ownershipType === t
-                    ? "bg-primary text-white border-primary"
+                    ? "bg-forest text-cream border-forest"
                     : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
                 }`}
               >
@@ -287,7 +287,7 @@ export function CGTCalculator() {
                 onClick={() => setMarginalRate(r)}
                 className={`py-2 rounded-lg text-sm font-medium border transition-colors ${
                   marginalRate === r
-                    ? "bg-primary text-white border-primary"
+                    ? "bg-forest text-cream border-forest"
                     : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
                 }`}
               >

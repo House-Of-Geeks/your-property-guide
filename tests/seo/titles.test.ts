@@ -501,7 +501,7 @@ describe("cost-first guide titles", () => {
   const seoOf = (src: string) => src.match(/const SEO_TITLE = "([^"]+)";/)?.[1];
   const usesSeoTitle = (src: string) => {
     expect(src).toMatch(/export const metadata: Metadata = \{\s*title: SEO_TITLE,/);
-    expect(src).toMatch(/openGraph: \{\s*url: [^\n]*\n\s*title: SEO_TITLE,/);
+    expect(src).toMatch(/openGraph: \{\s*(?:\.\.\.DEFAULT_OG,\s*)?url: [^\n]*\n\s*title: SEO_TITLE,/);
   };
 
   it("building and pest inspection guide: short <title>, long H1", () => {

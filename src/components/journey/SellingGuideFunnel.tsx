@@ -16,6 +16,7 @@ import {
   downloadConsentText,
 } from "@/lib/guide-consent";
 import { GUIDE_PDF_PATH } from "@/lib/guide-pdfs";
+import { SELLING_CHAPTERS } from "@/lib/guide-books";
 import { SEQUENCES, sequenceFor } from "@/lib/email-sequences";
 import { useSiteFlags } from "@/components/flags/FlagsProvider";
 
@@ -237,15 +238,16 @@ export function SellingGuideFunnel({
   const seq = SEQUENCES[sequenceFor("selling", agentStatus)];
 
   // What to read first, from the answers: the value shown before any
-  // contact details are asked for.
+  // contact details are asked for. Chapter titles from src/lib/guide-books.ts.
+  const chapter = (n: number) => `Chapter ${n}: ${SELLING_CHAPTERS[n - 1].title}`;
   const startWith =
     agentStatus === "already-listed"
-      ? ["Chapter 7: marketing that actually sells", "Chapter 8: offers, negotiation and exchange", "Chapter 9: legals and settlement"]
+      ? [chapter(7), chapter(8), chapter(9)]
       : agentStatus === "comparing"
-        ? ["Chapter 5: choosing your agent", "Chapter 3: the real cost of selling", "Chapter 2: what your property is really worth"]
+        ? [chapter(5), chapter(3), chapter(2)]
         : timeframe === "0-3-months" || timeframe === "3-6-months"
-          ? ["Chapter 3: the real cost of selling", "Chapter 4: preparing your property", "Chapter 5: choosing your agent"]
-          : ["Chapter 1: is now the right time to sell?", "Chapter 3: the real cost of selling", "Chapter 4: preparing your property"];
+          ? [chapter(3), chapter(4), chapter(5)]
+          : [chapter(1), chapter(3), chapter(4)];
 
   const optionCard = (active: boolean) =>
     `relative flex items-center justify-between rounded-lg border px-4 sm:px-5 py-3.5 transition-colors duration-150 cursor-pointer press ${
@@ -297,7 +299,7 @@ export function SellingGuideFunnel({
       {step === 0 && (
         <div>
           <p className="text-[13px] text-ink-muted font-medium mb-2">Free guide · Three quick questions</p>
-          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
+          <h3 className="font-display text-[1.375rem] sm:text-2xl font-normal text-ink leading-tight tracking-[-0.02em] mb-2">
             <label htmlFor="guide-suburb">Where&rsquo;s the property?</label>
           </h3>
           <p id="guide-suburb-hint" className="text-sm text-ink-muted mb-5">
@@ -338,7 +340,7 @@ export function SellingGuideFunnel({
       {/* Step 1, timeframe */}
       {step === 1 && (
         <fieldset>
-          <legend className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-6">
+          <legend className="font-display text-[1.375rem] sm:text-2xl font-normal text-ink leading-tight tracking-[-0.02em] mb-6">
             When are you thinking of selling?
           </legend>
           <div className={`flex flex-col gap-2.5 ${isAdvancing ? "pointer-events-none" : ""}`}>
@@ -370,7 +372,7 @@ export function SellingGuideFunnel({
       {/* Step 2, agent status */}
       {step === 2 && (
         <fieldset>
-          <legend className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
+          <legend className="font-display text-[1.375rem] sm:text-2xl font-normal text-ink leading-tight tracking-[-0.02em] mb-2">
             Where are you up to with agents?
           </legend>
           <p className="text-sm text-ink-muted mb-5">It changes which chapters we point you to first.</p>
@@ -402,7 +404,7 @@ export function SellingGuideFunnel({
       {/* Step 3, the reading order first, then delivery */}
       {step === 3 && (
         <div>
-          <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em]">
+          <h3 className="font-display text-[1.375rem] sm:text-2xl font-normal text-ink leading-tight tracking-[-0.02em]">
             Your guide is ready
           </h3>
           <p className="mt-2 text-sm text-ink-muted">{suburbLabel ? `For ${suburbLabel}. ` : ""}Start with:</p>
@@ -482,7 +484,7 @@ export function SellingGuideFunnel({
             <button
               type="submit"
               disabled={submitting || submitted}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-base transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer press"
+              className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-cta-ink font-semibold px-6 py-3.5 text-base transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer press"
             >
               {submitted ? (
                 <>

@@ -5,11 +5,11 @@ import { Box, Ch, Pull, Stat } from "../parts";
 export const chapter: Chapter = {
   guide: "buying",
   number: 8,
-  step: "Lock in the finance",
+  step: "Finalise your finance",
   standfirst:
-    "Pre-approval feels like a green light. It’s a strong maybe with an expiry date, and the distance between the two is where purchases fall over.",
+    "Pre-approval feels like a green light. It’s a strong maybe with an expiry date, and the gap between the two is where purchases fall over.",
   callout:
-    "Watching your finance clause. A conditional offer is a risk to the seller’s campaign, and agents favour buyers whose finance looks certain. A fully assessed pre-approval and a tight finance period make you the buyer they want to deal with.",
+    "A finance condition is a risk for the seller: if your loan falls through, so does the sale. That’s why selling agents ask about your finance, and why they tend to favour buyers whose approval looks certain. A fully assessed pre-approval and a short finance period make your offer easier for the seller to accept.",
   checklist: [
     "Get a pre-approval that a credit officer has fully assessed",
     "Diarise its expiry, usually about 90 days",
@@ -32,8 +32,8 @@ function Body() {
   return (
     <>
       <p>
-        Finance is the part of your buying campaign the selling agent can’t see but always asks about. Make it certain, and you can move
-        faster and negotiate harder than buyers whose approval is still a maybe.
+        Finance is the part of your purchase the selling agent can’t see but will always ask about. Make it certain, and you can move
+        faster and negotiate with more confidence than buyers whose approval is still a maybe.
       </p>
 
       <h2>What pre-approval is, and isn’t</h2>
@@ -103,7 +103,7 @@ function Body() {
         dozens of lenders, and the broker is paid commission by the lender rather than by you. Brokers also carry a legal <strong>best
         interests duty</strong> to you; a bank’s own lending staff carry no such duty and can only ever offer that bank’s products. The
         counterweights: a broker’s panel doesn’t include every lender, commission structures can subtly favour some products, and a mediocre
-        broker is worse than a good bank banker. Going direct can win when you have a strong existing banking relationship or a lender
+        broker is worse than a good bank banker. Going direct can work better when you have a strong existing banking relationship or a lender
         outside broker panels. Whichever path, compare at least two offers, and ask the broker straight: “Which lenders pay you most, and is
         one of them this recommendation?” Good ones answer without blinking.
       </p>

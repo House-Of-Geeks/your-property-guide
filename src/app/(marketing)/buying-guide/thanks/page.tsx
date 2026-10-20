@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import Image from "next/image";
+import { BookCover } from "@/components/brand/BookCover";
 import Link from "next/link";
 import { CheckCircle, Download, ArrowRight } from "lucide-react";
 import { ConversionTracker } from "@/components/journey/ConversionTracker";
@@ -8,6 +8,7 @@ import { GuideEmailNote } from "@/components/journey/GuideThanksExtras";
 import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 import { BUTTON_SECONDARY } from "@/components/premium/buttons";
 import { BUYING_GUIDE_PDF_PATH } from "@/lib/guide-pdfs";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 import { availabilityNote } from "@/lib/introductions/rules";
 
 export const metadata: Metadata = {
@@ -25,9 +26,9 @@ interface PageProps {
 // guide and the next steps for where the buyer is up to. A buyer's agent is
 // offered as a separate, honest choice; nothing here contacts anyone.
 const STAGE_COPY: Record<string, string> = {
-  starting: "Start with chapter 2 (what you can actually spend) and chapter 8 (finance to unconditional), then make a plan for the weeks ahead.",
+  starting: "Start with chapter 2 (working out your budget) and chapter 8 (finance and approval), then make a plan for the weeks ahead.",
   finance: "Pre-approval is the next step. Chapter 8 covers what it does and doesn’t mean, and chapter 2 the buffer lenders test you against.",
-  searching: "With finance sorted, chapter 5 (inspecting) and chapter 6 (how the selling side works) are the ones to read before your next inspection.",
+  searching: "With finance sorted, chapter 5 (inspecting a property) and chapter 6 (how homes are marketed and sold) are the ones to read before your next inspection.",
 };
 
 const pick = (v: string | string[] | undefined) => (typeof v === "string" ? v : undefined);
@@ -70,22 +71,16 @@ export default async function BuyingGuideThanksPage({ searchParams }: PageProps)
           <HeroTitle>Your guide is ready</HeroTitle>
           <HeroLead className="max-lg:text-base">{body}</HeroLead>
 
-          <div className="tone-light mt-8 lg:mt-10 max-w-xl rounded-xl border border-line bg-white p-5 sm:p-6">
+          <div className="tone-light mt-8 lg:mt-10 max-w-xl border-y border-line py-5 sm:py-6">
             <div className="flex items-start gap-4 sm:gap-5">
-              <Image
-                src="/images/guide/buying-guide-cover.png"
-                alt="The Complete Guide to Buying Property in Australia, 2026 edition"
-                width={190}
-                height={269}
-                className="shrink-0 w-[64px] sm:w-[84px] h-auto rounded shadow-[0_6px_16px_rgb(22_25_29/0.22)]"
-              />
+              <BookCover guide="buying" eager className="w-[64px] sm:w-[84px]" sizes="90px" label={`Cover of ${GUIDE_BOOKS.buying.name}, 2026 edition`} />
               <div className="min-w-0 flex-1">
                 <p className="font-semibold text-ink leading-snug">Your buying guide (PDF)</p>
                 <p className="text-sm text-ink-muted mb-3">2026 edition, 10 chapters</p>
                 <a
                   href={BUYING_GUIDE_PDF_PATH}
                   download
-                  className="press w-full inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-4 py-3 text-base sm:text-sm transition-colors"
+                  className="press w-full inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-cta-ink font-semibold px-4 py-3 text-base sm:text-sm transition-colors"
                 >
                   <Download className="w-4 h-4" aria-hidden="true" />
                   Download the guide

@@ -121,7 +121,7 @@ const RELATED: RelatedGuide[] = [
   { title: "How to Choose a Mortgage Broker",       href: "/guides/how-to-choose-a-mortgage-broker",     description: "The single highest-leverage decision in the home loan process." },
   { title: "Lenders Mortgage Insurance Guide",       href: "/guides/lenders-mortgage-insurance-guide",   description: "When LMI applies, what it costs, and how it interacts with your deposit." },
   { title: "How Much Deposit to Buy a House",        href: "/guides/how-much-deposit-to-buy-a-house",    description: "Real-world deposit numbers, the LMI threshold, and what 5%/10%/20% looks like." },
-  { title: "First Home Buyer Guide",                 href: "/guides/first-home-buyer-guide",             description: "Schemes, grants, and the full first-home-buyer playbook." },
+  { title: "First Home Buyer Guide",                 href: "/guides/first-home-buyer-guide",             description: "Schemes, grants, and every first home buyer step." },
   { title: "Fixed vs Variable Rate Loans",           href: "/guides/fixed-vs-variable-rate-guide",       description: "How to decide between fixed, variable, and split rate." },
   { title: "Borrowing Power Calculator",              href: "/borrowing-power-calculator",                description: "Estimate your borrowing capacity in 2 minutes, no credit check." },
 ];

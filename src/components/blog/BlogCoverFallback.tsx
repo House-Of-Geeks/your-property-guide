@@ -40,7 +40,7 @@ export function BlogCoverFallback({ slug, title, category, className }: Props) {
       </div>
       <p
         data-cover={slug}
-        className="relative font-display font-bold leading-[1.08] tracking-[-0.02em] line-clamp-4"
+        className="relative font-display font-normal leading-[1.08] tracking-[-0.02em] line-clamp-4"
         style={{ fontSize: "clamp(1.05rem, 2.4vw, 1.75rem)" }}
       >
         {title}

@@ -199,7 +199,7 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
         <div className="space-y-12 sm:space-y-16">
           {schools.length > 0 ? (
             <section id="schools" className="scroll-mt-20">
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-2">
+              <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-2">
                 {`${name} schools by ICSEA`}
               </h2>
               <p className="font-sans text-sm text-ink-muted mb-5 max-w-3xl leading-relaxed">
@@ -302,7 +302,7 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
 
           {/* Before you buy for a school: zones are by address. */}
           <section className="rounded-xl border border-line p-5 sm:p-6 max-w-3xl">
-            <h2 className="font-display text-lg sm:text-xl font-bold text-ink">School zones go by address, not suburb</h2>
+            <h2 className="font-display text-lg sm:text-xl font-normal text-ink">School zones go by address, not suburb</h2>
             <p className="mt-2 font-sans text-[15px] text-ink-muted leading-relaxed">
               {`A government school's catchment can split a suburb, so two streets in ${name} can belong to different schools. Check the exact address with the ${suburb.state} education department's school finder before you make an offer, and ask the agent for it in writing.`}
             </p>
@@ -326,7 +326,7 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
           {/* The same one action, once more where the page ends. */}
           <section className="tone-dark rounded-xl bg-surface-inverse p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
             <div>
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight">Buying in {name}?</h2>
+              <h2 className="font-display text-xl sm:text-2xl font-normal text-ink tracking-[-0.03em]">Buying in {name}?</h2>
               <p className="font-sans text-sm text-ink-muted mt-1.5 max-w-xl">The free buying guide, personalised to {name}: budget, schemes, inspections and the offer.</p>
             </div>
             <Link

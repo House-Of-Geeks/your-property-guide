@@ -101,7 +101,7 @@ const FAQS: FaqItem[] = [
 const RELATED: RelatedGuide[] = [
   { title: "Conveyancing Guide", href: "/guides/conveyancing-guide", description: "What your conveyancer or solicitor does between offer and settlement." },
   { title: "Building & Pest Inspection", href: "/guides/building-pest-inspection", description: "What to look for and when to commission the report." },
-  { title: "Property Auction Guide", href: "/guides/property-auction-guide", description: "Auctions skip cooling-off entirely, the playbook for buying at one." },
+  { title: "Property Auction Guide", href: "/guides/property-auction-guide", description: "Auctions skip cooling-off entirely: what to know before you bid at one." },
   { title: "Buying Property in Australia", href: "/guides/buying-property-australia", description: "End-to-end overview of the Australian buying process." },
   { title: "Stamp Duty Calculator", href: "/stamp-duty-calculator", description: "Estimate your stamp duty before signing the contract." },
 ];

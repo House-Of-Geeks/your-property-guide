@@ -18,12 +18,12 @@ import {
  */
 export function StampDutyStateLinks({ states = AUSTRALIAN_STATES }: { states?: readonly AustralianState[] }) {
   return (
-    <ul className="not-prose grid grid-cols-1 sm:grid-cols-2 gap-3 list-none p-0 m-0">
+    <ul className="not-prose grid grid-cols-1 sm:grid-cols-2 gap-x-8 border-t border-line list-none p-0 m-0">
       {states.map((s) => (
         <li key={s}>
           <Link
             href={`/guides/${stampDutySlug(s)}`}
-            className="group flex items-start justify-between gap-3 rounded-xl border border-line bg-surface-raised p-4 hover:border-primary/40 hover:shadow-md transition-all h-full"
+            className="group flex items-start justify-between gap-3 border-b border-line py-4 h-full"
           >
             <span className="min-w-0">
               <span className="block font-display text-base text-ink group-hover:text-primary transition-colors leading-tight">

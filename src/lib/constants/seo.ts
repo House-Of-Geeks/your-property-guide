@@ -6,14 +6,14 @@ export const SITE_URL = "https://www.yourpropertyguide.com.au";
 // introduction service for sellers and buyers, not a data tool. Stays
 // under 160 chars so Google doesn't truncate.
 export const SITE_DESCRIPTION =
-  "Free guides, calculators and next-step plans for buying and selling property in Australia. When you want personal help, one participating local agent, only with your permission.";
+  "Know what matters before you buy or sell. Free guides, calculators and next-step plans for Australian homebuyers and sellers, at your own pace.";
 
 // Long-form description used inside JSON-LD Organization schema and any
 // AI-citation surface (llms.txt, etc.) where richer context helps.
 export const SITE_DESCRIPTION_LONG =
-  "Your Property Guide gives every Australian home the campaign that sells $20 million homes, free. We publish practical guides on pricing, agent fees, choosing an agent, contracts and settlement for every state, with calculators for commission, selling costs, stamp duty and borrowing. When someone wants personal help and gives permission, we introduce one participating local agent for each job, checked by us: a selling agent for a free appraisal, or a buyer's agent where we can. The agent pays us a flat fee for the introduction, never a share of their commission; it costs the buyer or seller nothing and doesn't change what they pay the agent.";
+  "Your Property Guide helps everyday Australian homebuyers and sellers understand the costs and choices ahead. We publish practical guides on budgets, schemes, inspections, offers, selling costs, agents, contracts and settlement for every state, with calculators for stamp duty, borrowing power, repayments, commission and selling costs, and a free next-step plan for where you’re up to. When someone wants personal help and gives permission, we can introduce a participating selling agent, or a buyer’s agent where one is available. The agent pays us a flat fee for the introduction, never a share of their commission; it costs the buyer or seller nothing and doesn’t change what they pay the agent.";
 
-export const SITE_TAGLINE = "It’s the campaign that wins. Not the market.";
+export const SITE_TAGLINE = "Know what matters before you buy or sell.";
 export const DEFAULT_OG_IMAGE = "/og-image.jpg";
 
 // Topics we claim authority on — used in OrganizationJsonLd `knowsAbout`

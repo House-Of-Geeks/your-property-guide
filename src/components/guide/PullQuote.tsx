@@ -17,7 +17,7 @@ export function PullQuote({ children, attribution }: PullQuoteProps) {
   return (
     <figure className="not-prose my-10 sm:my-12">
       <div className="relative pl-5 sm:pl-7 border-l-2 border-ink">
-        <blockquote className="font-display font-bold text-ink text-[1.375rem] sm:text-[1.625rem] leading-[1.25] tracking-[-0.02em]">
+        <blockquote className="font-display font-normal text-ink text-[1.375rem] sm:text-[1.625rem] leading-[1.25] tracking-[-0.02em]">
           &ldquo;{children}&rdquo;
         </blockquote>
         {attribution && (

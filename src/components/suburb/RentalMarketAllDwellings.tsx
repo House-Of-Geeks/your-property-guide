@@ -11,7 +11,7 @@ function MetricCard({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-line bg-white p-4">
       <p className="font-sans text-[13px] text-ink-muted mb-1.5">{label}</p>
-      <p className="font-display text-2xl font-bold text-ink leading-none">{value}</p>
+      <p className="font-display text-2xl font-normal text-ink leading-none">{value}</p>
     </div>
   );
 }
@@ -38,7 +38,7 @@ export function RentalMarketAllDwellings({
   return (
     <>
       <section id="current-rent" className="scroll-mt-20">
-        <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+        <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-5">
           {`Median weekly rent in ${name}`}
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -62,7 +62,7 @@ export function RentalMarketAllDwellings({
 
       {all.quarters.length >= 2 && (
         <section id="history" className="scroll-mt-20">
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+          <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-5">
             How rents have moved
           </h2>
           <div className="rounded-xl border border-line overflow-hidden">

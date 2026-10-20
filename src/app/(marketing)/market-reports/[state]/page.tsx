@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, TrendingUp, Home, DollarSign } from "lucide-react";
 import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import {
   getStateMarketData,
@@ -387,7 +388,7 @@ export default async function StateMarketReportPage({
           whether it's a good time to sell — route them into the guide. */}
       <ExpertCTA
         headline={`Thinking about selling in ${data.stateName}?`}
-        body="The complete guide to selling in today's market: what it really costs, how agents price your home, the 10 questions that catch bad agents out, and a 12-week plan to settlement. Free PDF, in your inbox in 60 seconds."
+        body={`${GUIDE_BOOKS.selling.name}, the free guide: what it really costs, how agents price your home, the questions to ask before you choose one, and a 12-week plan to settlement. Free PDF, in your inbox in 60 seconds.`}
         ctaLabel="Get the free selling guide"
         href="/selling-guide"
       />

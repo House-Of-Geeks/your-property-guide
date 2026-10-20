@@ -13,7 +13,7 @@ function MetricCard({ label, value, sub }: { label: string; value: string; sub?:
   return (
     <div className="rounded-xl border border-line bg-white p-4">
       <p className="font-sans text-[13px] text-ink-muted mb-1.5">{label}</p>
-      <p className="font-display text-2xl font-bold text-ink leading-none">{value}</p>
+      <p className="font-display text-2xl font-normal text-ink leading-none">{value}</p>
       {sub && <p className="font-sans text-xs text-ink-muted mt-2">{sub}</p>}
     </div>
   );
@@ -21,7 +21,7 @@ function MetricCard({ label, value, sub }: { label: string; value: string; sub?:
 
 const changeText = (n: number | null) => (n === null ? undefined : `${n > 0 ? "+" : ""}${n}% over 12 months`);
 
-const h2 = "font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight";
+const h2 = "font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em]";
 
 /**
  * The rebuilt rental-market sub-page (fix item 13). Every section renders
@@ -67,15 +67,15 @@ export function RentalMarketSections({ suburb, slug, model: m, landlord }: { sub
             <dl className="grid grid-cols-3 gap-4 sm:gap-6">
               <div>
                 <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Median house price</dt>
-                <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{formatPriceFull(suburb.stats.medianHousePrice)}</dd>
+                <dd className="font-display text-xl sm:text-3xl font-normal text-ink leading-none">{formatPriceFull(suburb.stats.medianHousePrice)}</dd>
               </div>
               <div>
                 <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Median house rent</dt>
-                <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{money(c.house)}/wk</dd>
+                <dd className="font-display text-xl sm:text-3xl font-normal text-ink leading-none">{money(c.house)}/wk</dd>
               </div>
               <div>
                 <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Gross yield, houses</dt>
-                <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{m.yieldHouse}%</dd>
+                <dd className="font-display text-xl sm:text-3xl font-normal text-ink leading-none">{m.yieldHouse}%</dd>
               </div>
             </dl>
           )}

@@ -184,13 +184,13 @@ export function CommissionCalculator({
         </h3>
         <p className="text-sm text-ink-muted leading-relaxed mb-4">
           Our free selling guide covers how to choose an agent on results
-          instead of rate, the 10 questions to ask before you sign, and the
-          fee negotiation tactics that actually work. Personalised to your
+          instead of rate, the questions to ask before you sign, and how to
+          compare fees and agency agreements. Personalised to your
           suburb, in your inbox in 60 seconds.
         </p>
         <Link
           href="/selling-guide"
-          className="inline-flex items-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 text-sm transition-colors"
+          className="inline-flex items-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-cta-ink font-medium px-6 py-3 text-sm transition-colors"
         >
           Get the free selling guide
           <ArrowRight className="w-4 h-4" aria-hidden="true" />

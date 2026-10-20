@@ -41,7 +41,7 @@ export async function CapitalCityOutlook() {
 
         <div className="grid lg:grid-cols-12 gap-x-8 gap-y-6 mb-12">
           <div className="lg:col-span-7">
-            <h2 className="font-display text-ink leading-[0.98] tracking-tight text-4xl sm:text-5xl lg:text-6xl font-bold">
+            <h2 className="font-display text-ink leading-[0.98] tracking-[-0.03em] text-4xl sm:text-5xl lg:text-6xl font-normal">
               Each major market,{" "}
               <span>read fresh</span>
             </h2>

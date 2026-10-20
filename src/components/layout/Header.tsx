@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X, ChevronDown, Search, Phone, ArrowRight } from "lucide-react";
+import { ChevronDown, Search, Phone, ArrowRight } from "lucide-react";
 import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
 import { Logo } from "@/components/brand/Logo";
 import { moveForPath } from "@/lib/journey-paths";
@@ -21,7 +21,13 @@ import { DEFAULT_MOVE, journeyForMove, usePublishedMove, usePublishedPlace } fro
 // free guide), so the header, the homepage hero and the phone bar offer the
 // same first step; on the homepage it follows the move picked in the hero.
 // On phones the menu is four collapsible groups (Buying, Selling, Guides and
-// tools, About) under the plan and "Find an agent", with nothing repeated.
+// tools, About) under the plan and personal help, with nothing repeated.
+//
+// 20 Oct 2026 ("Clear decisions"): the approved header. Cream, the logo, four
+// quiet menus and "Find my next step" as an underlined action. Personal help
+// moved from the top level into the Buying, Selling and About menus (and the
+// phone menu and bar), so the header leads with learning. The homepage no
+// longer opens on a full-bleed photo, so the header never sits over one.
 
 interface NavChild {
   label: string;
@@ -49,7 +55,8 @@ const NAV_LINKS: NavLink[] = [
       { label: "Buyer’s agents",          href: "/buyers-agents",                   group: "Start here" },
       { label: "Buying and selling",      href: "/buying-and-selling",              group: "Start here" },
       { label: "Investing",               href: "/investing",                       group: "Start here" },
-      { label: "Free buying guide",       href: "/buying-guide",                    group: "Start here" },
+      { label: "Free guide: Buying a home", href: "/buying-guide",                group: "Start here" },
+      { label: "Ask about a buyer’s agent", href: "/get-help?service=buyers-agent", group: "Start here" },
       { label: "Borrowing power",         href: "/borrowing-power-calculator",      group: "Tools", note: "The price range to search in" },
       { label: "Stamp duty",              href: "/stamp-duty-calculator",           group: "Tools", note: "The cash you need upfront" },
       { label: "Mortgage repayments",     href: "/mortgage-calculator",             group: "Tools" },
@@ -69,12 +76,13 @@ const NAV_LINKS: NavLink[] = [
       { label: "Choosing a selling agent", href: "/guides/how-to-choose-a-selling-agent", group: "Start here" },
       { label: "Agent fees and commission", href: "/guides/real-estate-agent-fees-australia", group: "Start here" },
       { label: "Buying and selling",      href: "/buying-and-selling",              group: "Start here" },
-      { label: "Free selling guide",      href: "/selling-guide",                   group: "Start here" },
+      { label: "Free guide: Selling a home", href: "/selling-guide",                group: "Start here" },
+      { label: "Ask about a selling agent", href: "/get-help?service=selling-agent", group: "Start here" },
       { label: "Commission calculator",   href: "/real-estate-commission-calculator", group: "Decide with evidence" },
     ],
   },
   {
-    label: "Guides and tools",
+    label: "Guides & tools",
     href: "/guides",
     layout: "list",
     children: [
@@ -87,15 +95,12 @@ const NAV_LINKS: NavLink[] = [
     ],
   },
   {
-    label: "Find an agent",
-    href: "/get-help",
-  },
-  {
     label: "About",
     href: "/about",
     layout: "list",
     children: [
-      { label: "Andy’s story",        href: "/about" },
+      { label: "About the guides",    href: "/about" },
+      { label: "Personal help",       href: "/get-help" },
       { label: "How we’re paid",      href: "/about#ownership-funding" },
       { label: "How we choose agents", href: "/get-help#how-we-choose" },
       { label: "Editorial standards", href: "/about#methodology" },
@@ -110,9 +115,8 @@ export function Header() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
   const pathname = usePathname();
-  // The page's move; on the homepage, the one picked in the hero.
-  // On the homepage, the move and the suburb picked in the hero (20 Oct
-  // 2026), through the same planStartHref as the hero's own button.
+  // The page's move; on the homepage, the one picked in the planner, with
+  // the suburb picked there too, through the same planStartHref.
   const published = usePublishedMove();
   const publishedPlace = usePublishedPlace();
   const move = moveForPath(pathname) ?? (pathname === "/" ? journeyForMove(published ?? DEFAULT_MOVE) : null);
@@ -124,23 +128,10 @@ export function Header() {
   if (helpService) helpQs.set("service", helpService);
   if (helpPlace) helpQs.set("suburb", helpPlace.slug);
   const helpHref = helpQs.toString() ? `/get-help?${helpQs.toString()}` : "/get-help";
-  const helpLabel = move === "buying" ? "Find a buyer’s agent" : "Find an agent";
+  const helpLabel = move === "buying" ? "Ask about a buyer’s agent" : move === "selling" ? "Ask about a selling agent" : "Personal help";
   const [openGroup, setOpenGroup] = useState<string | null>(null);
 
   const toggle = (label: string) => setOpenMenu((o) => (o === label ? null : label));
-
-  // The homepage (v6) opens on a full-bleed photo, so there the header sits
-  // over it, clear with light text, until the page scrolls or a menu opens.
-  const overlay = pathname === "/";
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    if (!overlay) return;
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [overlay]);
-  const clear = overlay && !scrolled && !mobileOpen && !openMenu;
 
   // Escape closes whichever menu is open; a navigation closes both.
   useEffect(() => {
@@ -170,121 +161,100 @@ export function Header() {
   }, []);
 
   return (
-    <header
-      className={`sticky top-0 z-50 border-b transition-colors duration-300 ${overlay ? "-mb-16 sm:-mb-[72px]" : ""} ${
-        clear ? "tone-dark border-transparent bg-transparent" : "border-line bg-cream/95 backdrop-blur"
-      }`}
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 sm:h-[72px] items-center justify-between gap-3">
+    <header className="sticky top-0 z-50 border-b border-line bg-background/95 backdrop-blur-sm">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+        <div className="flex h-[60px] sm:h-[78px] items-center justify-between gap-4">
           <Link href="/" className="shrink-0" aria-label="Your Property Guide, home">
             <Logo size="md" />
           </Link>
 
-          {/* Full navigation from 67.5rem (1080px); the menu button below
-              that. Re-measure before adding a top-level item. */}
-          <nav ref={navRef} className="hidden min-[67.5rem]:flex items-center gap-0.5" aria-label="Main">
-            {NAV_LINKS.map((link) =>
-              link.children ? (
-                <div key={link.label} className="relative">
-                  <button
-                    onClick={() => toggle(link.label)}
-                    aria-expanded={openMenu === link.label}
-                    aria-haspopup="menu"
-                    className="flex items-center gap-1 px-3 py-2 text-[15px] font-medium whitespace-nowrap text-ink-muted hover:text-ink rounded-md transition-colors cursor-pointer"
-                  >
+          {/* Full navigation from 64rem (1024px); "Menu" below that. Re-measure before adding a top-level item. */}
+          <div className="hidden min-[64rem]:flex items-center gap-7">
+            <nav ref={navRef} className="flex items-center gap-6" aria-label="Main">
+              {NAV_LINKS.map((link) =>
+                link.children ? (
+                  <div key={link.label} className="relative">
+                    <button
+                      onClick={() => toggle(link.label)}
+                      aria-expanded={openMenu === link.label}
+                      aria-haspopup="menu"
+                      className={`flex items-center gap-1 py-2 text-[14px] whitespace-nowrap transition-colors cursor-pointer ${
+                        openMenu === link.label ? "text-primary" : "text-ink hover:text-primary"
+                      }`}
+                    >
+                      {link.label}
+                      <ChevronDown className={`h-3.5 w-3.5 text-ink-subtle transition-transform motion-reduce:transition-none ${openMenu === link.label ? "rotate-180" : ""}`} aria-hidden="true" />
+                    </button>
+
+                    {/* Panels stay in the HTML (hidden until opened) so
+                        crawlers find every hub and calculator from the header. */}
+                    {link.layout === "grouped" ? (
+                      <GroupedMenu link={link} open={openMenu === link.label} onClose={() => setOpenMenu(null)} />
+                    ) : (
+                      <ListMenu link={link} open={openMenu === link.label} onClose={() => setOpenMenu(null)} />
+                    )}
+                  </div>
+                ) : (
+                  <Link key={link.href} href={link.href} className="py-2 text-[14px] whitespace-nowrap text-ink hover:text-primary transition-colors">
                     {link.label}
-                    <ChevronDown className={`w-4 h-4 transition-transform ${openMenu === link.label ? "rotate-180" : ""}`} />
-                  </button>
-
-                  {/* Panels stay in the HTML (hidden until opened) so
-                      crawlers find every hub and calculator from the header. */}
-                  {link.layout === "grouped" ? (
-                    <GroupedMenu link={link} open={openMenu === link.label} onClose={() => setOpenMenu(null)} />
-                  ) : (
-                    <ListMenu link={link} open={openMenu === link.label} onClose={() => setOpenMenu(null)} />
-                  )}
-                </div>
-              ) : (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="px-3 py-2 text-[15px] font-medium whitespace-nowrap text-ink-muted hover:text-ink rounded-md transition-colors"
-                >
-                  {link.label}
-                </Link>
-              )
-            )}
-          </nav>
-
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <Link
-              href="/search"
-              aria-label="Search the site"
-              className="hidden md:flex p-2 text-ink-muted hover:text-ink rounded-md transition-colors"
-            >
-              <Search className="w-5 h-5" />
+                  </Link>
+                ),
+              )}
+            </nav>
+            <Link href="/search" aria-label="Search the site" className="p-1 text-ink-muted hover:text-primary transition-colors">
+              <Search className="h-[18px] w-[18px]" aria-hidden="true" />
             </Link>
-            <a
-              href={`tel:${CONTACT_PHONE_E164}`}
-              className="hidden xl:inline-flex items-center gap-1.5 px-2 py-1.5 text-sm font-semibold text-ink hover:text-primary transition-colors"
-              aria-label={`Call us on ${CONTACT_PHONE_DISPLAY}`}
-            >
-              <Phone className="w-4 h-4" aria-hidden="true" />
-              {CONTACT_PHONE_DISPLAY}
-            </a>
-            {/* Phones get the plan (and help) in the bottom bar and the menu,
-                so the header doesn't repeat the same solid button. */}
             {/* Not on the planner itself, where it would only start again. */}
             {!onPlan && (
               <Link
                 href={planHref}
-                className="hidden sm:inline-flex items-center rounded-full bg-cta hover:bg-cta-hover text-white px-5 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors"
+                className="border-b border-ink pb-[3px] pt-2 text-[14px] font-medium whitespace-nowrap text-ink hover:text-primary hover:border-primary transition-colors"
               >
                 {PLAN_CTA_SHORT}
               </Link>
             )}
-            <button
-              onClick={() => {
-                // On a buying or selling page the menu opens on that group; elsewhere all four start closed.
-                const own = moveForPath(pathname);
-                if (!mobileOpen) setOpenGroup(own === "buying" ? "Buying" : own === "selling" ? "Selling" : null);
-                setMobileOpen(!mobileOpen);
-              }}
-              className="min-[67.5rem]:hidden -mr-1 p-2 text-ink hover:bg-surface-sunken rounded-md cursor-pointer"
-              aria-label={mobileOpen ? "Close menu" : "Open menu"}
-              aria-expanded={mobileOpen}
-              aria-controls="mobile-menu"
-            >
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
           </div>
+
+          <button
+            onClick={() => {
+              // On a buying or selling page the menu opens on that group; elsewhere all four start closed.
+              const own = moveForPath(pathname);
+              if (!mobileOpen) setOpenGroup(own === "buying" ? "Buying" : own === "selling" ? "Selling" : null);
+              setMobileOpen(!mobileOpen);
+            }}
+            className="min-[64rem]:hidden -mr-2 min-h-11 min-w-11 px-2 text-[15px] text-ink cursor-pointer"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
+          >
+            {mobileOpen ? "Close" : "Menu"}
+          </button>
         </div>
       </div>
 
-      {/* Phone menu: the plan and an agent, then four groups that open one
-          at a time, then the phone number. Every link is in the HTML (closed
-          groups are hidden, not removed). */}
+      {/* Phone menu: the plan and personal help, then four groups that open
+          one at a time, then search and the phone number. Every link is in
+          the HTML (closed groups are hidden, not removed). */}
       {mobileOpen && (
-        <div id="mobile-menu" className="min-[67.5rem]:hidden border-t border-line bg-cream max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain">
-          <nav className="mx-auto max-w-7xl px-4 pt-4 pb-6" aria-label="Main">
-            <div className="grid gap-2">
+        <div id="mobile-menu" className="min-[64rem]:hidden border-t border-line bg-background max-h-[calc(100dvh-60px)] overflow-y-auto overscroll-contain">
+          <nav className="mx-auto max-w-7xl px-4 sm:px-6 pt-4 pb-7" aria-label="Main">
+            <div className="grid gap-2.5">
               <Link
                 href={planHref}
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white px-4 py-3.5 text-[15px] font-semibold transition-colors"
+                className="flex min-h-12 items-center justify-between gap-2 rounded-[4px] bg-cta hover:bg-cta-hover text-cta-ink px-4 py-3 text-[16px] font-medium transition-colors"
               >
                 {PLAN_CTA_SHORT} <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
               <Link
                 href={helpHref}
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center rounded-full border border-ink text-ink px-4 py-3 text-[15px] font-semibold"
+                className="flex min-h-12 items-center justify-between gap-2 border-b border-line px-1 py-3 text-[16px] font-medium text-ink"
               >
-                {helpLabel}
+                {helpLabel} <ArrowRight className="h-4 w-4 text-ink-subtle" aria-hidden="true" />
               </Link>
             </div>
-            <ul className="mt-5 border-t border-line">
+            <ul className="mt-3">
               {NAV_LINKS.filter((l) => l.children).map((link) => {
                 const open = openGroup === link.label;
                 const panel = `mobile-group-${link.label.toLowerCase().replace(/[^a-z]+/g, "-")}`;
@@ -295,10 +265,10 @@ export function Header() {
                       aria-expanded={open}
                       aria-controls={panel}
                       onClick={() => setOpenGroup(open ? null : link.label)}
-                      className="flex w-full items-center justify-between gap-3 px-1 py-4 text-left text-[17px] font-semibold text-ink"
+                      className="flex w-full items-center justify-between gap-3 px-1 py-4 text-left font-display text-[22px] tracking-[-0.03em] text-ink"
                     >
-                      {link.label}
-                      <ChevronDown className={`h-5 w-5 text-ink-muted transition-transform motion-reduce:transition-none ${open ? "rotate-180" : ""}`} aria-hidden="true" />
+                      {link.label.replace("&", "and")}
+                      <ChevronDown className={`h-5 w-5 text-ink-subtle transition-transform motion-reduce:transition-none ${open ? "rotate-180" : ""}`} aria-hidden="true" />
                     </button>
                     <ul id={panel} hidden={!open} className="pb-3">
                       {link.children!.map((child) => (
@@ -306,7 +276,7 @@ export function Header() {
                           <Link
                             href={child.href}
                             onClick={() => setMobileOpen(false)}
-                            className="block rounded-md px-3 py-2.5 text-[15px] text-ink hover:bg-surface-sunken"
+                            className="block px-1 py-2.5 text-[16px] text-ink hover:text-primary"
                           >
                             {child.label}
                             {child.note && <span className="block text-[13px] leading-snug text-ink-muted">{child.note}</span>}
@@ -318,20 +288,20 @@ export function Header() {
                 );
               })}
             </ul>
-            <div className="mt-5 grid grid-cols-2 gap-2">
+            <div className="mt-5 grid grid-cols-2 gap-2.5">
               <Link
                 href="/search"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-center gap-2 rounded-md border border-line px-3 py-3 text-sm font-semibold text-ink hover:border-ink"
+                className="flex min-h-11 items-center justify-center gap-2 rounded-[4px] border border-line-strong px-3 py-2.5 text-[14px] font-medium text-ink"
               >
-                <Search className="w-4 h-4" aria-hidden="true" /> Search
+                <Search className="h-4 w-4" aria-hidden="true" /> Search
               </Link>
               <a
                 href={`tel:${CONTACT_PHONE_E164}`}
-                className="flex items-center justify-center gap-2 rounded-md border border-line px-3 py-3 text-sm font-semibold text-ink hover:border-ink"
+                className="flex min-h-11 items-center justify-center gap-2 rounded-[4px] border border-line-strong px-3 py-2.5 text-[14px] font-medium text-ink"
                 aria-label={`Call us on ${CONTACT_PHONE_DISPLAY}`}
               >
-                <Phone className="w-4 h-4" aria-hidden="true" /> {CONTACT_PHONE_DISPLAY}
+                <Phone className="h-4 w-4" aria-hidden="true" /> {CONTACT_PHONE_DISPLAY}
               </a>
             </div>
           </nav>
@@ -352,20 +322,20 @@ function GroupedMenu({ link, open, onClose }: MenuProps) {
   const groups = Array.from(new Set(link.children!.map((c) => c.group ?? "")));
   return (
     <div
-      className={`${open ? "" : "hidden "}absolute top-full left-0 mt-2 bg-white rounded-lg shadow-[0_8px_30px_rgb(20_32_27/0.12)] border border-line p-3 z-50 w-[480px]`}
+      className={`${open ? "" : "hidden "}absolute top-full -left-4 mt-3 w-[500px] rounded-[4px] border border-line bg-paper p-5 shadow-[0_18px_40px_-24px_rgb(32_61_48/0.35)] z-50`}
     >
-      <div className="grid grid-cols-2 gap-x-3">
+      <div className="grid grid-cols-2 gap-x-6">
         {groups.map((group) => {
           const items = link.children!.filter((c) => (c.group ?? "") === group);
           return (
             <div key={group}>
-              {group && <p className="px-3 pt-1 pb-1.5 text-[13px] font-semibold text-ink-subtle">{group}</p>}
+              {group && <p className="pb-2 text-[12px] font-medium uppercase tracking-[0.1em] text-primary">{group}</p>}
               {items.map((child) => (
                 <Link
                   key={child.href}
                   href={child.href}
                   onClick={onClose}
-                  className="block px-3 py-1.5 text-sm text-ink hover:bg-surface-sunken rounded-md"
+                  className="block py-1.5 text-[14px] text-ink hover:text-primary"
                 >
                   {child.label}
                 </Link>
@@ -381,14 +351,14 @@ function GroupedMenu({ link, open, onClose }: MenuProps) {
 function ListMenu({ link, open, onClose }: MenuProps) {
   return (
     <div
-      className={`${open ? "" : "hidden "}absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-[0_8px_30px_rgb(20_32_27/0.12)] border border-line p-2 z-50`}
+      className={`${open ? "" : "hidden "}absolute top-full -left-4 mt-3 w-60 rounded-[4px] border border-line bg-paper px-5 py-4 shadow-[0_18px_40px_-24px_rgb(32_61_48/0.35)] z-50`}
     >
       {link.children!.map((child) => (
         <Link
           key={`${child.href}-${child.label}`}
           href={child.href}
           onClick={onClose}
-          className="block px-3 py-2 text-sm text-ink hover:bg-surface-sunken rounded-md"
+          className="block py-1.5 text-[14px] text-ink hover:text-primary"
         >
           {child.label}
         </Link>

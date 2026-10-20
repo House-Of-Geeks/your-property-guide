@@ -25,7 +25,7 @@ function Score({ label, score, icon }: ScoreConfig) {
       </dt>
       {score !== null ? (
         <>
-          <dd className="mt-1 font-display text-2xl font-bold text-ink leading-none">
+          <dd className="mt-1 font-display text-2xl font-normal text-ink leading-none">
             {score}<span className="text-sm font-normal text-ink-subtle">/100</span>
           </dd>
           <dd className="mt-2 h-1 w-full rounded-full bg-surface-warm overflow-hidden" aria-hidden="true">

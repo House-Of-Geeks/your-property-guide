@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 // Prints the free guides to PDF, and their covers to images, from the same
-// content as the chapter pages (campaign rebuild, 15 Oct 2026).
+// content as the chapter pages (15 Oct 2026). Since 20 Oct 2026 the cover is
+// the shared "Clear decisions" design (src/components/brand/BookCover.tsx),
+// so the PDF, the cover image, the email image and the site all match.
 //
 //   1. Run the site (npm run dev, or npm run build && npm run start).
 //   2. BASE=http://localhost:3000 npm run guides:pdf
 //
 // For each guide it opens /print/guides/<guide> in headless Chrome and writes:
 //   public/downloads/<file>.pdf               the guide (A4)
-//   public/images/guide/<guide>-guide-cover.png        1440 x 2036, for the 3D book and pages
+//   public/images/guide/<guide>-guide-cover.jpg        1440 x 2036, for structured data and sharing
 //   public/images/guide/<guide>-guide-cover-email.jpg  601 x 850, for the guide emails
 //
 // Chrome: CHROME_PATH, or the headless shell Playwright installs
@@ -122,8 +124,8 @@ async function main() {
       await open(`${BASE}/print/guides/${g.id}?cover=1`);
       const box = await evaluate(`(() => { const r = document.getElementById('cover').getBoundingClientRect(); return [r.left, r.top + scrollY, r.width, r.height] })()`);
       const [x, y, width, height] = box;
-      const png = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: true, clip: { x, y, width, height, scale: 1440 / width } });
-      writeFileSync(join(ROOT, `public/images/guide/${g.id}-guide-cover.png`), Buffer.from(png.data, "base64"));
+      const big = await send("Page.captureScreenshot", { format: "jpeg", quality: 88, captureBeyondViewport: true, clip: { x, y, width, height, scale: 1440 / width } });
+      writeFileSync(join(ROOT, `public/images/guide/${g.id}-guide-cover.jpg`), Buffer.from(big.data, "base64"));
       const jpg = await send("Page.captureScreenshot", { format: "jpeg", quality: 85, captureBeyondViewport: true, clip: { x, y, width, height, scale: 601 / width } });
       writeFileSync(join(ROOT, `public/images/guide/${g.id}-guide-cover-email.jpg`), Buffer.from(jpg.data, "base64"));
       console.log(`wrote the ${g.id} cover images`);

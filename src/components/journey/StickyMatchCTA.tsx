@@ -108,11 +108,11 @@ export function StickyMatchCTA({
         >
           <span className="relative inline-flex w-1.5 h-1.5 shrink-0" aria-hidden="true">
             <span
-              className="absolute inline-flex h-full w-full rounded-full bg-cta opacity-75 animate-ping"
+              className="absolute inline-flex h-full w-full rounded-[4px] bg-cta opacity-75 animate-ping"
               style={{ animationIterationCount: 2 }}
               aria-hidden="true"
             />
-            <span className="inline-flex items-center justify-center w-1.5 h-1.5 rounded-full bg-cta shrink-0" aria-hidden="true" />
+            <span className="inline-flex items-center justify-center w-1.5 h-1.5 rounded-[4px] bg-cta shrink-0" aria-hidden="true" />
           </span>
           <span className="truncate">{display}</span>
           <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />

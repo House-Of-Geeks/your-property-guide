@@ -105,7 +105,7 @@ const FAQS: FaqItem[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
-  { title: "First Home Buyer Guide (National)", href: "/guides/first-home-buyer-guide", description: "The complete first-home-buyer playbook with state-by-state schemes." },
+  { title: "First Home Buyer Guide (National)", href: "/guides/first-home-buyer-guide", description: "Every first home buyer step, with state-by-state schemes." },
   { title: "How Much Deposit Do You Need?", href: "/guides/how-much-deposit-to-buy-a-house", description: "5%, 10%, 20%, the full picture including all-in cash needed." },
   { title: "Building & Pest Inspection", href: "/guides/building-pest-inspection", description: "What inspections cover, what they don't, and when to commission." },
   { title: "Cooling-Off Period by State", href: "/guides/cooling-off-period-by-state-australia", description: "Your right to rescind, state by state, and when it doesn't apply." },

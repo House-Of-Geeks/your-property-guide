@@ -5,17 +5,17 @@ import { Box, Ch, Pull, Stat, TableWrap } from "../parts";
 export const chapter: Chapter = {
   guide: "buying",
   number: 2,
-  step: "Know your number",
+  step: "Work out your budget",
   standfirst:
-    "Two numbers get confused at the start of every purchase: what the bank will lend you, and what you should spend. They are rarely the same number, and only one of them is anyone else’s business.",
+    "Two numbers get confused at the start of every purchase: what the bank will lend you, and what you should spend. They are rarely the same number, and the second one is yours to set.",
   callout:
-    "Trying to find your ceiling. “What’s your budget?” is the first question for a reason: once the agent knows your pre-approval, the price guide, the counter-offers and the pressure all calibrate to it. Your budget is yours. Share a range, never the limit.",
+    "“What’s your budget?” is usually the first question a selling agent asks. Their job is to get the best price for the seller, and knowing your pre-approval lets them pitch the price guide and any counter-offer to it. A range is a reasonable answer, and your limit can stay with you.",
   checklist: [
     "Set your own budget from your real spending, below the bank’s number",
     "Cancel or cut credit cards you don’t use, and stop buy-now-pay-later",
     "Price the LMI at your deposit, or check the 5% Deposit Scheme",
     "Add stamp duty, conveyancing, inspections and moving to the deposit",
-    "Never tell a selling agent your pre-approval amount",
+    "Keep your pre-approval amount to yourself, and give agents a range",
   ],
   cta: {
     kind: "tool",
@@ -32,8 +32,9 @@ function Body() {
   return (
     <>
       <p>
-        Your budget is the first thing the selling side wants to know, and the last thing you should tell them. Build it yourself, keep
-        it to yourself, and every price guide you meet becomes something you test against a number you trust.
+        Your budget is one of the first things a selling agent will ask about, so it’s worth setting before anyone asks. Build it from
+        your own numbers and keep the limit private. Then every price guide you see becomes something you can test against a number you
+        trust.
       </p>
 
       <h2>Borrowing power, and the buffer behind it</h2>
@@ -101,7 +102,7 @@ function Body() {
         </li>
         <li>
           <strong>Building and pest inspection: $400 to $800</strong> per property you get serious about. Strata report for units: $250 to
-          $400. Budget for two or three of these across a campaign; reports on homes you don’t buy are the cheapest insurance in this guide.
+          $400. Budget for two or three of these across your search; reports on homes you don’t buy are the cheapest insurance in this guide.
         </li>
         <li>
           <strong>Government registration fees:</strong> mortgage registration and transfer fees, typically $200 to $500 combined depending

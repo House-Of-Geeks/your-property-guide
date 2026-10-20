@@ -575,11 +575,11 @@ export function IntroductionForm({ defaultService, defaultSuburb, defaultState, 
           <span />
         )}
         {step === 1 && nothingToIntroduce ? (
-          <Link href={`/plan?j=${journey}`} className="inline-flex items-center gap-2 rounded-lg bg-cta hover:bg-cta-hover px-6 py-3.5 text-base font-semibold text-white">
+          <Link href={`/plan?j=${journey}`} className="inline-flex items-center gap-2 rounded-lg bg-cta hover:bg-cta-hover px-6 py-3.5 text-base font-semibold text-cta-ink">
             Make a plan instead <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         ) : step < STEPS.length - 1 ? (
-          <button type="submit" className="inline-flex items-center gap-2 rounded-lg bg-cta hover:bg-cta-hover px-6 py-3.5 text-base font-semibold text-white">
+          <button type="submit" className="inline-flex items-center gap-2 rounded-lg bg-cta hover:bg-cta-hover px-6 py-3.5 text-base font-semibold text-cta-ink">
             Continue <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
         ) : (

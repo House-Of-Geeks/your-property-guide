@@ -84,7 +84,7 @@ export function AgentEnquiryForm({ defaultLeadTypes = [] }: { defaultLeadTypes?:
   if (done) {
     return (
       <div id="register" className="bg-surface-warm text-ink rounded-2xl p-8 border border-line text-center scroll-mt-24">
-        <div className="w-12 h-12 rounded-full bg-cta text-white grid place-items-center mx-auto mb-4">
+        <div className="w-12 h-12 rounded-[4px] bg-cta text-cta-ink grid place-items-center mx-auto mb-4">
           <CheckCircle className="w-6 h-6" aria-hidden="true" />
         </div>
         <h3 className="font-display text-xl text-ink mb-2">Thanks, we&rsquo;ll be in touch</h3>
@@ -167,7 +167,7 @@ export function AgentEnquiryForm({ defaultLeadTypes = [] }: { defaultLeadTypes?:
                 aria-pressed={on}
                 onClick={() => toggleLeadType(o.value)}
                 className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
-                  on ? "border-cta bg-cta text-white" : "border-line-strong bg-surface-raised text-ink hover:border-cta"
+                  on ? "border-cta bg-cta text-cta-ink" : "border-line-strong bg-surface-raised text-ink hover:border-cta"
                 }`}
               >
                 {o.label}
@@ -191,7 +191,7 @@ export function AgentEnquiryForm({ defaultLeadTypes = [] }: { defaultLeadTypes?:
       <button
         type="submit"
         disabled={submitting}
-        className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+        className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-cta-ink font-medium px-6 py-3.5 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
       >
         {submitting ? "Sending…" : "Register for leads"}
         {!submitting && <ArrowRight className="w-4 h-4" />}

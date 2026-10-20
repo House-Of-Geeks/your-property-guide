@@ -84,7 +84,7 @@ export function BorrowingPowerCalculator() {
                   onClick={() => setHouseholdChoice(h)}
                   className={`py-2 rounded-lg text-sm font-medium border transition-colors ${
                     household === h
-                      ? "bg-primary text-white border-primary"
+                      ? "bg-forest text-cream border-forest"
                       : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
                   }`}
                 >
@@ -103,7 +103,7 @@ export function BorrowingPowerCalculator() {
                   onClick={() => setRegion(r)}
                   className={`py-2 rounded-lg text-sm font-medium border transition-colors ${
                     region === r
-                      ? "bg-primary text-white border-primary"
+                      ? "bg-forest text-cream border-forest"
                       : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
                   }`}
                 >
@@ -126,7 +126,7 @@ export function BorrowingPowerCalculator() {
                 onClick={() => setDependants(d)}
                 className={`min-w-[2.5rem] py-2 px-3 rounded-lg text-sm font-medium border transition-colors ${
                   dependants === d
-                    ? "bg-primary text-white border-primary"
+                    ? "bg-forest text-cream border-forest"
                     : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
                 }`}
               >
@@ -195,7 +195,7 @@ export function BorrowingPowerCalculator() {
                 onClick={() => setTermYears(yr)}
                 className={`py-2 rounded-lg text-sm font-medium border transition-colors ${
                   termYears === yr
-                    ? "bg-primary text-white border-primary"
+                    ? "bg-forest text-cream border-forest"
                     : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
                 }`}
               >

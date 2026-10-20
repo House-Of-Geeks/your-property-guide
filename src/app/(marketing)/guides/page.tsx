@@ -8,6 +8,7 @@ import { GuideCover } from "@/components/brand/GuideCover";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { PERSONA_BY_ID, type PersonaId } from "@/lib/constants/journey";
 import { guideFunnelHref } from "@/lib/guide-funnel";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 import { ALL_GUIDES, guidesBySection, type GuideEntry, type GuideSectionWithGuides } from "@/lib/guides/registry";
 
 export const metadata: Metadata = {
@@ -116,7 +117,7 @@ export default function GuidesHubPage() {
           <div className="grid gap-4 md:grid-cols-2">
             <FreeGuideCard
               guide="selling"
-              title="The complete guide to selling your home"
+              title={GUIDE_BOOKS.selling.name}
               body="Pricing your home, what agents really charge, choosing an agent and getting to settlement, personalised to your suburb."
               href={guideFunnelHref("selling", { from: "guides" })}
               label="Get the free selling guide"
@@ -124,7 +125,7 @@ export default function GuidesHubPage() {
             />
             <FreeGuideCard
               guide="buying"
-              title="The complete guide to buying property"
+              title={GUIDE_BOOKS.buying.name}
               body="What you can really spend, the 2026 schemes state by state, how not to overpay, and the contract through to settlement."
               href={guideFunnelHref("buying", { from: "guides" })}
               label="Get the free buying guide"

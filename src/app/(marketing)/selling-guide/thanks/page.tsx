@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import Image from "next/image";
+import { BookCover } from "@/components/brand/BookCover";
 import Link from "next/link";
 import { CheckCircle, Download, ArrowRight } from "lucide-react";
 import { ConversionTracker } from "@/components/journey/ConversionTracker";
@@ -8,6 +8,7 @@ import { GuideEmailNote } from "@/components/journey/GuideThanksExtras";
 import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 import { BUTTON_SECONDARY } from "@/components/premium/buttons";
 import { GUIDE_PDF_PATH } from "@/lib/guide-pdfs";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 import { FEE_DISCLOSURE, HOW_WE_ARE_PAID_HREF } from "@/lib/service-model";
 
 export const metadata: Metadata = {
@@ -27,7 +28,7 @@ interface PageProps {
 const SCORE_COPY: Record<string, { headline: string; body: string; timeframe?: string; stage: string }> = {
   hot: {
     headline: "Your guide is ready",
-    body: "Selling within three months means pricing, presentation and agent choice are all still open. Start with chapter 3 (the costs) and chapter 5 (choosing your agent), then use the worksheet to compare the agents you meet.",
+    body: "Selling within three months means pricing, presentation and agent choice are all still open. Start with chapter 3 (the costs) and chapter 5 (choosing an agent), then use the worksheet to compare the agents you meet.",
     timeframe: "0-3-months",
     stage: "preparing",
   },
@@ -92,22 +93,16 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
           <HeroTitle>{copy.headline}</HeroTitle>
           <HeroLead className="max-lg:text-base">{copy.body}</HeroLead>
 
-          <div className="tone-light mt-8 lg:mt-10 max-w-xl rounded-xl border border-line bg-white p-5 sm:p-6">
+          <div className="tone-light mt-8 lg:mt-10 max-w-xl border-y border-line py-5 sm:py-6">
             <div className="flex items-start gap-4 sm:gap-5">
-              <Image
-                src="/images/guide/selling-guide-cover.png"
-                alt="The Complete Guide to Selling Your Property in Australia, 2026 edition"
-                width={190}
-                height={269}
-                className="shrink-0 w-[64px] sm:w-[84px] h-auto rounded shadow-[0_6px_16px_rgb(22_25_29/0.22)]"
-              />
+              <BookCover guide="selling" eager className="w-[64px] sm:w-[84px]" sizes="90px" label={`Cover of ${GUIDE_BOOKS.selling.name}, 2026 edition`} />
               <div className="min-w-0 flex-1">
                 <p className="font-semibold text-ink leading-snug">Your selling guide (PDF)</p>
                 <p className="text-sm text-ink-muted mb-3">2026 edition, 10 chapters</p>
                 <a
                   href={GUIDE_PDF_PATH}
                   download
-                  className="press w-full inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-4 py-3 text-base sm:text-sm transition-colors"
+                  className="press w-full inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-cta-ink font-semibold px-4 py-3 text-base sm:text-sm transition-colors"
                 >
                   <Download className="w-4 h-4" aria-hidden="true" />
                   Download the guide

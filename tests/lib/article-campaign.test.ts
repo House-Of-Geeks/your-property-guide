@@ -1,7 +1,7 @@
-// The campaign framing on /guides/* articles (15 Oct 2026): every hook ties
-// the article to the campaign in at most about 50 words, in no one's first
-// person, and every entry is a real guide. Once the last batch is in, every
-// guide in the registry has one.
+// The hooks on /guides/* articles (15 Oct 2026, reworded 20 Oct for "Clear
+// decisions"): every hook says what matters in the topic in at most about
+// 50 words, in no one's first person, and every entry is a real guide. Once
+// the last batch is in, every guide in the registry has one.
 import { describe, expect, it } from "vitest";
 import { ARTICLE_CAMPAIGN, ARTICLE_CHAPTERS } from "@/content/articles";
 import { GUIDE_BOOKS, chapterHref } from "@/lib/guide-books";

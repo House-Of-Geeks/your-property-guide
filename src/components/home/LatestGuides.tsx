@@ -12,7 +12,7 @@ const CORNERSTONE = [
   { title: "How to buy property in Australia",  href: "/guides/buying-property-australia",          minutes: 15, audience: "First home buyer" },
   { title: "How much deposit do I really need", href: "/guides/how-much-deposit-to-buy-a-house",    minutes: 9,  audience: "First home buyer" },
   { title: "How to sell a house in Australia",  href: "/guides/how-to-sell-a-house-australia",      minutes: 14, audience: "Seller" },
-  { title: "Rentvesting, the full playbook",    href: "/guides/rentvesting-australia",              minutes: 12, audience: "Investor" },
+  { title: "Rentvesting, step by step", href: "/guides/rentvesting-australia",              minutes: 12, audience: "Investor" },
   { title: "Negative gearing, explained",       href: "/guides/negative-gearing-australia",         minutes: 10, audience: "Investor" },
   { title: "Renovation costs in 2026",          href: "/guides/renovation-cost-australia-2026",     minutes: 13, audience: "Renovator" },
 ] as const;
@@ -37,7 +37,7 @@ export async function LatestGuides() {
         </div>
         <div className="grid lg:grid-cols-12 gap-8 mb-10">
           <div className="lg:col-span-7">
-            <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl font-bold">
+            <h2 className="font-display text-ink leading-[1.05] tracking-[-0.03em] text-3xl sm:text-4xl lg:text-5xl font-normal">
               Plain-English <span>guides</span>
             </h2>
           </div>

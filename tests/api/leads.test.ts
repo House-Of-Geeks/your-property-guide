@@ -300,7 +300,7 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       expect(dbLeadCreate.mock.calls[0][0].data.phone).toBeUndefined();
       expect(dbLeadCreate.mock.calls[0][0].data.message).toContain("Consent: the guide by email only (download)");
       expect(mails()).toHaveLength(1);
-      expect(readerMail().subject).toBe("Your selling guide + the $20,000 question");
+      expect(readerMail().subject).toBe("Your copy of Selling a home, and where to start");
       expect(fetchMock).not.toHaveBeenCalled();
       expect(deferred).toHaveLength(1);
       await runDeferred();
@@ -323,7 +323,7 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       expect(body.campaign_id).toBe("camp-vendor");
       expect(body.magnet).toEqual({
         slug: "selling-guide",
-        name: "The Complete Guide to Selling Your Property in Australia",
+        name: "Selling a home: a practical guide to selling property in Australia",
         download_url: "https://www.yourpropertyguide.com.au/downloads/your-property-guide-selling-a-home-australia.pdf",
       });
       expect(body.lead).toMatchObject({ email: "Sarah@Example.com", first_name: "Sarah", postcode: "4505", state: "QLD" });
@@ -398,7 +398,7 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       const data = dbLeadCreate.mock.calls[0][0].data;
       expect(data.phone).toBe("0491570156");
       expect(data.message).toContain("Consent: the guide by email; gave a mobile for a call from YPG only, never an agent (download)");
-      expect(readerMail().subject).toBe("Your selling guide + the $20,000 question");
+      expect(readerMail().subject).toBe("Your copy of Selling a home, and where to start");
       await runDeferred();
       expect(adminMail().subject).toBe("[HOT] Selling Guide Download, Sarah Lee (burpengary-qld-4505)");
       expect(adminMail().subject).not.toContain("Appraisal call");
@@ -422,7 +422,7 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       configure(false);
       await POST(makeRequest({ ...seller, phone: "0412 345 678" }));
       expect(fetchMock).not.toHaveBeenCalled();
-      expect(readerMail().subject).toBe("Your selling guide + the $20,000 question");
+      expect(readerMail().subject).toBe("Your copy of Selling a home, and where to start");
       await runDeferred();
       expect(adminMail()).toBeTruthy();
     });

@@ -167,12 +167,11 @@ export default function HowToSellAHouseAustraliaPage() {
 
       <EditorNote>
         <p>
-          Most sellers I&rsquo;ve seen overpay on marketing and underpay
-          on agent choice. The campaign budget is what you can see, so
-          it feels controllable. The agent&rsquo;s real skill is the
-          quiet negotiation that happens after the open homes, which is
-          where every dollar of your eventual sale price actually lives.
-          Read the agent-choice section before you read anything else.
+          Many sellers spend a lot of time on the marketing budget and
+          less on choosing the agent. The budget is easy to see, so it
+          feels controllable. Much of an agent&rsquo;s value is in how
+          they handle buyers and offers after the open homes, which is
+          harder to compare. Read the agent-choice section early.
         </p>
       </EditorNote>
 

@@ -220,7 +220,7 @@ export default async function AgentProfilePage({ params }: AgentProfilePageProps
             </div>
             <a
               href={`mailto:${agent.email}?subject=Free Property Appraisal Request`}
-              className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-cta hover:bg-cta-hover text-white text-sm font-semibold transition-colors"
+              className="flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-cta hover:bg-cta-hover text-cta-ink text-sm font-semibold transition-colors"
             >
               Get a free appraisal
             </a>

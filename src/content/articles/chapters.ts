@@ -3,8 +3,8 @@ import type { ArticleChapterRef } from "./types";
 // The guide chapter each /guides/* article points to from its end call to
 // action (16 Oct 2026), so every article links into the chapter that covers
 // its topic. Selling-side articles (selling plan, agreement check, selling
-// agent, moving plan) point into "The $20 million campaign"; buying-side ones
-// into "Beat the campaign". A test keeps every article covered.
+// agent, moving plan) point into "Selling a home"; buying-side ones into
+// "Buying a home". A test keeps every article covered.
 
 const SELLING: Readonly<Record<string, number>> = {
   "are-house-prices-crashing-in-australia": 1,

@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { BreadcrumbJsonLd, FAQPageJsonLd, ItemListJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
 import { GROWTH_RANKED_STATES, isRanked, rankingNote, stateRankingLink, type RankingCategory } from "@/lib/ranking-notes";
 import {
@@ -454,7 +455,7 @@ export function CityEditionPage({ edition, indexable, updatedAt }: Props) {
 
       <ExpertCTA
         headline="Shortlisted a suburb? Buy it well."
-        body="The complete buying guide: what you can actually spend, the 2026 schemes for your state, how the selling side plays you, and a 12-week plan from pre-approval to keys. Free PDF, in your inbox in 60 seconds."
+        body={`${GUIDE_BOOKS.buying.name}, the free guide: what you can actually spend, the 2026 schemes for your state, how homes are marketed and sold, and a 12-week plan from pre-approval to keys. Free PDF, in your inbox in 60 seconds.`}
         ctaLabel="Get the free buying guide"
         href="/buying-guide"
       />

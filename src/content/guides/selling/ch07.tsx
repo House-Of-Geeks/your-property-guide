@@ -4,11 +4,11 @@ import { Pull, Stat } from "../parts";
 export const chapter: Chapter = {
   guide: "selling",
   number: 7,
-  step: "Launch it properly",
+  step: "Plan the marketing",
   standfirst:
-    "Most marketing budgets contain three items that sell houses and five that sell agents. Learn to tell them apart, then launch for the buyer who’ll pay the most.",
+    "Most marketing budgets contain three items that sell houses and five that mainly promote the agency. Learn to tell them apart, then plan the first few weeks around the buyers most likely to want your home.",
   callout:
-    "At the top end, a launch is planned like an event. The photography, copy, floorplan and price are finished before the listing goes live, and the first fortnight is treated as the campaign’s best chance, not a warm-up. Nothing is tested on the market that could have been settled at the kitchen table.",
+    "Experienced sellers have the photography, floorplan, copy and price finished before the listing goes live. The first fortnight brings the biggest audience, so they treat it as the most important stretch of the sale rather than a warm-up. Anything that can be settled at the kitchen table is settled before launch, not tested on the market.",
   checklist: [
     "Choose the portal tier from how many comparable homes are listed against yours",
     "Have professional photos, a floorplan and specific copy ready before launch",
@@ -32,9 +32,9 @@ function Body() {
   return (
     <>
       <p>
-        The launch is the moment your campaign meets its best buyers. Every active buyer with a saved search hears about your home the
-        day it goes live, so the photos, the floorplan, the copy and the price all have to be right on day one. A launch is built for
-        one buyer: the one most likely to pay the most.
+        The launch is when your home reaches the most buyers at once. Every active buyer with a saved search hears about it the day it
+        goes live, so the photos, the floorplan, the copy and the price all need to be right on day one. Plan the launch around the
+        buyers most likely to want this home.
       </p>
 
       <h2>The portals: where the buyers actually are</h2>
@@ -66,7 +66,7 @@ function Body() {
         </li>
         <li>
           <strong>Floorplan.</strong> Arguably the highest-value $250 in the whole campaign. Buyers consistently rank floorplans among the
-          first things they look for, and serious buyers filter out listings without one. Non-negotiable.
+          first things they look for, and serious buyers filter out listings without one. Treat it as essential.
         </li>
         <li>
           <strong>Copy.</strong> Specifics sell: north-facing rear, 600 metres to the station, rewired 2023, 580 square metres. Adjective
@@ -84,32 +84,34 @@ function Body() {
 
       <h2>Open homes versus private inspections</h2>
       <p>
-        Open homes are efficient: every interested buyer through in 30 minutes, and a crowded open creates useful competitive anxiety
-        (“who were all those people?”). Private inspections suit tenanted properties, prestige homes and security-conscious sellers, and
+        Open homes are efficient: every interested buyer through in 30 minutes, and a busy open shows each buyer that others are
+        interested too (“who were all those people?”). Private inspections suit tenanted properties, prestige homes and
+        security-conscious sellers, and
         they give the agent longer with each genuine buyer. Most good campaigns run both: scheduled Saturday opens plus midweek privates
         for the serious. One practical note: ask your agent for written feedback after every open, including the count of groups through
-        and any contract requests. The pattern across the first three opens is your campaign’s vital signs.
+        and any contract requests. The pattern across the first three opens is your clearest early read on how the sale is going.
       </p>
 
       <h2>The first-two-weeks rule</h2>
       <p>
         A new listing gets its biggest audience in its first two weeks, because every buyer with a saved search is notified the day it
-        goes live. These are also your best buyers: the ones who’ve inspected twenty homes, missed out twice, and know exactly what your
-        property is worth. If your price is right, they act fast.
+        goes live. These are also your most ready buyers: the ones who’ve inspected twenty homes, missed out twice, and know exactly
+        what your property is worth. If your price is right, they act fast.
       </p>
       <p>
         Miss that window with an ambitious price and the listing starts to age in public. Buyers can see days on market and price cuts,
-        and both read as weakness. The longer it sits, the more every enquiry begins with “what’s wrong with it?” and every offer arrives
-        discounted accordingly.
+        and both make them more cautious. The longer it sits, the more every enquiry begins with “what’s wrong with it?” and every offer
+        arrives discounted accordingly.
       </p>
 
       <Pull>Launch at the price you’d accept, not the price you’d love.</Pull>
 
       <p>
-        The strategic consequence is blunt: <strong>launch at the price you’d accept, not the price you’d love.</strong> The fantasy
-        number doesn’t function as a free option; it actively burns your best fortnight. If you and your agent disagree on price, resolve
+        The practical consequence is clear: <strong>launch at the price you’d accept, not the price you’d love.</strong> An
+        ambitious figure isn’t a free option; it uses up your most valuable fortnight. If you and your agent disagree on price, resolve
         it before launch, not via a public reduction in week four. And if the first two weeks bring solid traffic but no offers, that’s
-        not bad luck, it’s the market’s answer. Reprice decisively in week three rather than bleeding 1 per cent a month until spring.
+        usually the market’s answer rather than bad luck. Reprice decisively in week three rather than trimming 1 per cent a month
+        until spring.
       </p>
     </>
   );

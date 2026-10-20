@@ -154,7 +154,7 @@ function Big({ label, value, sub }: { label: string; value: number | null; sub?:
 function Actions({ primary, secondary }: { primary: { label: string; href: string }; secondary: { label: string; href: string } }) {
   return (
     <div className="mt-auto flex flex-col gap-3 pt-8 sm:flex-row sm:items-center sm:gap-6">
-      <Link href={primary.href} className="press inline-flex h-12 items-center justify-between gap-4 rounded-lg bg-cta px-5 text-base font-semibold text-white transition-colors hover:bg-cta-hover sm:justify-center">
+      <Link href={primary.href} className="press inline-flex h-12 items-center justify-between gap-4 rounded-lg bg-cta px-5 text-base font-semibold text-cta-ink transition-colors hover:bg-cta-hover sm:justify-center">
         {primary.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </Link>
       <Link href={secondary.href} className="inline-flex items-center gap-1.5 text-base font-semibold text-ink underline-offset-4 hover:underline">

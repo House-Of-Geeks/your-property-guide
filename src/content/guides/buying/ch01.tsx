@@ -5,13 +5,13 @@ import { Box, Ch, Pull, Stat } from "../parts";
 export const chapter: Chapter = {
   guide: "buying",
   number: 1,
-  step: "Know your game",
+  step: "Know where you’re starting",
   standfirst:
-    "Everyone shops in the same market, but a first home buyer and a downsizer are playing different games with different rules. Know your game before the selling side decides it for you.",
+    "Everyone buys in the same market, but a first home buyer and a downsizer face different rules, risks and costs. Knowing which buyer you are makes every later decision clearer.",
   callout:
-    "Sorting you. From the first enquiry, the selling agent is working out what kind of buyer you are, how much you can spend and how much you want this home. The more clearly you know your own game, the less of it they can play for you.",
+    "From the first enquiry, the selling agent is working out what kind of buyer you are, how much you can spend and how much you want this home. That’s part of their job: they act for the seller and are paid to get the best result for them. If you’re clear about your own situation and limits first, you can decide what to share.",
   checklist: [
-    "Pick your persona: first home, upgrader, investor or downsizer",
+    "Work out which buyer you are: first home, upgrader, investor or downsizer",
     "Write down what you’re buying and why, in two sentences",
     "Decide the walk-away number before you inspect anything",
     "Plan to hold for at least five to seven years",
@@ -20,7 +20,7 @@ export const chapter: Chapter = {
   cta: {
     kind: "plan",
     title: "Build your next-step plan",
-    body: "A few quick questions and your next three steps write themselves, with the calculators and guides for your state.",
+    body: "Answer a few quick questions and get your next three steps, with the calculators and guides for your state.",
     label: "Build my next-step plan",
     href: "/plan?j=buying&from=buying-guide-ch1",
   },
@@ -32,14 +32,15 @@ function Body() {
   return (
     <>
       <p>
-        Every seller’s agent you meet is running a campaign, and you’re what it’s aimed at. The price guide, the open-home crowd, the
-        follow-up call and the deadline are all built to bring the most buyers to the highest number. None of that makes agents villains.
-        It makes them professionals. This guide shows you how their campaign works, so you can run your own buying campaign and not get
-        played. It starts with knowing which buyer you are.
+        Every home you look at is being sold by someone, usually with an agent who acts for the seller. The price guide, the open homes,
+        the follow-up call and the deadline are how a sale is usually run, and together they’re designed to bring the most buyers to the
+        best price for the seller. That’s the agent’s job, and it helps to understand it. This guide explains how each step works, what it
+        means for you and what to check or ask, so you can make each decision with a clear head. It starts with knowing which buyer you
+        are.
       </p>
       <p>
         Most buying advice is written as if every buyer were the same person: a couple in their early thirties buying a house to live in.
-        In practice, Australian buyers split into four broad camps, and the right move for one is often the wrong move for another.
+        In practice, Australian buyers split into four broad camps, and the right choice for one is often the wrong choice for another.
         Chapters 2 to 10 carry labelled callouts (First home, Upgrader, Investor, Downsizer) wherever the advice diverges. Find your label
         and read those boxes first.
       </p>
@@ -52,16 +53,16 @@ function Body() {
         support, not to find a forever home on a first-home budget.
       </p>
       <p>
-        <strong>The mistake you’ll be tempted by:</strong> falling in love. Agents can see it from the kerb, and an emotionally committed
-        buyer with no purchase history is the easiest negotiation in real estate. Decide your walk-away number before inspecting, not
-        during the auction.
+        <strong>The mistake you’ll be tempted by:</strong> falling in love. It shows quickly, and a buyer who is emotionally committed,
+        with no past purchase to compare against, finds it hardest to hold to a sensible price. Decide your walk-away number before
+        inspecting, not during the auction.
       </p>
 
       <h2>The upgrader</h2>
       <p>
         You’re running two transactions in the same market, which is the part most upgraders underweight. If prices move, they move on your
         sale and your purchase at once, so the gap between the two properties matters more than either price alone. Your equity is your
-        superpower; the sell-first-or-buy-first question is your hardest call, and <Ch n={7} guide="buying">Chapter 7</Ch> and our
+        biggest advantage; the sell-first-or-buy-first question is your hardest call, and <Ch n={7} guide="buying">Chapter 7</Ch> and our
         companion <Link href="/selling-guide">selling guide</Link> cover it.
       </p>
       <p>
@@ -98,12 +99,12 @@ function Body() {
       <p>
         Buying and later selling a property consumes roughly 7 to 10 per cent of its value in transaction costs: stamp duty, conveyancing,
         inspections, agent commission and marketing on the way out. That round trip is why short holds rarely pay. Whichever buyer you
-        are, buy something you can comfortably hold for at least five to seven years, because the costs of changing your mind are brutal.
+        are, buy something you can comfortably hold for at least five to seven years, because the costs of changing your mind are steep.
       </p>
 
       <Stat value="7 to 10%">Of a property’s value consumed by a full buy-sell round trip.</Stat>
 
-      <Pull>The market doesn’t care which buyer you are. Your playbook should.</Pull>
+      <Pull>The market treats every buyer the same. Your plan should fit the buyer you are.</Pull>
 
       <Box title="Watch for">
         <p>

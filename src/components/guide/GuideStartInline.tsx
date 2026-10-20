@@ -72,7 +72,7 @@ export function GuideStartInline({
             setNudge(true);
             inputWrap.current?.querySelector("input")?.focus();
           }}
-          className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-base cursor-pointer"
+          className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-cta-ink font-semibold px-6 py-3.5 text-base cursor-pointer"
         >
           Start my free guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
         </button>

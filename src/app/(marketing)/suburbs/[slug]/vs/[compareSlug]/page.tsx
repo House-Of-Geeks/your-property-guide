@@ -403,7 +403,7 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
           {/* The numbers, side by side. Rows with no figure on either side
               are left out. */}
           <section id="side-by-side" className="scroll-mt-20 max-w-4xl">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+            <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-5">
               {`${suburbAName} and ${suburbBName} side by side`}
             </h2>
             <div className="overflow-x-auto rounded-xl border border-line">
@@ -442,7 +442,7 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
 
           {/* Which suburb suits which buyer. */}
           <section id="verdicts" className="scroll-mt-20">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-4">Which suits whom</h2>
+            <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-4">Which suits whom</h2>
             {lifestyle && <p className="font-sans text-base text-ink leading-relaxed max-w-3xl mb-6">{lifestyle}</p>}
             <dl className="grid gap-x-10 md:grid-cols-3 border-t border-line">
               {[
@@ -474,7 +474,7 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
           {/* The same one action, once more where the page ends. */}
           <section className="tone-dark rounded-xl bg-surface-inverse p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
             <div>
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight">Choosing between {suburbAName} and {suburbBName}?</h2>
+              <h2 className="font-display text-xl sm:text-2xl font-normal text-ink tracking-[-0.03em]">Choosing between {suburbAName} and {suburbBName}?</h2>
               <p className="font-sans text-sm text-ink-muted mt-1.5 max-w-xl">The free buying guide: budget, schemes, inspections and how not to overpay.</p>
             </div>
             <Link

@@ -15,8 +15,8 @@ const variantStyles: Record<ButtonVariant, string> = {
   secondary: "bg-surface-sunken text-ink hover:bg-surface-warm-sunken",
   outline:   "border border-line-strong text-ink-muted hover:bg-surface-sunken hover:border-ink hover:text-ink",
   ghost:     "text-ink-muted hover:bg-surface-sunken hover:text-ink",
-  accent:    "bg-cta text-white hover:bg-cta-hover",
-  gradient:  "bg-cta text-white hover:bg-cta-hover",
+  accent:    "bg-cta text-cta-ink hover:bg-cta-hover",
+  gradient:  "bg-cta text-cta-ink hover:bg-cta-hover",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {

@@ -5,11 +5,11 @@ import { Box, Pull, Stat, TableWrap } from "../parts";
 export const chapter: Chapter = {
   guide: "buying",
   number: 9,
-  step: "Close it out",
+  step: "Get to settlement",
   standfirst:
-    "The weeks between signing and settlement are dull when everything goes right. Here is what your conveyancer does, what you must do, and the one inspection that still matters.",
+    "The weeks between signing and settlement are quiet when everything goes right. Here is what your conveyancer does, what you need to do, and the one inspection that still matters.",
   callout:
-    "Moving the deal to settlement, and looking after the seller. Between exchange and settlement the agent still works for the vendor; your conveyancer and your final inspection are what protect you.",
+    "After exchange, the selling agent’s job is to get the sale to settlement smoothly for the seller. They still act for the seller, and they’ll usually be your contact for the final inspection and the keys. Your conveyancer and your own final inspection are what look after your interests.",
   checklist: [
     "Send every serious contract to your conveyancer before you sign",
     "Know your state’s cooling-off rules, and that auctions have none",
@@ -32,8 +32,8 @@ function Body() {
   return (
     <>
       <p>
-        Once the contract is signed, the selling agent’s campaign is mostly over. Yours isn’t. These weeks are where buyers lose money to
-        missed deadlines and unchecked inclusions, so run them as carefully as the search.
+        Once the contract is signed, most of the selling agent’s work is done. Yours isn’t. These weeks are where buyers lose money to
+        missed deadlines and unchecked inclusions, so treat them as carefully as the search.
       </p>
 
       <h2>Conveyancing: hire early, use properly</h2>
@@ -94,7 +94,7 @@ function Body() {
         </li>
         <li>
           <strong>Insure the building from exchange.</strong> In Queensland, risk formally passes to the buyer shortly after signing;
-          elsewhere it generally stays with the seller until settlement, but the cheapest certainty in this list is simply holding cover from
+          elsewhere it generally stays with the seller until settlement, but the cheapest certainty in this list is holding cover from
           exchange everywhere. Strata buildings carry their own insurance; you insure contents.
         </li>
         <li>

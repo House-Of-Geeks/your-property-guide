@@ -311,7 +311,7 @@ export default function OffsetAccountsExplainedPage() {
 
       <GuideNewsletterCallout
         title="Want the next mortgage and rate read in your inbox?"
-        subtitle="One quarterly email covering RBA cash-rate decisions, lender pricing moves, and the loan-structure changes that affect every offset balance. No spam."
+        subtitle="Occasional emails covering RBA cash-rate decisions, lender pricing moves, and the loan-structure changes that affect every offset balance. No spam."
       />
 
       <h2 id="investment-loans">Why offset matters more on investment loans</h2>

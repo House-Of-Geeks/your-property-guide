@@ -88,7 +88,7 @@ export function SuburbInvestment({ suburb }: SuburbInvestmentProps) {
               <span className="flex-1">{r.label}</span>
               <SourceTooltip source={r.source} asOf={r.asOf} />
             </dt>
-            <dd className="mt-1 font-display text-2xl font-bold text-ink leading-none">{r.value}</dd>
+            <dd className="mt-1 font-display text-2xl font-normal text-ink leading-none">{r.value}</dd>
             {r.sub && <dd className="mt-1.5 text-xs text-ink-muted leading-snug">{r.sub}</dd>}
           </div>
         ))}

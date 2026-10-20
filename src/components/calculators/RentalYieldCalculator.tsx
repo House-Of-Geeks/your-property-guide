@@ -211,7 +211,7 @@ export function RentalYieldCalculator() {
                   onClick={() => setLoanTermYears(yr)}
                   className={`py-2 px-3 rounded-lg text-sm font-medium border transition-colors ${
                     loanTermYears === yr
-                      ? "bg-primary text-white border-primary"
+                      ? "bg-forest text-cream border-forest"
                       : "bg-white text-gray-700 border-gray-300 hover:border-primary hover:text-primary"
                   }`}
                 >

@@ -36,7 +36,7 @@ export function NextStepCard({
       <h3 className="text-xl sm:text-2xl text-ink leading-tight tracking-tight">{title}</h3>
       <p className="mt-2 text-[15px] text-ink-muted leading-relaxed">{body}</p>
       <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
-        <Link href={primary.href} className="inline-flex items-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white px-5 py-3 text-[15px] font-semibold transition-colors">
+        <Link href={primary.href} className="inline-flex items-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-cta-ink px-5 py-3 text-[15px] font-semibold transition-colors">
           {primary.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
         {secondary.map((a) => (

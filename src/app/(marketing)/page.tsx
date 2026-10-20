@@ -1,25 +1,24 @@
 import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
-import { CampaignHomepage } from "@/components/campaign/CampaignHomepage";
-import { ALL_GUIDES } from "@/lib/guides/registry";
-import { TOOLS } from "@/lib/tools";
+import { Homepage } from "@/components/homepage/Homepage";
 import { SITE_URL } from "@/lib/constants";
+import { PROMISE } from "@/lib/service-model";
 
-// Homepage (v6, "It's the campaign that wins", 15 Oct 2026): src/components/campaign.
+// Homepage (20 Oct 2026, "Clear decisions"): src/components/homepage.
 export const revalidate = 86400;
 
-const META_TITLE = "It’s the campaign that wins, not the market";
+const META_TITLE = "Know what matters before you buy or sell";
 const META_DESCRIPTION =
-  "Free Australian guides and tools for selling and buying property, built on the campaign that sells $20 million homes. One checked local agent when you want one, free.";
+  "Free Australian guides, calculators and a next-step plan for buying or selling a home. Understand the costs and choices ahead, at your own pace.";
 
 export const metadata: Metadata = {
   title: { absolute: `Your Property Guide: ${META_TITLE.charAt(0).toLowerCase()}${META_TITLE.slice(1)}` },
   description: META_DESCRIPTION,
   alternates: { canonical: SITE_URL },
-  openGraph: { ...DEFAULT_OG, title: META_TITLE, description: META_DESCRIPTION, type: "website" },
+  openGraph: { ...DEFAULT_OG, title: PROMISE.headline, description: META_DESCRIPTION, type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
 export default function HomePage() {
-  return <CampaignHomepage guidesAndTools={ALL_GUIDES.length + TOOLS.length} />;
+  return <Homepage />;
 }

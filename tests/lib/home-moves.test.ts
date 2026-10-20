@@ -1,7 +1,8 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { HOME_MOVES, MOVE_ORDER } from "@/components/campaign/moves";
+import { CASE_CONTEXT, DESK, INTRO_PREVIEW, MOVES, QUESTIONS, STAGES, STAGE_ANSWERS, STARTS } from "@/lib/home-start";
+import { planStartHref } from "@/lib/plans/start";
 import { HAMILTON, dollars, expectedIncrease } from "@/lib/case-studies";
 import { buildPlan } from "@/lib/plans/engine";
 import { planPreview } from "@/lib/plans/preview";
@@ -13,45 +14,68 @@ import { routeExists } from "../helpers/routes";
 // edit link: each move talks to the right reader, the preview is a real
 // plan, and "Change my answers" keeps every answer.
 
-describe("homepage moves", () => {
-  it("cover selling, buying and both, each pointing at its own plan", () => {
-    expect(MOVE_ORDER).toEqual(["selling", "buying", "both"]);
-    expect(HOME_MOVES.selling.sample.journey).toBe("selling");
-    expect(HOME_MOVES.buying.sample.journey).toBe("buying");
-    expect(HOME_MOVES.both.sample.journey).toBe("buying-and-selling");
-  });
-
-  it("give buyers buying tools and sellers the selling-cost calculator, worksheet and agreement check", () => {
-    expect(HOME_MOVES.buying.tools).not.toContain("sell");
-    expect(HOME_MOVES.selling.tools).toContain("sell");
-    const selling = HOME_MOVES.selling.decide.map((d) => d.href.split("?")[0]);
-    expect(selling).toEqual(["/selling-costs-calculator", "/tools/agent-proposal-worksheet", AGREEMENT_CHECK.href]);
-    expect(HOME_MOVES.buying.decide.some((d) => d.href.startsWith(AGREEMENT_CHECK.href))).toBe(false);
-    expect(HOME_MOVES.both.decide.map((d) => d.href)).toContain("/guides/sell-first-or-buy-first");
-  });
-
-  it("keep the agreement check's general-information wording", () => {
-    const check = HOME_MOVES.selling.decide.find((d) => d.kind === "call");
-    expect(check?.note).toBe(AGREEMENT_CHECK.notAdvice);
-  });
-
-  it("say what each tool helps you decide, and link only to real pages", () => {
-    for (const id of MOVE_ORDER) {
-      for (const d of HOME_MOVES[id].decide) {
-        expect(d.decides.length, d.title).toBeGreaterThan(10);
-        expect(routeExists(d.href), d.href).toBe(true);
+// The homepage's planner and question desk (20 Oct 2026, "Clear decisions"):
+// three starting points for every move and stage, four answers for every
+// move, every link a real page, and the full plan reached with the stage
+// already answered.
+describe("homepage starting points and questions", () => {
+  it("cover buying, selling and both, at every stage, with three real links each", () => {
+    expect(MOVES.map((m) => m.id)).toEqual(["buying", "selling", "both"]);
+    for (const m of MOVES) {
+      for (const st of STAGES) {
+        const points = STARTS[m.id][st.id];
+        expect(points).toHaveLength(3);
+        for (const p of points) expect(routeExists(p.href), p.href).toBe(true);
       }
     }
   });
 
-  it("preview the same steps, tools and checklist the plan gives", () => {
-    for (const id of MOVE_ORDER) {
-      const a = HOME_MOVES[id].sample;
+  it("send the stage to the planner as an answer it understands", () => {
+    for (const m of MOVES) {
+      for (const st of STAGES) {
+        const href = planStartHref({ journey: m.id === "both" ? "buying-and-selling" : m.id, answers: STAGE_ANSWERS[m.id][st.id] });
+        const qs = new URLSearchParams(href.split("?")[1]);
+        const a = answersFromParams((k) => qs.get(k));
+        expect(a?.journey).toBe(m.id === "both" ? "buying-and-selling" : m.id);
+        if (m.id === "buying") expect(a?.buyStage).not.toBeNull();
+        if (m.id === "selling") expect(a?.sellStage).not.toBeNull();
+      }
+    }
+  });
+
+  it("answer every question for every move, with real links", () => {
+    for (const m of MOVES) {
+      for (const q of QUESTIONS) {
+        const d = DESK[m.id][q.id];
+        expect(d.heading.length, `${m.id}/${q.id}`).toBeGreaterThan(5);
+        expect(d.points.length).toBeGreaterThanOrEqual(3);
+        expect(d.links.length).toBeGreaterThanOrEqual(1);
+        for (const l of d.links) expect(routeExists(l.href), l.href).toBe(true);
+      }
+    }
+  });
+
+  it("send the agreement check only to sellers and to people doing both", () => {
+    const hrefs = (m: "buying" | "selling" | "both") =>
+      Object.values(DESK[m]).flatMap((d) => d.links.map((l) => l.href)).concat(Object.values(STARTS[m]).flat().map((p) => p.href));
+    expect(hrefs("buying")).not.toContain(AGREEMENT_CHECK.href);
+    expect(hrefs("selling")).toContain(AGREEMENT_CHECK.href);
+  });
+
+  it("keep the old positioning out of the homepage's words", () => {
+    const words = JSON.stringify({ STARTS, DESK, INTRO_PREVIEW, CASE_CONTEXT });
+    expect(words).not.toMatch(/20 million|playbook|campaign that wins|not the market|top dollar/i);
+  });
+
+  it("build the plan the full-plan link opens", () => {
+    for (const a of [
+      { journey: "selling", state: null, timeframe: null, sellStage: "thinking" },
+      { journey: "buying", state: null, timeframe: null, buyStage: "starting" },
+      { journey: "buying-and-selling", state: null, timeframe: null, order: "undecided" },
+    ] as PlanAnswers[]) {
       const plan = buildPlan(a);
       const preview = planPreview(a);
       expect(preview.steps.map((s) => s.title)).toEqual(plan.nextSteps.map((s) => s.title));
-      expect(preview.tools.map((t) => t.href)).toEqual(plan.tools.slice(0, 3).map((t) => t.href));
-      expect(preview.checklist.title).toBe(plan.checklist.title);
       expect(preview.focus).not.toMatch(/^Your next-step plan/);
     }
   });

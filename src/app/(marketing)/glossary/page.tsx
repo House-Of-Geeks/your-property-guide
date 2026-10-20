@@ -67,7 +67,7 @@ export default function GlossaryPage() {
         <div className="max-w-3xl [&_section]:scroll-mt-32 [&_dd_em]:not-italic [&_dd_em]:font-medium [&_dd_em]:text-ink [&_dd_a]:text-ink [&_dd_a]:underline [&_dd_a]:underline-offset-4 [&_dd_a]:decoration-line-strong">
         {/* A */}
         <section id="section-A" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">A</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">A</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/adjustable-rate-mortgage" className="hover:underline underline-offset-4">Adjustable Rate Mortgage</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -113,7 +113,7 @@ export default function GlossaryPage() {
 
         {/* B */}
         <section id="section-B" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">B</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">B</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/balloon-payment" className="hover:underline underline-offset-4">Balloon Payment</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -176,7 +176,7 @@ export default function GlossaryPage() {
 
         {/* C */}
         <section id="section-C" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">C</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">C</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/capital-gain" className="hover:underline underline-offset-4">Capital Gain</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -298,7 +298,7 @@ export default function GlossaryPage() {
 
         {/* D */}
         <section id="section-D" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">D</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">D</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/debt-to-income-ratio-dti" className="hover:underline underline-offset-4">Debt-to-Income Ratio (DTI)</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -358,7 +358,7 @@ export default function GlossaryPage() {
 
         {/* E */}
         <section id="section-E" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">E</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">E</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/easement" className="hover:underline underline-offset-4">Easement</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -403,7 +403,7 @@ export default function GlossaryPage() {
 
         {/* F */}
         <section id="section-F" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">F</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">F</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/firb-foreign-investment-review-board" className="hover:underline underline-offset-4">FIRB (Foreign Investment Review Board)</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -448,7 +448,7 @@ export default function GlossaryPage() {
 
         {/* G */}
         <section id="section-G" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">G</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">G</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/gazumping" className="hover:underline underline-offset-4">Gazumping</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -486,7 +486,7 @@ export default function GlossaryPage() {
 
         {/* H */}
         <section id="section-H" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">H</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">H</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/hem-household-expenditure-measure" className="hover:underline underline-offset-4">HEM (Household Expenditure Measure)</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -508,7 +508,7 @@ export default function GlossaryPage() {
 
         {/* I */}
         <section id="section-I" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">I</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">I</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/icsea" className="hover:underline underline-offset-4">ICSEA</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -539,7 +539,7 @@ export default function GlossaryPage() {
 
         {/* J */}
         <section id="section-J" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">J</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">J</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/joint-tenants-vs-tenants-in-common" className="hover:underline underline-offset-4">Joint Tenants (vs Tenants in Common)</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -554,7 +554,7 @@ export default function GlossaryPage() {
 
         {/* L */}
         <section id="section-L" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">L</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">L</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/land-tax" className="hover:underline underline-offset-4">Land Tax</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -605,7 +605,7 @@ export default function GlossaryPage() {
 
         {/* M */}
         <section id="section-M" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">M</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">M</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/median-price" className="hover:underline underline-offset-4">Median Price</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -643,7 +643,7 @@ export default function GlossaryPage() {
 
         {/* N */}
         <section id="section-N" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">N</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">N</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/negative-gearing" className="hover:underline underline-offset-4">Negative Gearing</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -673,7 +673,7 @@ export default function GlossaryPage() {
 
         {/* O */}
         <section id="section-O" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">O</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">O</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/offset-account" className="hover:underline underline-offset-4">Offset Account</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -702,7 +702,7 @@ export default function GlossaryPage() {
 
         {/* P */}
         <section id="section-P" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">P</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">P</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/pre-approval-conditional-approval" className="hover:underline underline-offset-4">Pre-Approval (Conditional Approval)</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -750,7 +750,7 @@ export default function GlossaryPage() {
 
         {/* Q */}
         <section id="section-Q" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">Q</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">Q</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/quantity-surveyor-qs" className="hover:underline underline-offset-4">Quantity Surveyor (QS)</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -765,7 +765,7 @@ export default function GlossaryPage() {
 
         {/* R */}
         <section id="section-R" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">R</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">R</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/redraw-facility" className="hover:underline underline-offset-4">Redraw Facility</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -811,7 +811,7 @@ export default function GlossaryPage() {
 
         {/* S */}
         <section id="section-S" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">S</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">S</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/section-32-vic" className="hover:underline underline-offset-4">Section 32 (VIC)</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -869,7 +869,7 @@ export default function GlossaryPage() {
 
         {/* T */}
         <section id="section-T" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">T</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">T</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/tenants-in-common" className="hover:underline underline-offset-4">Tenants in Common</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -893,7 +893,7 @@ export default function GlossaryPage() {
 
         {/* U */}
         <section id="section-U" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">U</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">U</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/unconditional-contract" className="hover:underline underline-offset-4">Unconditional Contract</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -914,7 +914,7 @@ export default function GlossaryPage() {
 
         {/* V */}
         <section id="section-V" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">V</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">V</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/valuation" className="hover:underline underline-offset-4">Valuation</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -958,7 +958,7 @@ export default function GlossaryPage() {
 
         {/* W */}
         <section id="section-W" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">W</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">W</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/writ" className="hover:underline underline-offset-4">Writ</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">
@@ -972,7 +972,7 @@ export default function GlossaryPage() {
 
         {/* Z */}
         <section id="section-Z" className="mb-10">
-          <h2 className="font-display text-[1.75rem] font-bold text-ink border-b border-line pb-2 mb-4">Z</h2>
+          <h2 className="font-display text-[1.75rem] font-normal text-ink border-b border-line pb-2 mb-4">Z</h2>
           <dl>
             <dt className="text-lg font-semibold text-ink leading-snug mt-2"><Link href="/glossary/zoning" className="hover:underline underline-offset-4">Zoning</Link></dt>
             <dd className="text-[15px] sm:text-base text-ink-muted leading-relaxed mt-1 mb-5">

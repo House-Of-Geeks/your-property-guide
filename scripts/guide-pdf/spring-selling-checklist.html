@@ -3,7 +3,14 @@
 <head>
 <meta charset="utf-8">
 <title>Your Spring 2026 Selling Countdown | Your Property Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600&family=Source+Serif+4:ital,wght@0,400;1,400&display=swap">
 <style>
+  /* 20 Oct 2026: the "Clear decisions" palette and type; the cover is the selling edition's terracotta. */
+  .cover { background-color: #89492f !important; background-image: none !important; border-radius: 0 !important; }
+  .cover::before, .cover::after { display: none !important; }
+  .cover .edition { color: #f2e6d8 !important; }
+  .cover .masthead { letter-spacing: 0 !important; text-transform: none !important; font-family: "Source Serif 4", Georgia, serif !important; font-size: 15pt !important; }
+  html, body { background: #ffffff !important; }
   /* Design language shared with selling-guide.html — same palette, type and
      component styles, so the checklist reads as part of the same product. */
   @page { size: A4; margin: 18mm 16mm; }
@@ -12,20 +19,20 @@
   html, body { margin: 0; padding: 0; }
 
   body {
-    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Schibsted Grotesk", -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 10.5pt;
     line-height: 1.6;
-    color: #251c14;
-    background: #fefbf7;
+    color: #203d30;
+    background: #fffdf8;
   }
 
-  h1, h2, h3, .serif { font-family: Georgia, "Times New Roman", serif; font-weight: normal; }
+  h1, h2, h3, .serif { font-family: "Source Serif 4", Georgia, "Times New Roman", serif; font-weight: normal; letter-spacing: -0.02em; }
 
   p { margin: 0 0 8pt 0; }
   ul, ol { margin: 4pt 0 10pt 0; padding-left: 16pt; }
   li { margin-bottom: 3.5pt; }
-  li::marker { color: #bd592f; }
-  strong { font-weight: 600; color: #17100b; }
+  li::marker { color: #a9642c; }
+  strong { font-weight: 600; color: #244a37; }
 
   .page { page-break-before: always; }
 
@@ -37,20 +44,20 @@
       radial-gradient(circle at 102% 6%, transparent 0 86mm, rgba(255, 221, 198, 0.07) 86mm 86.4mm, transparent 86.4mm),
       radial-gradient(circle at 102% 6%, transparent 0 116mm, rgba(255, 221, 198, 0.07) 116mm 116.4mm, transparent 116.4mm),
       radial-gradient(circle at 100% 100%, rgba(189, 89, 47, 0.32) 0, rgba(189, 89, 47, 0) 95mm);
-    background-color: #17100b;
+    background-color: #244a37;
     border-radius: 4mm;
-    color: #fefbf7;
+    color: #fffdf8;
     position: relative;
     padding: 13mm 13mm 11mm;
     display: flex;
     flex-direction: column;
   }
-  .cover-rule { height: 2.2pt; background: #bd592f; margin-bottom: 7mm; }
+  .cover-rule { height: 2.2pt; background: #a9642c; margin-bottom: 7mm; }
   .masthead {
     font-size: 12pt;
     letter-spacing: 0.42em;
     text-transform: uppercase;
-    color: #ffddc6;
+    color: #f2e6d8;
     font-weight: 600;
     margin: 0;
   }
@@ -60,16 +67,16 @@
     line-height: 1.12;
     font-weight: 500;
     letter-spacing: -0.015em;
-    color: #fefbf7;
+    color: #fffdf8;
     margin: 0;
     max-width: 168mm;
   }
-  .cover h1 em { font-style: italic; color: #e8a075; }
+  .cover h1 em { font-style: italic; color: #e1af86; }
   .cover .edition {
     font-family: Georgia, serif;
     font-style: italic;
     font-size: 16pt;
-    color: #bd592f;
+    color: #a9642c;
     margin: 9mm 0 0 0;
   }
   .cover .cover-sub {
@@ -92,13 +99,13 @@
     font-size: 8.5pt;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: #ffddc6;
+    color: #f2e6d8;
     font-weight: 600;
   }
 
   h2 {
     font-size: 15pt;
-    color: #17100b;
+    color: #244a37;
     margin: 16pt 0 6pt 0;
     display: block;
     break-after: avoid;
@@ -107,19 +114,19 @@
     content: "";
     display: block;
     width: 24pt;
-    border-top: 2.5pt solid #bd592f;
+    border-top: 2.5pt solid #a9642c;
     margin-bottom: 5pt;
   }
 
   /* ---------- Page headline (light pages) ---------- */
-  .page-head h1 { font-size: 26pt; color: #17100b; margin: 0 0 4pt 0; }
-  .page-head .head-rule { border: none; border-top: 2.5pt solid #bd592f; width: 34pt; margin: 0 0 8pt 0; }
+  .page-head h1 { font-size: 26pt; color: #244a37; margin: 0 0 4pt 0; }
+  .page-head .head-rule { border: none; border-top: 2.5pt solid #a9642c; width: 34pt; margin: 0 0 8pt 0; }
   .page-head .standlight {
     font-family: Georgia, serif;
     font-style: italic;
     font-size: 11.5pt;
     line-height: 1.55;
-    color: #564b42;
+    color: #566257;
     margin: 0 0 10pt 0;
     max-width: 160mm;
   }
@@ -132,8 +139,8 @@
     margin: 9pt 0 13pt 0;
   }
   th {
-    background: #17100b;
-    color: #f6ede2;
+    background: #244a37;
+    color: #edece2;
     font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 7.8pt;
     font-weight: 600;
@@ -145,27 +152,27 @@
     vertical-align: bottom;
   }
   td { padding: 7pt 9pt; border: none; vertical-align: top; }
-  tbody tr:nth-child(even) td { background: #f6ede2; }
+  tbody tr:nth-child(even) td { background: #edece2; }
   tr { break-inside: avoid; }
 
   /* ---------- Countdown checklist ---------- */
   table.timeline { font-size: 9.3pt; }
   .timeline tbody tr:nth-child(even) td { background: transparent; }
-  .timeline td { border-bottom: 0.6pt solid #d9cfc5; padding: 8pt 9pt; }
+  .timeline td { border-bottom: 0.6pt solid #cdd2c6; padding: 8pt 9pt; }
   .timeline td:first-child {
     font-family: Georgia, serif;
     font-style: italic;
     font-size: 11pt;
     line-height: 1.25;
-    color: #bd592f;
+    color: #a9642c;
     border-right: 1.2pt solid rgba(189, 89, 47, 0.45);
     padding-right: 8pt;
   }
-  .timeline td:first-child strong { font-weight: normal; color: #bd592f; font-size: 12.5pt; }
-  .timeline td:last-child { text-align: center; font-size: 11pt; color: #953407; }
+  .timeline td:first-child strong { font-weight: normal; color: #a9642c; font-size: 12.5pt; }
+  .timeline td:last-child { text-align: center; font-size: 11pt; color: #93532a; }
   .timeline .phase td {
-    background: #17100b !important;
-    color: #ffddc6;
+    background: #244a37 !important;
+    color: #f2e6d8;
     font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 8pt;
     font-weight: 700;
@@ -187,8 +194,8 @@
 
   /* ---------- Callout boxes ---------- */
   .box {
-    background: #f6ede2;
-    border-left: 3pt solid #bd592f;
+    background: #edece2;
+    border-left: 3pt solid #a9642c;
     border-radius: 0 2mm 2mm 0;
     padding: 11pt 14pt;
     margin: 13pt 0;
@@ -200,16 +207,16 @@
     font-weight: 700;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #953407;
+    color: #93532a;
     margin-bottom: 5pt;
   }
   .box p:last-child, .box ul:last-child { margin-bottom: 0; }
 
   /* ---------- Stat callouts ---------- */
   .stat {
-    background: #f6ede2;
-    border: 0.6pt solid #d9cfc5;
-    border-left: 4pt solid #bd592f;
+    background: #edece2;
+    border: 0.6pt solid #cdd2c6;
+    border-left: 4pt solid #a9642c;
     border-radius: 0 2mm 2mm 0;
     padding: 12pt 15pt 10pt;
     margin: 13pt 0;
@@ -220,7 +227,7 @@
     font-size: 42pt;
     line-height: 1;
     letter-spacing: -0.01em;
-    color: #bd592f;
+    color: #a9642c;
     margin-bottom: 5pt;
   }
   .stat-label {
@@ -229,16 +236,16 @@
     text-transform: uppercase;
     letter-spacing: 0.16em;
     line-height: 1.6;
-    color: #564b42;
+    color: #566257;
   }
 
   /* ---------- Footer line ---------- */
   .foot {
     margin-top: 18pt;
     padding-top: 6pt;
-    border-top: 0.6pt solid #d9cfc5;
+    border-top: 0.6pt solid #cdd2c6;
     font-size: 6.8pt;
-    color: #8a8276;
+    color: #636c65;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     break-before: avoid;
@@ -252,20 +259,20 @@
       radial-gradient(circle at -2% 6%, transparent 0 86mm, rgba(255, 221, 198, 0.07) 86mm 86.4mm, transparent 86.4mm),
       radial-gradient(circle at -2% 6%, transparent 0 116mm, rgba(255, 221, 198, 0.07) 116mm 116.4mm, transparent 116.4mm),
       radial-gradient(circle at 0% 100%, rgba(189, 89, 47, 0.32) 0, rgba(189, 89, 47, 0) 95mm);
-    background-color: #17100b;
+    background-color: #244a37;
     border-radius: 4mm;
-    color: #fefbf7;
+    color: #fffdf8;
     padding: 14mm 13mm 12mm;
     display: flex;
     flex-direction: column;
   }
   .back-content { display: flex; flex-direction: column; flex: 1; }
-  .backpage h2 { color: #fefbf7; font-size: 19pt; margin: 0 0 6mm 0; }
-  .backpage h2::before { width: 26pt; border-top: 2.5pt solid #bd592f; margin-bottom: 6pt; }
+  .backpage h2 { color: #fffdf8; font-size: 19pt; margin: 0 0 6mm 0; }
+  .backpage h2::before { width: 26pt; border-top: 2.5pt solid #a9642c; margin-bottom: 6pt; }
   .backpage p { color: rgba(254, 251, 247, 0.78); max-width: 152mm; }
-  .backpage p strong { color: #ffddc6; }
+  .backpage p strong { color: #f2e6d8; }
   .back-spacer { flex: 1; }
-  .back-site { font-family: Georgia, serif; font-size: 25pt; color: #ffddc6; margin: 0 0 8mm 0; }
+  .back-site { font-family: Georgia, serif; font-size: 25pt; color: #f2e6d8; margin: 0 0 8mm 0; }
   .disc-label {
     font-size: 8pt;
     font-weight: 700;
@@ -280,7 +287,7 @@
     padding-top: 5mm;
     margin-top: 8mm;
   }
-  .fineprint { font-size: 8.5pt; color: #6c655a; line-height: 1.5; }
+  .fineprint { font-size: 8.5pt; color: #636c65; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -295,7 +302,7 @@
   <div class="cover-title-block">
     <h1>Your <em>Spring 2026</em> Selling Countdown</h1>
     <div class="edition">The printable 12-week checklist</div>
-    <p class="cover-sub">Pick your listing weekend, work backwards, and tick your way from first declutter to settlement day. The companion checklist to The Complete Guide to Selling Your Property in Australia.</p>
+    <p class="cover-sub">Pick your listing weekend, work backwards, and tick your way from first declutter to settlement day. The companion checklist to Selling a home, the free guide.</p>
   </div>
 
   <div class="cover-spacer"></div>
@@ -311,11 +318,11 @@
   <div class="page-head">
     <h1>First, pick your listing weekend</h1>
     <hr class="head-rule">
-    <p class="standlight">Spring campaigns are won in winter. Photography happens a fortnight before launch, styling and trades before that, and your agent and conveyancer before everything. Choose the weekend you want your campaign live, then start the countdown on the matching Monday.</p>
+    <p class="standlight">A spring sale starts in winter. Photography happens a fortnight before launch, styling and trades before that, and your agent and conveyancer before everything. Choose the weekend you want the property listed, then start the countdown on the matching Monday.</p>
   </div>
 
   <table>
-    <thead><tr><th>Start the checklist week of</th><th>Campaign goes live</th><th>The window</th></tr></thead>
+    <thead><tr><th>Start the checklist week of</th><th>Listed from</th><th>The window</th></tr></thead>
     <tbody>
     <tr>
       <td><strong>Monday 27 July 2026</strong></td>
@@ -325,7 +332,7 @@
     <tr>
       <td><strong>Monday 24 August 2026</strong></td>
       <td><strong>9&ndash;10 October</strong></td>
-      <td>Peak spring. The biggest buyer audience of the year, and the most competing stock. Presentation and pricing discipline decide who wins October.</td>
+      <td>Peak spring. The biggest buyer audience of the year, and the most competing stock. Presentation and realistic pricing make the most difference in October.</td>
     </tr>
     <tr>
       <td><strong>Monday 21 September 2026</strong></td>
@@ -342,7 +349,7 @@
 
   <div class="stat">
     <div class="stat-num">6&frac12; weeks</div>
-    <div class="stat-label">From first checklist tick to campaign launch &mdash; the rest is the campaign itself</div>
+    <div class="stat-label">From first checklist tick to campaign launch &mdash; then the property is on the market</div>
   </div>
 
   <p class="foot">yourpropertyguide.com.au &middot; Your Spring 2026 Selling Countdown</p>
@@ -353,7 +360,7 @@
   <div class="page-head">
     <h1>The countdown</h1>
     <hr class="head-rule">
-    <p class="standlight">Weeks count down to exchange, with settlement following two to six weeks later. Chapter references point into your copy of The Complete Guide to Selling Your Property in Australia.</p>
+    <p class="standlight">Weeks count down to exchange, with settlement following two to six weeks later. Chapter references point into your copy of Selling a home, the free guide.</p>
   </div>
 
   <table class="timeline">
@@ -404,7 +411,7 @@
     <tr class="phase"><td colspan="3">Phase four &middot; Campaign and close <em>weeks 4 to settlement</em></td></tr>
     <tr>
       <td><strong>Week 4</strong></td>
-      <td>Second weekend of opens. Review the campaign data against launch expectations. Strong traffic, no offers? Hold briefly. Weak traffic? Reprice decisively now, not in week 2. Auction campaigns: review buyer interest with the agent and start thinking about reserve.</td>
+      <td>Second weekend of opens. Review the campaign data against launch expectations. Strong traffic, no offers? Hold briefly. Weak traffic? Talk to your agent about the price now rather than waiting. Auction campaigns: review buyer interest with the agent and start thinking about reserve.</td>
       <td>&#9744;</td>
     </tr>
     <tr>
@@ -462,7 +469,7 @@
 
     <div class="back-foot">
       <p class="fineprint" style="margin:0;">&copy; Profit Geeks 2026. All rights reserved.<br>
-      yourpropertyguide.com.au &middot; Your Spring 2026 Selling Countdown &middot; Companion to The Complete Guide to Selling Your Property in Australia</p>
+      yourpropertyguide.com.au &middot; Your Spring 2026 Selling Countdown &middot; Companion to Selling a home, the free guide</p>
     </div>
   </div>
 </section>

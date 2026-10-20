@@ -118,7 +118,7 @@ const FAQS: FaqItem[] = [
 const RELATED: RelatedGuide[] = [
   { title: "Lenders Mortgage Insurance Guide",    href: "/guides/lenders-mortgage-insurance-guide", description: "When LMI applies, what it costs, and how to avoid it." },
   { title: "Fixed vs Variable Rate Loans",         href: "/guides/fixed-vs-variable-rate-guide",     description: "How to decide between fixed, variable, and split-rate home loans." },
-  { title: "First Home Buyer Guide",               href: "/guides/first-home-buyer-guide",            description: "The full first-home-buyer playbook, including grants and schemes by state." },
+  { title: "First Home Buyer Guide",               href: "/guides/first-home-buyer-guide",            description: "Every first home buyer step, including grants and schemes by state." },
   { title: "How Much Deposit to Buy a House",      href: "/guides/how-much-deposit-to-buy-a-house",   description: "Real-world deposit numbers and the LMI threshold." },
   { title: "Borrowing Power Calculator",            href: "/borrowing-power-calculator",               description: "Run the numbers on what you can borrow before talking to a broker." },
 ];

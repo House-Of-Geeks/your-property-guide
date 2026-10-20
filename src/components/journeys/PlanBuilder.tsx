@@ -214,7 +214,7 @@ export function PlanBuilder({ placement = "plan-page" }: { placement?: string })
           {questions.map((id, i) => (
             <li
               key={id}
-              className={`h-1.5 w-6 rounded-full transition-colors ${i === step ? "bg-cta" : isAnswered(id) ? "bg-ink" : "bg-line"}`}
+              className={`h-1.5 w-6 rounded-[4px] transition-colors ${i === step ? "bg-cta" : isAnswered(id) ? "bg-ink" : "bg-line"}`}
             />
           ))}
         </ol>
@@ -233,7 +233,7 @@ export function PlanBuilder({ placement = "plan-page" }: { placement?: string })
                   type="button"
                   onClick={() => goTo(c.i)}
                   aria-label={`${questionName(c.id, answers.journey)}: ${c.text}. Change`}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-surface-warm px-3 py-1.5 text-[13px] font-semibold text-ink hover:border-ink"
+                  className="inline-flex items-center gap-1.5 rounded-[4px] border border-line-strong bg-surface-warm px-3 py-1.5 text-[13px] font-semibold text-ink hover:border-ink"
                 >
                   {c.id === "state" && answers.suburb && <MapPin className="h-3.5 w-3.5" aria-hidden="true" />}
                   {c.text}
@@ -365,7 +365,7 @@ export function PlanBuilder({ placement = "plan-page" }: { placement?: string })
         <button
           type="submit"
           disabled={going}
-          className="inline-flex items-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white px-6 py-3 text-base font-semibold transition-colors disabled:opacity-70"
+          className="inline-flex items-center gap-2 rounded-[4px] bg-cta hover:bg-cta-hover text-cta-ink px-6 py-3 text-base font-semibold transition-colors disabled:opacity-70"
         >
           {submitLabel}
           <ArrowRight className="h-4 w-4" aria-hidden="true" />

@@ -12,9 +12,10 @@ import { describe, expect, it } from "vitest";
 
 const read = (p: string) => readFileSync(join(process.cwd(), p), "utf8");
 
+// The homepage's own planner (20 Oct 2026, "Clear decisions") has no suburb
+// field; it sends the move and the stage. The header and the phone bar still
+// pass on any suburb a page publishes.
 const ENTRY_POINTS = [
-  { file: "src/components/campaign/CampaignHero.tsx", readsPlace: /resolved/ },
-  { file: "src/components/campaign/FinalCta.tsx", readsPlace: /ctx\?\.place/ },
   { file: "src/components/layout/Header.tsx", readsPlace: /usePublishedPlace\(\)/ },
   { file: "src/components/layout/MobileBottomNav.tsx", readsPlace: /usePublishedPlace\(\)/ },
 ];
@@ -32,9 +33,11 @@ describe("plan entry points share the suburb", () => {
     });
   }
 
-  it("the hero publishes the suburb it resolves, so the header and the phone bar can read it", () => {
-    const hero = read("src/components/campaign/CampaignHero.tsx");
-    expect(hero).toMatch(/setPlace\?\.\(/);
+  it("the homepage planner builds its full-plan link with planStartHref and the stage's answers", () => {
+    const src = read("src/components/homepage/StartPlanner.tsx");
+    expect(src).toMatch(/import \{ planStartHref \} from "@\/lib\/plans\/start"/);
+    expect(src).toMatch(/planStartHref\(\{[^}]*answers: STAGE_ANSWERS/);
+    expect(src).not.toMatch(/[`"']\/plan\?j=/);
     const store = read("src/components/interactive/move-context.tsx");
     expect(store).toMatch(/export function usePublishedPlace/);
     expect(store).toMatch(/publishedPlace = place/);

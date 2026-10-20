@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { BookCover } from "@/components/brand/BookCover";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 import { ArrowRight } from "lucide-react";
 import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 import { BUYING_GUIDE_CTA, ExpertCTA } from "@/components/journey";
@@ -99,8 +101,11 @@ export function CalculatorPageLayout({
           Band so the widget starts as high as it can; widgets are white
           cards, so they stay on white. */}
       <section className="border-b border-line">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 pb-14 sm:pt-12 sm:pb-20">
-          {calculator}
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 pt-8 pb-14 sm:pt-12 sm:pb-20">
+          {/* The tool on its own sand surface (v7, 20 Oct 2026): fields and
+              results are paper cards inside it, so the tool reads as one
+              object on the page. */}
+          <div className="bg-surface-warm px-4 py-6 sm:px-8 sm:py-9 lg:px-12 lg:py-11">{calculator}</div>
           {contextual ? (
             <NextStepCard className="mt-8" {...contextual} />
           ) : sellerCalculator ? (
@@ -114,18 +119,18 @@ export function CalculatorPageLayout({
               </p>
             </>
           ) : intent === "buying" ? (
-            <aside className="mt-8 rounded-xl border border-line bg-surface-warm p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-              <div className="flex-1">
-                <p className="font-display text-lg sm:text-xl font-bold text-ink leading-snug tracking-[-0.01em]">
-                  Buying? Get the free buying guide
+            <aside className="mt-8 grid grid-cols-[72px_1fr] items-center gap-5 border-y border-line py-6 sm:grid-cols-[84px_1fr_auto] sm:gap-7">
+              <BookCover guide="buying" className="w-[72px] sm:w-[84px]" sizes="90px" />
+              <div>
+                <p className="font-display text-[22px] leading-snug tracking-[-0.025em] text-ink">
+                  {`Buying? Read ${GUIDE_BOOKS.buying.name}`}
                 </p>
-                <p className="mt-1 text-sm text-ink-muted leading-relaxed max-w-2xl">
-                  What you can really spend, the 2026 schemes state by state and how not to overpay.
-                  Free PDF, personalised to your situation, in 60 seconds.
+                <p className="mt-1 max-w-2xl text-[15px] leading-relaxed text-ink-muted">
+                  Your budget, the 2026 schemes state by state, how homes are sold and how to make an offer. A free guide, with a PDF for where you’re up to.
                 </p>
               </div>
-              <Link href={funnelHref} className={`shrink-0 justify-center ${BUTTON_PRIMARY}`}>
-                Get the free buying guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              <Link href={funnelHref} className={`col-span-2 shrink-0 justify-center sm:col-span-1 ${BUTTON_PRIMARY}`}>
+                Get the free guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
             </aside>
           ) : null}
@@ -139,7 +144,7 @@ export function CalculatorPageLayout({
           <aside className="hidden lg:block lg:col-span-3 lg:order-2">
             <div className="sticky top-28 space-y-6 border-t border-line pt-4">
               <div>
-                <p className="text-sm font-semibold text-ink mb-1">
+                <p className="text-sm font-medium text-ink mb-1">
                   An estimate, not a quote
                 </p>
                 <p className="text-sm text-ink-muted leading-relaxed">
@@ -150,7 +155,7 @@ export function CalculatorPageLayout({
                 </p>
               </div>
               <div>
-                <p className="text-sm font-semibold text-ink mb-1">
+                <p className="text-sm font-medium text-ink mb-1">
                   Spotted an error?
                 </p>
                 <p className="text-sm text-ink-muted leading-relaxed">

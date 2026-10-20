@@ -13,11 +13,11 @@ import { BuyingGuideFunnel } from "./BuyingGuideFunnel";
 
 const COPY = {
   selling: {
-    headlineLead: "The complete guide to",
+    headlineLead: "A practical guide to",
     headlineAccent: "selling",
-    headlineTail: "your property.",
+    headlineTail: "property in Australia.",
     pitch:
-      "Selling costs 3 to 5 percent of your price. The right moves claw thousands of it back. Ten chapters that show you how, personalised to your suburb, free.",
+      "Selling costs 3 to 5 percent of your price. Ten chapters on where that money goes and the decisions that affect it, personalised to your suburb, free.",
     steps: [
       ["01", "Answer 7 quick questions (60 seconds)"],
       ["02", "We personalise the guide to your suburb"],
@@ -26,11 +26,11 @@ const COPY = {
     ],
   },
   buying: {
-    headlineLead: "The complete guide to",
+    headlineLead: "A practical guide to",
     headlineAccent: "buying",
-    headlineTail: "property.",
+    headlineTail: "property in Australia.",
     pitch:
-      "Overpaying is the default. Ten chapters written for the buyer you actually are: schemes, finance, inspections, the offer. Free, personalised, 60 seconds.",
+      "Ten chapters for where you’re starting from: schemes, finance, inspections and the offer. Free, personalised, 60 seconds.",
     steps: [
       ["01", "Answer 6 quick questions (60 seconds)"],
       ["02", "We point you at the chapters for your situation"],
@@ -74,7 +74,7 @@ export function GuideBandSwitcher() {
               onClick={() => setPath(key)}
               className={[
                 "rounded-md px-5 py-2 text-sm font-sans font-semibold transition-colors cursor-pointer",
-                path === key ? "bg-cta text-white" : "text-white/75 hover:text-white",
+                path === key ? "bg-cta text-cta-ink" : "text-white/75 hover:text-white",
               ].join(" ")}
             >
               {key === "selling" ? "I’m selling" : "I’m buying"}
@@ -84,7 +84,7 @@ export function GuideBandSwitcher() {
 
         {/* Re-keyed on toggle so the pitch steps in for each path */}
         <div key={path} className="step-in">
-          <h2 className="font-display text-white leading-[0.98] tracking-tight text-5xl sm:text-6xl lg:text-7xl mb-8 font-bold">
+          <h2 className="font-display text-white leading-[0.98] tracking-[-0.03em] text-5xl sm:text-6xl lg:text-7xl mb-8 font-normal">
             {c.headlineLead}{" "}
             <span>{c.headlineAccent}</span>{" "}
             {c.headlineTail}

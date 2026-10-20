@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { TrendingUp, Home, DollarSign, Building2 } from "lucide-react";
 import { ExpertCTA } from "@/components/journey";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 import { HomeValueAppraisal } from "@/components/journey/HomeValueAppraisal";
 import { MatchAgent } from "@/components/journey/MatchAgent";
 import { StatCard, SuburbTable } from "@/components/market/MarketTables";
@@ -430,7 +431,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
       {/* Seller funnel exit */}
       <ExpertCTA
         headline={`Thinking about selling in ${name}?`}
-        body="The complete guide to selling in today's market: what it really costs, how agents price your home, the 10 questions that catch bad agents out, and a 12-week plan to settlement. Free PDF, in your inbox in 60 seconds."
+        body={`${GUIDE_BOOKS.selling.name}, the free guide: what it really costs, how agents price your home, the questions to ask before you choose one, and a 12-week plan to settlement. Free PDF, in your inbox in 60 seconds.`}
         ctaLabel="Get the free selling guide"
         href="/selling-guide"
       />

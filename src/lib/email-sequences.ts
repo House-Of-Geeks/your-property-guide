@@ -56,8 +56,8 @@ export const SEQUENCES: Record<SequenceId, Sequence> = {
       },
       {
         day: 14,
-        subject: "How to tell whether an appraisal is real",
-        paragraphs: ["An agent’s price estimate is a pitch until it’s backed by sales. Ask every agent the same question: which sales support that figure?"],
+        subject: "How to read an agent’s appraisal",
+        paragraphs: ["An agent’s price estimate is an opinion until it’s backed by sales. Ask every agent the same question: which sales support that figure?"],
         points: ["Look for recent sales of similar homes nearby", "Be wary of an estimate far above the others", "A range should be narrow enough to be useful"],
         link: { label: "Preparing for an appraisal", href: "/guides/how-to-prepare-for-a-property-appraisal" },
       },
@@ -77,7 +77,7 @@ export const SEQUENCES: Record<SequenceId, Sequence> = {
     emails: [
       {
         day: 2,
-        subject: "The questions that separate good agents from good talkers",
+        subject: "The questions to ask every agent you meet",
         paragraphs: ["Ask every agent the same questions, and write down the answers."],
         points: ["Which sales support your price?", "Who will actually negotiate for me?", "What does marketing cost, and is it capped?"],
         link: { label: "Questions to ask an agent", href: "/guides/questions-to-ask-a-real-estate-agent" },
@@ -149,7 +149,7 @@ export const SEQUENCES: Record<SequenceId, Sequence> = {
         day: 5,
         subject: "Setting your limit",
         paragraphs: ["Decide your limit from real sales before you negotiate, and write it down."],
-        points: ["Ignore the price guide; use sold prices", "Know what would make you walk away", "Conditions can be worth more than a small discount"],
+        points: ["Check the price guide against recent sold prices", "Know what would make you walk away", "Conditions can be worth more than a small discount"],
         link: { label: "Negotiating the price", href: "/guides/how-to-negotiate-property-price-australia" },
       },
       {

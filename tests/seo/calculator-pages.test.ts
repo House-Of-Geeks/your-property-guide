@@ -84,10 +84,10 @@ describe("header", () => {
     expect(src).toMatch(/open=\{openMenu === link\.label\}/);
     expect(src).toMatch(/\$\{open \? "" : "hidden "\}/);
   });
-  it("adds no top-level item: the 1080px breakpoint of PR #77 was measured with five", () => {
+  it("adds no top-level item: the 1024px breakpoint (20 Oct 2026, \"Clear decisions\") was measured with four menus", () => {
     const navBlock = src.slice(src.indexOf("const NAV_LINKS"), src.indexOf("export function Header"));
     const topLevel = navBlock.match(/^  \{\n    label: "/gm) ?? [];
-    expect(topLevel).toHaveLength(5);
-    expect(src).toContain("min-[67.5rem]:flex");
+    expect(topLevel).toHaveLength(4);
+    expect(src).toContain("min-[64rem]:flex");
   });
 });

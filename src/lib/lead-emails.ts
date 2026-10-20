@@ -1,5 +1,6 @@
-import { EMAIL_COLORS, emailLayout, emailButton, emailCoverHero } from "@/lib/email-theme";
+import { EMAIL_COLORS, emailLayout, emailButton, emailButtonOutline, emailCoverHero, emailHeading, emailLabel } from "@/lib/email-theme";
 import { escapeHtml, textBlocks, visitorGreeting, visitorGreetingName, visitorSubjectName } from "@/lib/email-format";
+import { GUIDE_BOOKS, chapterHref, subtitleLine, type GuideBookId } from "@/lib/guide-books";
 
 // Lead email rendering + scoring, extracted from /api/leads so it can be
 // unit-tested and previewed without booting the route (which imports the
@@ -144,12 +145,14 @@ export function labelFor(type: string, guideType?: string): string {
 // excluded from robots so the funnel stays the front door.
 import { GUIDE_PDF_PATH, BUYING_GUIDE_PDF_PATH } from "@/lib/guide-pdfs";
 export { GUIDE_PDF_PATH, BUYING_GUIDE_PDF_PATH };
-export const GUIDE_PDF_URL = `https://www.yourpropertyguide.com.au${GUIDE_PDF_PATH}`;
+const SITE = "https://www.yourpropertyguide.com.au";
+export const GUIDE_PDF_URL = `${SITE}${GUIDE_PDF_PATH}`;
 // Cover art printed from /print/guides/<guide> by npm run guides:pdf. The email
-// variant is a ~70KB JPEG so it loads fast on mobile data.
-export const GUIDE_COVER_URL = "https://www.yourpropertyguide.com.au/images/guide/selling-guide-cover-email.jpg";
-export const BUYING_GUIDE_PDF_URL = `https://www.yourpropertyguide.com.au${BUYING_GUIDE_PDF_PATH}`;
-export const BUYING_GUIDE_COVER_URL = "https://www.yourpropertyguide.com.au/images/guide/buying-guide-cover-email.jpg";
+// variant (GUIDE_BOOKS[id].coverEmail) is a small JPEG so it loads fast on
+// mobile data.
+export const GUIDE_COVER_URL = `${SITE}${GUIDE_BOOKS.selling.coverEmail}`;
+export const BUYING_GUIDE_PDF_URL = `${SITE}${BUYING_GUIDE_PDF_PATH}`;
+export const BUYING_GUIDE_COVER_URL = `${SITE}${GUIDE_BOOKS.buying.coverEmail}`;
 // A guide is a learning request (Oct 2026): its email teaches, and only points
 // to the introduction form for anyone who later wants personal help.
 const APPRAISAL_URL = "https://www.yourpropertyguide.com.au/get-help?service=selling-agent&from=guide-email";
@@ -185,7 +188,7 @@ export function buildAdminEmailHtml(
   const rows = [
     score && ["Lead score", `<strong style="color:${scoreColor};">${score}</strong>`],
     ["Name",    fullName],
-    ["Email",   `<a href="mailto:${email}" style="color:${C.terracottaDark};">${email}</a>`],
+    ["Email",   `<a href="mailto:${email}" style="color:${C.copper};">${email}</a>`],
     lead.phone            && ["Phone",             escapeHtml(lead.phone)],
     lead.buyerPersona     && ["Buyer type",        BUYER_PERSONA_LABELS[lead.buyerPersona] ?? escapeHtml(lead.buyerPersona)],
     lead.sellingTimeframe && [lead.guideType === "buying" ? "Buying timeframe" : "Selling timeframe", TIMEFRAME_LABELS[lead.sellingTimeframe] ?? escapeHtml(lead.sellingTimeframe)],
@@ -211,7 +214,7 @@ export function buildAdminEmailHtml(
     .filter((r): r is [string, string] => Array.isArray(r))
     .map(([label, value]) =>
       `<tr>
-        <td style="${LABEL_CELL}${C.inkMuted};background:${C.cream};border-bottom:1px solid ${C.line};">${label}</td>
+        <td style="${LABEL_CELL}${C.inkMuted};background:${C.sand};border-bottom:1px solid ${C.line};">${label}</td>
         <td style="${VALUE_CELL}${C.ink};border-bottom:1px solid ${C.line};">${value}</td>
        </tr>`
     )
@@ -219,12 +222,12 @@ export function buildAdminEmailHtml(
 
   const attributionHtml = attributionRows.length
     ? `
-    <p style="margin:24px 24px 8px;font-size:13px;color:${C.inkMuted};">How they found us</p>
+    ${emailLabel("How they found us", "24px 24px 8px")}
     <table style="width:100%;border-collapse:collapse;font-size:13px;">
       ${attributionRows
         .map(
           ([label, value]) => `<tr>
-        <td style="${LABEL_CELL}${C.inkMuted};background:${C.cream};border-bottom:1px solid ${C.line};">${escapeHtml(label)}</td>
+        <td style="${LABEL_CELL}${C.inkMuted};background:${C.sand};border-bottom:1px solid ${C.line};">${escapeHtml(label)}</td>
         <td style="${VALUE_CELL}${C.ink};border-bottom:1px solid ${C.line};">${escapeHtml(value)}</td>
        </tr>`,
         )
@@ -269,34 +272,35 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
       }
       const score = scoreGuideLead(lead);
       if (lead.guideType === "buying") {
+        const book = GUIDE_BOOKS.buying;
         const next =
           score === "HOT"
-            ? "Finance sorted and buying inside three months puts you in the strongest position a buyer can hold. Tonight, read chapter 6, it takes ten minutes and decodes every script the selling side will run on you. Then put your shortlist together: the suburb quiz takes two minutes and scores six suburbs against what you actually care about."
+            ? `With finance sorted and a purchase planned within three months, decisions can come quickly. Start with ${chapterRef("buying", 6)}: it explains price guides, open homes, auctions and off-market sales, and how to respond to each. Then read ${chapterRef("buying", 7)}, on negotiating, protective conditions and buying at auction. If you’re still settling on an area, the suburb quiz takes two minutes and scores six suburbs against what you care about.`
             : score === "WARM"
-              ? "You're close enough that finance is the next move. Chapter 2 shows you what you can actually spend (including the buffer lenders test you against), and chapter 8 covers pre-approval without the traps. Get those two right and every inspection after that means something."
-              : "Buying well starts long before the inspections. Chapter 1 works out which buyer you are and the playbook that follows. Keep the guide handy, the numbers will still be true when you're ready.";
+              ? `You’re close enough that finance is the next step. ${chapterRef("buying", 2, "Chapter")}, covers borrowing power, deposits and the buffer lenders test you against, and ${chapterRef("buying", 8)}, explains pre-approval and what happens if a valuation falls short. With those two settled, each inspection is easier to judge.`
+              : `Buying well starts long before the inspections. ${chapterRef("buying", 1, "Chapter")}, explains what changes for a first home, a next home, an investment or a downsize. Keep the guide handy for when you’re ready.`;
         return {
-          subject: "Your buying guide + what you can really spend",
-          intro: `${hi} your copy is ready, all ten chapters, matched to your situation.`,
+          subject: `Your copy of ${book.name}, and where to start`,
+          intro: `${hi} here’s your copy of ${book.name}, all ten chapters.`,
           next,
           cta: { label: "Download your guide (PDF)", url: BUYING_GUIDE_PDF_URL },
-          preheader: "Ten chapters before you sign anything. Start with what you can actually spend.",
+          preheader: "Ten chapters, from your first budget to the day you get the keys. Start with what you can spend.",
         };
       }
-      // Score-aware momentum copy. The job of this paragraph is to give
-      // the reader ONE thing to do tonight and one reason to believe it
-      // is worth money, in their situation, not generic reassurance.
+      // Score-aware copy: one or two chapters to read first, chosen for
+      // where the reader is, named by their titles in GUIDE_BOOKS.
+      const book = GUIDE_BOOKS.selling;
       const next =
         score === "HOT"
-          ? "You said you're selling within three months, so pricing, presentation and agent choice are all still open. Start with chapter 3: it shows where your selling costs go. Then read chapter 5 before you meet agents, so you can test every appraisal. If you'd like one appraisal arranged, the button below explains how our introductions work. Nothing leaves our hands unless you ask."
+          ? `You said you’re selling within three months, so pricing, preparation and your choice of agent are all still open. Start with ${chapterRef("selling", 3)}, to see where the money goes. Read ${chapterRef("selling", 5)}, before you meet agents, so you know what to ask about each appraisal and proposal. If you’d like one appraisal arranged, the button below explains how our introductions work. Nothing is passed on unless you ask.`
           : score === "WARM"
-            ? "Three to six months out gives you time to prepare properly: fix the right things, know your costs, and meet more than one agent. Start with chapter 3 (the costs) and chapter 5 (the questions to ask agents). When you're closer, you can ask us to arrange an appraisal."
+            ? `Three to six months out gives you time to prepare properly: decide what’s worth fixing, know your costs and meet more than one agent. Start with ${chapterRef("selling", 3)}, and ${chapterRef("selling", 5)}. When you’re closer, you can ask us to arrange an appraisal.`
             : score === "DO-NOT-CONTACT"
-              ? "Since you're already listed, skip straight to chapter 7 (marketing that sells) and chapter 8 (offers and negotiation), the two chapters that matter mid-campaign. And as promised, your details stay with us and go to no one."
-              : "No deadline means you get to do this the smart way. Chapter 1 shows you how to read your market and pick your moment. Keep the guide handy. The numbers in it will still be true when you're ready.";
+              ? `Since you’re already listed, ${chapterRef("selling", 7)}, and ${chapterRef("selling", 8)}, are the two that matter most while your property is on the market. As promised, your details stay with us and go to no one.`
+              : `With no deadline, you have time to do this well. Start with ${chapterRef("selling", 1)}, which covers your reasons, market conditions, the season, and whether to sell or buy first. Keep the guide handy for when you’re ready.`;
       return {
-        subject: "Your selling guide + the $20,000 question",
-        intro: `${hi} your copy is ready, all ten chapters, personalised pointers included.`,
+        subject: `Your copy of ${book.name}, and where to start`,
+        intro: `${hi} here’s your copy of ${book.name}, all ten chapters, with a few pointers on where to start.`,
         next,
         cta: { label: "Download your guide (PDF)", url: GUIDE_PDF_URL },
         preheader: "Ten chapters, in order. Start with the costs and the questions to ask agents.",
@@ -366,121 +370,109 @@ export function confirmationCopy(lead: LeadEmailData): { subject: string; intro:
   }
 }
 
-// Value strip shown only in the guide-delivery email. Each line pairs a
-// chapter with the money it touches, using only numbers that appear in
-// the guide itself. This is the part of the email that earns the open.
-function guideHighlightsHtml(): string {
-  const C = EMAIL_COLORS;
-  const items = [
-    ["Ch 5", "The $20,000 question", "The 10 questions that expose an average agent before you sign anything"],
-    ["Ch 3", "Where the 3 to 5% goes", "Every selling cost, state by state, and which ones are negotiable"],
-    ["Ch 4", "The 3 to 10x rule", "The cheap preparation that outperforms every renovation at sale time"],
-  ]
-    .map(
-      ([n, headline, t]) =>
-        `<tr>
-          <td style="padding:10px 12px 10px 16px;white-space:nowrap;vertical-align:top;color:${C.terracotta};font-size:15px;">${n}</td>
-          <td style="padding:10px 16px 10px 0;border-bottom:1px solid ${C.line};">
-            <p style="margin:0;font-size:13.5px;font-weight:600;color:${C.ink};">${headline}</p>
-            <p style="margin:2px 0 0;font-size:12.5px;line-height:1.5;color:${C.inkMuted};">${t}</p>
-          </td>
-        </tr>`,
-    )
-    .join("");
-  return `
-      <div style="margin:0 0 18px;background:${C.cream};border:1px solid ${C.line};border-radius:10px;overflow:hidden;">
-        <p style="margin:0;padding:12px 16px 2px;font-size:13px;font-weight:700;color:${C.terracottaDark};">Where the money is</p>
-        <table style="width:100%;border-collapse:collapse;margin-bottom:8px;">${items}</table>
-      </div>`;
+// "Chapter 3, “The real cost of selling”": a chapter named by its title in
+// GUIDE_BOOKS, so the emails never drift from the guides.
+function chapterRef(id: GuideBookId, n: number, word: "chapter" | "Chapter" = "chapter"): string {
+  return `${word} ${n}, “${GUIDE_BOOKS[id].chapters[n - 1].title}”`;
 }
 
-// Buyer-side value strip, money-led like the seller version.
-function buyingHighlightsHtml(): string {
+// The guide-delivery email's "where to start" strip: three chapters, each
+// with its title and subtitle from GUIDE_BOOKS and a link to its page.
+const START_CHAPTERS: Record<GuideBookId, readonly number[]> = {
+  selling: [3, 4, 5],
+  buying: [2, 3, 6],
+};
+
+function guideHighlightsHtml(id: GuideBookId): string {
   const C = EMAIL_COLORS;
-  const items = [
-    ["Ch 2", "What you can really spend", "Borrowing power, the lender buffer, deposits and the true upfront costs"],
-    ["Ch 3", "Schemes worth tens of thousands", "First home buyer schemes and concessions, state by state, 2026 settings"],
-    ["Ch 6", "How the selling side plays you", "Underquoting, price guides and auction psychology, decoded"],
-  ]
-    .map(
-      ([n, headline, t]) =>
-        `<tr>
-          <td style="padding:10px 12px 10px 16px;white-space:nowrap;vertical-align:top;color:${C.terracotta};font-size:15px;">${n}</td>
-          <td style="padding:10px 16px 10px 0;border-bottom:1px solid ${C.line};">
-            <p style="margin:0;font-size:13.5px;font-weight:600;color:${C.ink};">${headline}</p>
-            <p style="margin:2px 0 0;font-size:12.5px;line-height:1.5;color:${C.inkMuted};">${t}</p>
-          </td>
-        </tr>`,
-    )
+  const book = GUIDE_BOOKS[id];
+  const items = START_CHAPTERS[id]
+    .map((n, i, all) => {
+      const ch = book.chapters[n - 1];
+      const rule = i < all.length - 1 ? `border-bottom:1px solid ${C.line};` : "";
+      return `<tr><td style="padding:12px 18px;${rule}">
+            ${emailLabel(`Chapter ${n}`, "0 0 3px")}
+            <p style="margin:0;font-size:15px;line-height:1.4;font-weight:600;"><a href="${escapeHtml(`${SITE}${chapterHref(id, n)}`)}" style="color:${C.ink};text-decoration:none;">${escapeHtml(ch.title)}</a></p>
+            <p style="margin:3px 0 0;font-size:13px;line-height:1.5;color:${C.inkMuted};">${escapeHtml(ch.sub)}</p>
+          </td></tr>`;
+    })
     .join("");
   return `
-      <div style="margin:0 0 18px;background:${C.cream};border:1px solid ${C.line};border-radius:10px;overflow:hidden;">
-        <p style="margin:0;padding:12px 16px 2px;font-size:13px;font-weight:700;color:${C.terracottaDark};">Where the money is</p>
-        <table style="width:100%;border-collapse:collapse;margin-bottom:8px;">${items}</table>
-      </div>`;
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 20px;background:${C.sand};border:1px solid ${C.line};border-radius:4px;">
+        <tr><td style="padding:16px 18px 4px;">${emailHeading("Where to start", { size: 19, margin: "0", tag: "h3" })}</td></tr>
+        ${items}
+      </table>`;
 }
 
 export function buildConfirmationHtml(lead: LeadEmailData): string {
   const C = EMAIL_COLORS;
-  const { intro, next, cta, preheader } = confirmationCopy(lead);
+  const { subject, intro, next, cta, preheader } = confirmationCopy(lead);
   const introHtml = escapeHtml(intro);
   const nextHtml = escapeHtml(next);
 
-  // Guide delivery gets the full treatment: cover-art hero, centred
-  // download button, chapter on-ramp, score-aware next step. Everything
-  // else, a guide call request included, keeps the quiet single-column note.
+  // Guide delivery gets the full treatment: the cover on a sand panel, the
+  // download button, where to start, and a score-aware next step.
+  // Everything else, a guide call request included, keeps the quiet
+  // single-column note.
   if (lead.type === "guide-download" && !lead.callKind) {
     const score = scoreGuideLead(lead);
     const buying = lead.guideType === "buying";
-    // The dark panel (Oct 2026): a guide is a learning request, so the email
-    // teaches and then points, quietly, to personal help for anyone who wants
-    // it later. Sellers who aren't listed see how an appraisal introduction
-    // works; buyers see what a buyer's agent does. Listed sellers were
-    // promised no agent contact, so they get neither.
-    const panel = (eyebrow: string, text: string, button: string) => `
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:${C.eucalyptus};border-radius:10px;">
+    const book = GUIDE_BOOKS[buying ? "buying" : "selling"];
+    // The sand panels (Oct 2026): a guide is a learning request, so the
+    // email teaches and then points, quietly, to personal help for anyone
+    // who wants it later. Sellers who aren't listed see how an appraisal
+    // introduction works; buyers see what a buyer's agent does. Listed
+    // sellers were promised no agent contact, so they get neither. The
+    // download stays the one solid button; the panels use the outline.
+    const panel = (heading: string, text: string, button: string) => `
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0 0;background:${C.sand};border:1px solid ${C.line};border-radius:4px;">
         <tr><td style="padding:20px 22px;">
-          <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:${C.apricot};">${eyebrow}</p>
+          ${emailHeading(heading, { size: 19, margin: "0 0 8px", tag: "h3" })}
           ${text}
           ${button}
         </td></tr>
       </table>`;
+    const panelText = (html: string) => `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:${C.ink};">${html}</p>`;
     const appraisalPanel = buying
       ? (score === "HOT" || score === "WARM"
-        ? panel("Know your number", `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">Every good buying decision starts with one number: what a lender will actually approve, after the serviceability buffer. The borrowing power calculator runs it in 60 seconds, no sign-up.</p>`, emailButton("Run my borrowing power", BORROWING_URL))
+        ? panel("Know your budget", panelText("Every buying decision starts with one number: what a lender will approve after the serviceability buffer. The borrowing power calculator runs it in 60 seconds, no sign-up."), emailButtonOutline("Run my borrowing power", BORROWING_URL))
         : "") +
         panel(
-          "Thinking about a buyer's agent?",
-          `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">A buyer's agent works for you, not the seller, and charges you a fee for it. Most people buy without one. If you're weighing it up, here's what they do, what they cost and when they're worth it.</p>`,
-          emailButton("What a buyer's agent does", BUYERS_AGENT_URL),
+          "Thinking about a buyer’s agent?",
+          panelText("A buyer’s agent works for you, not the seller, and charges you a fee for it. Most people buy without one. If you’re weighing it up, here’s what they do, what they cost and when they’re worth it."),
+          emailButtonOutline("What a buyer’s agent does", BUYERS_AGENT_URL),
         )
       : score !== "DO-NOT-CONTACT"
-        ? panel("Put a number on it", `<p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:rgba(254,251,247,0.8);">Medians tell you about the suburb. An appraisal tells you about <em style="color:#ffffff;font-style:normal;font-weight:600;">your place</em>: a defensible price range, the comparable sales behind it, and what to fix first. When you're ready for one, we can introduce one participating local agent for a free appraisal. Only if you ask, with no obligation to list.</p>`, emailButton("How introductions work", APPRAISAL_URL))
+        ? panel("Put a number on it", panelText(`Medians tell you about the suburb. An appraisal tells you about <em style="font-style:italic;">your place</em>: a price range backed by comparable sales, and what to fix first. When you’re ready for one, we can introduce one participating local agent for a free appraisal. Only if you ask, with no obligation to list.`), emailButtonOutline("How introductions work", APPRAISAL_URL))
         : "";
 
     const psLine =
       score === "HOT" && !buying
-        ? `<p style="margin:18px 0 0;font-size:13.5px;line-height:1.6;color:${C.inkMuted};"><strong style="color:${C.ink};">P.S.</strong> Selling soon and stuck on something? Reply with your question and a person will answer it.</p>`
+        ? `<p style="margin:18px 0 0;font-size:14px;line-height:1.6;color:${C.inkMuted};"><strong style="color:${C.ink};">P.S.</strong> Selling soon and stuck on something? Reply with your question and a person will answer it.</p>`
         : score === "HOT" && buying
-          ? `<p style="margin:18px 0 0;font-size:13.5px;line-height:1.6;color:${C.inkMuted};"><strong style="color:${C.ink};">P.S.</strong> Want a second pair of eyes on a property you're circling? Reply with the listing link and we'll tell you what we'd check first.</p>`
+          ? `<p style="margin:18px 0 0;font-size:14px;line-height:1.6;color:${C.inkMuted};"><strong style="color:${C.ink};">P.S.</strong> Looking at a particular property? Reply with the listing link and we’ll tell you what we’d check first.</p>`
           : "";
 
     return emailLayout({
       preheader,
       body: `
-      ${emailCoverHero(buying ? BUYING_GUIDE_COVER_URL : GUIDE_COVER_URL, `Your guide is ready, ${escapeHtml(visitorGreetingName(lead.firstName))}.`, buying ? "Ten chapters on buying well, from budget to settlement. Free, and yours to keep." : "Ten chapters on selling well, from costs to settlement. Free, and yours to keep.")}
+      ${emailCoverHero(
+        { url: buying ? BUYING_GUIDE_COVER_URL : GUIDE_COVER_URL, alt: book.title, label: book.name },
+        `Your guide is ready, ${escapeHtml(visitorGreetingName(lead.firstName))}.`,
+        escapeHtml(`${subtitleLine(book)} Ten chapters, free and yours to keep.`),
+      )}
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         <tr><td align="center" style="padding:26px 28px 6px;">
           ${emailButton("Download your guide (PDF)", buying ? BUYING_GUIDE_PDF_URL : GUIDE_PDF_URL)}
-          <p style="margin:10px 0 0;font-size:12px;color:${C.inkSubtle};">Instant download · Works on any device · No card, no catch</p>
+          <p style="margin:10px 0 0;font-size:12px;color:${C.inkMuted};">Free PDF · Works on any device · Yours to keep</p>
         </td></tr>
         <tr><td style="padding:18px 28px 26px;">
-          ${buying ? buyingHighlightsHtml() : guideHighlightsHtml()}
-          <p style="margin:0;font-size:14px;line-height:1.65;color:${C.ink};">${nextHtml}</p>
+          ${guideHighlightsHtml(book.id)}
+          <p style="margin:0;font-size:15px;line-height:1.65;color:${C.ink};">${nextHtml}</p>
           ${appraisalPanel}
           ${psLine}
           <p style="margin:22px 0 0;font-size:14px;line-height:1.5;color:${C.inkMuted};">Happy reading,<br/><span style="font-size:15px;color:${C.ink};">The team at Your Property Guide</span></p>
-          <p style="margin:18px 0 0;font-size:12px;color:${C.inkSubtle};line-height:1.55;">If you didn't request this guide, you can ignore this email.</p>
+          <p style="margin:18px 0 0;font-size:12px;color:${C.inkMuted};line-height:1.55;">If you didn’t request this guide, you can ignore this email.</p>
         </td></tr>
       </table>`,
     });
@@ -491,10 +483,11 @@ export function buildConfirmationHtml(lead: LeadEmailData): string {
     preheader,
     body: `
     <div style="padding:24px 28px;">
+      ${emailHeading(escapeHtml(subject), { size: 22, margin: "0 0 14px" })}
       <p style="margin:0 0 14px;font-size:15px;line-height:1.55;color:${C.ink};">${introHtml}</p>
       ${ctaHtml}
       <p style="margin:0 0 18px;font-size:15px;line-height:1.55;color:${C.ink};">${nextHtml}</p>
-      <p style="margin:0 0 6px;font-size:13px;color:${C.inkSubtle};line-height:1.55;">If you didn't submit this enquiry, you can ignore this email.</p>
+      <p style="margin:0 0 6px;font-size:13px;color:${C.inkMuted};line-height:1.55;">If you didn't submit this enquiry, you can ignore this email.</p>
     </div>`,
   });
 }
@@ -516,7 +509,7 @@ export function buildFailureAlertHtml(leadId: string, lead: LeadEmailData, mailE
         <li><strong>Lead ID:</strong> ${escapeHtml(leadId)}</li>
         <li><strong>Type:</strong> ${labelFor(lead.type)}</li>
         <li><strong>Name:</strong> ${fullName}</li>
-        <li><strong>Email:</strong> <a href="mailto:${email}" style="color:${C.terracottaDark};">${email}</a></li>
+        <li><strong>Email:</strong> <a href="mailto:${email}" style="color:${C.copper};">${email}</a></li>
         ${lead.phone ? `<li><strong>Phone:</strong> ${escapeHtml(lead.phone)}</li>` : ""}
         ${lead.suburb ? `<li><strong>Suburb:</strong> ${escapeHtml(lead.suburb)}</li>` : ""}
         ${lead.source ? `<li><strong>Source:</strong> ${escapeHtml(lead.source)}</li>` : ""}
@@ -548,9 +541,9 @@ export function buildPhoneAddedHtml(
     <div style="padding:18px 24px;font-size:14px;color:${C.ink};line-height:1.55;">
       <p style="margin:0 0 12px;">An existing lead just added their mobile. They want the call. Worth moving to the top of the follow-up list.</p>
       <ul style="margin:0;padding-left:18px;">
-        <li><strong>Phone:</strong> <a href="tel:${safePhone}" style="color:${C.terracottaDark};">${safePhone}</a></li>
+        <li><strong>Phone:</strong> <a href="tel:${safePhone}" style="color:${C.copper};">${safePhone}</a></li>
         <li><strong>Name:</strong> ${fullName}</li>
-        <li><strong>Email:</strong> <a href="mailto:${email}" style="color:${C.terracottaDark};">${email}</a></li>
+        <li><strong>Email:</strong> <a href="mailto:${email}" style="color:${C.copper};">${email}</a></li>
         <li><strong>Original lead:</strong> ${labelFor(lead.type)}</li>
         ${lead.suburb ? `<li><strong>Suburb:</strong> ${escapeHtml(lead.suburb)}</li>` : ""}
         ${lead.source ? `<li><strong>Source:</strong> ${escapeHtml(lead.source)}</li>` : ""}
@@ -568,7 +561,7 @@ export function buildConfirmationText(lead: LeadEmailData): string {
     const score = scoreGuideLead(lead);
     if (buying) {
       if (score === "HOT" || score === "WARM") extra.push("Run my borrowing power\n" + BORROWING_URL);
-      extra.push("What a buyer's agent does\n" + BUYERS_AGENT_URL);
+      extra.push("What a buyer’s agent does\n" + BUYERS_AGENT_URL);
     } else if (score !== "DO-NOT-CONTACT") {
       extra.push("How introductions work\n" + APPRAISAL_URL);
     }

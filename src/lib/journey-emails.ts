@@ -2,7 +2,7 @@
 // notification and the person's confirmation, both written from the real
 // outcome) and next-step plans. Pure string builders, unit-tested.
 
-import { EMAIL_COLORS, emailButton, emailButtonOutline, emailLayout } from "@/lib/email-theme";
+import { EMAIL_COLORS, EMAIL_FONTS, emailButton, emailButtonOutline, emailHeading, emailLabel, emailLayout } from "@/lib/email-theme";
 import { escapeHtml, textBlocks, visitorGreeting, visitorSubjectName } from "@/lib/email-format";
 import { SITE_URL } from "@/lib/constants/seo";
 import {
@@ -29,7 +29,7 @@ function rowsTable(rows: Array<[string, string]>): string {
   return `<table style="width:100%;border-collapse:collapse;font-size:14px;">${rows
     .map(
       ([label, value]) => `<tr>
-        <td style="padding:7px 12px 7px 24px;font-weight:600;vertical-align:top;width:140px;max-width:140px;color:${C.inkMuted};background:${C.cream};border-bottom:1px solid ${C.line};">${esc(label)}</td>
+        <td style="padding:7px 12px 7px 24px;font-weight:600;vertical-align:top;width:140px;max-width:140px;color:${C.inkMuted};background:${C.sand};border-bottom:1px solid ${C.line};">${esc(label)}</td>
         <td style="padding:7px 24px 7px 12px;color:${C.ink};border-bottom:1px solid ${C.line};overflow-wrap:anywhere;word-break:break-word;">${esc(value)}</td>
       </tr>`,
     )
@@ -110,7 +110,7 @@ export function buildIntroTeamEmailHtml(
   const outcomeBlocks = outcomes
     .map(
       (o) => `
-      <p style="margin:22px 24px 8px;font-size:14px;font-weight:700;color:${C.ink};">${esc(SERVICES[o.service].label)}: ${esc(STATUS_LABELS[o.status])}</p>
+      <p style="margin:22px 24px 8px;font-size:17px;font-weight:400;color:${C.ink};font-family:${EMAIL_FONTS.serif};">${esc(SERVICES[o.service].label)}: ${esc(STATUS_LABELS[o.status])}</p>
       ${rowsTable([
         ["Lead id", o.leadId],
         ["Decision", o.reason ?? (o.status === "sent" ? "Delivered to the partner channel" : "-")],
@@ -128,7 +128,7 @@ export function buildIntroTeamEmailHtml(
     )
     .join("");
   const attribution = attributionRows.length
-    ? `<p style="margin:24px 24px 8px;font-size:13px;color:${C.inkMuted};">How they found us</p>${rowsTable(attributionRows)}`
+    ? `${emailLabel("How they found us", "24px 24px 8px")}${rowsTable(attributionRows)}`
     : "";
   return emailLayout({
     title: "Introduction request",
@@ -153,10 +153,10 @@ export function buildIntroConfirmationHtml(
       const copy = outcomeCopy({ service: o.service, status: o.status, reason: o.reason, areaLabel: ctx.suburbLabel, contact: person.preferredContact });
       return `
       <tr><td style="padding:0 28px 18px;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${C.line};border-radius:8px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid ${C.line};border-radius:4px;">
           <tr><td style="padding:16px 18px;">
-            <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:${C.inkMuted};">${esc(SERVICES[o.service].label)}</p>
-            <p style="margin:0 0 8px;font-size:17px;font-weight:700;color:${C.ink};">${esc(copy.headline)}</p>
+            ${emailLabel(esc(SERVICES[o.service].label), "0 0 6px")}
+            ${emailHeading(esc(copy.headline), { size: 19, margin: "0 0 8px", tag: "h3" })}
             <p style="margin:0 0 8px;font-size:14px;line-height:1.6;color:${C.ink};">${esc(copy.body)}</p>
             <p style="margin:0;font-size:13px;color:${C.inkMuted};"><strong style="color:${C.ink};">Who will contact you:</strong> ${esc(copy.who)}</p>
           </td></tr>
@@ -171,15 +171,16 @@ export function buildIntroConfirmationHtml(
     body: `
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
       <tr><td style="padding:24px 28px 14px;">
+        ${emailHeading(esc(introConfirmationSubject(outcomes)), { size: 22, margin: "0 0 12px" })}
         <p style="margin:0;font-size:15px;line-height:1.6;color:${C.ink};">${esc(visitorGreeting(person.firstName))} thanks for asking. Here’s exactly what happens with your request.</p>
       </td></tr>
       ${blocks}
       <tr><td style="padding:4px 28px 0;">
         ${anySent ? `<p style="margin:0 0 10px;font-size:14px;line-height:1.6;color:${C.ink};"><strong>Before you meet anyone:</strong> ${esc(FEE_DISTINCTION)}</p>` : ""}
         <p style="margin:0 0 10px;font-size:13px;line-height:1.6;color:${C.inkMuted};">${esc(FEE_DISCLOSURE)}</p>
-        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${C.ink};">What we don’t do</p>
+        <p style="margin:0 0 6px;font-size:13px;font-weight:600;color:${C.ink};">What we don’t do</p>
         <ul style="margin:0 0 16px;padding-left:18px;font-size:13px;line-height:1.6;color:${C.inkMuted};">${WHAT_WE_DONT_DO.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>
-        ${feedback ? `<p style="margin:0 0 16px;font-size:13px;line-height:1.6;color:${C.inkMuted};">Tell us any time whether the introduction was useful: <a href="${esc(abs(`/feedback/${feedback.feedbackToken}`))}" style="color:${C.terracottaDark};">how did it go?</a></p>` : ""}
+        ${feedback ? `<p style="margin:0 0 16px;font-size:13px;line-height:1.6;color:${C.inkMuted};">Tell us any time whether the introduction was useful: <a href="${esc(abs(`/feedback/${feedback.feedbackToken}`))}" style="color:${C.copper};">how did it go?</a></p>` : ""}
         <p style="margin:0 0 6px;">${emailButtonOutline("Your free guides and tools", abs("/guides"))}</p>
         <p style="margin:18px 0 24px;font-size:14px;line-height:1.5;color:${C.inkMuted};">Questions? Reply to this email and a person will answer.<br/><span style="color:${C.ink};">The team at Your Property Guide</span></p>
       </td></tr>
@@ -207,31 +208,31 @@ export function buildPlanEmailHtml(input: {
     .map(
       (s, i) => `
       <tr><td style="padding:0 28px 14px;">
-        <p style="margin:0 0 4px;font-size:15px;font-weight:700;color:${C.ink};">${i + 1}. ${esc(s.title)}</p>
-        <p style="margin:0;font-size:14px;line-height:1.6;color:${C.ink};">${esc(s.body)}${s.link ? ` <a href="${esc(abs(s.link.href))}" style="color:${C.terracottaDark};">${esc(s.link.label)}</a>` : ""}</p>
+        ${emailHeading(`${i + 1}. ${esc(s.title)}`, { size: 17, margin: "0 0 4px", tag: "h3" })}
+        <p style="margin:0;font-size:14px;line-height:1.6;color:${C.ink};">${esc(s.body)}${s.link ? ` <a href="${esc(abs(s.link.href))}" style="color:${C.copper};">${esc(s.link.label)}</a>` : ""}</p>
       </td></tr>`,
     )
     .join("");
   const links = (title: string, items: { label: string; href: string; note: string }[]) =>
     items.length
-      ? `<tr><td style="padding:8px 28px 4px;"><p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${C.inkMuted};">${esc(title)}</p>
+      ? `<tr><td style="padding:8px 28px 4px;">${emailLabel(esc(title))}
         <ul style="margin:0 0 8px;padding-left:18px;font-size:14px;line-height:1.6;color:${C.ink};">${items
-          .map((l) => `<li><a href="${esc(abs(l.href))}" style="color:${C.terracottaDark};">${esc(l.label)}</a>: ${esc(l.note)}</li>`)
+          .map((l) => `<li><a href="${esc(abs(l.href))}" style="color:${C.copper};">${esc(l.label)}</a>: ${esc(l.note)}</li>`)
           .join("")}</ul></td></tr>`
       : "";
-  const checklist = `<tr><td style="padding:8px 28px 4px;"><p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${C.inkMuted};">${esc(plan.checklist.title)}</p>${plan.checklist.groups
+  const checklist = `<tr><td style="padding:8px 28px 4px;">${emailLabel(esc(plan.checklist.title))}${plan.checklist.groups
     .map(
-      (g) => `<p style="margin:8px 0 4px;font-size:14px;font-weight:700;color:${C.ink};">${esc(g.heading)}</p>
+      (g) => `<p style="margin:8px 0 4px;font-size:14px;font-weight:600;color:${C.ink};">${esc(g.heading)}</p>
       <ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.6;color:${C.ink};">${g.items.map((it) => `<li>${esc(it)}</li>`).join("")}</ul>`,
     )
     .join("")}</td></tr>`;
-  const questions = `<tr><td style="padding:12px 28px 4px;"><p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${C.inkMuted};">Questions to settle</p>
+  const questions = `<tr><td style="padding:12px 28px 4px;">${emailLabel("Questions to settle")}
     <ul style="margin:0;padding-left:18px;font-size:14px;line-height:1.6;color:${C.ink};">${plan.questions.map((q) => `<li>${esc(q)}</li>`).join("")}</ul></td></tr>`;
   const help =
     plan.help.level !== "none" && plan.help.cta
       ? `<tr><td style="padding:16px 28px 4px;">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.cream};border-radius:8px;"><tr><td style="padding:16px 18px;">
-          <p style="margin:0 0 4px;font-size:15px;font-weight:700;color:${C.ink};">${esc(plan.help.headline)}</p>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.sand};border:1px solid ${C.line};border-radius:4px;"><tr><td style="padding:16px 18px;">
+          ${emailHeading(esc(plan.help.headline), { size: 18, margin: "0 0 6px", tag: "h3" })}
           <p style="margin:0 0 12px;font-size:14px;line-height:1.6;color:${C.ink};">${esc(plan.help.body)}</p>
           ${emailButtonOutline(plan.help.cta.label, abs(plan.help.cta.href))}
         </td></tr></table></td></tr>`
@@ -245,11 +246,10 @@ export function buildPlanEmailHtml(input: {
     body: `
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
       <tr><td style="padding:24px 28px 8px;">
-        <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:${C.inkMuted};">Your next-step plan</p>
-        <h2 style="margin:0 0 10px;font-size:22px;line-height:1.25;color:${C.ink};">${esc(plan.title)}</h2>
+        ${emailHeading(esc(plan.title), { size: 24, margin: "0 0 12px" })}
         <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:${C.ink};">${esc(visitorGreeting(input.firstName))} here’s the plan you made. ${esc(plan.intro)}</p>
         <p style="margin:0 0 18px;">${emailButton("Open your plan", input.planUrl)}</p>
-        <p style="margin:0 0 8px;font-size:13px;font-weight:700;color:${C.inkMuted};">Your next three steps</p>
+        ${emailLabel("Your next three steps", "0 0 10px")}
       </td></tr>
       ${steps}
       ${links("Tools", plan.tools)}
@@ -284,6 +284,7 @@ export function buildCheckInEmailHtml(input: { firstName: string; service: Intro
       preheader: `Two minutes to tell us whether the ${pro} we introduced was useful.`,
       body: `
       <div style="padding:24px 28px;">
+        ${emailHeading(esc(subject), { size: 22, margin: "0 0 14px" })}
         <p style="margin:0 0 12px;font-size:15px;line-height:1.6;color:${C.ink};">${esc(visitorGreeting(input.firstName))}</p>
         <p style="margin:0 0 12px;font-size:15px;line-height:1.6;color:${C.ink};">A little while ago you asked us to introduce you to a ${esc(pro)}. Did they get in touch, and was it useful? Your answer decides which agents keep receiving introductions from us.</p>
         <p style="margin:0 0 20px;">${emailButton("Tell us how it went", input.feedbackUrl)}</p>

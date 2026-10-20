@@ -10,7 +10,7 @@ export const DEFAULT_OG_IMAGES = [
     url: "/og-image.jpg",
     width: 1200,
     height: 630,
-    alt: `${SITE_NAME}: it’s the campaign that wins. Not the market.`,
+    alt: `${SITE_NAME}: know what matters before you buy or sell.`,
   },
 ];
 

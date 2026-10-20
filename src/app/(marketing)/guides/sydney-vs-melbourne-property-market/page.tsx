@@ -245,7 +245,7 @@ export default function SydneyVsMelbourneGuide() {
 
       <GuideNewsletterCallout
         title="Get the next capital city read straight to your inbox"
-        subtitle="We'll send a market update each quarter, Sydney, Melbourne, Brisbane and beyond. One email, no spam."
+        subtitle="Occasional market updates for Sydney, Melbourne, Brisbane and beyond. No spam."
       />
 
       <h2 id="next-steps">Next steps</h2>

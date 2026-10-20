@@ -10,30 +10,30 @@ export function ChapterContent({ chapter, print = false }: { chapter: ChapterEnt
   const { guide, Body, cta } = chapter;
   return (
     <>
-      <aside className="tone-dark mb-10 rounded-3xl bg-eucalyptus p-6 break-inside-avoid sm:p-8" aria-label={CALLOUT_TITLE[guide]}>
-        <div className="text-[13px] font-semibold uppercase tracking-[0.18em] text-primary">{CALLOUT_TITLE[guide]}</div>
-        <div className="mt-3 font-display text-[21px] leading-snug text-ink sm:text-[23px]">{chapter.callout}</div>
+      <aside className="mb-10 border-l border-accent bg-surface-warm px-6 py-6 break-inside-avoid sm:px-8 sm:py-7" aria-label={CALLOUT_TITLE[guide]}>
+        <div className="text-[12px] font-medium uppercase tracking-[0.1em] text-primary">{CALLOUT_TITLE[guide]}</div>
+        <div className="mt-3 font-display text-[21px] leading-[1.45] tracking-[-0.015em] text-ink sm:text-[23px]">{chapter.callout}</div>
       </aside>
 
       <div className="prose-ypg max-w-none">
         <Body />
       </div>
 
-      <section aria-label={CHECKLIST_TITLE[guide]} className="mt-12 rounded-3xl border border-line bg-white p-6 break-inside-avoid sm:p-8">
-        <h2 className="text-[26px] leading-tight text-ink sm:text-3xl">{CHECKLIST_TITLE[guide]}</h2>
-        <ul className="mt-5 space-y-3">
+      <section aria-label={CHECKLIST_TITLE[guide]} className="mt-12 border-t border-ink pt-6 break-inside-avoid">
+        <h2 className="text-[28px] leading-tight tracking-[-0.035em] text-ink sm:text-[30px]">{CHECKLIST_TITLE[guide]}</h2>
+        <ul className="mt-4">
           {chapter.checklist.map((item) => (
-            <li key={item} className="flex gap-3 text-[16px] leading-snug text-ink">
-              <span aria-hidden="true" className="mt-0.5 inline-block h-5 w-5 shrink-0 rounded-md border-2 border-line-strong" />
+            <li key={item} className="flex gap-3 border-b border-line py-3 text-[16px] leading-snug text-ink">
+              <span aria-hidden="true" className="mt-0.5 inline-block h-[18px] w-[18px] shrink-0 rounded-[2px] border border-line-strong bg-paper" />
               {item}
             </li>
           ))}
         </ul>
       </section>
 
-      <section aria-label="Next step" className="mt-8 rounded-3xl bg-sand p-6 break-inside-avoid sm:flex sm:items-center sm:justify-between sm:gap-8 sm:p-8">
+      <section aria-label="Next step" className="mt-10 bg-surface-warm p-6 break-inside-avoid sm:flex sm:items-center sm:justify-between sm:gap-8 sm:p-8">
         <div className="max-w-xl">
-          <h2 className="font-sans text-xl font-bold tracking-[-0.01em] text-ink">{cta.title}</h2>
+          <h2 className="text-[24px] leading-snug tracking-[-0.03em] text-ink">{cta.title}</h2>
           <div className="mt-2 text-[16px] leading-relaxed text-ink-muted">{cta.body}</div>
         </div>
         {print ? (
@@ -41,14 +41,14 @@ export function ChapterContent({ chapter, print = false }: { chapter: ChapterEnt
         ) : (
           <Link
             href={cta.href}
-            className="press mt-5 inline-flex h-12 shrink-0 items-center gap-2 rounded-full bg-cta px-6 text-base font-semibold text-white transition-colors hover:bg-cta-hover sm:mt-0"
+            className="mt-5 inline-flex min-h-12 shrink-0 items-center gap-3 rounded-[4px] bg-cta px-5 text-[15px] font-medium text-cta-ink transition-colors hover:bg-cta-hover sm:mt-0"
           >
             {cta.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         )}
       </section>
 
-      <div className="mt-8 text-sm leading-relaxed text-ink-muted">
+      <div className="mt-8 text-[13px] leading-relaxed text-ink-muted">
         {chapter.checked} {CHAPTER_DISCLAIMER}
       </div>
     </>

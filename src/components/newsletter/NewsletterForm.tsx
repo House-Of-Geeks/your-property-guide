@@ -46,9 +46,9 @@ export function NewsletterForm({ variant = "footer" }: NewsletterFormProps) {
   // doesn't accidentally re-submit.
   if (status === "ok") {
     return (
-      <div className={`flex items-center gap-2 ${isFooter ? "text-white/80" : "text-emerald-700"} font-sans text-sm`}>
+      <div className="flex items-center gap-2 text-success font-sans text-sm">
         <Check className="w-4 h-4 shrink-0" aria-hidden="true" />
-        Thanks, you&rsquo;re subscribed. We&rsquo;ll send the next quarterly update.
+        Thanks, you&rsquo;re subscribed.
       </div>
     );
   }
@@ -74,29 +74,25 @@ export function NewsletterForm({ variant = "footer" }: NewsletterFormProps) {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@email.com"
           className={
-            isFooter
-              ? "flex-1 min-w-0 rounded-lg bg-white/10 border border-white/15 px-3 py-2.5 text-sm font-sans text-white placeholder:text-white/40 focus:bg-white/15 focus:border-white/30 focus:outline-none focus:ring-1 focus:ring-white/30"
-              : "flex-1 min-w-0 rounded-lg border border-line bg-surface-raised px-3 py-2.5 text-sm font-sans text-ink placeholder:text-ink-subtle focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+            "flex-1 min-w-0 min-h-11 rounded-[4px] border border-line-strong bg-surface-raised px-3 py-2.5 text-[15px] font-sans text-ink placeholder:text-ink-subtle focus:border-ink focus:outline-none focus:ring-1 focus:ring-ink"
           }
         />
         <button
           type="submit"
           disabled={isPending || !email}
           className={
-            isFooter
-              ? "inline-flex items-center justify-center gap-1.5 rounded-lg bg-white text-ink px-4 py-2.5 text-sm font-sans font-medium hover:bg-white/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
-              : "inline-flex items-center justify-center gap-1.5 rounded-lg bg-cta text-white px-4 py-2.5 text-sm font-sans font-medium hover:bg-cta-hover transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+            "inline-flex min-h-11 items-center justify-center gap-2 rounded-[4px] bg-cta text-cta-ink px-4 py-2.5 text-[15px] font-sans font-medium hover:bg-cta-hover transition-colors disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
           }
         >
           {isPending ? "Subscribing…" : "Subscribe"}
           {!isPending && <ArrowRight className="w-4 h-4" />}
         </button>
       </div>
-      <p className={`text-xs font-sans ${isFooter ? "text-white/70" : "text-ink-subtle"}`}>
+      <p className="text-xs font-sans text-ink-subtle">
         {NEWSLETTER_CONSENT}
       </p>
       {status === "err" && errorMessage && (
-        <p className={`text-xs font-sans ${isFooter ? "text-red-300" : "text-red-700"}`}>
+        <p className="text-xs font-sans text-danger">
           {errorMessage}
         </p>
       )}

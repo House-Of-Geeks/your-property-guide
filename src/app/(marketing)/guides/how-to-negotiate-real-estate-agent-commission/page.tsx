@@ -110,7 +110,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Real Estate Agent Fees in Australia", href: "/guides/real-estate-agent-fees-australia", description: "The full breakdown of commission ranges, marketing costs and fixed-fee models." },
   { title: "How to Choose a Selling Agent",       href: "/guides/how-to-choose-a-selling-agent",    description: "Pick the right agent first, the interview questions and the appraisal-price trap." },
   { title: "The Cost of Selling a House",         href: "/guides/cost-of-selling-a-house-australia", description: "Every selling cost beyond commission, with a worked example." },
-  { title: "Free Selling Guide (PDF)",            href: "/selling-guide",                           description: "Fee benchmarks and the negotiation tactics that work, personalised to your suburb." },
+  { title: "Free Selling Guide (PDF)",            href: "/selling-guide",                           description: "Fee benchmarks and what to ask before you sign, personalised to your suburb." },
   { title: "Free Property Appraisal",             href: "/appraisal",                               description: "A no-commitment appraisal from a vetted local agent, your negotiation baseline." },
   { title: "Find an Expert",                      href: "/find-an-expert",                          description: "Get matched with one vetted selling agent who sells in your suburb. Free for you." },
 ];

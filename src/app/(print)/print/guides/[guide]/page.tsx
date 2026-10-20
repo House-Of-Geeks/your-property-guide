@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { BookCover } from "@/components/brand/BookCover";
 import { LogoMark } from "@/components/brand/Logo";
 import { ChapterContent } from "@/components/guide-book/ChapterContent";
 import { GuideIntroNote } from "@/components/guide-book/GuideIntroNote";
 import { chapterEntries } from "@/content/guides";
 import { GUIDE_BOOKS, type GuideBookId } from "@/lib/guide-books";
 
-// The whole guide on one printable page (15 Oct 2026): cover, contents,
+// The whole guide on one printable page (15 Oct 2026; the "Clear decisions"
+// matched covers and styling since 20 Oct 2026): cover, contents,
 // Andy's note, the ten chapters and the back page, from the same content as
 // the chapter pages. scripts/guides/render-pdfs.mjs prints it to
 // public/downloads (the PDFs) and screenshots the cover for
@@ -50,33 +52,15 @@ export default async function PrintGuidePage({
   const guide = g as GuideBookId;
   const book = GUIDE_BOOKS[guide];
   const chapters = chapterEntries(guide);
-  // Light copper reads on eucalyptus, not on the copper buying cover.
-  const accent = guide === "selling" ? "text-copper-light" : "text-white";
+  const other = GUIDE_BOOKS[guide === "selling" ? "buying" : "selling"];
 
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: PRINT_CSS }} />
 
-      {/* Cover: A4, edge to edge. */}
-      <section
-        id="cover"
-        className="relative flex h-[297mm] w-[210mm] flex-col overflow-hidden px-[18mm] pb-[18mm] pt-[20mm] text-white"
-        style={{ backgroundColor: book.colour }}
-      >
-        <div className="flex items-center gap-2.5">
-          <LogoMark className={`h-7 w-7 ${accent}`} />
-          <span className="font-display text-[20px]">Your Property Guide</span>
-        </div>
-        <div className={`mt-[52mm] h-[2px] w-20 ${guide === "selling" ? "bg-copper-light" : "bg-white"}`} />
-        <div className={`mt-8 text-[13px] font-semibold uppercase tracking-[0.22em] ${accent}`}>
-          {guide === "selling" ? "The $20 million playbook, for every home" : "The seller’s playbook, from your side of the table"}
-        </div>
-        <h1 className="mt-6 font-display text-[64px] font-normal leading-[1.02] tracking-[-0.02em]">{book.name}</h1>
-        <p className="mt-6 max-w-[140mm] text-[22px] leading-snug text-white/85">{book.subtitle}</p>
-        <div className="mt-auto flex items-end justify-between text-[13px] font-semibold text-white/80">
-          <span>2026 edition · 10 chapters · Free</span>
-          <span>yourpropertyguide.com.au</span>
-        </div>
+      {/* Cover: A4, edge to edge, the shared cover design (src/components/brand/BookCover.tsx). */}
+      <section id="cover" className="h-[297mm] w-[210mm] overflow-hidden">
+        <BookCover guide={guide} shape="a4" spine={false} eager unoptimized className="w-full" label={`Cover of ${book.title}`} />
       </section>
 
       {cover !== "1" && (
@@ -85,13 +69,17 @@ export default async function PrintGuidePage({
         <div className="px-[20mm] text-ink" style={{ zoom: 0.82, width: "calc(210mm / 0.82)" }}>
           {/* Contents */}
           <section className="print-page pt-2">
-            <h2 className="text-[40px] leading-tight text-ink">Contents</h2>
-            <ol className="mt-8 border-t border-line">
+            <div className="flex items-center gap-2.5 text-ink">
+              <LogoMark className="h-6 w-6 text-copper" />
+              <span className="font-display text-[18px] tracking-[-0.02em]">{`Your Property Guide · ${book.name}`}</span>
+            </div>
+            <h2 className="mt-10 text-[44px] leading-tight tracking-[-0.04em] text-ink">Contents</h2>
+            <ol className="mt-8 border-t border-ink">
               {chapters.map((c) => (
                 <li key={c.slug} className="flex gap-6 border-b border-line py-4">
-                  <span className="w-10 shrink-0 font-display text-[26px] leading-none text-accent-dark">{String(c.number).padStart(2, "0")}</span>
+                  <span className="w-10 shrink-0 font-display text-[28px] leading-none text-primary">{c.number}</span>
                   <span>
-                    <span className="block text-[17px] font-semibold text-ink">{c.title}</span>
+                    <span className="block font-display text-[21px] leading-snug tracking-[-0.025em] text-ink">{c.title}</span>
                     <span className="mt-1 block text-[14px] text-ink-muted">{c.sub}</span>
                   </span>
                 </li>
@@ -107,10 +95,10 @@ export default async function PrintGuidePage({
           {/* The chapters */}
           {chapters.map((c) => (
             <section key={c.slug} className="print-page print-chapter pt-2">
-              <div className="text-[13px] font-semibold uppercase tracking-[0.18em] text-primary">
+              <div className="text-[12px] font-medium uppercase tracking-[0.1em] text-primary">
                 {`Chapter ${c.number} · ${c.step}`}
               </div>
-              <h1 className="mt-3 text-[40px] leading-[1.06] tracking-[-0.02em] text-ink">{c.title}</h1>
+              <h1 className="mt-3 text-[44px] leading-[1.06] tracking-[-0.04em] text-ink">{c.title}</h1>
               <p className="mb-8 mt-4 text-[18px] leading-relaxed text-ink-muted">{c.standfirst}</p>
               <ChapterContent chapter={c} print />
               <div className="mt-6 text-[12px] text-ink-subtle">
@@ -121,20 +109,20 @@ export default async function PrintGuidePage({
 
           {/* Back page */}
           <section className="print-page pt-2">
-            <h2 className="text-[34px] leading-tight text-ink">About Your Property Guide</h2>
+            <h2 className="text-[38px] leading-tight tracking-[-0.04em] text-ink">About Your Property Guide</h2>
             <div className="mt-6 space-y-4 text-[16px] leading-relaxed text-ink">
               <div>
-                Your Property Guide gives every Australian the campaign that gets top dollar for a $20 million home, free: guides,
-                calculators and plans for selling, buying or both. When you ask, we introduce you to one agent for each job you ask us to
-                help with, checked by us. The agent pays us a flat fee for the introduction. We take no share of their commission, you pay
-                us nothing, and the fee doesn’t change what you pay the agent.
+                Your Property Guide helps everyday Australian homebuyers and sellers understand the costs and choices ahead: free guides,
+                calculators and next-step plans for buying, selling or both. When you ask, we can introduce a participating selling agent,
+                or a buyer’s agent where one is available, one for each service you request. The agent pays us a flat fee for the
+                introduction. We take no share of their commission, you pay us nothing, and the fee doesn’t change what you pay the agent.
               </div>
               <div>
-                You’ll find this guide online chapter by chapter, its companion guide to {guide === "selling" ? "buying" : "selling"}, and
-                every calculator at <strong>yourpropertyguide.com.au</strong>.
+                You’ll find this guide online chapter by chapter, its companion guide, {other.name}, and every calculator at{" "}
+                <strong>yourpropertyguide.com.au</strong>.
               </div>
             </div>
-            <div className="mt-12 text-[12px] font-semibold uppercase tracking-[0.16em] text-ink-muted">Disclaimer</div>
+            <div className="mt-12 text-[12px] font-medium uppercase tracking-[0.1em] text-ink-muted">Disclaimer</div>
             <div className="mt-2 text-[12px] leading-relaxed text-ink-muted">
               This guide is general information only. It is not financial, legal or tax advice, and it doesn’t take your personal
               circumstances into account.{" "}

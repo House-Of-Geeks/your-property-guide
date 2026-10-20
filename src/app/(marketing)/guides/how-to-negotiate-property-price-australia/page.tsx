@@ -21,7 +21,7 @@ import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "How to negotiate property price in Australia: the buyer's playbook (2026)",
+  title: "How to negotiate property price in Australia: a buyer's guide (2026)",
   description:
     "Practical, agent-aware negotiation tactics for buying property in Australia. Opening offers, counter-offer logic, conditional clauses, walk-away triggers and the mistakes that cost real money.",
   slug: "how-to-negotiate-property-price-australia",
@@ -65,11 +65,11 @@ const TLDR = [
 
 const TOC: GuideTOCEntry[] = [
   { id: "principles",          label: "Negotiation principles for Australian property" },
-  { id: "preparation",         label: "Preparation: the work that wins the deal" },
+  { id: "preparation",         label: "Preparation: the work that matters most" },
   { id: "opening-offer",       label: "Your opening offer: number, format and timing" },
   { id: "counter-offer",       label: "Reading and responding to the counter-offer" },
   { id: "conditions",          label: "Conditional vs unconditional offers" },
-  { id: "auction-difference",  label: "Why auction is a different game" },
+  { id: "auction-difference",  label: "Why auction works differently" },
   { id: "walk-away",           label: "Setting your walk-away price (and using it)" },
   { id: "agent-relationship",  label: "Working with the selling agent" },
   { id: "common-mistakes",     label: "Common mistakes that cost buyers money" },
@@ -128,7 +128,7 @@ export default function HowToNegotiatePropertyPricePage() {
     <>
       <HowToJsonLd
         name="How to negotiate property price in Australia"
-        description="Eight-step negotiation playbook for buying Australian residential property by private treaty."
+        description="Eight-step negotiation guide for buying Australian residential property by private treaty."
         url={`/guides/${FRONTMATTER.slug}`}
         steps={[
           { name: "Pull comparable sales for the suburb",        text: "Use suburb data and recent sales to anchor your offer in evidence, not in the marketing price.", url: "/suburbs" },
@@ -200,7 +200,7 @@ export default function HowToNegotiatePropertyPricePage() {
         </li>
       </ul>
 
-      <h2 id="preparation">Preparation: the work that wins the deal</h2>
+      <h2 id="preparation">Preparation: the work that matters most</h2>
       <p>
         Most of the leverage in a property negotiation is built before you
         walk through the front door. By the time you&rsquo;re talking to the
@@ -390,7 +390,7 @@ export default function HowToNegotiatePropertyPricePage() {
         moving on price.
       </p>
 
-      <h2 id="auction-difference">Why auction is a different game</h2>
+      <h2 id="auction-difference">Why auction works differently</h2>
       <p>
         Almost everything in this guide is about private-treaty negotiation.
         Auction is fundamentally different and the strategies don&rsquo;t
@@ -417,8 +417,8 @@ export default function HowToNegotiatePropertyPricePage() {
       </Callout>
 
       <GuideNewsletterCallout
-        title="Want the next negotiation playbook in your inbox?"
-        subtitle="One quarterly email on the Australian property market, RBA rate moves and the data updates that change how a negotiation should run. No spam."
+        title="Want more negotiation guidance in your inbox?"
+        subtitle="Occasional emails on the Australian property market, RBA rate moves and the data updates that change how a negotiation should run. No spam."
       />
 
       <h2 id="walk-away">Setting your walk-away price (and using it)</h2>

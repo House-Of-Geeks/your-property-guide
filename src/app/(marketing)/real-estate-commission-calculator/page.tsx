@@ -119,7 +119,7 @@ export default function CommissionCalculatorPage() {
             The gap between a strong negotiator and a weak one is routinely
             ten times that. Judge an agent on recent comparable sales and
             days on market first, then negotiate the rate with the one you
-            want. Hire the campaign, not the quote.
+            want.
           </p>
 
           <h3>The costs beyond commission</h3>

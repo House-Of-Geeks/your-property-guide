@@ -1,22 +1,27 @@
 import type { ComponentType, HTMLAttributes, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
-import { Book3D } from "@/components/interactive/Book3D";
+import { BookCover } from "@/components/brand/BookCover";
 import { GUIDE_BOOKS, type GuideBookId } from "@/lib/guide-books";
 
-// The premium building blocks (Oct 2026). Since 14 Oct (v5): every page
-// opens on a light band with a crisp photo panel (no overlay), then
-// generous bands that alternate light, quiet and charcoal, editorial
-// headings, grids with a heavy top rule, and a connected step timeline.
-// BRAND.md section 11 has the rules. Dark surfaces use the .tone-dark scope
-// (globals.css), so text-ink and border-line flip to light values inside them;
-// wrap a white card that sits on one in .tone-light.
+// The shared page parts (v7, "Clear decisions", 20 Oct 2026). Every page
+// opens on cream with a serif heading and a crisp photograph (never under an
+// overlay), then bands separated by fine rules, alternating cream, sand and
+// the occasional forest band. Contained panels are used selectively; most
+// structure comes from spacing, hierarchy and hairline rules. BRAND.md §5
+// and §9 have the rules. Dark surfaces use the .tone-dark scope
+// (globals.css), so text-ink and border-line flip to light values inside
+// them; wrap a paper card that sits on one in .tone-light.
 
-const SHELL = "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8";
+const SHELL = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10";
 
-/** The photo library (public/images/photos), with the crop each one needs as a hero. */
+/** The photo library (public/images), with the crop each one needs as a hero. */
 export const PHOTOS = {
+  // The "Clear decisions" brand photographs (illustrative; never a real property or sale).
+  apartment: { src: "/images/brand/apartment-light.jpg",  position: "object-[50%_52%]" },
+  door:      { src: "/images/brand/terracotta-door.jpg",  position: "object-[50%_40%]" },
   selling:   { src: "/images/photos/selling-house.jpg",     position: "object-[50%_45%]" },
   street:    { src: "/images/photos/home-street.jpg",       position: "object-[50%_60%]" },
   buying:    { src: "/images/photos/open-home.jpg",         position: "object-center" },
@@ -39,7 +44,7 @@ interface Crumb {
 }
 
 interface PhotoHeroProps {
-  /** A library photo beside the heading. Without one (or `image`) the hero is a plain white band. */
+  /** A library photo. Without one (or `image`) the hero is a plain cream band. */
   photo?: PhotoKey;
   /**
    * A page's own photo instead of a library one, e.g. a post's cover. Blog
@@ -48,91 +53,128 @@ interface PhotoHeroProps {
    */
   image?: { src: string; position?: string; unoptimized?: boolean };
   breadcrumbs?: Crumb[];
-  /** The main column: HeroTitle, HeroLead, points, a byline. */
+  /** The main column: an Eyebrow, HeroTitle, HeroLead, actions, a byline. */
   children: ReactNode;
-  /** An optional right column, e.g. a form. Wrap a white card in .tone-light. */
+  /** An optional right column, e.g. a form. Wrap a paper card in .tone-light. */
   aside?: ReactNode;
-  /** "lg" for the homepage and conversion pages, "md" for guides, hubs and tools. */
+  /**
+   * "lg" (the homepage's composition, for hubs and conversion pages): the
+   * text, then a wide photograph across the page. "md" (guides, tools,
+   * reference pages): the text beside a portrait photograph.
+   */
   size?: "lg" | "md";
-  /** Stand the free guide (or both), as books, on the photo's corner. Each links to its guide. */
+  /** Stand the free guide (or both), as covers, on the photograph's corner. Each links to its guide. */
   book?: GuideBookId | readonly GuideBookId[];
   /** Where a single book links; defaults to the guide's page. */
   bookHref?: string;
+  /** A short line under a wide photograph (left), and an optional note (right). */
+  caption?: ReactNode;
+  captionNote?: ReactNode;
   className?: string;
 }
 
 /**
- * The page-opening band (v5, 14 Oct 2026, the light first screen Andy kept):
- * white, the heading and actions on the left, and on the right either the
- * page's form (aside) or a crisp photo in a rounded panel, never under an overlay.
- * On phones a guide or hub ("md") drops the photo so the content starts on
- * the first screen; conversion pages ("lg") keep it below the text.
+ * The page-opening band (v7). Cream, the serif heading and actions first,
+ * and a crisp photograph that's never under an overlay. On phones a guide or
+ * tool ("md") drops the photo so the content starts on the first screen;
+ * hubs and conversion pages ("lg") keep a shorter crop below the text.
  */
-export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside, size = "md", book, bookHref, className = "" }: PhotoHeroProps) {
+export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside, size = "md", book, bookHref, caption, captionNote, className = "" }: PhotoHeroProps) {
   const image = ownImage
     ? { src: ownImage.src, position: ownImage.position ?? "object-center", unoptimized: ownImage.unoptimized ?? false }
     : photo
       ? { ...PHOTOS[photo], unoptimized: false }
       : null;
   const top = breadcrumbs
-    ? size === "lg" ? "pt-5 sm:pt-8 lg:pt-12" : "pt-4 sm:pt-6 lg:pt-8"
-    : size === "lg" ? "pt-10 sm:pt-14 lg:pt-20" : "pt-8 sm:pt-10 lg:pt-14";
-  const bottom = size === "lg" ? "pb-12 sm:pb-16 lg:pb-20" : "pb-10 sm:pb-12 lg:pb-16";
-  const photoPanel = (cls: string) =>
-    image ? (
-      <div className={`relative overflow-hidden rounded-2xl bg-surface-warm ${cls}`}>
-        <Image src={image.src} alt="" fill preload unoptimized={image.unoptimized} sizes="(min-width: 1024px) 40vw, 100vw" className={`object-cover ${image.position}`} />
+    ? size === "lg" ? "pt-6 sm:pt-9 lg:pt-11" : "pt-5 sm:pt-7 lg:pt-9"
+    : size === "lg" ? "pt-9 sm:pt-12 lg:pt-14" : "pt-8 sm:pt-10 lg:pt-12";
+  const bottom = size === "lg" ? "pb-10 sm:pb-12 lg:pb-14" : "pb-10 sm:pb-12 lg:pb-14";
+  const books = book ? (typeof book === "string" ? [book] : book) : [];
+  const bookStand = books.length > 0 && (
+    <div className="pointer-events-none absolute bottom-0 right-4 flex translate-y-[18%] items-end sm:right-8 lg:right-10">
+      {books.map((b, i) => (
+        <Link
+          key={b}
+          href={(typeof book === "string" && bookHref) || GUIDE_BOOKS[b].href}
+          aria-label={`Free guide: ${GUIDE_BOOKS[b].title}`}
+          className={`pointer-events-auto block ${i > 0 ? "-ml-6 translate-y-3" : ""}`}
+        >
+          <BookCover guide={b} tilt={i === 0 ? -4 : 4} className="w-[104px] sm:w-[132px] lg:w-[158px]" />
+        </Link>
+      ))}
+    </div>
+  );
+
+  let body: ReactNode;
+  if (aside) {
+    body = (
+      <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
+        <div className="lg:col-span-7">{children}</div>
+        <div className="lg:col-span-5">{aside}</div>
       </div>
-    ) : null;
-  const shape = size === "lg" ? "aspect-[4/3] lg:aspect-[4/5]" : "aspect-[16/10] lg:aspect-[4/3]";
-  const panel = !image
-    ? null
-    : book
-      ? (
-        <div className={`relative pb-7 sm:pb-9 ${size === "lg" ? "" : "hidden sm:block"}`}>
-          {photoPanel(`ml-[12%] ${shape}`)}
-          <div className="absolute bottom-0 left-0 flex items-end">
-            {(typeof book === "string" ? [book] : book).map((b, i) => (
-              <Link key={b} href={(typeof book === "string" && bookHref) || GUIDE_BOOKS[b].href} aria-label={`Free: ${GUIDE_BOOKS[b].title}`} className={`block ${i > 0 ? "-ml-3 translate-y-2" : ""}`}>
-                <Book3D guide={b} turn={16} className="[--bw:clamp(96px,24vw,140px)] lg:[--bw:clamp(120px,10.5vw,164px)]" />
-              </Link>
-            ))}
+    );
+  } else if (image && size === "lg") {
+    body = (
+      <>
+        <div className="max-w-4xl">{children}</div>
+        <figure className={`mt-9 sm:mt-11 ${books.length ? "mb-10 sm:mb-12" : ""}`}>
+          <div className="relative h-[220px] overflow-visible sm:h-[320px] lg:h-[380px]">
+            <div className="absolute inset-0 overflow-hidden bg-surface-warm">
+              <Image src={image.src} alt="" fill preload unoptimized={image.unoptimized} sizes="(min-width: 1280px) 1200px, 100vw" className={`object-cover ${image.position}`} />
+            </div>
+            {bookStand}
+          </div>
+          {(caption || captionNote) && (
+            <figcaption className="mt-3 flex flex-wrap justify-between gap-2 text-[12px] text-ink-muted">
+              <span className="text-primary">{caption}</span>
+              {captionNote && <span>{captionNote}</span>}
+            </figcaption>
+          )}
+        </figure>
+      </>
+    );
+  } else if (image) {
+    body = (
+      <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
+        <div className="lg:col-span-7">{children}</div>
+        <div className="hidden sm:block lg:col-span-5">
+          <div className="relative aspect-[16/10] overflow-hidden bg-surface-warm lg:aspect-[5/6]">
+            <Image src={image.src} alt="" fill preload unoptimized={image.unoptimized} sizes="(min-width: 1024px) 40vw, 100vw" className={`object-cover ${image.position}`} />
           </div>
         </div>
-      )
-      : photoPanel(size === "lg" ? shape : `hidden sm:block ${shape}`);
-  const side = aside ?? panel;
+      </div>
+    );
+  } else {
+    body = <div className="max-w-3xl">{children}</div>;
+  }
+
   return (
     // Clipped sideways only: a suburb autocomplete in a form near the hero's
     // foot must still drop below it, while nothing may widen the page on phones.
-    <section className={`relative isolate overflow-x-clip border-b border-line bg-white ${className}`}>
+    <section className={`relative isolate overflow-x-clip border-b border-line bg-background ${className}`}>
       <div className={SHELL}>
         {breadcrumbs && (
-          <div className="pt-3">
+          <div className="pt-4">
             <Breadcrumbs items={breadcrumbs} />
           </div>
         )}
-        <div className={`${top} ${bottom}`}>
-          {side ? (
-            <div className={`grid gap-10 lg:grid-cols-12 lg:gap-14 ${aside ? "items-start" : "items-center"}`}>
-              <div className="lg:col-span-7">{children}</div>
-              <div className="lg:col-span-5">{side}</div>
-            </div>
-          ) : (
-            <div className="max-w-3xl">{children}</div>
-          )}
-        </div>
+        <div className={`${top} ${bottom}`}>{body}</div>
       </div>
     </section>
   );
 }
 
-/** The hero's H1. "lg" is the homepage size (76px at desktop); "md" suits guides, hubs and tools. */
+/** The small copper label above a heading ("Australian property, explained."). */
+export function Kicker({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <p className={`text-[12px] font-medium uppercase tracking-[0.1em] text-primary ${className}`}>{children}</p>;
+}
+
+/** The hero's H1 in the serif. "lg" is the homepage size (64px at desktop); "md" suits guides, hubs and tools. */
 export function HeroTitle({ children, size = "md" }: { children: ReactNode; size?: "lg" | "md" }) {
   const cls =
     size === "lg"
-      ? "text-[44px] leading-[1.02] sm:text-6xl lg:text-[80px] tracking-[-0.02em]"
-      : "text-[36px] leading-[1.06] sm:text-5xl lg:text-[62px] tracking-[-0.02em]";
+      ? "text-[44px] leading-[1.04] sm:text-[56px] lg:text-[64px] tracking-[-0.045em]"
+      : "text-[38px] leading-[1.06] sm:text-[46px] lg:text-[54px] tracking-[-0.04em]";
   return <h1 className={`${cls} text-ink max-w-3xl`}>{children}</h1>;
 }
 
@@ -140,14 +182,14 @@ export function HeroTitle({ children, size = "md" }: { children: ReactNode; size
 export function HeroLead({ children, className = "", ...rest }: HTMLAttributes<HTMLParagraphElement>) {
   const width = /(^|\s)max-w-/.test(className) ? "" : "max-w-2xl";
   return (
-    <p {...rest} className={`mt-6 text-lg sm:text-xl text-ink-muted leading-relaxed ${width} ${className}`}>
+    <p {...rest} className={`mt-5 text-[16px] sm:text-[18px] text-ink-muted leading-[1.7] ${width} ${className}`}>
       {children}
     </p>
   );
 }
 
 interface BandProps {
-  /** light: white page; quiet: the grey band; dark: charcoal, with the tone flipped. */
+  /** light: the cream page; quiet: the sand band; dark: forest, with the tone flipped. */
   tone?: "light" | "quiet" | "dark";
   /** compact for dense reference pages; default is the homepage's spacing. */
   spacing?: "default" | "compact";
@@ -156,11 +198,11 @@ interface BandProps {
   children: ReactNode;
 }
 
-/** A full-width section with the premium spacing. */
+/** A full-width section, separated from the next by a fine rule. */
 export function Band({ tone = "light", spacing = "default", id, className = "", children }: BandProps) {
   const bg =
     tone === "dark" ? "tone-dark bg-surface-inverse" : tone === "quiet" ? "bg-surface-warm border-b border-line" : "border-b border-line";
-  const pad = spacing === "compact" ? "py-14 sm:py-20" : "py-20 sm:py-28";
+  const pad = spacing === "compact" ? "py-12 sm:py-16" : "py-14 sm:py-20";
   return (
     <section id={id} className={`${bg} ${className}`}>
       <div className={`${SHELL} ${pad}`}>{children}</div>
@@ -168,29 +210,45 @@ export function Band({ tone = "light", spacing = "default", id, className = "", 
   );
 }
 
-/** An editorial section heading: the H2 left, an optional intro right (stacked on phones). */
-export function SectionHeading({ title, intro, size = "lg" }: { title: ReactNode; intro?: ReactNode; size?: "lg" | "md" }) {
+/**
+ * An editorial section heading (the approved homepage's section head): an
+ * optional kicker in the left margin, the serif H2, and an intro to the
+ * right. Stacked on phones.
+ */
+export function SectionHeading({ title, intro, kicker, size = "lg" }: { title: ReactNode; intro?: ReactNode; kicker?: ReactNode; size?: "lg" | "md" }) {
   const h2 =
     size === "lg"
-      ? "text-[38px] sm:text-[52px] leading-[1.05] tracking-[-0.02em]"
-      : "text-3xl sm:text-[40px] leading-[1.1] tracking-[-0.015em]";
-  if (!intro) return <h2 className={`${h2} text-ink max-w-3xl`}>{title}</h2>;
+      ? "text-[34px] sm:text-[40px] lg:text-[42px] leading-[1.08] tracking-[-0.04em]"
+      : "text-[30px] sm:text-[34px] leading-[1.1] tracking-[-0.035em]";
+  if (!intro && !kicker) return <h2 className={`${h2} text-ink max-w-3xl`}>{title}</h2>;
+  if (kicker) {
+    return (
+      <div className="grid gap-x-8 gap-y-4 lg:grid-cols-[0.38fr_1fr_0.82fr]">
+        <Kicker className="lg:pt-3">{kicker}</Kicker>
+        <h2 className={`${h2} max-w-[30rem] text-ink`}>{title}</h2>
+        {intro ? <p className="text-[15px] leading-[1.7] text-ink-muted lg:pt-2">{intro}</p> : <span aria-hidden="true" />}
+      </div>
+    );
+  }
   return (
-    <div className="grid lg:grid-cols-12 gap-6 lg:gap-16 items-end">
+    <div className="grid items-start gap-5 lg:grid-cols-12 lg:gap-14">
       <h2 className={`lg:col-span-7 ${h2} text-ink`}>{title}</h2>
-      <p className="lg:col-span-5 text-lg text-ink-muted leading-relaxed">{intro}</p>
+      <p className="lg:col-span-5 text-[16px] leading-[1.7] text-ink-muted lg:pt-2">{intro}</p>
     </div>
   );
 }
 
-/** Columns under a heavy top rule: the homepage's "four checks". */
-export function RuleGrid({ columns = 4, className = "mt-14 sm:mt-16", children }: { columns?: 2 | 3 | 4; className?: string; children: ReactNode }) {
+/** Columns, each under a fine rule. */
+export function RuleGrid({ columns = 4, className = "mt-12 sm:mt-14", children }: { columns?: 2 | 3 | 4; className?: string; children: ReactNode }) {
   const cols = columns === 4 ? "sm:grid-cols-2 lg:grid-cols-4" : columns === 3 ? "sm:grid-cols-2 lg:grid-cols-3" : "sm:grid-cols-2";
-  return <ul className={`grid gap-x-10 gap-y-12 ${cols} ${className}`}>{children}</ul>;
+  return <ul className={`grid gap-x-10 gap-y-10 ${cols} ${className}`}>{children}</ul>;
 }
 
+/**
+ * One column of a RuleGrid. `icon` is accepted for older call sites but no
+ * longer drawn: v7 avoids decorative icons.
+ */
 export function RuleItem({
-  icon: Icon,
   title,
   children,
 }: {
@@ -199,27 +257,28 @@ export function RuleItem({
   children?: ReactNode;
 }) {
   return (
-    <li className="border-t-2 border-ink pt-6">
-      {Icon && <Icon className="w-7 h-7 text-primary mb-5" strokeWidth={1.75} aria-hidden="true" />}
-      <h3 className="text-xl text-ink">{title}</h3>
-      {children && <div className="mt-2 text-base text-ink-muted leading-relaxed">{children}</div>}
+    <li className="border-t border-line-strong pt-5">
+      <h3 className="text-[18px] font-medium leading-snug text-ink">{title}</h3>
+      {children && <div className="mt-2 text-[15px] text-ink-muted leading-[1.7]">{children}</div>}
     </li>
   );
 }
 
-/** Numbered steps joined by a line: a real sequence, not decoration. */
-export function StepTimeline({ steps, className = "mt-12" }: { steps: readonly { title: ReactNode; body: ReactNode }[]; className?: string }) {
+/** Numbered steps joined by a fine rule: a real sequence, not decoration. */
+export function StepTimeline({ steps, className = "mt-10" }: { steps: readonly { title: ReactNode; body: ReactNode }[]; className?: string }) {
   return (
-    <ol className={className}>
+    <ol className={`border-t border-line ${className}`}>
       {steps.map((s, i) => (
-        <li key={i} className="relative grid grid-cols-[2.5rem_1fr] gap-x-5 pb-10 last:pb-0">
-          {i < steps.length - 1 && <span className="absolute left-5 top-10 bottom-0 w-px bg-line-strong" aria-hidden="true" />}
-          <span className="relative inline-flex w-10 h-10 items-center justify-center rounded-full bg-ink text-ink-inverse text-base font-bold">
+        <li key={i} className="grid grid-cols-[2.25rem_1fr] gap-x-4 border-b border-line py-6 sm:grid-cols-[3rem_1fr]">
+          <span className="font-display text-[26px] leading-none text-primary" aria-hidden="true">
             {i + 1}
           </span>
-          <div className="pt-1.5">
-            <h3 className="text-xl text-ink">{s.title}</h3>
-            <div className="mt-2 text-base text-ink-muted leading-relaxed max-w-lg">{s.body}</div>
+          <div>
+            <h3 className="text-[18px] font-medium leading-snug text-ink">
+              <span className="sr-only">{`Step ${i + 1}: `}</span>
+              {s.title}
+            </h3>
+            <div className="mt-2 text-[15px] text-ink-muted leading-[1.7] max-w-xl">{s.body}</div>
           </div>
         </li>
       ))}
@@ -227,14 +286,37 @@ export function StepTimeline({ steps, className = "mt-12" }: { steps: readonly {
   );
 }
 
-/** A library photo in a rounded panel, for split sections. */
+/** A library photo in a crisp panel, for split sections. */
 export function PhotoPanel({ photo, alt, className = "aspect-[4/3] lg:aspect-[4/5]", sizes = "(min-width: 1024px) 40vw, 100vw" }: { photo: PhotoKey; alt: string; className?: string; sizes?: string }) {
   return (
-    <div className={`relative rounded-xl overflow-hidden ${className}`}>
+    <div className={`relative overflow-hidden bg-surface-warm ${className}`}>
       <Image src={PHOTOS[photo].src} alt={alt} fill sizes={sizes} className={`object-cover ${PHOTOS[photo].position}`} />
     </div>
   );
 }
 
+/**
+ * A short list of first reads under fine rules (v7: the approved design
+ * avoids repeated card grids). Each row: a serif title, a line on what it
+ * covers, and an arrow.
+ */
+export function LinkRows({ items, columns = 3, className = "mt-6" }: { items: readonly { label: ReactNode; href: string; note?: ReactNode }[]; columns?: 2 | 3; className?: string }) {
+  return (
+    <ul className={`grid border-t border-line md:gap-x-10 ${columns === 3 ? "md:grid-cols-2 lg:grid-cols-3" : "md:grid-cols-2"} ${className}`}>
+      {items.map((it) => (
+        <li key={it.href} className="border-b border-line">
+          <Link href={it.href} className="group flex h-full items-start justify-between gap-4 py-5">
+            <span className="min-w-0">
+              <span className="block font-display text-[22px] leading-snug tracking-[-0.025em] text-ink group-hover:text-primary">{it.label}</span>
+              {it.note && <span className="mt-1.5 block text-[15px] leading-relaxed text-ink-muted">{it.note}</span>}
+            </span>
+            <ArrowRight className="mt-2 h-4 w-4 shrink-0 text-ink-subtle transition-transform group-hover:translate-x-0.5 group-hover:text-primary motion-reduce:transition-none" aria-hidden="true" />
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 // Plain class strings, in their own module so client components can import them alone.
-export { BUTTON_PRIMARY, BUTTON_SECONDARY } from "./buttons";
+export { BUTTON_PRIMARY, BUTTON_SECONDARY, TEXT_LINK } from "./buttons";

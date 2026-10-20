@@ -81,7 +81,7 @@ export function RelatedGuidesSection({ heading, intro, groups, tone = "raised", 
         <p className="text-[13px] text-ink-subtle font-sans font-medium mb-4">
           Related guides
         </p>
-        <h2 className="font-display text-ink leading-[1.05] tracking-tight text-3xl sm:text-4xl font-bold mb-4 max-w-3xl">
+        <h2 className="font-display text-ink leading-[1.05] tracking-[-0.03em] text-3xl sm:text-4xl font-normal mb-4 max-w-3xl">
           {heading}
         </h2>
         {intro && (

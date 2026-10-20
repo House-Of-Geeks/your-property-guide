@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, Check } from "lucide-react";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 
 /**
  * Homepage hero card offering both lead magnets behind a single toggle.
@@ -16,11 +17,11 @@ import { ArrowRight, BookOpen, Check } from "lucide-react";
 const PATHS = {
   selling: {
     cover: "/images/guide/selling-guide-cover.png",
-    coverAlt: "The Complete Guide to Selling Your Property in Australia, 2026 edition",
-    title: "The Complete Guide to Selling Your Property",
-    tagline: "Ten chapters that routinely save sellers thousands.",
+    coverAlt: `Cover of ${GUIDE_BOOKS.selling.name}`,
+    title: GUIDE_BOOKS.selling.name,
+    tagline: GUIDE_BOOKS.selling.summary,
     bullets: [
-      "The 10 questions that expose an average agent",
+      "The questions to ask every agent you meet",
       "Fee negotiation worth $1,700 to $3,400",
       "Presentation that returns 3 to 10x its cost",
       "Printable 12-week selling checklist",
@@ -30,13 +31,13 @@ const PATHS = {
   },
   buying: {
     cover: "/images/guide/buying-guide-cover.png",
-    coverAlt: "The Complete Guide to Buying Property in Australia, 2026 edition",
-    title: "The Complete Guide to Buying Property",
-    tagline: "Written for the buyer you actually are.",
+    coverAlt: `Cover of ${GUIDE_BOOKS.buying.name}`,
+    title: GUIDE_BOOKS.buying.name,
+    tagline: GUIDE_BOOKS.buying.summary,
     bullets: [
       "2026 schemes state by state, worth tens of thousands",
       "What lenders will actually approve, buffer included",
-      "Underquoting and auction psychology, decoded",
+      "How homes are marketed and sold, from price guides to auctions",
       "Printable 12-week buying timeline",
     ],
     href: "/buying-guide",
@@ -72,7 +73,7 @@ export function GuidePathCard() {
           {/* Sliding pill behind the tabs; buttons stay transparent above it */}
           <span
             aria-hidden="true"
-            className="absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-full bg-cta shadow-[0_2px_6px_rgba(189,89,47,0.35)] transition-transform duration-[250ms] ease-[var(--ease-out-quint)]"
+            className="absolute inset-y-1 left-1 w-[calc(50%-4px)] rounded-[4px] bg-cta shadow-[0_2px_6px_rgba(189,89,47,0.35)] transition-transform duration-[250ms] ease-[var(--ease-out-quint)]"
             style={{ transform: path === "buying" ? "translateX(100%)" : "translateX(0)" }}
           />
           {(["selling", "buying"] as const).map((key) => (
@@ -126,7 +127,7 @@ export function GuidePathCard() {
                 title whenever the title wrapped to three lines (cards under
                 about 400px wide: phones and 1024px laptops). */}
             <div className="mb-2 flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
-              <span className="inline-flex items-center rounded-md bg-cta text-white text-[13px] font-sans font-semibold px-3 py-1">
+              <span className="inline-flex items-center rounded-md bg-cta text-cta-ink text-[13px] font-sans font-semibold px-3 py-1">
                 Free PDF
               </span>
               <p className="text-[13px] text-white/70 font-sans font-medium">
@@ -160,7 +161,7 @@ export function GuidePathCard() {
 
         <Link
           href={p.href}
-          className="group press w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3.5 text-sm transition-colors"
+          className="group press w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-cta-ink font-medium px-6 py-3.5 text-sm transition-colors"
         >
           Get the free guide
           <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
