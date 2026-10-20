@@ -131,7 +131,7 @@ export function SuburbPriceTrend({
           <p className="text-[13px] font-sans text-ink-subtle">
             {years}-year change
           </p>
-          <p className="font-display text-base font-semibold text-ink leading-tight">
+          <p className="font-display text-base font-normal text-ink leading-tight">
             {totalChange >= 0 ? "+" : ""}
             {totalChange.toFixed(0)}%
           </p>

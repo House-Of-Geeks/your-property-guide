@@ -199,7 +199,7 @@ describe("the guide page", () => {
     expect(seo).toBe("Property Management Fees 2026: Rates by State & Calculator");
     expect(seo!.length).toBeLessThanOrEqual(60);
     expect(src).toMatch(/export const metadata: Metadata = \{\s*title: SEO_TITLE,/);
-    expect(src).toMatch(/openGraph: \{\s*url: [^\n]*\n\s*title: SEO_TITLE,/);
+    expect(src).toMatch(/openGraph: \{\s*(?:\.\.\.DEFAULT_OG,\s*)?url: [^\n]*\n\s*title: SEO_TITLE,/);
     // Six columns scroll in their own box; the containment keeps the table's width out of the page width on a phone.
     expect(src).toMatch(/<div className="overflow-x-auto" style=\{\{ contain: "inline-size" \}\}[^>]*>\s*<table/);
     expect(src).toContain("PropertyManagementFeesCalculator");

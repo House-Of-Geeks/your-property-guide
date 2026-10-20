@@ -16,7 +16,7 @@ export const STATE_COMMENTARY: Record<string, StateCommentary> = {
     marketContext:
       "New South Wales is Australia's most expensive housing market by a wide margin. Sydney's median house price sits around $1.6M to $1.7M in 2026, with a structural undersupply of well-located stock keeping the harbour-city market firm even as borrowing capacity catches up to elevated rates. Regional NSW (Newcastle, Central Coast, Wollongong) has compressed the discount to Sydney over the last five years, and the Hunter and Illawarra now trade at premiums older buyers wouldn't have predicted. Lifestyle suburbs along the coast, Byron, Kiama, Port Macquarie, have held the COVID-era gains. Investor demand is back at scale; rental vacancies in metro Sydney remain below 1.5%.",
     buyerTip:
-      "If you're buying in Sydney, the gap between asking prices and clearing prices has narrowed meaningfully. A 2024-style 'discount the asking price by 10%' approach now leaves you out of contention. Pre-approval at the top of your range plus 1-2 weekends of pre-auction reconnaissance is the modern playbook.",
+      "If you're buying in Sydney, the gap between asking prices and clearing prices has narrowed meaningfully. A 2024-style 'discount the asking price by 10%' approach now leaves you out of contention. Pre-approval at the top of your range plus 1-2 weekends of pre-auction reconnaissance is the approach that works now.",
     watchOut:
       "Sydney's middle-ring suburbs (Kingsford, Marrickville, Concord) have seen significant apartment supply. Body corporate fees on newer towers can swallow yield, so always pull the strata report and the sinking fund balance before committing.",
   },

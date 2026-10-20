@@ -61,7 +61,7 @@ export function StickyGuideBar() {
       <a
         href="#get-the-guide"
         tabIndex={shown ? undefined : -1}
-        className={`flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-sm shadow-[0_8px_24px_rgb(22_25_29/0.25)] transition-colors ${
+        className={`flex items-center justify-center gap-2 rounded-[4px] bg-cta hover:bg-cta-hover text-cta-ink font-medium px-6 py-3.5 text-sm shadow-[0_8px_24px_rgb(32_61_48/0.22)] transition-colors ${
           shown ? "pointer-events-auto" : ""
         }`}
       >

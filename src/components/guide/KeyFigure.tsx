@@ -19,7 +19,7 @@ export function KeyFigure({ value, label, context }: KeyFigureProps) {
   return (
     <div className="my-8 grid sm:grid-cols-12 gap-4 sm:gap-6 items-baseline border-y border-line py-6">
       <div className="sm:col-span-4">
-        <div className={`font-display font-bold text-[2.75rem] sm:text-5xl leading-none tracking-[-0.03em] tabular-nums ${valueColor}`}>
+        <div className={`font-display font-normal text-[2.75rem] sm:text-5xl leading-none tracking-[-0.03em] tabular-nums ${valueColor}`}>
           {value}
         </div>
       </div>

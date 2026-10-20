@@ -5,11 +5,11 @@ import { Box, Ch, Stat, TableWrap } from "../parts";
 export const chapter: Chapter = {
   guide: "buying",
   number: 3,
-  step: "Use the schemes",
+  step: "Check the schemes",
   standfirst:
-    "The support on offer in 2026 is the most generous in a generation, and the most confusing. Here is the federal layer, the state layer, and who gets what.",
+    "The support on offer in 2026 is the most generous in a generation, and the most confusing. Here is the federal layer, the state layer and who qualifies for what.",
   callout:
-    "Watching the scheme caps. Agents know which homes sit just under a first home buyer price cap and which buyers that brings, and they price and pitch to that crowd. Know your caps and concessions before you inspect, so a cap is your tool, not their bait.",
+    "Selling agents know which homes sit just under a first home buyer price cap, and that those homes draw buyers using the schemes. Pricing and marketing a home with that audience in mind is a sensible way to reach the most likely buyers. Check your caps and concessions before you inspect, so you know which homes they cover and what they’re worth to you.",
   checklist: [
     "Check your eligibility for the 5% Deposit Scheme and its price cap for your area",
     "Check whether Help to Buy fits your income and the home you want",
@@ -32,8 +32,8 @@ function Body() {
   return (
     <>
       <p>
-        The selling side knows these numbers. You should know them better, because they decide what you can pay, what you’ll pay in duty
-        and which homes the price caps let you buy.
+        Selling agents know these numbers well, and it pays to know them too: they shape what you can pay, what you’ll pay in duty and
+        which homes the price caps let you buy.
       </p>
 
       <h2>The federal 5% Deposit Scheme</h2>

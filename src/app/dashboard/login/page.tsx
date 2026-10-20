@@ -135,7 +135,7 @@ export default function LoginPage() {
 
             {magicSent ? (
               <div className="text-center py-6">
-                <div className="w-14 h-14 bg-cta text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 bg-cta text-cta-ink rounded-[4px] flex items-center justify-center mx-auto mb-4">
                   <Mail className="w-7 h-7" />
                 </div>
                 <p className="font-display text-xl text-ink">Check your inbox</p>
@@ -153,7 +153,7 @@ export default function LoginPage() {
                 </div>
                 {error && <p className="text-sm text-danger">{error}</p>}
                 <button type="submit" disabled={loading}
-                  className="w-full py-3 bg-cta text-white text-sm font-semibold rounded-lg hover:bg-cta-hover transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+                  className="w-full py-3 bg-cta text-cta-ink text-sm font-semibold rounded-lg hover:bg-cta-hover transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
                   {loading ? "Sending…" : "Send magic link"}
                 </button>
               </form>
@@ -192,7 +192,7 @@ export default function LoginPage() {
               </div>
               {error && <p className="text-sm text-danger">{error}</p>}
               <button type="submit" disabled={loading}
-                className="w-full py-3 bg-cta text-white text-sm font-semibold rounded-lg hover:bg-cta-hover transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+                className="w-full py-3 bg-cta text-cta-ink text-sm font-semibold rounded-lg hover:bg-cta-hover transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
                 {loading ? "Signing in…" : "Sign in"}
               </button>
             </form>
@@ -245,7 +245,7 @@ export default function LoginPage() {
               </div>
               {error && <p className="text-sm text-danger">{error}</p>}
               <button type="submit" disabled={loading}
-                className="w-full py-3 bg-cta text-white text-sm font-semibold rounded-lg hover:bg-cta-hover transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
+                className="w-full py-3 bg-cta text-cta-ink text-sm font-semibold rounded-lg hover:bg-cta-hover transition-colors disabled:opacity-60 disabled:cursor-not-allowed">
                 {loading ? "Creating account…" : "Create account"}
               </button>
             </form>

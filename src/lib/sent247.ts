@@ -8,6 +8,7 @@ import {
 } from "@/lib/lead-emails";
 import type { LeadAttribution } from "@/lib/attribution-server";
 import { normalizePhone } from "@/lib/utils/phone";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 
 // Sent 24/7 (sent247.com), the way Why Solar uses it (House-Of-Geeks/Why-Solar:
 // lib/sent247.ts for leads, lib/battery-guide/sent247.ts for its ebook).
@@ -43,12 +44,12 @@ const MAGNET_TIMEOUT_MS = 5_000;
 export const LEAD_MAGNETS = {
   selling: {
     slug: "selling-guide",
-    name: "The Complete Guide to Selling Your Property in Australia",
+    name: GUIDE_BOOKS.selling.title,
     downloadUrl: GUIDE_PDF_URL,
   },
   buying: {
     slug: "buying-guide",
-    name: "The Complete Guide to Buying Property in Australia",
+    name: GUIDE_BOOKS.buying.title,
     downloadUrl: BUYING_GUIDE_PDF_URL,
   },
 } as const;

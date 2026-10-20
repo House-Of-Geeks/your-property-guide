@@ -304,7 +304,7 @@ export default function BestTimeToBuyGuide() {
 
       <GuideNewsletterCallout
         title="Track the rate cycle and capital city moves"
-        subtitle="Quarterly market read with the data signals that actually matter for timing. One email a quarter."
+        subtitle="Occasional market updates with the data signals that matter for timing. No spam."
       />
 
       <h2 id="next-steps">Next steps</h2>

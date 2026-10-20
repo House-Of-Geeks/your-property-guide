@@ -62,7 +62,7 @@ export function AgentFinder({ from = "home-finder" }: { from?: string }) {
       <button
         type="button"
         onClick={() => router.push(href)}
-        className="press mt-5 inline-flex h-14 w-full items-center justify-between gap-4 rounded-lg bg-cta px-6 text-[17px] font-semibold text-white transition-colors hover:bg-cta-hover"
+        className="press mt-5 inline-flex h-14 w-full items-center justify-between gap-4 rounded-lg bg-cta px-6 text-[17px] font-semibold text-cta-ink transition-colors hover:bg-cta-hover"
       >
         Continue <ArrowRight className="h-5 w-5" aria-hidden="true" />
       </button>

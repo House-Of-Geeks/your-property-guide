@@ -34,7 +34,7 @@ export const post: BlogPost = {
 </ul>
 
 <h2>What a Softer Market Means for Sellers</h2>
-<p>Sellers are not locked out of a cooling market, but the playbook changes. When growth slows, pricing has to be realistic and grounded in what comparable homes are actually fetching, not what they might have fetched a year ago. Overpricing in a softer market tends to mean a longer time on market and a weaker eventual result.</p>
+<p>Sellers are not locked out of a cooling market, but the approach changes. When growth slows, pricing has to be realistic and grounded in what comparable homes are actually fetching, not what they might have fetched a year ago. Overpricing in a softer market tends to mean a longer time on market and a weaker eventual result.</p>
 <p>That makes an accurate starting figure more valuable than ever. If you are weighing up a sale, our guide on <a href="/guides/how-much-is-my-house-worth-australia">how much your house is worth</a> walks through the inputs that matter, and a <a href="/appraisal">free local appraisal</a> gives you a figure grounded in nearby sales rather than guesswork. Timing is the other lever: our guide on the <a href="/guides/best-time-to-sell-a-house-australia">best time to sell a house in Australia</a> covers how to think about seasons and conditions, while the <a href="/guides/cost-of-selling-a-house-australia">cost of selling a house</a> guide sets out the agent fees, marketing and other expenses to factor into your net result.</p>
 
 <h2>What It Means for You</h2>

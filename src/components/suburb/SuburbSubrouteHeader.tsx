@@ -158,7 +158,7 @@ interface SubrouteActionCardProps {
 export function SubrouteActionCard({ heading, body, href, cta, children, note }: SubrouteActionCardProps) {
   return (
     <div className="tone-light rounded-xl border border-line bg-white p-5 sm:p-6">
-      <h2 className="font-display text-lg sm:text-xl font-bold text-ink leading-snug tracking-tight">{heading}</h2>
+      <h2 className="font-display text-lg sm:text-xl font-normal text-ink leading-snug tracking-[-0.03em]">{heading}</h2>
       {body && <div className="mt-1.5 font-sans text-sm sm:text-[15px] text-ink-muted leading-relaxed">{body}</div>}
       <Link href={href} className={`mt-4 ${BUTTON_PRIMARY} w-full sm:w-auto justify-center`}>
         {cta}

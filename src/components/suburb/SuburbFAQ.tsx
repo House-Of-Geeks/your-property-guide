@@ -24,7 +24,7 @@ export function SuburbFAQ({ suburb }: SuburbFAQProps) {
       <section id="faq" className="scroll-mt-32 sm:scroll-mt-36">
         <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           <div className="lg:col-span-4">
-            <h2 className="font-display text-[1.75rem] sm:text-3xl text-ink leading-tight tracking-[-0.02em] font-bold">
+            <h2 className="font-display text-[1.75rem] sm:text-3xl text-ink leading-tight tracking-[-0.02em] font-normal">
               Questions about <span>{sn}</span>
             </h2>
           </div>

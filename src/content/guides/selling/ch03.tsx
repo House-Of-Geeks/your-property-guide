@@ -5,11 +5,11 @@ import { Ch, Stat, TableWrap } from "../parts";
 export const chapter: Chapter = {
   guide: "selling",
   number: 3,
-  step: "Know your number",
+  step: "Understand your costs",
   standfirst:
-    "Your number isn’t the sale price. It’s what you walk away with. Most sellers budget for commission and forget the rest, and on a typical sale the rest runs to five figures. Here is every line item.",
+    "The figure that matters is what you walk away with, not the sale price. Most sellers budget for commission and overlook the rest, and on a typical sale the rest runs to five figures. Here is every line item.",
   callout:
-    "At the top end, the campaign has a budget before it has a brochure. Every line item is written down, agreed and tied to what it does for the sale, and the vendor sees the net figure, not just the price. You can run your sale the same way for the cost of an evening with a calculator.",
+    "Experienced sellers cost the sale before it starts. They write down every line item, agree what each one is for, and plan from the net figure rather than the price. It takes an evening with a calculator, and it makes every later conversation about fees and marketing clearer.",
   checklist: [
     "Get every quoted commission rate in writing, including GST",
     "List the marketing line by line and ask who pays if the home doesn’t sell",
@@ -32,9 +32,9 @@ function Body() {
   return (
     <>
       <p>
-        A campaign run properly is costed before it launches, so you know exactly what every dollar buys and what you’ll keep. Do this
-        now, before an agent quotes you, and you’ll negotiate the fee and the marketing from a position of knowledge instead of
-        surprise.
+        Cost the sale before it starts, so you know what each item buys and what you’ll keep. Do this now, before an agent quotes
+        you, and you can discuss the fee and the marketing knowing what’s typical, rather than hearing the figures for the first
+        time.
       </p>
 
       <h2>Agent commission</h2>
@@ -93,14 +93,14 @@ function Body() {
       </TableWrap>
       <p>
         Portal pricing depends on your suburb’s median price, which is why the same ad costs three times as much in Mosman as in
-        Maryborough. <Ch n={7} guide="selling">Chapter 7</Ch> covers which of these items actually move the needle.
+        Maryborough. <Ch n={7} guide="selling">Chapter 7</Ch> covers which of these items make the most difference.
       </p>
 
       <h2>Everything else</h2>
       <ul>
         <li>
           <strong>Conveyancing or solicitor fees: $800 to $2,500.</strong> Covers contract preparation, state disclosure documents, and
-          settlement. Complex sales (deceased estates, subdivisions, disputes) sit at the top end or above it.
+          settlement. Complex sales (deceased estates, subdivisions, disputes) sit at the upper end of that range or above it.
         </li>
         <li>
           <strong>Styling and staging.</strong> A consultation using your own furniture: $200 to $500. Partial staging: $1,500 to
@@ -180,7 +180,7 @@ function Body() {
       <p>
         That’s about 3.9 per cent of the sale price, with no CGT because it’s a main residence. The same property as an investment
         held nine years with a $300,000 gross gain could add a tax bill in the tens of thousands depending on the owner’s income, which
-        is why investors should price the tax before they price the campaign.
+        is why investors should work out the tax before they budget for the marketing.
       </p>
     </>
   );

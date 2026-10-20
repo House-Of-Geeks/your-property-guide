@@ -18,7 +18,7 @@ export function RentalMarketLandlordSections({ suburb, landlord }: { suburb: Sub
   const ancillarySources = [...new Map(ancillary.map((f) => [f.source.label, f.source])).values()];
   return (
     <section id="property-manager-fees" className="scroll-mt-20">
-      <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-4">
+      <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-4">
         What property managers charge in {suburb.name}
       </h2>
 
@@ -95,7 +95,7 @@ export function RentalMarketLandlordSections({ suburb, landlord }: { suburb: Sub
       </p>
 
       <div className="mt-8 max-w-3xl">
-        <h3 className="font-display text-lg font-bold text-ink mb-2">Other fees to ask about</h3>
+        <h3 className="font-display text-lg font-normal text-ink mb-2">Other fees to ask about</h3>
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 font-sans text-sm text-ink-muted border-t border-line sm:border-t-0">
           {ancillary.map((f) => (
             <li key={f.label} className="flex justify-between gap-4 border-b border-line py-2.5">

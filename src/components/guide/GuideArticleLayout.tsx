@@ -100,8 +100,8 @@ export function GuideArticleLayout({
   // Priority guides (src/lib/next-steps.ts) get the step that fits why
   // people read them, instead of the guide funnel.
   const contextual = nextStepFor(from);
-  // The campaign framing (15 Oct 2026): a hook that opens the body and one
-  // campaign call to action above the end-of-article guide offer.
+  // The article framing (15 Oct 2026, reworded 20 Oct): a hook that opens the
+  // body and one call to action above the end-of-article guide offer.
   const campaign = articleCampaign(from);
   const hook = campaign ? <CampaignHook hook={campaign.hook} /> : null;
   const sellerGuide = audience === "selling" && !contextual;

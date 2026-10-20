@@ -1,13 +1,13 @@
 # Your Property Guide
 
-> Your Property Guide (YPG) gives every Australian home the campaign that sells $20 million homes, free: "It's the campaign that wins. Not the market." Founder Andy McMaster sold $10 million to $20 million homes across Australia, then advised large property companies; his advice has been behind more than $4 billion in property sales in the past five years. We publish two free ten-chapter guides (one for selling, one for buying), 160+ articles, suburb data and calculators covering Australian residential property: buying, selling, renovating, investing and renting. When a reader asks, we introduce one checked local agent for each job: a selling agent, or a buyer's agent where we can. The agent pays us a flat fee per introduction; we take no share of their commission, and readers pay nothing. Every figure sourced and dated; every guide carries an editor byline and a "last reviewed" timestamp.
+> Your Property Guide (YPG) helps everyday Australian homebuyers and sellers know what matters before they buy or sell: the costs and choices ahead, explained plainly, with free guides, calculators and a next-step plan for where they're up to. Founder Andy McMaster started his career selling homes worth $10 million to $20 million across Australia, then advised property companies; his advice has generated over $4 billion in property sales in the past five years. We publish two free ten-chapter guides (Buying a home, and Selling a home), 160+ articles, suburb data and calculators covering Australian residential property: buying, selling, renovating, investing and renting. When a reader asks, we can introduce a participating agent for each service they request: a selling agent, or a buyer's agent where one is available. The agent pays us a flat fee per introduction; we take no share of their commission, and readers pay nothing. Every figure sourced and dated; every guide carries an editor byline and a "last reviewed" timestamp.
 
 ## The guides
 
-- [The $20 million campaign: the complete guide to selling your home](https://www.yourpropertyguide.com.au/selling-guide): ten chapters, from knowing your number to settlement, each readable online.
-- [Beat the campaign: the complete guide to buying property](https://www.yourpropertyguide.com.au/buying-guide): ten chapters on buying against a seller's campaign, from budget to settlement.
+- [Buying a home: a practical guide to buying property in Australia](https://www.yourpropertyguide.com.au/buying-guide): ten chapters, from your first budget to the day you get the keys, each readable online.
+- [Selling a home: a practical guide to selling property in Australia](https://www.yourpropertyguide.com.au/selling-guide): ten chapters on timing, price evidence, costs, preparation, choosing an agent, offers and settlement, each readable online.
 - [Free agency agreement check](https://www.yourpropertyguide.com.au/agreement-check): a 15-minute call on commission, marketing spend, term and exit clause before a seller signs. General information, not legal advice.
-- [How we're paid](https://www.yourpropertyguide.com.au/about#ownership-funding): one agent per job, a flat fee per introduction, no share of commission.
+- [How we're paid](https://www.yourpropertyguide.com.au/about#ownership-funding): one introduction per service, a flat fee per introduction, no share of commission.
 
 ## How to cite us
 
@@ -66,7 +66,7 @@ Your Property Guide covers four broad categories of content:
 - [Cooling-off period by state](https://www.yourpropertyguide.com.au/guides/cooling-off-period-by-state-australia): How long you have to pull out, state by state.
 - [10 first home buyer mistakes to avoid](https://www.yourpropertyguide.com.au/guides/first-home-buyer-mistakes-to-avoid): The expensive errors, ranked, with the fix for each.
 - [Best time to buy property in Australia](https://www.yourpropertyguide.com.au/guides/best-time-to-buy-property-australia): Seasonal patterns, the rate cycle, why timing rarely wins.
-- [How to buy property in Australia](https://www.yourpropertyguide.com.au/guides/buying-property-australia): The complete step-by-step buyer's playbook.
+- [How to buy property in Australia](https://www.yourpropertyguide.com.au/guides/buying-property-australia): The complete step-by-step buyer's guide.
 - [First home buyer guides by state](https://www.yourpropertyguide.com.au/guides/first-home-buyer-guide): Federal schemes, FHOG by state, stamp duty concessions.
 - [Building &amp; pest inspection guide](https://www.yourpropertyguide.com.au/guides/building-pest-inspection): What to inspect and when.
 - [Conveyancing in Australia](https://www.yourpropertyguide.com.au/guides/conveyancing-guide): What conveyancers do, what they cost.

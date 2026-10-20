@@ -344,7 +344,7 @@ export default function RealEstateCommissionQldPage() {
       <p>
         Once you know your number and your shortlist, the free selling guide pulls
         the whole process together, including the fee benchmarks and the questions
-        that catch over-priced agents out, personalised to your suburb.
+        to ask every agent, personalised to your suburb.
       </p>
 
       <Sources items={QLD_COMMISSION_SOURCES} />

@@ -218,7 +218,7 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
                 </select>
                 <button
                   type="submit"
-                  className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors cursor-pointer"
+                  className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-cta-ink px-5 py-3 text-sm font-semibold transition-colors cursor-pointer"
                 >
                   Get the free guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
                 </button>
@@ -226,7 +226,7 @@ export default async function PostcodePage({ params }: PostcodePageProps) {
             ) : (
               <Link
                 href={guideFunnelHref("selling", { suburb: suburbs[0]?.slug, from, toForm: true })}
-                className="mt-4 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white px-5 py-3 text-sm font-semibold transition-colors"
+                className="mt-4 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-cta-ink px-5 py-3 text-sm font-semibold transition-colors"
               >
                 Get the free selling guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>

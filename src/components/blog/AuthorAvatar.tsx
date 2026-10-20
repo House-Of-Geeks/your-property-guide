@@ -63,7 +63,7 @@ export function AuthorAvatar({ name, image, size = 40, className = "" }: Props) 
   return (
     <div
       aria-label={name}
-      className={`rounded-full flex-shrink-0 border border-line-warm flex items-center justify-center font-display font-semibold tracking-wide select-none ${className}`}
+      className={`rounded-full flex-shrink-0 border border-line-warm flex items-center justify-center font-display font-normal tracking-wide select-none ${className}`}
       style={{ width: size, height: size, background: bg, color: fg, fontSize }}
     >
       {initials}

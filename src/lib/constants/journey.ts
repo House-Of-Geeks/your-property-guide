@@ -72,7 +72,7 @@ export const PERSONAS: readonly Persona[] = [
     cardBlurb: "Selling and buying at the same time, the suburbs that actually fit, and how the numbers work.",
     hubPath: "/upgrading",
     hubHeading: "Upgrading or downsizing",
-    hubLede: "When you're moving from one home to another, two transactions need to talk to each other. Here's the data and the playbooks.",
+    hubLede: "When you're moving from one home to another, two transactions need to talk to each other. Here's the data and the guides.",
     illustration: "/images/illustrations/upgrading.svg",
     startingPoints: [
       { label: "Sell first or buy first?", href: "/guides/sell-first-or-buy-first", description: "The decision tree across all three options, with worked examples.", icon: "/images/icons/guide.svg" },

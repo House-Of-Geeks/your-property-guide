@@ -5,11 +5,11 @@ import { Box, Ch, Pull, Stat } from "../parts";
 export const chapter: Chapter = {
   guide: "buying",
   number: 5,
-  step: "Inspect like a professional",
+  step: "Inspect with a method",
   standfirst:
-    "An open home is staged to be glanced at. Thirty disciplined minutes see through most of it, and the right $600 report sees through the rest.",
+    "An open home is presented to look its best at a glance. Thirty careful minutes of your own checks cover most of what matters, and the right $600 report covers the rest.",
   callout:
-    "Staging the home to be glanced at. Fresh paint, styled rooms, a timed open and a photo shoot that avoids the neighbours are all standard campaign tools, and none of them are lies. They are why your 30-minute checklist and an independent report matter.",
+    "Sellers present their home at its best, and their agent advises them how. Fresh paint, styled rooms, a timed open home and photos framed around the home’s strengths are standard parts of a sale, and none of them is dishonest. They show you the home’s best side, which is why your own 30-minute check and an independent report matter.",
   checklist: [
     "Run the 10-point check at every serious inspection",
     "Walk the street at a different hour, and talk to a neighbour",
@@ -32,8 +32,9 @@ function Body() {
   return (
     <>
       <p>
-        Professional buyers walk a property looking for reasons to say no. Amateurs walk it imagining their furniture. Both notice the
-        light and the layout; only one of them checks under the sink. The discipline below costs nothing and routinely saves five figures.
+        Experienced buyers walk through a property looking for reasons to say no. Newer buyers tend to walk through it picturing their
+        furniture. Both notice the light and the layout; only one of them checks under the sink. The method below costs nothing and
+        routinely saves five figures.
       </p>
 
       <Box title="The 30-minute inspection: 10 checks" tone="warm">
@@ -91,8 +92,8 @@ function Body() {
       </p>
       <p>
         Don’t skip the report on new builds or renovated homes; fresh paint hides more than old wallpaper ever did. And treat the seller’s
-        own report, if offered, as a starting point rather than a substitute. It may be accurate, but the inspector was answering to the
-        other side. Our <Link href="/guides/building-pest-inspection">building and pest inspection guide</Link> covers what to ask.
+        own report, if offered, as a starting point rather than a substitute. It may be accurate, but the inspector was engaged by the
+        seller and reported to them. Our <Link href="/guides/building-pest-inspection">building and pest inspection guide</Link> covers what to ask.
       </p>
 
       <h2>Units: the strata report is the building’s diary</h2>
@@ -120,8 +121,8 @@ function Body() {
       <p>
         Walk when the defect is structural and unquantified (no engineer’s report, no fixed price), when the seller blocks reasonable
         inspection access, when the strata minutes show a defect dispute with no funded plan, or when fixing the problem would cost more
-        than the discount you can realistically negotiate. There is always another property. Nobody believes that during the campaign;
-        everybody knows it a year later.
+        than the discount you can realistically negotiate. There is always another property. It rarely feels that way in the middle of a
+        search, but it’s clear a year later.
       </p>
 
       <Pull>Every defect found before exchange is a discount. Every one found after is a bill.</Pull>
@@ -130,7 +131,7 @@ function Body() {
         <p>
           The reports are where stretched budgets cut corners, and it’s exactly backwards: you have the least spare cash to absorb a
           surprise, so you can least afford to skip the $600 that prevents one. Budget for reports on two or three properties across your
-          search. Losing $600 on a house someone outbids you for stings; finding the restumping job after settlement ruins you.
+          search. Losing $600 on a house someone outbids you for stings; finding the restumping job after settlement costs far more.
         </p>
       </Box>
 

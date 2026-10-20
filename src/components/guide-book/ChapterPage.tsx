@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Download } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { ReadingProgress } from "@/components/interactive/ReadingProgress";
+import { BookCover } from "@/components/brand/BookCover";
 import { BreadcrumbJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { FOUNDER } from "@/lib/founder";
 import { GUIDE_BOOKS, chapterHref, type GuideBookId } from "@/lib/guide-books";
@@ -15,14 +16,14 @@ import { chapterEntries, getChapter } from "@/content/guides";
 import { ChapterContent } from "./ChapterContent";
 import { GuideIntroNote } from "./GuideIntroNote";
 
-// One chapter of a free guide as a page of its own (campaign rebuild,
-// 15 Oct 2026): /selling-guide/<slug> and /buying-guide/<slug>. The content
-// is src/content/guides; the whole guide is still free as a PDF from the
-// guide's landing page.
+// One chapter of a free guide as a page of its own (15 Oct 2026):
+// /selling-guide/<slug> and /buying-guide/<slug>. The content is
+// src/content/guides; the whole guide is still free as a PDF from the
+// guide's landing page. v7 (20 Oct 2026): a reading page first, with the
+// contents and the matched cover beside it.
 
-const SHELL = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8";
+const SHELL = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10";
 const PUBLISHED = "2026-10-15";
-const LABEL: Record<GuideBookId, string> = { selling: "selling guide", buying: "buying guide" };
 
 export function chapterParams(guide: GuideBookId) {
   return GUIDE_BOOKS[guide].chapters.map((c) => ({ chapter: c.slug }));
@@ -33,7 +34,7 @@ export function chapterMetadata(guide: GuideBookId, slug: string): Metadata {
   if (!c) return {};
   const book = GUIDE_BOOKS[guide];
   const url = `${SITE_URL}${book.href}/${c.slug}`;
-  const title = `${c.title}: chapter ${c.number} of the free ${LABEL[guide]}`;
+  const title = `${c.title}: chapter ${c.number} of ${book.name}, a free guide`;
   return {
     title,
     description: c.standfirst,
@@ -71,24 +72,27 @@ export function ChapterPage({ guide, slug }: { guide: GuideBookId; slug: string 
       <ReadingProgress />
 
       <article>
-        <header className="border-b border-line bg-cream">
-          <div className={`${SHELL} pb-12 pt-4 sm:pb-16`}>
+        <header className="border-b border-line bg-background">
+          <div className={`${SHELL} pb-10 pt-4 sm:pb-14`}>
             <Breadcrumbs items={[{ label: book.name, href: book.href }, { label: `Chapter ${chapter.number}` }]} />
-            <div className="mt-6 max-w-3xl lg:mt-10">
-              <p className="text-[13px] font-semibold uppercase tracking-[0.18em] text-primary">
+            <div className="mt-7 max-w-3xl lg:mt-10">
+              <p className="text-[12px] font-medium uppercase tracking-[0.1em] text-primary">
                 {`Chapter ${chapter.number} of 10 · ${chapter.step}`}
               </p>
-              <h1 className="mt-4 text-[38px] leading-[1.06] tracking-[-0.02em] text-ink sm:text-5xl lg:text-[58px]">{chapter.title}</h1>
-              <p className="mt-6 text-lg leading-relaxed text-ink-muted sm:text-xl" data-speakable-summary>
+              <h1 className="mt-4 text-[38px] leading-[1.06] tracking-[-0.04em] text-ink sm:text-[46px] lg:text-[54px]">{chapter.title}</h1>
+              <p className="mt-5 text-[18px] leading-[1.65] text-ink-muted sm:text-[20px]" data-speakable-summary>
                 {chapter.standfirst}
               </p>
-              <div className="mt-8 flex items-center gap-3 text-sm text-ink-muted">
+              <div className="mt-7 flex items-center gap-3 border-t border-line pt-5 text-[14px] text-ink-muted">
                 <Image src={FOUNDER.photo} alt="" width={40} height={40} className="h-10 w-10 rounded-full object-cover object-top" />
                 <span>
-                  <Link href={`/about#${FOUNDER.id}`} className="font-semibold text-ink underline decoration-line-strong underline-offset-4">
+                  <Link href={`/about#${FOUNDER.id}`} className="font-medium text-ink underline decoration-line-strong underline-offset-4">
                     {FOUNDER.name}
                   </Link>
-                  {`, founder and editor · From ${book.title}`}
+                  {", founder and editor · From "}
+                  <Link href={book.href} className="text-ink underline decoration-line-strong underline-offset-4">
+                    {book.name}
+                  </Link>
                 </span>
               </div>
             </div>
@@ -100,28 +104,28 @@ export function ChapterPage({ guide, slug }: { guide: GuideBookId; slug: string 
             {chapter.number === 1 && <GuideIntroNote guide={guide} className="mb-12" />}
             <ChapterContent chapter={chapter} />
 
-            <nav aria-label="Chapters" className="mt-12 grid gap-4 border-t border-line pt-8 sm:grid-cols-2">
+            <nav aria-label="Chapters" className="mt-12 grid border-y border-line sm:grid-cols-2">
               {prev ? (
-                <Link href={chapterHref(guide, prev.number)} className="group rounded-2xl border border-line p-5 hover:border-ink">
-                  <span className="flex items-center gap-1.5 text-sm text-ink-muted">
+                <Link href={chapterHref(guide, prev.number)} className="group py-5 sm:pr-6">
+                  <span className="flex items-center gap-1.5 text-[13px] text-ink-muted">
                     <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Chapter {prev.number}
                   </span>
-                  <span className="mt-1 block font-semibold text-ink group-hover:underline underline-offset-4">{prev.title}</span>
+                  <span className="mt-1 block font-display text-[22px] leading-snug tracking-[-0.025em] text-ink group-hover:text-primary">{prev.title}</span>
                 </Link>
               ) : (
-                <Link href={book.href} className="group rounded-2xl border border-line p-5 hover:border-ink">
-                  <span className="flex items-center gap-1.5 text-sm text-ink-muted">
+                <Link href={book.href} className="group py-5 sm:pr-6">
+                  <span className="flex items-center gap-1.5 text-[13px] text-ink-muted">
                     <ArrowLeft className="h-4 w-4" aria-hidden="true" /> The guide
                   </span>
-                  <span className="mt-1 block font-semibold text-ink group-hover:underline underline-offset-4">{book.name}</span>
+                  <span className="mt-1 block font-display text-[22px] leading-snug tracking-[-0.025em] text-ink group-hover:text-primary">{book.name}</span>
                 </Link>
               )}
               {next && (
-                <Link href={chapterHref(guide, next.number)} className="group rounded-2xl border border-line p-5 text-right hover:border-ink sm:col-start-2">
-                  <span className="flex items-center justify-end gap-1.5 text-sm text-ink-muted">
+                <Link href={chapterHref(guide, next.number)} className="group border-t border-line py-5 text-right sm:col-start-2 sm:border-l sm:border-t-0 sm:pl-6">
+                  <span className="flex items-center justify-end gap-1.5 text-[13px] text-ink-muted">
                     Chapter {next.number} <ArrowRight className="h-4 w-4" aria-hidden="true" />
                   </span>
-                  <span className="mt-1 block font-semibold text-ink group-hover:underline underline-offset-4">{next.title}</span>
+                  <span className="mt-1 block font-display text-[22px] leading-snug tracking-[-0.025em] text-ink group-hover:text-primary">{next.title}</span>
                 </Link>
               )}
             </nav>
@@ -129,9 +133,9 @@ export function ChapterPage({ guide, slug }: { guide: GuideBookId; slug: string 
 
           <aside className="lg:col-span-4">
             <div className="space-y-6 lg:sticky lg:top-28">
-              <nav aria-label={`${book.name}: contents`} className="rounded-3xl border border-line bg-white p-6">
-                <p className="text-sm font-semibold text-ink">{book.name}</p>
-                <ol className="mt-4 space-y-1">
+              <nav aria-label={`${book.name}: contents`} className="border-t border-ink pt-5">
+                <p className="text-[12px] font-medium uppercase tracking-[0.1em] text-primary">{`${book.name}: contents`}</p>
+                <ol className="mt-3">
                   {all.map((c) => {
                     const here = c.number === chapter.number;
                     return (
@@ -139,9 +143,9 @@ export function ChapterPage({ guide, slug }: { guide: GuideBookId; slug: string 
                         <Link
                           href={chapterHref(guide, c.number)}
                           aria-current={here ? "page" : undefined}
-                          className={`flex gap-3 rounded-lg px-2 py-1.5 text-[14px] leading-snug ${here ? "bg-sand font-semibold text-ink" : "text-ink-muted hover:text-ink"}`}
+                          className={`flex gap-3 border-b border-line py-2 text-[14px] leading-snug ${here ? "font-medium text-ink" : "text-ink-muted hover:text-ink"}`}
                         >
-                          <span className="w-5 shrink-0 text-ink-subtle">{c.number}</span>
+                          <span className={`w-5 shrink-0 font-display text-[16px] leading-tight ${here ? "text-primary" : "text-ink-subtle"}`}>{c.number}</span>
                           {c.title}
                         </Link>
                       </li>
@@ -149,15 +153,18 @@ export function ChapterPage({ guide, slug }: { guide: GuideBookId; slug: string 
                   })}
                 </ol>
               </nav>
-              <div className="tone-dark rounded-3xl bg-eucalyptus p-6">
-                <p className="font-display text-[22px] leading-snug text-ink">Get the whole guide as a PDF</p>
-                <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">All ten chapters, with pointers for your stage. Free.</p>
-                <Link
-                  href={`${book.href}?from=${guide}-guide-ch${chapter.number}#get-the-guide`}
-                  className="mt-5 inline-flex h-11 items-center gap-2 rounded-full bg-cta px-5 text-[15px] font-semibold text-white hover:bg-cta-hover"
-                >
-                  <Download className="h-4 w-4" aria-hidden="true" /> Get the free PDF
-                </Link>
+              <div className={`grid grid-cols-[88px_1fr] items-center gap-5 p-5 ${guide === "buying" ? "bg-stage-buy" : "bg-stage-sell"}`}>
+                <BookCover guide={guide} className="w-[88px]" sizes="90px" />
+                <div>
+                  <p className="font-display text-[21px] leading-snug tracking-[-0.025em] text-ink">Get the whole guide as a PDF</p>
+                  <p className="mt-1.5 text-[14px] leading-relaxed text-ink-muted">All ten chapters, with pointers for where you’re up to. Free.</p>
+                  <Link
+                    href={`${book.href}?from=${guide}-guide-ch${chapter.number}#get-the-guide`}
+                    className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-[4px] bg-cta px-4 text-[14px] font-medium text-cta-ink hover:bg-cta-hover"
+                  >
+                    <Download className="h-4 w-4" aria-hidden="true" /> Get the free PDF
+                  </Link>
+                </div>
               </div>
             </div>
           </aside>

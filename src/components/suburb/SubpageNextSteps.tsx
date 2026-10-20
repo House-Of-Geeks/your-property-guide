@@ -22,7 +22,7 @@ export function SubpageNextSteps({ title, groups, id }: { title: string; groups:
   if (shown.length === 0) return null;
   return (
     <section id={id} aria-labelledby={id ? `${id}-title` : undefined} className="scroll-mt-20">
-      <h2 id={id ? `${id}-title` : undefined} className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-6">
+      <h2 id={id ? `${id}-title` : undefined} className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-6">
         {title}
       </h2>
       <div className="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">

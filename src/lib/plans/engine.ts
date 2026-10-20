@@ -167,7 +167,7 @@ function sellingPlan(a: PlanAnswers): Plan {
 
   if (stage === "listed") {
     return {
-      title: "Your next-step plan: from campaign to settlement",
+      title: "Your next-step plan: from listing to settlement",
       intro: "You’ve chosen your agent, so we won’t introduce another. Here’s what helps between now and handing over the keys.",
       nextSteps: [
         {

@@ -19,7 +19,7 @@ export const post: BlogPost = {
 
 <p>Winter is traditionally one of the quietest stretches of the property calendar, alongside the Christmas holidays. Fewer homes are listed, open home crowds shrink, and campaigns stretch out. This year the seasonal slowdown is amplified by the rate rises, which have trimmed what buyers can borrow and made them more deliberate.</p>
 
-<p>But a thin market is not automatically a bad one to sell in. The buyers who brave July inspections tend to be serious, and with fewer competing listings, a well-presented home can stand out in a way it never would in a crowded spring. As our guide to the <a href="/guides/best-time-to-sell-a-house-australia">best time to sell a house in Australia</a> puts it, a prepared home in a quiet season beats an unprepared one in a busy season, every time. If you need to sell now, the playbook is presentation, the right agent and realistic pricing, not waiting for a better month.</p>
+<p>But a thin market is not automatically a bad one to sell in. The buyers who brave July inspections tend to be serious, and with fewer competing listings, a well-presented home can stand out in a way it never would in a crowded spring. As our guide to the <a href="/guides/best-time-to-sell-a-house-australia">best time to sell a house in Australia</a> puts it, a prepared home in a quiet season beats an unprepared one in a busy season, every time. If you need to sell now, the priorities are presentation, the right agent and realistic pricing, not waiting for a better month.</p>
 
 <h2>Spring is closer than it feels</h2>
 

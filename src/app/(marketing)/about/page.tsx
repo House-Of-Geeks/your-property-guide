@@ -7,16 +7,16 @@ import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164, SITE_NAME, SITE_URL } from "@/lib/constants";
 import { Band, RuleGrid, RuleItem, SectionHeading } from "@/components/premium";
 import { FOUNDER } from "@/lib/founder";
-import { AGREEMENT_CHECK, LICENCE_REGISTERS, PARTNER_CHECKS, PROMISE } from "@/lib/service-model";
+import { AGREEMENT_CHECK, LICENCE_REGISTERS, PARTNER_CHECKS } from "@/lib/service-model";
 
 export const metadata: Metadata = {
   // Aligned with the education-led repositioning (2026-05). The about
   // page is the canonical "why we exist" — and the answer is now
   // education, not reference.
-  title: `About ${SITE_NAME}: Andy McMaster and the $20 million campaign`,
-  description: "Andy McMaster sold $10 million to $20 million homes across Australia, then advised big property companies. Why every home deserves the same campaign, and how we’re paid.",
+  title: `About ${SITE_NAME}: practical guides for Australian buyers and sellers`,
+  description: "Why Your Property Guide exists, who writes and checks the guides, and how we’re paid. Free guides, tools and next-step plans for everyday Australian homebuyers and sellers.",
   alternates: { canonical: `${SITE_URL}/about` },
-  openGraph: { ...DEFAULT_OG, url: `${SITE_URL}/about`, title: `About ${SITE_NAME}: Andy McMaster and the $20 million campaign`, description: "Why every home deserves a $20 million campaign, who writes the guides, and how we’re paid.", type: "website" },
+  openGraph: { ...DEFAULT_OG, url: `${SITE_URL}/about`, title: `About ${SITE_NAME}`, description: "Why the guides exist, who writes and checks them, and how we’re paid.", type: "website" },
   twitter: { card: "summary_large_image" },
 };
 
@@ -45,7 +45,7 @@ const PRINCIPLES = [
 // the Organization JSON-LD: #story, #people, #ownership-funding, #checks,
 // #methodology, #coverage, #corrections, and each writer's id.
 const ON_THIS_PAGE: [string, string][] = [
-  ["#story", "Andy’s story"],
+  ["#story", "Why the guides exist"],
   ["#ownership-funding", "How we’re paid"],
   ["#checks", "How we check agents"],
   ["#people", "Who writes the guides"],
@@ -54,19 +54,19 @@ const ON_THIS_PAGE: [string, string][] = [
   ["#contact", "Contact"],
 ];
 
-const h3 = "text-xl sm:text-2xl font-bold text-ink leading-snug tracking-[-0.01em]";
+const h3 = "text-xl sm:text-[22px] font-medium text-ink leading-snug tracking-[-0.01em]";
 const textLink = "text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink";
-const SHELL = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8";
-const eyebrow = "text-[13px] font-semibold uppercase tracking-[0.2em] text-primary";
+const SHELL = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10";
+const eyebrow = "text-[12px] font-medium uppercase tracking-[0.1em] text-primary";
 
-// Andy's story, in his words (the 15 Oct 2026 brief, used as written). The
-// facts in it are the ones in src/lib/founder.ts and nothing else.
+// Why the guides exist, in Andy's words (20 Oct 2026, "Clear decisions").
+// His experience is background, not the promise. The facts in it are the
+// ones in src/lib/founder.ts and nothing else.
 const STORY: readonly string[] = [
-  "At the top end, nobody leaves the result to the market. Before anyone names a price, the evidence is on the table. The home is styled, shot and launched for the one buyer who’ll pay the most. Every offer is negotiated as though the last $50,000 matters, because it does.",
-  "In the past five years, my advice has generated over $4 billion in property sales, and it all comes back to one lesson. The price you get comes down to the campaign. A good market won’t save a weak campaign, and a slack agent can’t hide behind a slow one. The campaign decides it.",
-  "And it works the same way at every price point. What gets a harbourfront home its maximum price is exactly what gets it for a two-bedroom unit or a first home in the suburbs. The only difference is who gets shown how.",
-  "So I built Your Property Guide to give every Australian the $20 million playbook. You’ll know your number before an agent quotes you, what selling or buying really costs, how to build a campaign on evidence, and how to tell a negotiator from a flatterer.",
-  "When you’re ready, we’ll introduce you to one agent who has proven they run campaigns this way in your suburb. Just one, checked by us. We don’t take a cut of their commission, so we only ever introduce someone we’d trust with our own home.",
+  "I started my career selling homes worth $10 million to $20 million across Australia. After two years I was head-hunted to advise property companies, and in the past five years my advice has generated over $4 billion in property sales.",
+  "What stayed with me is that the same questions matter at every price. What is the property likely to be worth, and what is the evidence? What will the move really cost? What is worth doing first, and who is each person working for?",
+  "Most people face those questions only a few times in their lives, often against a deadline. Your Property Guide sets out the answers plainly: free guides, calculators and a next-step plan for where you’re up to, whether you’re buying, selling or both.",
+  "When you want personal help, you can ask about an introduction to a participating agent. That’s always your choice, and we explain how it works, and how we’re paid, before anything is sent.",
 ];
 
 export default function AboutPage() {
@@ -82,19 +82,19 @@ export default function AboutPage() {
         sameAs={["https://www.linkedin.com/in/andymcmaster"]}
       />
 
-      {/* The story's opening: the line, the first paragraph and the
-          portrait, then the page's own contents. */}
-      <section aria-labelledby="about-title" className="bg-cream">
-        <div className={`${SHELL} pb-16 pt-4 sm:pb-20 lg:pb-24`}>
+      {/* The opening: what the site is for, the page's own contents, and
+          Andy's portrait. */}
+      <section aria-labelledby="about-title" className="bg-background">
+        <div className={`${SHELL} pb-14 pt-4 sm:pb-16 lg:pb-20`}>
           <Breadcrumbs items={[{ label: "About" }]} />
-          <div className="mt-6 grid items-center gap-12 lg:mt-10 lg:grid-cols-12 lg:gap-16">
+          <div className="mt-7 grid items-center gap-12 lg:mt-10 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-7">
-              <p className={eyebrow}>Andy’s story</p>
-              <h1 id="about-title" className="mt-5 text-[42px] leading-[1.04] tracking-[-0.02em] text-ink sm:text-6xl lg:text-[72px]">
-                It’s the campaign that wins. <em className="font-normal italic text-accent-dark">Not the market. Not luck.</em>
+              <p className={eyebrow}>About the guides</p>
+              <h1 id="about-title" className="mt-5 text-[42px] leading-[1.04] tracking-[-0.045em] text-ink sm:text-[56px] lg:text-[64px]">
+                Clear, practical help for the decisions ahead.
               </h1>
-              <p className="mt-7 max-w-2xl text-lg leading-relaxed text-ink-muted sm:text-xl">
-                I started my career selling the very top of the Australian market, homes worth $10 million to $20 million, all over the country. After two years I was head-hunted to advise some of the biggest companies in property.
+              <p className="mt-6 max-w-2xl text-[17px] leading-[1.7] text-ink-muted sm:text-[19px]">
+                Your Property Guide helps everyday Australians understand the costs and choices involved in buying and selling a home, with free guides, useful tools and a next-step plan for where you’re up to.
               </p>
               <nav aria-label="On this page" className="mt-9 border-t border-line pt-6">
                 <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
@@ -108,16 +108,13 @@ export default function AboutPage() {
             </div>
             <div className="lg:col-span-5">
               <figure className="relative mx-auto max-w-[440px] lg:mx-0 lg:ml-auto">
-                <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-surface-warm shadow-card">
-                  {/* TODO(andy): real photo. This is the portrait already on
-                      the site; replace it with the new one when it's shot. */}
+                <div className="relative aspect-[4/5] overflow-hidden bg-surface-warm">
                   <Image src={FOUNDER.photo} alt={`${FOUNDER.name}, founder of Your Property Guide`} fill preload sizes="(min-width: 1024px) 440px, 90vw" className="object-cover object-top" />
                 </div>
-                <div className="tone-dark absolute -bottom-6 left-4 right-4 rounded-2xl bg-eucalyptus p-5 shadow-card sm:left-auto sm:right-[-1.5rem] sm:w-64">
-                  <p className="font-display text-[40px] leading-none text-primary">{FOUNDER.salesStat.value}</p>
-                  <p className="mt-2 text-sm leading-snug text-ink-muted">{FOUNDER.salesStat.label}</p>
-                </div>
-                <figcaption className="sr-only">{`${FOUNDER.name}, founder`}</figcaption>
+                <figcaption className="mt-3 flex flex-wrap justify-between gap-2 text-[12px] text-ink-muted">
+                  <span>{FOUNDER.name}</span>
+                  <span>Founder, Your Property Guide</span>
+                </figcaption>
               </figure>
             </div>
           </div>
@@ -126,48 +123,50 @@ export default function AboutPage() {
 
       {/* The rest of the story, as Andy wrote it, beside the facts about
           the business. */}
-      <section id="story" aria-label="Andy’s story" className="scroll-mt-20 border-t border-line bg-white py-16 sm:py-24">
+      <section id="story" aria-labelledby="story-title" className="scroll-mt-20 border-t border-line py-14 sm:py-20">
         <div className={`${SHELL} grid gap-12 lg:grid-cols-12 lg:gap-16`}>
           <div className="lg:col-span-7">
-            <div className="max-w-2xl space-y-6 text-lg leading-[1.75] text-ink sm:text-[19px]">
+            <p className={eyebrow}>Why the guides exist</p>
+            <h2 id="story-title" className="mt-4 text-[34px] leading-[1.08] tracking-[-0.04em] text-ink sm:text-[42px]">Experience you can put to use.</h2>
+            <div className="mt-7 max-w-2xl space-y-5 text-[17px] leading-[1.75] text-ink-muted sm:text-[18px]">
               {STORY.map((p) => (
                 <p key={p.slice(0, 24)}>{p}</p>
               ))}
             </div>
-            <p className="mt-12 max-w-2xl font-display text-[34px] leading-[1.12] tracking-[-0.015em] text-ink sm:text-[44px]">
-              {PROMISE.closing}
+            <p className="mt-10 max-w-2xl border-l border-accent pl-6 font-display text-[28px] leading-[1.25] tracking-[-0.025em] text-ink sm:text-[32px]">
+              {FOUNDER.aim}
             </p>
             <p className="mt-6">
-              <span className="block font-display text-[28px] italic leading-none text-ink">{FOUNDER.name}</span>
-              <span className="mt-2 block text-sm text-ink-muted">Founder, Your Property Guide</span>
+              <span className="block font-display text-[24px] leading-none tracking-[-0.02em] text-ink">{FOUNDER.name}</span>
+              <span className="mt-2 block text-[13px] text-ink-muted">Founder, Your Property Guide</span>
             </p>
           </div>
 
           <aside className="lg:col-span-5 lg:pt-1">
-            <div className="rounded-3xl border border-line bg-cream p-6 sm:p-7 lg:sticky lg:top-28">
-              <h2 className="font-sans text-sm font-semibold tracking-normal text-ink">At a glance</h2>
-              <dl className="mt-3 divide-y divide-line text-[15px]">
-                <div className="py-3 first:pt-0">
-                  <dt className="font-semibold text-ink">What we do</dt>
-                  <dd className="mt-0.5 text-ink-muted">Free guides and tools for selling and buying, then, when you ask, one agent for each job you ask us to help with.</dd>
+            <div className="border-t border-ink pt-5 lg:sticky lg:top-28">
+              <h2 className="font-sans text-[12px] font-medium uppercase tracking-[0.1em] text-primary">At a glance</h2>
+              <dl className="mt-2 divide-y divide-line text-[15px]">
+                <div className="py-3">
+                  <dt className="font-medium text-ink">What we do</dt>
+                  <dd className="mt-0.5 text-ink-muted">Free guides, tools and next-step plans for buying and selling. When you ask, an introduction for each service you request.</dd>
                 </div>
                 <div className="py-3">
-                  <dt className="font-semibold text-ink">How we’re paid</dt>
+                  <dt className="font-medium text-ink">How we’re paid</dt>
                   <dd className="mt-0.5 text-ink-muted">Agents pay us a flat fee for each introduction. We take 0% of their commission, and buyers and sellers pay nothing.</dd>
                 </div>
                 <div className="py-3">
-                  <dt className="font-semibold text-ink">Before you sign</dt>
+                  <dt className="font-medium text-ink">Before you sign</dt>
                   <dd className="mt-0.5 text-ink-muted">
                     A free 15-minute check of your agency agreement.{" "}
                     <Link href={AGREEMENT_CHECK.href} className={textLink}>Book it</Link>
                   </dd>
                 </div>
                 <div className="py-3">
-                  <dt className="font-semibold text-ink">Who owns it</dt>
+                  <dt className="font-medium text-ink">Who owns it</dt>
                   <dd className="mt-0.5 text-ink-muted">Profit Geeks Pty Ltd, an Australian-registered private company.</dd>
                 </div>
                 <div className="py-3 last:pb-0">
-                  <dt className="font-semibold text-ink">Contact</dt>
+                  <dt className="font-medium text-ink">Contact</dt>
                   <dd className="mt-0.5 text-ink-muted">
                     <a href={`tel:${CONTACT_PHONE_E164}`} className={textLink}>{CONTACT_PHONE_DISPLAY}</a>
                     {" · "}
@@ -236,18 +235,18 @@ export default function AboutPage() {
           check any agent yourself. */}
       <Band tone="quiet" id="checks" className="scroll-mt-16">
         <p className={eyebrow}>How we check agents</p>
-        <SectionHeading title="Every agent we introduce passes four checks" intro="Just one agent for each job, checked by us. Here’s what each check means, and how to look any agent up yourself." />
+        <SectionHeading title="Every agent we introduce passes four checks" intro="One introduction for each service you ask about, checked by us. Here’s what each check means, and how to look any agent up yourself." />
         <ol className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
           {PARTNER_CHECKS.map((c, i) => (
-            <li key={c.title} className="border-t-2 border-ink pt-6">
-              <span className="font-display text-[32px] leading-none text-accent-dark" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-              <h3 className="mt-4 text-xl text-ink">{c.title}</h3>
+            <li key={c.title} className="border-t border-line-strong pt-5">
+              <span className="font-display text-[28px] leading-none text-primary" aria-hidden="true">{i + 1}</span>
+              <h3 className="mt-3 text-[19px] font-medium text-ink">{c.title}</h3>
               <p className="mt-2 text-base leading-relaxed text-ink-muted">{c.body}</p>
             </li>
           ))}
         </ol>
         <div className="mt-12 border-t border-line pt-6">
-          <p className="text-[15px] font-semibold text-ink">Check any agent’s licence on their state’s register</p>
+          <p className="text-[15px] font-medium text-ink">Check any agent’s licence on their state’s register</p>
           <ul className="mt-3 grid gap-x-8 gap-y-2 text-[15px] sm:grid-cols-2 lg:grid-cols-4">
             {LICENCE_REGISTERS.map((r) => (
               <li key={r.state}>

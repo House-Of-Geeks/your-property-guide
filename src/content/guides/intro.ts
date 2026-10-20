@@ -1,8 +1,10 @@
 import type { GuideBookId } from "@/lib/guide-books";
 
-// Each guide opens with a short note from Andy (campaign rebuild, 15 Oct
-// 2026). The only facts in it are the ones in src/lib/founder.ts. The guide
-// landing pages, the first chapter of each guide and the PDFs show it.
+// Each guide opens with a short note from Andy (15 Oct 2026; rewritten
+// 20 Oct 2026 for "Clear decisions"). His experience is background: it says
+// why the guide is worth reading, never what the reader's price will be. The
+// only facts in it are the ones in src/lib/founder.ts. The guide landing
+// pages, the first chapter of each guide and the PDFs show it.
 
 export interface GuideIntro {
   heading: string;
@@ -11,18 +13,19 @@ export interface GuideIntro {
 
 export const GUIDE_INTRO: Record<GuideBookId, GuideIntro> = {
   selling: {
-    heading: "Why the campaign beats the market",
+    heading: "Why I wrote this guide",
     paragraphs: [
-      "I started my career selling homes worth $10 million to $20 million, all over Australia. At that level, nobody leaves the price to the market. The evidence is on the table before anyone names a number, the home is presented and launched for the one buyer who’ll pay the most, and every offer is negotiated as though the last $50,000 matters, because it does.",
-      "In the past five years my advice has generated over $4 billion in property sales, and the lesson hasn’t changed: the price you get comes down to the campaign. A good market won’t save a weak campaign, and a slack agent can’t hide behind a slow one.",
-      "This guide is that campaign, written down for every home. Chapters 1 to 3 get you your number. Chapter 4 presents the home for the top buyer. Chapter 5 hires the agent who’ll run it. Chapters 6 to 8 choose the method, launch it and negotiate every dollar. Chapters 9 and 10 close it out.",
+      "Selling a home comes down to a handful of decisions that matter more than the rest: what the property is likely to be worth, what the sale will cost, what is worth preparing, who you sell with and how you handle the offers. Most people make them only a few times in their lives.",
+      "I started my career selling homes across Australia and later advised property companies. The same questions come up at every price: what the evidence says, what each cost is for, and what is worth doing before you sell. Market conditions matter too, so this guide explains how to read them and where to focus on what you can control.",
+      "Chapters 1 to 3 cover timing, value and costs. Chapter 4 helps you decide what to prepare. Chapters 5 to 7 cover choosing an agent, the way you sell and the marketing. Chapters 8 to 10 take you through offers, contracts, settlement and a 12-week timeline.",
     ],
   },
   buying: {
-    heading: "Every seller’s agent is running a campaign. It’s aimed at you.",
+    heading: "Why I wrote this guide",
     paragraphs: [
-      "I started my career on the selling side, running campaigns for homes worth $10 million to $20 million. Every listing you’ll inspect is being sold with a campaign too: a price guide, a launch, the open homes, the follow-up calls and a deadline, all built to bring the most buyers to the highest number.",
-      "None of that is a trick. It’s how property is sold. But a buyer who doesn’t know how the campaign works ends up paying for it. This guide shows you the seller’s playbook from your side of the table, so you can run your own buying campaign: know your number, read their tactics, and make your offer on your terms.",
+      "Buying a home brings a lot of new information at once: borrowing limits, schemes, inspections, contracts and settlement dates. It helps to know which decisions come first, and which figures need confirming with a lender, conveyancer or inspector.",
+      "I started my career on the selling side, so I know how sales are usually prepared, priced and run. This guide explains that process from the buyer’s point of view, so you can understand what you’re seeing and decide at your own pace.",
+      "Chapters 1 to 3 cover where you’re starting from, your budget and the schemes in your state. Chapters 4 to 7 cover choosing an area, inspecting, how homes are marketed and sold, and making an offer. Chapters 8 to 10 take you through finance, contracts, settlement and a 12-week timeline.",
     ],
   },
 };

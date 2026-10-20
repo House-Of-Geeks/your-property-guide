@@ -86,7 +86,7 @@ function MetricCard({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-line bg-white p-4">
       <p className="font-sans text-[13px] text-ink-muted mb-1.5">{label}</p>
-      <p className="font-display text-2xl font-bold text-ink leading-none">{value}</p>
+      <p className="font-display text-2xl font-normal text-ink leading-none">{value}</p>
     </div>
   );
 }
@@ -111,7 +111,7 @@ function NearbyRents({ name, nearby }: { name: string; nearby: NearbySubpage[] }
   const anySplit = rows.some((n) => n.rent?.house || n.rent?.unit);
   return (
     <section id="nearby-rents" className="scroll-mt-20">
-      <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-2">Rents in suburbs near {name}</h2>
+      <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-2">Rents in suburbs near {name}</h2>
       <p className="font-sans text-sm text-ink-muted mb-5 max-w-2xl">The latest published median weekly rent in each neighbouring suburb. Each links to its own rental market page.</p>
       <div className="overflow-x-auto rounded-xl border border-line">
         <table className="w-full text-sm">
@@ -352,7 +352,7 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
             <>
               {legacyCards.some(([label]) => label.includes("bedroom")) && (
                 <section id="current-rent" className="scroll-mt-20">
-                  <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+                  <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-5">
                     Median weekly rent in {name}
                   </h2>
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
@@ -371,21 +371,21 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
                   suburbs 3.1: price-anchor links back to the profile). */}
               {grossYield && suburb.stats.medianHousePrice > 0 && (
                 <section id="yield" className="scroll-mt-20 rounded-xl border border-line p-5 sm:p-8">
-                  <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+                  <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-5">
                     Rental yield against the purchase price
                   </h2>
                   <dl className="grid grid-cols-3 gap-4 sm:gap-6">
                     <div>
                       <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Median house price</dt>
-                      <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{formatPriceFull(suburb.stats.medianHousePrice)}</dd>
+                      <dd className="font-display text-xl sm:text-3xl font-normal text-ink leading-none">{formatPriceFull(suburb.stats.medianHousePrice)}</dd>
                     </div>
                     <div>
                       <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Median house rent</dt>
-                      <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{money(currentRent)}/wk</dd>
+                      <dd className="font-display text-xl sm:text-3xl font-normal text-ink leading-none">{money(currentRent)}/wk</dd>
                     </div>
                     <div>
                       <dt className="font-sans text-[13px] text-ink-muted mb-1.5">Gross yield</dt>
-                      <dd className="font-display text-xl sm:text-3xl font-bold text-ink leading-none">{grossYield}%</dd>
+                      <dd className="font-display text-xl sm:text-3xl font-normal text-ink leading-none">{grossYield}%</dd>
                     </div>
                   </dl>
                   <p className="font-sans text-xs text-ink-subtle mt-5 leading-relaxed">
@@ -400,7 +400,7 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
 
               {history.length > 1 && (
                 <section id="history" className="scroll-mt-20">
-                  <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+                  <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-5">
                     How rents have moved
                   </h2>
                   <div className="overflow-x-auto rounded-xl border border-line">
@@ -464,7 +464,7 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
           {/* The same one action, once more where the page ends. */}
           <section className="tone-dark rounded-xl bg-surface-inverse p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
             <div>
-              <h2 className="font-display text-xl sm:text-2xl font-bold text-ink tracking-tight">Selling an investment property in {name}?</h2>
+              <h2 className="font-display text-xl sm:text-2xl font-normal text-ink tracking-[-0.03em]">Selling an investment property in {name}?</h2>
               <p className="font-sans text-sm text-ink-muted mt-1.5 max-w-xl">Free guide, personalised to {name}: costs and tax, timing around a lease, and how to pick an agent.</p>
             </div>
             <Link

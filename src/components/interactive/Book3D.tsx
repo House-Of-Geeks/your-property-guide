@@ -1,9 +1,10 @@
 "use client";
 
 import { useRef, type CSSProperties, type PointerEvent } from "react";
+import { BookCover } from "@/components/brand/BookCover";
 import { GUIDE_BOOKS, type GuideBookId } from "@/lib/guide-books";
 
-// A guide as a real book (v5, 14 Oct 2026): cover, spine, page edges and
+// A guide as a real book (v5, 14 Oct 2026; v7 cover 20 Oct 2026): cover, spine, page edges and
 // back, drawn in CSS 3D (globals.css, .book3d). It turns a little with the
 // pointer and, when `open`, swings its cover back to show the contents.
 // Motion only answers the person's own pointer or click (BRAND.md §5).
@@ -72,9 +73,8 @@ export function Book3D({ guide, width, open = false, highlight = null, tilt = tr
         </div>
         <div className="book3d__cover">
           <div className="book3d__cover-front">
-            {/* A plain img: the cover is a fixed, small asset and must sit inside the 3D transform. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={book.cover} alt="" draggable={false} />
+            {/* The shared cover (src/components/brand/BookCover.tsx), the same design as the PDF's. */}
+            <BookCover guide={guide} shape="a4" spine={false} className="absolute inset-0 w-full" />
           </div>
           <div className="book3d__cover-inside">
             <span>Your Property Guide</span>

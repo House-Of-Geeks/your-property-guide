@@ -4,11 +4,11 @@ import { Ch, Stat, TableWrap } from "../parts";
 export const chapter: Chapter = {
   guide: "selling",
   number: 10,
-  step: "Close it out",
+  step: "Plan the weeks ahead",
   standfirst:
-    "This is the campaign, week by week. Print it. The weeks count down to exchange, with settlement following four to six weeks later. Adjust for your state’s paperwork lead times.",
+    "This is the whole sale, week by week. Print it. The weeks count down to exchange, with settlement following four to six weeks later. Adjust for your state’s paperwork lead times.",
   callout:
-    "Top-end campaigns run to a written schedule, agreed before launch, with the paperwork weeks protected. Every week has an owner and a deliverable, and the vendor knows on day one what should have happened by week six. That’s the difference between a campaign and a listing.",
+    "Experienced sellers work to a written schedule, agreed with their agent before launch, with time protected for the paperwork. Each week has an owner and a task, and the seller knows from day one what should have happened by week six. A clear schedule makes a slipping sale easy to spot early, while there’s still time to act.",
   checklist: [
     "Print the timeline and put a date against each week",
     "Book your agent interviews for week 11",
@@ -48,7 +48,7 @@ function Body() {
   return (
     <>
       <p>
-        Everything in the first nine chapters, in order. Tick each week off as you go; the campaigns that slip are almost always the ones
+        Everything in the first nine chapters, in order. Tick each week off as you go; the sales that slip are almost always the ones
         where the paperwork weeks got squeezed.
       </p>
       <TableWrap>

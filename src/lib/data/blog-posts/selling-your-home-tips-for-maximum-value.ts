@@ -23,7 +23,7 @@ export const post: BlogPost = {
 <li>Host well-structured open homes and private inspections to create urgency among buyers</li>
 </ul>
 
-<p>The Moreton Bay property market remains active, with strong buyer demand across most suburbs. By investing in presentation, working with an experienced local agent, and implementing a strategic marketing campaign, you can position your property to achieve the best possible result. Remember, the small upfront investment in preparation and marketing consistently delivers a substantial return at sale time. For the complete playbook — costs, agent selection, marketing and the 12-week countdown — grab our free <a href="/selling-guide">selling guide</a>.</p>`,
+<p>The Moreton Bay property market remains active, with strong buyer demand across most suburbs. By investing in presentation, working with an experienced local agent, and implementing a strategic marketing campaign, you can position your property to achieve the best possible result. Remember, the small upfront investment in preparation and marketing consistently delivers a substantial return at sale time. For the whole process — costs, agent selection, marketing and the 12-week countdown — grab our free <a href="/selling-guide">selling guide</a>.</p>`,
   coverImage: "/images/blog/cover-selling-your-home-tips-for-maximum-value.jpg",
   author: {
     name: "Andy McMaster",

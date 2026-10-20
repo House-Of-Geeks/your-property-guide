@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 import { Band, HeroLead, HeroTitle, PhotoHero } from "@/components/premium";
 import { unstable_cache } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
@@ -142,7 +143,7 @@ export default async function PropertyMarketHubPage() {
 
       <ExpertCTA
         headline="Selling into this market?"
-        body="The complete guide to selling in today's market: what it really costs, how agents price your home, and a 12-week plan to settlement. Free PDF, in your inbox in 60 seconds."
+        body={`${GUIDE_BOOKS.selling.name}, the free guide: what it really costs, how agents price your home, and a 12-week plan to settlement. Free PDF, in your inbox in 60 seconds.`}
         ctaLabel="Get the free selling guide"
         href="/selling-guide"
       />

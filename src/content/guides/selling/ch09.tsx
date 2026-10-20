@@ -5,11 +5,11 @@ import { Box, Stat } from "../parts";
 export const chapter: Chapter = {
   guide: "selling",
   number: 9,
-  step: "Close it out",
+  step: "Prepare for settlement",
   standfirst:
-    "Every state runs its own rulebook for selling property. Here’s what you must prepare, who should prepare it, and what actually happens on settlement day.",
+    "Every state has its own rules for selling property. Here’s what you must prepare, who should prepare it, and what actually happens on settlement day.",
   callout:
-    "At the top end, the legal pack is ready before the launch. The contract, the disclosure documents and the settlement plan are prepared in advance, so a keen buyer is never kept waiting and the vendor’s lender is lined up before exchange. A deal that’s ready to sign is worth more than a deal waiting on paperwork.",
+    "Experienced sellers have the contract and disclosure documents ready before marketing begins, and line up their lender’s discharge before exchange. That way a keen buyer is never kept waiting on paperwork, and settlement can run to the date in the contract. Preparing early costs little and removes an avoidable source of delay.",
   checklist: [
     "Engage your conveyancer or solicitor before you list",
     "Prepare your state’s contract and disclosure documents before marketing begins",
@@ -32,8 +32,8 @@ function Body() {
   return (
     <>
       <p>
-        The campaign isn’t finished when the hammer falls or the contract is signed. It finishes when the money lands. Have the
-        paperwork ready before the first buyer walks through, and nothing slows the deal once it’s done.
+        A sale isn’t finished when the hammer falls or the contract is signed. It’s finished when the money lands. Have the paperwork
+        ready before the first buyer walks through, and there’s far less to slow things down once you’ve agreed a sale.
       </p>
 
       <h2>Contract and disclosure, state by state</h2>
@@ -90,7 +90,7 @@ function Body() {
         A licensed conveyancer handles standard property transfers, typically for $800 to $1,500, and for a routine freehold sale is all
         most sellers need. A property solicitor costs more ($1,200 to $2,500 for a standard sale) but can advise beyond the transfer
         itself. Choose the solicitor when anything is non-standard: deceased estates, family law settlements, sales involving trusts or
-        SMSFs, boundary or easement disputes, off-the-plan, or a buyer who starts threatening things. One quirk: in Queensland,
+        SMSFs, boundary or easement disputes, off-the-plan, or a dispute with the buyer. One quirk: in Queensland,
         conveyancing is done by solicitors (standalone conveyancer licensing doesn’t exist there), while in WA, settlement agents are the
         local equivalent of conveyancers. Whoever you choose, engage them <strong>before listing</strong>. In NSW, Victoria, Queensland and
         the ACT you legally need documents prepared before or at marketing; everywhere else, early engagement is the difference between
@@ -101,8 +101,8 @@ function Body() {
       <h2>Settlement: the 30-to-90-day quiet stretch</h2>
       <p>
         Settlement is the date the money moves and the title transfers, negotiated in the contract. Common defaults: around 30 days in
-        Queensland, 42 days (six weeks) in NSW and Victoria, with 30 to 90 days the practical range nationally. Longer settlements are a
-        legitimate negotiating chip if you need time to secure your next home.
+        Queensland, 42 days (six weeks) in NSW and Victoria, with 30 to 90 days the practical range nationally. A longer settlement is a
+        legitimate term to negotiate if you need time to secure your next home.
       </p>
 
       <Stat value="42 days">The default settlement period in NSW and Victoria.</Stat>

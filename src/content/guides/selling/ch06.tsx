@@ -5,18 +5,18 @@ import { Box, Ch, Pull, Stat } from "../parts";
 export const chapter: Chapter = {
   guide: "selling",
   number: 6,
-  step: "Choose the method on evidence",
+  step: "Choose how to sell",
   standfirst:
-    "Each method has a natural habitat. The mistake is letting an agent pick the one that suits their business rather than your property. Choose it on evidence: your home, your suburb’s buyers and what’s selling around you now.",
+    "Each method has a natural habitat. The aim is to choose the one that suits your property and your local buyers, which isn’t always the one an agency uses most. Base it on evidence: your home, your suburb’s buyers and what’s selling around you now.",
   callout:
-    "Top-end campaigns choose the method last, once the likely buyers are known. If several are likely to compete, a deadline does the work; if the buyer is rare, a private negotiation protects the price. The method serves the evidence, never the agency’s habit.",
+    "Experienced sellers choose the method once they have a view of the likely buyers. If several buyers are likely to compete, a deadline helps them decide; if the buyer is rare, a private negotiation gives more room to protect the price. The method follows the evidence about the property and the local market, not an agency’s habit.",
   checklist: [
     "Estimate how many buyers are likely to compete for your home",
     "Check how comparable homes in your suburb sold in the last six months",
     "Ask what share of the agency’s last 20 sales used each method",
-    "Auction: set the reserve the week of the auction, from campaign evidence",
-    "Private treaty: launch at a price you’d accept",
-    "Off-market: only if privacy or speed matters more to you than the last dollar",
+    "Auction: set the reserve the week of the auction, from the evidence of the sale campaign",
+    "Private treaty: list at a price you’d accept",
+    "Off-market: only if privacy or speed matters more to you than reaching the widest pool of buyers",
   ],
   cta: {
     kind: "agreement-check",
@@ -33,8 +33,9 @@ function Body() {
   return (
     <>
       <p>
-        The method of sale is a campaign decision. Get it right and the method creates the competition for you; get it wrong and you
-        pay for theatre that has no audience. Our side-by-side of <Link href="/guides/auction-vs-private-treaty">auction and private
+        The method of sale shapes how buyers make their offers. Matched to your property and your market, it helps interested buyers
+        come to a decision; mismatched, you can pay for an auction or a long campaign that doesn’t draw the buyers it needs. Our
+        side-by-side of <Link href="/guides/auction-vs-private-treaty">auction and private
         treaty</Link> goes deeper on the comparison.
       </p>
 
@@ -44,15 +45,16 @@ function Body() {
         the day, and an unconditional contract signed on the fall of the hammer with no cooling-off for the buyer in any state.
       </p>
       <p>
-        <strong>The case for:</strong> auctions create a deadline and visible competition, which is the best price-discovery mechanism
-        ever devised for scarce assets. When two emotionally invested bidders want the same house, the result can exceed any private
+        <strong>The case for:</strong> auctions create a deadline and visible competition, which makes them a strong way to discover
+        the price of a scarce asset. When two emotionally invested bidders want the same house, the result can exceed any private
         negotiation. The unconditional contract removes finance and inspection risk at a stroke. And even a passed-in auction flushes
         out the genuine buyers for the negotiation that follows.
       </p>
       <p>
-        <strong>The case against:</strong> auctions need a crowd. With one bidder or none, a public pass-in stamps a “failed” flag on
-        your campaign that follows it around. Auction campaigns also cost more (auctioneer plus typically heavier advertising), and some
-        buyers, especially finance-dependent ones, simply won’t bid because they can’t go unconditional. In a thin market, an auction is
+        <strong>The case against:</strong> auctions need a crowd. With one bidder or none, a public pass-in can leave buyers seeing
+        the home as a “failed” auction, and that impression tends to linger. Auction campaigns also cost more (auctioneer plus
+        typically heavier advertising), and some buyers, especially finance-dependent ones, won’t bid because they can’t go
+        unconditional. In a thin market, an auction is
         an expensive way to discover there’s no competition.
       </p>
       <p>
@@ -61,7 +63,7 @@ function Body() {
         prestige stock, and the share has been growing. Perth, Hobart and Darwin remain overwhelmingly private-treaty markets. Within
         auction cities, auctions favour inner and middle-ring suburbs, properties that are scarce or hard to price (character homes,
         development sites, anything with a view), and price brackets where buyer depth is strong. A standard outer-suburban house in a
-        private-treaty city gains little from an auction beyond the agent’s theatre.
+        private-treaty city usually gains little from an auction.
       </p>
       <p>
         <strong>Reserve strategy:</strong> set the reserve the week of the auction, not the day you sign the agency agreement, and set
@@ -99,20 +101,20 @@ function Body() {
         premiums exist but are rare; quiet discounts are common.
       </p>
       <p>
-        Off-market suits sellers who value privacy or speed over the last dollar, genuinely unique properties with a known shortlist of
-        buyers, and a pre-campaign test run (“we’ll quietly offer it for two weeks before launch”). If an agent leads with an off-market
-        buyer who is ready to pay strong money right now, ask the obvious question: strong compared with what? Without a campaign,
-        neither of you knows.
+        Off-market suits sellers who value privacy or speed over reaching the widest pool of buyers, genuinely unique properties with a
+        known shortlist of buyers, and a pre-campaign test run (“we’ll quietly offer it for two weeks before launch”). If an agent leads
+        with an off-market buyer who is ready to pay strong money right now, ask the obvious question: strong compared with what?
+        Without testing the market, neither of you knows.
       </p>
 
-      <Pull>Without a campaign, neither of you knows.</Pull>
+      <Pull>Without testing the market, neither of you knows.</Pull>
 
       <Box title="Watch for">
         <p>
           Method-of-sale advice that conveniently matches the agency’s habits. Some offices auction everything because auctions build the
           agent’s profile; others avoid them because they can’t run one. Ask what percentage of the agency’s last 20 sales used each
-          method, and how that compares with the suburb. The answer tells you whether the recommendation is about your house or their
-          playbook.
+          method, and how that compares with the suburb. The answer tells you whether the recommendation is about your house or the
+          agency’s usual practice.
         </p>
       </Box>
     </>

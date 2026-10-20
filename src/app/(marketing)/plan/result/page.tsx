@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Calculator, BookOpen, MapPin, Pencil } from "lucide-react";
+import { ArrowRight, MapPin, Pencil } from "lucide-react";
 import { PhotoHero, HeroTitle, HeroLead } from "@/components/premium";
 import { PlanEmailForm } from "@/components/journeys/PlanEmailForm";
 import { PrintButton } from "@/components/journeys/PrintButton";
@@ -61,16 +61,16 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
         <HeroLead>{plan.intro}</HeroLead>
         <ul className="mt-7 flex flex-wrap gap-2" aria-label="Built from your answers">
           {contextOf(answers).map((c) => (
-            <li key={c} className="rounded-full border border-line-strong px-3.5 py-1.5 text-sm font-semibold text-ink">{c}</li>
+            <li key={c} className="rounded-[4px] border border-line-strong px-3.5 py-1.5 text-sm font-semibold text-ink">{c}</li>
           ))}
           {suburb && (
             <li>
               {suburb.href ? (
-                <Link href={suburb.href} className="inline-flex items-center gap-1.5 rounded-full border border-ink px-3.5 py-1.5 text-sm font-semibold text-ink hover:bg-ink hover:text-ink-inverse">
+                <Link href={suburb.href} className="inline-flex items-center gap-1.5 rounded-[4px] border border-ink px-3.5 py-1.5 text-sm font-semibold text-ink hover:bg-ink hover:text-ink-inverse">
                   <MapPin className="h-3.5 w-3.5" aria-hidden="true" /> {suburb.label}
                 </Link>
               ) : (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-line-strong px-3.5 py-1.5 text-sm font-semibold text-ink">
+                <span className="inline-flex items-center gap-1.5 rounded-[4px] border border-line-strong px-3.5 py-1.5 text-sm font-semibold text-ink">
                   <MapPin className="h-3.5 w-3.5" aria-hidden="true" /> {suburb.label}
                 </span>
               )}
@@ -87,11 +87,11 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-7 space-y-14">
           <section aria-labelledby="next-steps">
-            <h2 id="next-steps" className="text-3xl sm:text-4xl text-ink tracking-[-0.025em]">Your next three steps</h2>
+            <h2 id="next-steps" className="text-[32px] sm:text-[40px] leading-[1.1] text-ink tracking-[-0.04em]">Your next three steps</h2>
             <ol className="mt-8 space-y-8">
               {plan.nextSteps.map((s, i) => (
                 <li key={s.title} className="grid grid-cols-[2.5rem_1fr] gap-x-4">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-ink text-base font-bold text-white" aria-hidden="true">
+                  <span className="font-display text-[30px] leading-none text-primary" aria-hidden="true">
                     {i + 1}
                   </span>
                   <div>
@@ -142,7 +142,7 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
         <aside className="lg:col-span-5 space-y-8">
           {suburb?.href ? (
             <div className="rounded-xl border border-line bg-surface-warm p-5 sm:p-6">
-              <h2 className="flex items-center gap-2 text-lg font-bold text-ink"><MapPin className="h-5 w-5 text-primary" aria-hidden="true" /> {suburb.label}</h2>
+              <h2 className="font-display text-[22px] tracking-[-0.025em] text-ink">{suburb.label}</h2>
               <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
                 {answers.journey === "buying" ? "Recent prices, rents, schools and local data, to judge each price guide against." : "Recent prices and local data, to test any agent’s price against."}
               </p>
@@ -159,7 +159,7 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
             )
           )}
           <div className="rounded-xl border border-line p-5 sm:p-6">
-            <h2 className="flex items-center gap-2 text-lg font-bold text-ink"><Calculator className="h-5 w-5 text-primary" aria-hidden="true" /> Tools</h2>
+            <h2 className="font-display text-[22px] tracking-[-0.025em] text-ink">Tools</h2>
             <ul className="mt-4 divide-y divide-line">
               {plan.tools.map((t) => (
                 <li key={t.href} className="py-3">
@@ -170,7 +170,7 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
             </ul>
           </div>
           <div className="rounded-xl border border-line p-5 sm:p-6">
-            <h2 className="flex items-center gap-2 text-lg font-bold text-ink"><BookOpen className="h-5 w-5 text-primary" aria-hidden="true" /> Guides</h2>
+            <h2 className="font-display text-[22px] tracking-[-0.025em] text-ink">Guides</h2>
             <ul className="mt-4 divide-y divide-line">
               {plan.guides.map((g) => (
                 <li key={g.href} className="py-3">
@@ -187,7 +187,7 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
           </div>
 
           <div className={`rounded-xl p-5 sm:p-6 print:hidden ${plan.help.level === "offer" ? "bg-surface-inverse tone-dark" : "bg-surface-warm"}`}>
-            <h2 className="text-xl font-bold text-ink">{plan.help.headline}</h2>
+            <h2 className="font-display text-[24px] leading-snug tracking-[-0.03em] text-ink">{plan.help.headline}</h2>
             <p className="mt-2 text-[15px] text-ink-muted leading-relaxed">{plan.help.body}</p>
             {plan.help.cta && (
               <Link href={plan.help.cta.href} className={`mt-5 ${plan.help.level === "offer" ? BUTTON_PRIMARY : BUTTON_SECONDARY}`}>

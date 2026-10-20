@@ -28,12 +28,14 @@ const matches = (pathname: string, p: string) => pathname === p || pathname.star
 const barEntry = (pathname: string) =>
   `bar-${pathname.replace(/^\/+|\/+$/g, "").replace(/[^a-z0-9]+/gi, "-").toLowerCase() || "home"}`.slice(0, 100);
 
-// Education first: the next-step plan for the page's move, then an agent.
+// Education first: the next-step plan for the page's move, then personal
+// help for it (20 Oct 2026, "Clear decisions": the introduction is offered,
+// never pushed).
 const HELP = {
-  buying: { label: "Find a buyer’s agent", service: "buyers-agent" },
-  selling: { label: "Find an agent", service: "selling-agent" },
-  "buying-and-selling": { label: "Find an agent", service: "both" },
-  none: { label: "Find an agent", service: null },
+  buying: { label: "Personal help", service: "buyers-agent" },
+  selling: { label: "Ask about an agent", service: "selling-agent" },
+  "buying-and-selling": { label: "Ask about an agent", service: "both" },
+  none: { label: "Personal help", service: null },
 } as const;
 
 export function MobileBottomNav() {
@@ -82,17 +84,17 @@ export function MobileBottomNav() {
 
   return (
     <nav
-      className={`fixed bottom-0 inset-x-0 z-40 border-t border-line bg-cream/95 backdrop-blur-md sm:hidden print:hidden transition-transform duration-200 ${typing ? "translate-y-full" : ""}`}
+      className={`fixed bottom-0 inset-x-0 z-40 border-t border-line bg-background/95 backdrop-blur-md sm:hidden print:hidden transition-transform duration-200 motion-reduce:transition-none ${typing ? "translate-y-full" : ""}`}
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       aria-label="Next steps"
       aria-hidden={typing || undefined}
       inert={typing || undefined}
     >
-      <div className="grid grid-cols-2 gap-2 px-3 py-2">
-        <Link href={planHref} className="flex items-center justify-center rounded-md bg-cta hover:bg-cta-hover text-white px-2 py-2.5 text-sm font-semibold">
+      <div className="grid grid-cols-2 gap-2 px-4 py-2.5">
+        <Link href={planHref} className="flex min-h-11 items-center justify-center rounded-[4px] bg-cta hover:bg-cta-hover text-cta-ink px-2 py-2.5 text-[15px] font-medium">
           {PLAN_CTA_BAR}
         </Link>
-        <Link href={helpHref} className="flex items-center justify-center rounded-md border border-ink text-ink px-2 py-2.5 text-sm font-semibold">
+        <Link href={helpHref} className="flex min-h-11 items-center justify-center rounded-[4px] border border-line-strong text-ink px-2 py-2.5 text-[15px] font-medium">
           {help.label}
         </Link>
       </div>

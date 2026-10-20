@@ -24,7 +24,7 @@ const inputClass =
   "w-full rounded-lg border border-line bg-surface-raised px-3 py-2.5 text-sm text-ink placeholder:text-ink-subtle outline-none transition-[border-color,box-shadow] duration-200 focus:border-cta focus:ring-[3px] focus:ring-cta/15";
 const labelClass = "block text-xs font-medium text-ink-muted mb-1";
 const chipClass = (active: boolean) =>
-  `rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${active ? "bg-ink text-white border-ink" : "bg-surface-raised text-ink border-line hover:border-line-strong"}`;
+  `rounded-[4px] border px-3 py-1.5 text-xs font-medium transition-colors ${active ? "bg-ink text-white border-ink" : "bg-surface-raised text-ink border-line hover:border-line-strong"}`;
 
 /**
  * Landlord lead form on the rental-market sub-page (commercial intent review
@@ -110,7 +110,7 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
     return (
       <div className="rounded-2xl border border-cta/30 bg-surface-raised p-6 sm:p-8 shadow-card" role="status">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-9 h-9 rounded-full bg-cta text-ink grid place-items-center"><CheckCircle className="w-5 h-5" /></div>
+          <div className="w-9 h-9 rounded-[4px] bg-cta text-ink grid place-items-center"><CheckCircle className="w-5 h-5" /></div>
           <p className="text-[13px] text-ink-subtle font-medium">Request received</p>
         </div>
         <h3 className="font-display text-2xl text-ink leading-tight mb-2">Your rental appraisal request is in, {done}</h3>
@@ -125,7 +125,7 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
     <div className="rounded-2xl overflow-hidden border border-cta/30 shadow-card">
       <div className="bg-ink band-glow px-6 sm:px-8 py-6 sm:py-7 text-white">
         <div className="flex items-center gap-3 mb-2">
-          <div className="flex-shrink-0 w-9 h-9 rounded-full bg-cta text-ink grid place-items-center">
+          <div className="flex-shrink-0 w-9 h-9 rounded-[4px] bg-cta text-ink grid place-items-center">
             <KeyRound className="w-4.5 h-4.5" />
           </div>
           <p className="text-[13px] text-white/78 font-medium">Free rental appraisal in {suburbName}</p>
@@ -247,7 +247,7 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
 
         <p className="text-[11px] text-ink-subtle leading-relaxed pt-1 flex flex-wrap items-center gap-x-2">
           <span className="inline-flex items-center gap-1">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-cta" aria-hidden="true" />
+            <span className="inline-block w-1.5 h-1.5 rounded-[4px] bg-cta" aria-hidden="true" />
             Reply within 1 business day
           </span>
           <span aria-hidden="true">·</span>

@@ -23,7 +23,7 @@ export function Faq({ items, title = "Common questions", id }: FaqProps) {
   return (
     <section id={id} className="my-12 scroll-mt-28">
       <FAQPageJsonLd faqs={items as FaqItem[]} />
-      <h2 className="font-display text-[1.625rem] sm:text-[1.75rem] font-bold text-ink leading-tight tracking-[-0.02em] mb-4">
+      <h2 className="font-display text-[1.625rem] sm:text-[1.75rem] font-normal text-ink leading-tight tracking-[-0.02em] mb-4">
         {title}
       </h2>
       <div className="border-b border-line">

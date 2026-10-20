@@ -20,7 +20,7 @@ const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
     { href: "/guides/first-home-buyer-mistakes-to-avoid",    title: "10 first home buyer mistakes",      description: "The expensive errors, ranked, with the fix for each." },
   ],
   "house-and-land-packages-are-they-worth-it": [
-    { href: "/guides/buying-property-australia",             title: "Buying property in Australia",      description: "End-to-end buyer's playbook." },
+    { href: "/guides/buying-property-australia",             title: "Buying property in Australia",      description: "Every step of a purchase, start to finish." },
     { href: "/guides/conveyancing-guide",                    title: "Conveyancing in Australia",         description: "What conveyancers do for new builds and contract review." },
     { href: "/guides/how-much-deposit-to-buy-a-house",       title: "How much deposit do you need?",     description: "House-and-land tends to need different deposit timing." },
   ],
@@ -32,7 +32,7 @@ const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
   "understanding-off-market-properties": [
     { href: "/guides/buyers-agent-cost-australia",           title: "Buyer's agent cost in Australia",   description: "Off-market access is part of what a buyer's agent buys you." },
     { href: "/guides/auction-vs-private-treaty#hybrids",     title: "Auction vs private treaty",         description: "Where off-market sits beside auctions, EOIs and private sale." },
-    { href: "/guides/buying-property-australia",             title: "Buying property in Australia",      description: "End-to-end buyer's playbook." },
+    { href: "/guides/buying-property-australia",             title: "Buying property in Australia",      description: "Every step of a purchase, start to finish." },
   ],
   "investment-property-guide-moreton-bay-corridor": [
     { href: "/guides/house-vs-apartment-investment-australia", title: "House vs apartment investment",   description: "Capital growth vs cash flow with a 20-year worked example." },

@@ -100,7 +100,7 @@ export function SuburbValueRange({
     return (
       <div className="not-prose rounded-xl border border-line bg-white p-5 sm:p-7">
         <p className="text-[13px] text-ink-muted font-medium mb-2">{eyebrow}</p>
-        <Heading className="font-display text-xl sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
+        <Heading className="font-display text-xl sm:text-2xl font-normal text-ink leading-tight tracking-[-0.02em] mb-2">
           What homes like yours sell for
         </Heading>
         <p className="font-sans text-sm text-ink-muted mb-5 max-w-lg leading-relaxed">
@@ -142,7 +142,7 @@ export function SuburbValueRange({
             Change suburb
           </button>
         </div>
-        <Heading className="font-display text-xl sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-4">
+        <Heading className="font-display text-xl sm:text-2xl font-normal text-ink leading-tight tracking-[-0.02em] mb-4">
           What homes like yours sell for in {summary.name}
         </Heading>
 
@@ -173,13 +173,13 @@ export function SuburbValueRange({
             <p className="font-sans text-[13px] text-ink-subtle mb-1">
               {medianCaption(summary, dwelling)}
             </p>
-            <p className="font-display text-4xl sm:text-5xl font-bold text-ink leading-none tracking-[-0.03em]">
+            <p className="font-display text-4xl sm:text-5xl font-normal text-ink leading-none tracking-[-0.03em]">
               {formatPriceFull(range.median)}
             </p>
             <p className="font-sans text-[13px] text-ink-subtle mt-5 mb-1">
               {rangeCaption()}
             </p>
-            <p className="font-display text-2xl sm:text-3xl font-bold text-ink leading-none tracking-[-0.02em]">
+            <p className="font-display text-2xl sm:text-3xl font-normal text-ink leading-none tracking-[-0.02em]">
               {formatPriceFull(range.low)} to {formatPriceFull(range.high)}
             </p>
             <p className="font-sans text-sm text-ink-muted mt-4 leading-relaxed max-w-xl">
@@ -201,7 +201,7 @@ export function SuburbValueRange({
         {after === "link" && (
           <Link
             href={appraisalHref}
-            className="group mt-6 inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-white font-semibold px-5 py-3 font-sans text-sm transition-colors"
+            className="group mt-6 inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-cta-ink font-semibold px-5 py-3 font-sans text-sm transition-colors"
           >
             Get a free appraisal of your {dwelling}
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />

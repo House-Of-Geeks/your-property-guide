@@ -10,7 +10,8 @@ interface GuideOgInput {
 
 const PERSONA_LABEL: Record<string, string> = {
   "first-home": "First home buyer",
-  "selling":    "Selling your home",
+  "buying":     "Buying a home",
+  "selling":    "Selling a home",
   "upgrading":  "Moving home",
   "investing":  "Investor",
   "renovating": "Renovating",

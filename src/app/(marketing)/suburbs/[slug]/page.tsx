@@ -129,8 +129,8 @@ export async function generateMetadata({ params }: SuburbDetailPageProps): Promi
 // (BRAND.md section 11): the photo hero, then light and quiet bands; the
 // data, maps and charts stay on light bands.
 const SECTION = "scroll-mt-32 sm:scroll-mt-36";
-const H2 = "font-display text-[1.75rem] sm:text-3xl font-bold text-ink leading-tight tracking-[-0.02em]";
-const H2_SMALL = "font-display text-2xl font-bold text-ink leading-tight tracking-[-0.02em]";
+const H2 = "font-display text-[1.75rem] sm:text-3xl font-normal text-ink leading-tight tracking-[-0.02em]";
+const H2_SMALL = "font-display text-2xl font-normal text-ink leading-tight tracking-[-0.02em]";
 const PROSE = "font-sans text-base sm:text-lg text-ink-muted leading-[1.7]";
 const TEXT_LINK = "font-semibold text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink";
 
@@ -256,7 +256,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                   className={`px-5 py-4 ${i % 2 === 1 ? "border-l border-line" : ""} ${i >= 2 ? "border-t border-line" : ""}`}
                 >
                   <dt className="text-[13px] text-ink-muted">{t.label}</dt>
-                  <dd className="mt-1 font-display text-2xl font-bold text-ink leading-none tracking-tight">
+                  <dd className="mt-1 font-display text-2xl font-normal text-ink leading-none tracking-[-0.03em]">
                     {t.value}
                   </dd>
                   {t.detail && <dd className="mt-1.5 text-xs text-ink-muted leading-snug">{t.detail}</dd>}
@@ -277,7 +277,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           <p className="text-[15px] font-semibold text-ink-muted">Median house price</p>
           {priceTrusted ? (
             <>
-              <p className="mt-1 font-display text-[2.75rem] sm:text-6xl font-bold text-ink leading-none tracking-[-0.035em]">
+              <p className="mt-1 font-display text-[2.75rem] sm:text-6xl font-normal text-ink leading-none tracking-[-0.035em]">
                 {formatPriceFull(suburb.stats.medianHousePrice)}
               </p>
               {/* The 12-month change only where a feed measures one (NSW, SA),
@@ -313,7 +313,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             // Untrusted source or too few sales: no figure, the reason, and
             // the methodology. Never the back-calculated "median".
             <>
-              <p className="mt-1 font-display text-2xl sm:text-3xl font-bold text-ink leading-tight tracking-tight">
+              <p className="mt-1 font-display text-2xl sm:text-3xl font-normal text-ink leading-tight tracking-[-0.03em]">
                 {thinSalesCount ? "Too few sales for a median" : PENDING_PRICE_LABEL}
               </p>
               <p className="mt-2 font-sans text-sm text-ink-muted leading-relaxed max-w-xl">
@@ -335,7 +335,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             (the funnel starts on question two with the suburb filled in),
             and the appraisal form further down the page. */}
         <div className="mt-8 border-t border-line pt-6">
-          <p className="font-display text-lg sm:text-xl font-bold text-ink">
+          <p className="font-display text-lg sm:text-xl font-normal text-ink">
             Selling in {suburb.name}?
           </p>
           <p className="mt-1 text-[15px] text-ink-muted leading-relaxed max-w-lg">
@@ -517,7 +517,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 </div>
                 {suburb.stats.walkScore !== null && (
                   <div id="walkability" className={`mt-8 ${SECTION}`}>
-                    <h3 className="font-display text-xl font-bold text-ink mb-3">Walkability</h3>
+                    <h3 className="font-display text-xl font-normal text-ink mb-3">Walkability</h3>
                     <SuburbWalkability
                       walkScore={suburb.stats.walkScore}
                       transitScore={suburb.stats.transitScore}
@@ -534,7 +534,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                   <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-1 gap-6">
                     {suburb.amenities.length > 0 && (
                       <div>
-                        <h3 className="font-display text-xl font-bold text-ink mb-3">Amenities</h3>
+                        <h3 className="font-display text-xl font-normal text-ink mb-3">Amenities</h3>
                         <ul className="flex flex-wrap gap-2">
                           {suburb.amenities.map((a) => (
                             <li key={a} className="rounded-md border border-line px-2.5 py-1 text-sm text-ink-muted">{a}</li>
@@ -544,7 +544,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                     )}
                     {suburb.transportLinks.length > 0 && (
                       <div>
-                        <h3 className="font-display text-xl font-bold text-ink mb-3">Transport</h3>
+                        <h3 className="font-display text-xl font-normal text-ink mb-3">Transport</h3>
                         <ul className="flex flex-wrap gap-2">
                           {suburb.transportLinks.map((t) => (
                             <li key={t} className="rounded-md border border-line px-2.5 py-1 text-sm text-ink-muted">{t}</li>
@@ -573,7 +573,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 {demographicFigures.map((f) => (
                   <div key={f.label} className="py-3 pr-3 border-b border-line">
                     <dt className="text-[13px] text-ink-muted">{f.label}</dt>
-                    <dd className="mt-1 font-display text-xl font-bold text-ink leading-none">{f.value}</dd>
+                    <dd className="mt-1 font-display text-xl font-normal text-ink leading-none">{f.value}</dd>
                   </div>
                 ))}
               </dl>
@@ -717,7 +717,7 @@ function Figure({ label, value, divided = false }: { label: string; value: strin
   return (
     <div className={`py-3 ${divided ? "pl-4 border-l border-line" : "pr-4"}`}>
       <dt className="text-[13px] text-ink-muted">{label}</dt>
-      <dd className="mt-1 font-display text-2xl font-bold text-ink leading-none">{value}</dd>
+      <dd className="mt-1 font-display text-2xl font-normal text-ink leading-none">{value}</dd>
     </div>
   );
 }

@@ -5,11 +5,11 @@ import { Box, Ch, Pull, Stat } from "../parts";
 export const chapter: Chapter = {
   guide: "buying",
   number: 4,
-  step: "Choose the market",
+  step: "Choose an area",
   standfirst:
-    "Suburb choice does more for your result than anything you’ll negotiate later. Most buyers spend more time choosing the fridge.",
+    "Where you buy does more for your result than anything you’ll negotiate later, so the suburb deserves more of your time than the fridge.",
   callout:
-    "Selling the suburb as hard as the house: the school, the café strip, the growth story. The suburb brochure is part of the campaign. Check every claim against the data, and check the catchment on the education department’s map, not the flyer.",
+    "A listing markets the suburb as well as the house: the school, the café strip, the growth story. That’s a normal part of selling a home, and it’s written to show the area at its best. Check each claim against the data, and confirm any school catchment on the education department’s map rather than the flyer.",
   checklist: [
     "Shortlist three to five suburbs from days on market, listings, clearance and discounting",
     "Check that the infrastructure in the growth story is funded, not just promised",
@@ -32,15 +32,15 @@ function Body() {
   return (
     <>
       <p>
-        Every listing comes with a story about its suburb. Your job is to read the suburb’s numbers before you read its brochure, so you
-        choose the market yourself instead of being sold one.
+        Every listing comes with a story about its suburb. Read the suburb’s numbers before you read its brochure, so the area you choose
+        rests on evidence as well as appeal.
       </p>
 
       <h2>The data that matters (and the noise that doesn’t)</h2>
       <p>
         Suburb medians make headlines and mislead buyers. A median jumps when a few expensive homes sell and slumps when a unit block
         settles; it tells you what sold, not what anything is worth. The numbers that actually describe a market are the same four sellers
-        should watch, read from your side of the table:
+        should watch, read from a buyer’s point of view:
       </p>
       <ul>
         <li>
@@ -57,12 +57,12 @@ function Body() {
         </li>
         <li>
           <strong>Vendor discounting.</strong> The average gap between asking and sale price. A wide gap is a market where asking prices
-          are fiction; calibrate your offers accordingly.
+          run well above results; calibrate your offers accordingly.
         </li>
       </ul>
       <p>
         All four are free on the portals’ suburb pages, and our <Link href="/suburbs">suburb profiles</Link> and{" "}
-        <Link href="/compare">suburb comparison</Link> put the rest side by side. An hour with them beats a month of weekend drive-bys.
+        <Link href="/compare">suburb comparison</Link> put the rest side by side. An hour with them tells you more than a month of weekend drive-bys.
       </p>
 
       <h2>Growth signals worth trusting</h2>
@@ -105,8 +105,8 @@ function Body() {
       <Box title="First home">
         <p>
           When the budget forces a compromise, compromise in this order: dwelling first, position second, suburb last. A dated kitchen is
-          fixable; a flight path is not. The modest house on a good street in a rising suburb beats the renovated one backing the arterial
-          road, every time, and the market knows it even when your heart doesn’t.
+          fixable; a flight path is not. A modest house on a good street in a rising suburb is a better buy than a renovated one backing the
+          arterial road, and the market knows it even when your heart doesn’t.
         </p>
       </Box>
 

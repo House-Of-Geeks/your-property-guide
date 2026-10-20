@@ -26,7 +26,7 @@ export function SchoolFinderCallout() {
                 Catchment research
               </span>
             </div>
-            <h2 className="font-display font-bold tracking-tight text-3xl sm:text-4xl text-white leading-tight">
+            <h2 className="font-display font-normal tracking-[-0.03em] text-3xl sm:text-4xl text-white leading-tight">
               Find homes near<br className="hidden sm:block" />{" "}
               <span>the right school</span>
             </h2>
@@ -44,7 +44,7 @@ export function SchoolFinderCallout() {
             <div className="mt-8">
               <Link
                 href="/schools"
-                className="group press inline-flex items-center gap-2 px-6 py-3 bg-cta hover:bg-cta-hover text-white text-sm font-semibold rounded-lg transition-colors"
+                className="group press inline-flex items-center gap-2 px-6 py-3 bg-cta hover:bg-cta-hover text-cta-ink text-sm font-semibold rounded-lg transition-colors"
               >
                 Browse all schools <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>

@@ -131,7 +131,7 @@ export function EnquiryForm({
   if (submitted) {
     return (
       <div className="text-center py-8">
-        <div className="w-12 h-12 rounded-full bg-cta text-white grid place-items-center mx-auto mb-4">
+        <div className="w-12 h-12 rounded-[4px] bg-cta text-cta-ink grid place-items-center mx-auto mb-4">
           <CheckCircle className="w-6 h-6" />
         </div>
         <h3 className="font-display text-xl text-ink leading-tight">Enquiry sent</h3>
@@ -219,7 +219,7 @@ export function EnquiryForm({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+        className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-cta-ink font-medium px-6 py-3 text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
       >
         {isSubmitting ? "Sending…" : (
           <>

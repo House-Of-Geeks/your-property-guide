@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 
 // Soft, education-first sidebar CTA. Sits at the END of long-form content
 // (guides, suburb pages) for readers who want one-on-one help after they've
@@ -22,11 +23,11 @@ interface ExpertCTAProps {
 }
 
 // Defaults push the selling-guide funnel, the site's single conversion
-// point since the June 2026 lead-gen pivot. Name the outcome (the
-// complete guide), the time (60 seconds), and the cost (free).
+// point since the June 2026 lead-gen pivot. Name the outcome (the guide,
+// by its name), the time (60 seconds), and the cost (free).
 const DEFAULT = {
   headline: "Take the full guide with you.",
-  body: "The complete guide to selling property in Australia: what it really costs, how agents price your home, the 10 questions that catch bad agents out, and a 12-week plan to settlement. Free PDF, personalised to your suburb, in your inbox in 60 seconds.",
+  body: `${GUIDE_BOOKS.selling.name}, the free guide: what it really costs, how agents price your home, the questions to ask before you choose one, and a 12-week plan to settlement. Free PDF, personalised to your suburb, in your inbox in 60 seconds.`,
   ctaLabel: "Get the free selling guide",
   href: "/selling-guide",
 };
@@ -38,7 +39,7 @@ const DEFAULT = {
 // (free). Copy drawn from the /buying-guide chapter list.
 export const BUYING_GUIDE_CTA = {
   headline: "Take the full guide with you.",
-  body: "The complete guide to buying property in Australia: what you can really spend, the 2026 schemes state by state, how not to overpay, and how the selling side plays you. Free PDF, personalised to your situation, in your inbox in 60 seconds.",
+  body: `${GUIDE_BOOKS.buying.name}, the free guide: what you can really spend, the 2026 schemes state by state, how homes are marketed and sold, and how not to overpay. Free PDF, personalised to your situation, in your inbox in 60 seconds.`,
   ctaLabel: "Get the free buying guide",
   href: "/buying-guide",
 };

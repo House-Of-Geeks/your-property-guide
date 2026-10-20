@@ -1,223 +1,187 @@
 # BRAND.md — Your Property Guide
 
-**Status:** v6 (15 Oct 2026, "It's the campaign that wins"), with the homepage re-ordered on 19 Oct 2026 (§14) for clearer messaging, real evidence and a shorter path to useful help. Andy's founder story and the campaign idea, in a premium editorial look: cream and sand pages, eucalyptus dark bands, copper for actions and accents, a serif for the big headings. It replaces v5 (one grotesk, white page, roof tile) on purpose. **v6 brings back things v4–v5 banned — a serif, an italic accent, uppercase eyebrows, a gradient over a photo, pill buttons, numbered steps — and only where §14 allows them. Don't "fix" them back to v5.** Earlier versions: v5 and v4 (13–14 Oct), v3 (cream, Fraunces, terracotta).
+**Status:** v7, "Clear decisions" (20 Oct 2026). Andy's approved replacement for the v6 campaign-led positioning ("It's the campaign that wins", 15 Oct 2026). Where anything older in this repo (comments, tests, copy, earlier BRAND versions) conflicts with this file, this file wins. The original brand photographs are kept in `docs/brand/clear-decisions/`; the approved homepage reference stays with Andy's handoff files (it embeds the images, so it isn't committed).
 
-**What we are:** a property education service built on one idea: the campaign is what wins, not the market, not luck, not a slack agent. Free guides, tools and next-step plans for selling, buying or both, then, with permission, one participating agent for each job (a selling agent, and a buyer's agent where one takes part). Agents pay a flat fee per introduction; we take none of their commission. We are not a portal or a data tool: suburb data supports the guides, it is not the headline.
+**Who it's for:** everyday Australian homebuyers and sellers, across budgets.
 
-**Core line:** *It's the campaign that wins. Not the market.* (`PROMISE` in `src/lib/service-model.ts`)
+**What we are:** free guides, useful tools and a next-step plan that help people understand the costs and choices ahead before they buy or sell. When someone wants personal help, and asks, we can introduce a participating selling agent, or a buyer's agent where one is available, one introduction for each service. Agents pay a flat fee per introduction; we take none of their commission; the person pays us nothing.
 
-**Closing line:** *Every home deserves a $20 million campaign.*
+**Positioning:** Clear decisions.
+
+**The opening:** *Know what **matters** before you buy or sell.* (`PROMISE` in `src/lib/service-model.ts`; "matters" is the one serif-italic copper word.)
+
+**Supporting line:** *Understand the costs and choices ahead, with free guides, useful tools and a next-step plan for where you're up to.*
+
+The experience should feel beautifully designed, knowledgeable, warm and useful.
 
 ---
 
 ## 1. Principles
 
-1. **Say the job.** The first screen of any page says what we do for the reader and offers the next step.
-2. **A person, not a brand voice.** Andy's real story, real name and real face. A phone number with a person behind it.
-3. **One action per screen.** One solid button. Everything else is a link or an outlined button.
-4. **Plain and specific.** Numbers with dates and sources. The only headline figures are in §7.
-5. **Nothing decorative without a job.** An eyebrow labels a band, numbers mark a real sequence, the italic marks the one phrase that carries the idea.
+1. **Explain what matters.** Every page says what the reader needs to understand or decide, then offers the next step for where they're up to.
+2. **Useful before anything is asked.** Guides, tools and plans work with no sign-up. Personal help is offered, never pushed: "Your next step is your choice."
+3. **Calm and specific.** Plain Australian English, figures with dates and sources, no hype.
+4. **Editorial, not a landing page.** Hierarchy, spacing and fine rules do the work. Contained panels are used selectively.
+5. **Nothing decorative without a job.** No decorative icons, no repeated card grids, no excess pills, no motion that isn't answering the reader.
 
 ## 2. Logo
 
-**The house bubble.** A house drawn as a speech bubble: property, explained by people.
+**The house bubble** (unchanged): a house drawn as a speech bubble.
 
-- Component: `src/components/brand/Logo.tsx` exports `Logo` (mark + wordmark) and `LogoMark`. The path lives in `LOGO_MARK_PATH` and is shared by the favicon, OG cards and email.
-- Mark colour: copper `#C47A3A` (`LOGO_TILE`). The browser icon (`src/app/icon.svg`) is light copper on a eucalyptus tile.
-- Wordmark: "Your Property Guide" in the serif (Source Serif 4), regular weight, tracking −0.01em. Live text, never an image, on the site.
-- Still to recolour: `favicon.ico`, `apple-icon.png`, the OG cards (`src/lib/og/render.tsx`) and the email shell (`src/lib/email-theme.ts`) still use roof tile.
-- Clear space: the mark's width on all sides. Minimum size: 16px mark. Don't outline, rotate or recolour it outside the palette.
+- `src/components/brand/Logo.tsx`: `Logo` (mark + wordmark) and `LogoMark`. The geometry is `LOGO_MARK_PATH`, shared by the favicon, icons, social cards, covers and emails. Never redraw it.
+- Mark: copper `#A9642C` (`LOGO_TILE`); light copper `#E1AF86` on forest or terracotta.
+- Wordmark: "Your Property Guide" in Source Serif 4, regular, tracking −0.02em, forest ink. Live text on the site.
+- Browser icon (`src/app/icon.svg`) and raster icons: light copper mark on a forest tile. Regenerate with `node scripts/brand/render-brand-assets.mjs` (add `BASE=` to also render the social cards).
 
 ## 3. Colour
 
-Tokens live in `src/app/globals.css` (Tailwind v4 reads them via `@theme inline`; there is no tailwind config). Token names are unchanged from v3–v5 so components keep working.
+Tokens live in `src/app/globals.css`. Token *names* are unchanged from v3–v6 (`--cta`, `--primary`, `--surface-inverse`, `--eucalyptus` …) so every component cascades; their values are v7.
 
 | Name | Hex | Token | Use |
 |---|---|---|---|
-| Cream | `#FBF8F3` | `--background`, `--cream` | The page |
-| Sand | `#F4EFE6` | `--surface-warm`, `--sand` | Alternate bands |
-| White | `#FFFFFF` | `--surface-raised` | Cards and forms on cream or sand |
-| Ink | `#14201B` | `--ink`, `--foreground` | Text |
-| Ink muted | `#525C57` | `--ink-muted` | Secondary text (6.1:1 on sand) |
-| Eucalyptus | `#0F3D2E` | `--surface-inverse`, `--eucalyptus` | Dark bands, the footer, dark cards |
-| Eucalyptus deep | `#0A2E22` | `--eucalyptus-deep` | The hero's wash and stat bar |
-| Copper | `#C47A3A` | `--accent`, `--copper` | Large type, the logo mark, rules |
-| Light copper | `#E9B07C` | `--primary` inside `.tone-dark`, `--copper-light` | Accents, eyebrows and figures on eucalyptus (6.4:1) |
-| Copper button | `#A9642C` | `--cta` | Solid buttons, white text (4.6:1) |
-| Copper button hover | `#8F5222` | `--cta-hover` | |
-| Copper text | `#9A5A26` | `--primary` | Links, eyebrows and small copper text on cream and sand (5.1:1 on cream) |
+| Cream | `#F8F6F0` | `--background`, `--cream` | The page |
+| Paper | `#FFFDF8` | `--paper`, `--surface-raised`, `--color-white` | Fields, cards, forms (`bg-white` is paper) |
+| Sand | `#EDECE2` | `--sand`, `--surface-warm` | Quiet bands, answer panels, the tool surface |
+| Forest ink | `#203D30` | `--ink`, `--foreground` | Text |
+| Muted | `#566257` | `--ink-muted` | Secondary text (5.9:1 on cream) |
+| Rule | `#CDD2C6` | `--line` | Fine rules |
+| Forest | `#244A37` | `--forest`, `--cta`, `--surface-inverse` | The one solid button, the dark band, selected states, the buying edition |
+| Terracotta | `#89492F` | `--terracotta` | The selling edition |
+| Terracotta tint | `#EEE3D4` | `--terracotta-tint` | The Hamilton note, selection |
+| Copper | `#A9642C` | `--accent`, `--copper` | The logo mark, rules, large accents |
+| Copper text | `#93532A` | `--primary` | Kickers, small copper text (5.4:1 on cream) |
+| Light copper | `#E1AF86` | `--copper-light` | Copper on forest |
+| Book stages | `#E0E0D2` / `#EADED0` | `--stage-buy` / `--stage-sell` | Behind the two covers |
 
 Rules:
-- **Copper `#C47A3A` fails AA for body-size text**: 3.4:1 with white and 3.2:1 on cream. Never put white text on it, and never use it for text under 24px. Buttons use `--cta` and small copper text uses `--primary`; both pass.
-- One solid copper button per screen. Selected states (tabs, chips, switches) are ink or eucalyptus; copper stays for actions.
-- Semantic colours (`--success`, `--warning`, `--danger`) are for state, not brand.
+- The solid button is **forest with cream text**; inside a forest band it flips to a cream button with forest text (`.tone-dark` sets `--cta`/`--cta-ink`). Write buttons as `bg-cta text-cta-ink`, never `text-white` on `bg-cta`.
+- Copper is restrained: the logo, kickers, rules, the italic accent word and big figures. Never a button fill.
+- Selected states (switches, chips) are forest.
+- One forest band per page at most; don't stack dark bands.
 
 ## 4. Type
 
-Two faces, loaded in `src/app/layout.tsx`:
+Loaded in `src/app/layout.tsx` with `next/font`:
 
-- **Source Serif 4** (`--font-serif`, and `--font-display` points at it), with the optical-size axis and an italic. It sets h1, h2, the wordmark, big figures and pull quotes.
-- **Schibsted Grotesk** (`--font-sans`) sets everything else: body text, h3 and below, labels, buttons and forms.
+- **Source Serif 4** (`--font-serif`, `--font-display`): h1, h2, the wordmark, cover titles, big figures, pull lines. Regular weight only, tight tracking.
+- **Schibsted Grotesk** (`--font-sans`): everything else.
 
-| Role | Size | Face, weight |
+| Role | Size | Notes |
 |---|---|---|
-| Homepage H1 | 44px phone, 84px desktop | Serif 400, tracking −0.02em |
-| Page H1 (`HeroTitle`) | 36–80px | Serif 400 |
-| Band H2 (`BandTitle`, `SectionHeading`) | 34–56px | Serif 400, tracking −0.015em |
-| H3 | 18–24px | Grotesk 700 |
-| Body | 16–18px | Grotesk 400, line-height 1.6 |
-| Eyebrow | 12–13px | Grotesk 600, uppercase, tracking 0.2em |
-| Figures (stats, prices) | 30–44px | Serif 400 |
+| Homepage H1 | 44px phone, 64px desktop | Serif 400, −0.045em, line-height 1.04 |
+| Page H1 (`HeroTitle`) | 38–54px | Serif 400, −0.04em |
+| Section H2 (`SectionHeading`, `BandTitle`) | 34–42px | Serif 400, −0.04em |
+| Card/answer heading | 22–30px | Serif 400, −0.03em |
+| H3 (sans) | 16–19px | Grotesk 500–600 |
+| Body | 15–18px | Grotesk 400, line-height 1.65–1.75; articles 17px |
+| Kicker | 12px | Grotesk 500, uppercase, tracking 0.1em, copper (`Kicker`, `Eyebrow`) |
 
 Rules:
-- Sentence case for headings. Headings may end with a full stop when they're a sentence ("Five steps. Every one of them free to learn.").
-- **Italic** is allowed in the serif only: the one accent phrase in a headline (in copper or light copper), a pull quote, and Andy's name as a signature. Never italic body text for emphasis.
-- Never `tabular-nums`: Schibsted Grotesk spaces its commas, so $810,000 renders as "$810 ,000".
+- Sentence case. Headings may end with a full stop when they're a sentence.
+- Serif italic: only the one accent word in the homepage opening (and the social card that repeats it). Never bold serif.
+- Never `tabular-nums` (Schibsted Grotesk spaces its commas).
 
-## 5. Shape and depth
+## 5. Shape, space and depth
 
-- Corners: pill buttons (`rounded-full`), 10px fields (`rounded-lg`), 16px cards (`rounded-xl`), 24px large cards and panels (`rounded-3xl`).
-- Soft shadows: `shadow-card` on white cards over cream or sand, and a deeper shadow only on floating things (a form on a photo, a dropdown, a book).
-- Motion answers the person: a press, a tab, a slider, a figure gliding to its new value, the header turning solid as the page scrolls. Nothing moves on its own: no scroll reveals or autoplay. Every motion has a `prefers-reduced-motion` fallback.
+- Corners: 4px buttons and fields (`rounded-lg` is 4px), 6px panels (`rounded-xl`/`2xl`), 8px the largest (`rounded-3xl`). `rounded-full` only for portraits and dots. No pills.
+- Fine 1px rules separate sections and list rows; a 1px ink rule opens the planner, the checklist and the founder note.
+- Shadows: none on cards (`shadow-card` is a hairline). Only floating things cast one: a menu, a tilted book (`--shadow-book`).
+- Spacing is deliberate: sections `py-14 sm:py-20`, the approved section head (kicker in the margin, H2, intro to the right; `SectionHeading kicker=…`).
+- Motion answers the reader (a switch, a toggle, a book opening), with `prefers-reduced-motion` fallbacks. Nothing moves on its own.
 
 ## 6. Imagery
 
-- **Homepage:** the hero is a full-bleed photo (`src/components/campaign/photos.ts`), generated with ImagineArt (Nano Banana Pro, 2K) on 15 Oct 2026: a sandstone home on Sydney Harbour. The two "Example" homes and the styled living room left the homepage on 19 Oct 2026 with the bands that used them; the files stay in `public/images/campaign/`.
-- **Case studies:** real projects only. Where the real photos can't be published (Hamilton, §14: the buyer doesn't want photos of her apartment online), use generated **illustrations** in a painted style that can't pass for photography, each badged "Illustration", with a line saying they aren't photographs of the property or the work. Never a photo-realistic generated before-and-after.
-- **Under a wash:** only the homepage hero puts text over a photo. It sits under a eucalyptus gradient that is dark on the text side and opens to the photo on the right; on phones the wash is even.
-- **Everywhere else:** documentary photography of real Australian places, as v5 (`public/images/photos/`, `PHOTOS` in `src/components/premium`): soft daylight, true colours, Australian vernacular. Prestige homes may be warmer and more polished, but they must still read as Australian.
-- **Never present a generated or library image as a real sale, a real project, a real agent, our team or a customer.**
-- Real people: Andy's own photo (`FOUNDER.photo` in `src/lib/founder.ts`) for the founder sections, forms and bylines.
+- **The brand photographs** (`public/images/brand/apartment-light.jpg`, `terracotta-door.jpg`; originals in `docs/brand/clear-decisions/`): warm, architectural, strongly composed. The apartment opens the homepage and is the buying edition's panel; the door is the selling edition's. Keep their warmth and detail when cropping; serve them through `next/image` (or the original JPEG for print).
+- They are **illustrative brand imagery**. Never present them as the Hamilton apartment, a documented renovation, a customer's property or a completed sale, and never place them as evidence beside a case study.
+- **Hamilton** keeps its rules (`src/lib/case-studies.ts`): Andy's facts only, both prices expected prices, one qualification, no photographs of the apartment. The homepage shows it as a note with the figures behind "Explore the Hamilton example".
+- **Andy:** his own portrait (`FOUNDER.photo`), confirmed by the approved design.
+- Elsewhere the documentary library (`PHOTOS` in `src/components/premium`) stays: soft daylight, true colours, Australian vernacular. No photo under an overlay.
 
-## 7. Voice and facts
+## 7. The guides as books
 
-- Write like you'd explain it to a neighbour. Short sentences, active voice, Australian English.
-- First person ("I") only in Andy's own words: the hero lead, the founder band, the about page, and Andy-attributed intros and callouts. Everything else is "we" or "you".
-- **Andy's facts come only from `src/lib/founder.ts`:**
-  - he sold $10M–$20M homes Australia-wide;
-  - after two years he was head-hunted to advise big property companies;
-  - his advice generated $4B+ in sales over the past five years;
-  - the same campaign wins at every price.
-- No other biography, client stories, testimonials, review counts, awards or statistics. Leave a `TODO(andy):` instead.
-- **The only headline figures:**
-  - $4B+ (Andy's advice, past five years);
-  - 1 agent (for each job);
-  - 0% of commission taken;
-  - the live count of guides and tools (`ALL_GUIDES.length + TOOLS.length`, never typed by hand).
-- **Competitors:** "Many agent-finder sites are paid a share of the agent's commission." Never a percentage for a competitor without a published source.
-- Banned: three-beat slogans, "unlock", "journey", "seamless", "best agents", "top local agent", and "just" or "simply" before an instruction.
-- Promises must be true today. If we don't have an agent in an area, we say so.
+A matched collection, one source: `src/components/brand/BookCover.tsx` (sized in container units, `.ypg-cover` in globals.css), data in `src/lib/guide-books.ts`.
 
-## 8. Conversion
+| | Buying a home (01) | Selling a home (02) |
+|---|---|---|
+| Colour | forest `#244A37` | terracotta `#89492F` |
+| Subtitle | From your first budget / to the day you get the keys. | Prepare with purpose. / Move with a clearer plan. |
+| Photo panel | the apartment | the terracotta door |
+| Descriptive title | Buying a home: a practical guide to buying property in Australia | Selling a home: a practical guide to selling property in Australia |
 
-Two paths, never mixed (unchanged from 14 Oct 2026):
+Every cover has the logo and wordmark, the two-line serif title ("Buying / a home."), the two-line subtitle, the photographic panel and the footer ("A clearer way forward." and the edition number), on a spine. The same component renders:
 
-- **Learning path** (guides, plans, calculators, the tips series): useful before any contact details, email only, phone optional, and it never reaches an agent. The homepage field opens the plan with the move, the state and the suburb filled in (`/plan?j=&s=&sub=`); only the suburb or postcode is looked up, never a street address. The planner takes up every answer in its URL, shows what's already chosen, and "Change my answers" reopens them all (`editPlanHref`); the result shows the move, state and suburb and links the suburb's profile.
-- **One name for the plan:** the "next-step plan", everywhere (`src/lib/plans/name.ts`). Not a campaign plan, a selling plan or a moving plan. Every plan button says it's free, a few quick questions and no sign-up (`PLAN_TERMS`).
-- **One first step per journey:** the header's solid button, the homepage hero and the phone bar's first button are all the next-step plan for the page's move; on the homepage they follow the move picked in the hero (`MoveProvider publish`). The second action is the agent for that move.
-- **Introduction path** (`/get-help`, the appraisal and agent pages): one participating agent for each job, a separate permission tick for each, and coverage shown before anything is sent.
-- **The agreement check** (`/agreement-check`): a free 15-minute call with our team before someone signs an agency agreement. It's general information, not legal advice, and it never sends anyone to an agent. With the selling-costs calculator and the agent proposal worksheet it's one of the three tools that "settle the next decision" for sellers: each says what it helps you decide, on the homepage and in the Selling menu.
-- Promises come from `src/lib/service-model.ts` only:
-  - `PROMISE`
-  - `ONE_AGENT`: "One agent for each job you ask us to help with. Never a list."
-  - `COMMISSION_STANCE`
-  - `AGREEMENT_CHECK`
-  - `FEE_DISCLOSURE`
-  - `PARTNER_CHECKS`
-- The fee disclosure (`FEE_DISCLOSURE`, a flat fee and no share of commission) sits beside every introduction form, with a link to how we're paid (`/about#ownership-funding`).
-- **Agent profiles stay off the site until Andy lists a partner** in `src/lib/partner-agents.ts`. The homepage agent card renders nothing while that list is empty.
+- the homepage shelf and every cover on the site (`BookCover`, `GuideCover`, the 3D book's front);
+- the guide landing pages and chapter sidebars;
+- the printable guide's A4 cover (`/print/guides/<guide>`), and so the PDFs, the cover JPEG and the email cover (`npm run guides:pdf` with the site running and `BASE` set);
+- the guides' social cards (`/print/og?card=<guide>`, rendered by `scripts/brand/render-brand-assets.mjs`).
 
-## 9. Components to reuse
+Chapter slugs are live URLs and never change; visible titles live in `guide-books.ts`. Chapter callouts are "What experienced sellers do" (selling) and "Seeing it from the seller's side" (buying); checklists are "Your checklist".
 
-```tsx
-// Primary action (one per screen)
-<Link href="/selling-guide" className={BUTTON_PRIMARY}>Get the free guide</Link>   // copper pill
+## 8. Voice and facts
 
-// Secondary action
-<Link href="/about" className={BUTTON_SECONDARY}>Read Andy’s story</Link>          // outlined pill
+- Plain Australian English. Specific, calm, helpful. Explain; don't sell.
+- Replaced on purpose: the $20 million campaign or playbook, beating or decoding the selling side, "not the market" (market conditions do matter; say what the reader can control), and treating decisions as a contest (winning, "every dollar", "the top buyer").
+- Negotiation, preparation, costs and agent selection stay, explained constructively: what to check, why it matters, what to ask, who acts for whom.
+- "Campaign" is fine as the ordinary word for how an agent markets a listing.
+- **Andy's facts come only from `src/lib/founder.ts`**, as supporting background: he started his career selling homes worth $10m–$20m across Australia; after two years he was head-hunted to advise property companies; his advice has generated over $4 billion in property sales in the past five years. The homepage uses the one-line summary and keeps the detail behind "More about Andy's background"; the about page tells it in full. It is never the headline or a promise about the reader's price.
+- Never invent testimonials, credentials, review counts, partner coverage, statistics or outcomes. Leave `TODO(andy):` instead.
+- Banned: "unlock", "journey", "seamless", "best agents", "top local agent", "just"/"simply" before an instruction, schedule promises for the newsletter.
 
-// A band's label, heading and standfirst (src/components/campaign/parts.tsx)
-<Eyebrow>Same playbook, any price</Eyebrow>
-<BandTitle>An $18.5 million home and a $640,000 home sell the same way.</BandTitle>
-<BandLead>At the top end nobody leaves the price to the market.</BandLead>
+## 9. Conversion
 
-// Card on cream or sand
-<div className="rounded-3xl bg-white p-6 shadow-card">…</div>
+Two paths, never mixed (unchanged since 14 Oct 2026):
 
-// Dark band
-<section className="tone-dark bg-eucalyptus py-20 sm:py-28">…</section>
-```
+- **Learning:** guides, calculators, the next-step plan. No sign-up, never sent to an agent. The plan is the "next-step plan" everywhere (`src/lib/plans/name.ts`). The header action, the homepage button and the phone bar's first button say **"Find my next step"**; on the homepage the planner's button says "Show my next steps" and shows three starting points on the page (`src/lib/home-start.ts`), then links into the full plan with the move and stage already answered (`planStartHref({ answers })`).
+- **Introduction:** `/get-help`, the appraisal and agent pages. One participating agent per service, a separate permission tick for each, coverage shown before anything is sent. In navigation it's "Personal help" / "Ask about an agent", inside the Buying, Selling and About menus, the phone menu and the phone bar.
+- The agreement check (`/agreement-check`): a free 15-minute general-information call before someone signs an agency agreement.
+- Promises come from `src/lib/service-model.ts` only (`PROMISE`, `ONE_AGENT`, `COMMISSION_STANCE`, `AGREEMENT_CHECK`, `FEE_DISCLOSURE`, `PARTNER_CHECKS`). The fee disclosure sits beside every introduction form.
+- Agent profiles stay off the site until Andy lists a partner in `src/lib/partner-agents.ts`.
 
-## 10. What lives where
+## 10. The homepage (20 Oct 2026, the approved design)
 
-| Concern | File |
-|---|---|
-| Tokens | `src/app/globals.css` |
-| Fonts | `src/app/layout.tsx` |
-| Logo | `src/components/brand/Logo.tsx` |
-| Header (clear over the homepage hero, solid elsewhere) / footer / phone bar | `src/components/layout/` |
-| Homepage | `src/components/campaign/` |
-| Andy's facts | `src/lib/founder.ts` |
-| Campaign checklist and five steps | `src/lib/campaign.ts` |
-| Promises, fees, partner checks, the agreement check | `src/lib/service-model.ts` |
-| Partner agents shown by name | `src/lib/partner-agents.ts` |
-| Tools list and counts | `src/lib/tools.ts` |
-| Guides as books (titles, chapters, chapter links) | `src/lib/guide-books.ts` (`chapterHref`) |
-| The guides' chapters (web pages and PDF) | `src/content/guides`, rendered by `src/components/guide-book`; PDFs and covers: `npm run guides:pdf` |
-| Introduction rules and coverage | `src/lib/introductions/rules.ts` |
-| Plans | `src/lib/plans/` |
-| Journey components (forms, service sections) | `src/components/journeys/` |
-| Inner-page building blocks | `src/components/premium` |
-| Interactive parts (number tools, agent finder, 3D book, switches) | `src/components/interactive/` |
+`src/components/homepage/`, in this order. Picking buying, selling or both in the planner (`MoveProvider publish`, buying by default) re-points the desk, the case note, the introductions band, the header and the phone bar.
+
+1. **Opening:** kicker "Australian property, explained.", the H1 with "matters" in copper italic, the supporting line, "Find my next step" (to the planner) and "Explore the guides"; then the apartment photograph across the page with its caption row.
+2. **Start where you are:** buying / selling / both, "Where are you up to?", "Show my next steps", three linked starting points and the full-plan link. "No sign-up. Nothing is sent to an agent."
+3. **Good questions. Clearer decisions.:** four questions and an answer panel per move, with what the tools cover and links to them.
+4. **The field guides:** the two covers on their stages, a line each, "Look inside" for all ten chapters (linked), and the guide's page.
+5. **In practice — Hamilton:** the question for the move, the redesign in two sentences, and the note with the figures and their one qualification.
+6. **The person behind the guides:** Andy's portrait, the summary, the aim, his background behind a disclosure, and the about page.
+7. **When you want personal help:** the forest band, "Your next step is your choice.", how introductions work for the move, and how we're paid.
 
 ## 11. Inner pages
 
-Inner pages keep the v4.1/v5 structure (`PhotoHero`, `Band`, `SectionHeading`, `RuleGrid`, `StepTimeline`), which picks up v6 through the tokens:
+Shared parts in `src/components/premium` pick up v7 through the tokens and their own v7 styles:
 
-- cream page and sand quiet bands;
-- eucalyptus dark bands;
-- serif `HeroTitle` and `SectionHeading`;
-- copper pill buttons.
+- `PhotoHero`: cream, serif heading. `size="lg"` (hubs, conversion pages) puts a wide photograph under the text, with the guide covers standing on its corner (`book=`); `"md"` (guides, tools) puts a portrait photograph beside the text and drops it on phones; `aside=` puts a form beside the text.
+- `Band` (light / quiet sand / dark forest), `SectionHeading` (optional `kicker`), `Kicker`, `RuleGrid`/`RuleItem` (no icons), `StepTimeline` (serif copper numbers), `LinkRows` (first reads under fine rules instead of card grids), `PhotoPanel`.
+- Buttons: `BUTTON_PRIMARY` (forest), `BUTTON_SECONDARY` (outlined), `TEXT_LINK` (underlined link with an arrow) in `src/components/premium/buttons.ts`.
+- Articles: `.prose-ypg` in globals.css, serif H2s, copper list markers and serif numerals; the reading column stays narrow.
+- Calculators: `CalculatorPageLayout` puts every tool on a sand surface so fields and results (paper cards) read as one object.
+- Chapters: `ChapterPage` / `ChapterContent`, a reading page with the contents and the cover in the sidebar.
+- Use `.tone-dark` on forest and `.tone-light` on a paper card inside it; write components with `text-ink`, `text-ink-muted`, `border-line`.
 
-Use `.tone-dark` on dark surfaces and `.tone-light` on a white card inside one, and write components with `text-ink`, `text-ink-muted` and `border-line`, never `text-white` or `text-gray-*`. Don't stack two dark bands.
+## 12. Emails, social and print
 
-## 12. Journeys
+- Emails (`src/lib/email-theme.ts` and the builders, `scripts/ac-emails/build.ts` for the ActiveCampaign templates): cream page, paper card, forest ink, the forest button with 4px corners, serif headings, the mark and wordmark, footer line "Know what matters before you buy or sell." Guide emails use `GUIDE_BOOKS[id].coverEmail`.
+- Social: `public/og-image.jpg` (the opening line beside the apartment), the guides' cards in `public/images/guide/<guide>-guide-og.jpg`, and dynamic cards for articles, chapters and suburbs (`src/lib/og/render.tsx`, cream with a serif title and a forest or terracotta rule).
+- Print: the guide PDFs are printed from `/print/guides/<guide>`; the spring countdown from `scripts/guide-pdf/spring-selling-checklist.html`.
 
-Forms use `src/components/journeys/fields.tsx`:
+## 13. What lives where
 
-- visible labels;
-- native radios styled as cards;
-- errors tied to their fields;
-- consent boxes with the full statement as the label;
-- one request in flight at a time.
+| Concern | File |
+|---|---|
+| Tokens, prose, covers | `src/app/globals.css` |
+| Fonts | `src/app/layout.tsx` |
+| Logo | `src/components/brand/Logo.tsx` |
+| Covers | `src/components/brand/BookCover.tsx`, `src/lib/guide-books.ts` |
+| Header, footer, phone bar | `src/components/layout/` |
+| Homepage | `src/components/homepage/`, `src/lib/home-start.ts` |
+| Promise, fees, checks | `src/lib/service-model.ts` |
+| Andy's facts | `src/lib/founder.ts` |
+| Guide chapters (web and PDF) | `src/content/guides/`, `src/components/guide-book/` |
+| Plans | `src/lib/plans/` |
+| Inner-page parts and buttons | `src/components/premium/` |
+| Social cards | `src/app/(print)/print/og/page.tsx`, `src/lib/og/` |
 
-Measurement goes through `src/lib/analytics.ts` (an allow-list, nothing personal). Outcomes after a request are database events.
-
-## 13. Things people use
-
-The number tools (`NumbersPanel`), the agent finder (`AgentFinder`, `AgentChecks`), the 3D guide books and the switches all stay, as v5 built them. The homepage's "Try it now" band shows the number tools for the move picked in the hero. The agent finder shows coverage for the state as soon as a suburb is picked, and so does `/get-help`. `PlanBuilderLive` and `GuideShelf` were retired with the v5 homepage.
-
-## 14. The homepage (19 Oct 2026, replacing the 15 Oct order)
-
-Andy's 19 Oct brief changed the order: understand the offer, use something, see the evidence, choose the next step. The campaign line, the palette, the serif, Andy's presence and the education-first paths stay. Don't put back the old order (same playbook, five steps, tools far down).
-
-1. **Hero:**
-   - the full-bleed photo under the eucalyptus wash;
-   - the eyebrow and the core line, with "Not the market." in light-copper italic;
-   - straight under it, what you get (`PROMISE.offer`, and `PROMISE.receive` from `sm`): free guidance, a next-step plan, and one participating agent only if you ask;
-   - Andy in one line beside his photo, linking to /about;
-   - the plan card: "What are you planning?" (selling, buying, both) **before** the field it controls, a message for that move, the optional suburb field, "Build my next-step plan" with `PLAN_TERMS` beside it, and a preview of the plan (the next three steps, tools and a checklist) cut from a real plan for that move (`planPreview`).
-   - on phones (20 Oct 2026) the button must show on the first screen at 390 × 844 with the keyboard closed: the move's message sits under the button, the field's hint is one line, and the preview shows the three steps with the tools and checklist behind a "Show" toggle. Desktop keeps the roomier layout.
-   - every plan button (hero, closing band, header, phone menu, phone bar) builds its link with `planStartHref` from the same move and suburb (`MoveProvider` publishes both), so none can drop the suburb.
-
-   The move re-points the rest of the page through `MoveProvider` (`src/components/campaign/moves.ts` holds what each move says and offers). The header sits clear over the hero until the page scrolls. Further down, `ByMove` swaps in the buyer's version when Buying is picked (20 Oct 2026): the case study adds why it matters to a buyer and buyer takeaways, the founder band gets a buyer heading and one closing line (Andy's own words and figures never change), and the agent section explains a buyer's agent (who they act for, how they're paid, the network still being built) against the selling agent. Selling and Both keep the seller's version.
-2. **Try it now:** the live number tools for the move, and the three tools that settle the next decision, each with "Helps you decide". Sellers: the selling-costs calculator, the agent proposal worksheet and the free agreement check (with its general-information line). Buyers: borrowing power, first home rules, the due diligence checklist. Both: sell first or buy first, the bridging calculator, the agreement check.
-3. **A real example, Hamilton, Queensland** (`src/lib/case-studies.ts`, Andy's confirmed facts only). Since 20 Oct 2026 the **figures lead**, straight under a short headline: $490,000 expected before, $38,000 renovation spend, $820,000 expected after. Then **one** qualification beneath them: both are expected sale prices; the $330,000 is an increase in expected sale price, not profit or an achieved sale result; most renovations won't move a price this far. Never call $820,000 an achieved sale, a settled result or a valuation, and don't repeat the qualification elsewhere in the band. Then the redesign in two sentences (an older two-bedroom apartment with a boxed-in, outdated 1980s layout, redesigned as a bright, open, modern apartment that makes the most of its city views, with a cost-conscious renovation) beside two ink-and-watercolour illustrations (ImagineArt), each badged "Illustration" and captioned "like this one" / "the kind of … it became", with a line saying they aren't photographs of the apartment or the work. Then what to take from it (assess, layout and presentation, where to spend), each linked to its guide. No address, layout plan, itemised breakdown, dates, buyer feedback, testimonial or outcome beyond those facts: none exist.
-4. **Founder band** on eucalyptus: portrait, Andy's words, the pull quote, his name in serif italic, and the site's headline figures ($4B+, 1 agent, 0%, the live count).
-5. **One agent:** the commission comparison, the four checks with licence-register links, the agent finder (which shows coverage once the suburb is known) and the partner card (real data only, else nothing).
-6. **The two guides** with their chapters.
-7. **The closing line,** on cream, with the plan button and the agent for the move (and the agreement check link for sellers).
-
-Eyebrows (uppercase, letter-spaced, copper) label bands on the homepage, about, agreement check and guide chapters. They aren't for every section on every page.
-
-*End of BRAND.md v6 (homepage order: 19 Oct 2026).*
+*End of BRAND.md v7 ("Clear decisions", 20 Oct 2026).*

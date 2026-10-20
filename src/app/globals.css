@@ -1,58 +1,69 @@
 @import "tailwindcss";
 
 /* ──────────────────────────────────────────────────────────────────
-   Brand v6 (15 Oct 2026): "It's the campaign that wins".
-   Cream page, eucalyptus dark bands, ink text, copper for actions and
-   accents, a serif for h1/h2 and Schibsted Grotesk for everything else.
-   Token *names* are unchanged from v3–v5, so every component using
-   `bg-primary`, `text-cta`, etc. cascades into the new look. See BRAND.md.
+   Brand v7 (20 Oct 2026): "Clear decisions". Know what matters before
+   you buy or sell. Cream surfaces, forest-green ink and actions,
+   terracotta for the selling edition, restrained copper accents, Source
+   Serif 4 for headings and Schibsted Grotesk for everything else. Fine
+   rules instead of shadows, restrained 4–8px corners. Token *names* are
+   unchanged from v3–v6, so every component using `bg-cta`, `text-primary`,
+   `bg-surface-inverse` etc. cascades into the new look. See BRAND.md.
 
-   Brand colours: eucalyptus #0F3D2E, sand #F4EFE6, cream #FBF8F3,
-   ink #14201B, copper #C47A3A, light copper #E9B07C. Copper itself is
-   3.4:1 with white text and 3.2:1 on cream, under AA for body-size text,
-   so buttons use the deeper #A9642C (4.6:1 with white) and small copper
-   text uses #9A5A26 (5.1:1 on cream). #C47A3A stays for large type,
-   rules and marks.
+   Contrast (WCAG 2.1): ink #203D30 is 11:1 on cream; muted #566257 5.9:1
+   on cream and 5.4:1 on sand; copper text #93532A 5.4:1 on cream and 4.6:1
+   on the terracotta tint; cream on forest #244A37 9.2:1; light copper
+   #E1AF86 on forest 5.1:1. The brighter copper #A9642C is for the logo
+   mark, rules and type over 24px only.
    ────────────────────────────────────────────────────────────── */
 
 :root {
-  --background: #fbf8f3;   /* cream */
-  --foreground: #14201b;   /* ink */
+  --background: #f8f6f0;   /* cream */
+  --foreground: #203d30;   /* forest ink */
 
-  /* Copper. --primary is the deep shade for text-weight accents (links,
-     focus rings, eyebrows) so it passes AA on cream and sand; --accent is
-     the brand copper for large type and marks; --cta is the button fill. */
-  --primary:         #9a5a26;
-  --primary-light:   #c47a3a;
-  --primary-lighter: #e9b07c;
-  --primary-dark:    #7e4a1f;
-  --primary-darker:  #633a18;
+  /* Copper. --primary is the deep shade for small copper text (links,
+     eyebrows, focus rings); --accent is the brighter copper for the logo
+     mark, large type and rules. Actions are forest green (--cta below). */
+  --primary:         #93532a;
+  --primary-light:   #a9642c;
+  --primary-lighter: #e1af86;
+  --primary-dark:    #7a4522;
+  --primary-darker:  #62381c;
 
-  --accent:          #c47a3a;
-  --accent-light:    #e9b07c;
-  --accent-lighter:  #f6e6d4;
-  --accent-dark:     #a9642c;
-  --accent-darker:   #8f5222;
+  --accent:          #a9642c;
+  --accent-light:    #e1af86;
+  --accent-lighter:  #f2e6d8;
+  --accent-dark:     #93532a;
+  --accent-darker:   #7a4522;
 
-  /* Warm neutral ramp, leaning to the eucalyptus ink */
-  --gray-50:  #f8f6f1;
-  --gray-100: #f1ede5;
-  --gray-200: #e3dccf;
-  --gray-300: #cfc6b6;
-  --gray-400: #a39c8f;
-  --gray-500: #6e6a62;
-  --gray-600: #525c57;
-  --gray-700: #3b443f;
-  --gray-800: #26302b;
-  --gray-900: #14201b;
+  /* Warm neutral ramp, leaning to the forest ink */
+  --gray-50:  #f3f2ec;
+  --gray-100: #edece2;
+  --gray-200: #cdd2c6;
+  --gray-300: #b4b9ad;
+  --gray-400: #8f978d;
+  --gray-500: #6b756c;
+  --gray-600: #566257;
+  --gray-700: #3d4b42;
+  --gray-800: #2b4135;
+  --gray-900: #203d30;
 
-  /* The brand colours by name, for the campaign components. */
-  --eucalyptus: #0f3d2e;
-  --eucalyptus-deep: #0a2e22;
-  --sand:  #f4efe6;
-  --cream: #fbf8f3;
-  --copper: #c47a3a;
-  --copper-light: #e9b07c;
+  /* The brand colours by name. --eucalyptus and --eucalyptus-deep keep
+     their v6 names for existing components and now hold the forest green. */
+  --forest: #244a37;
+  --forest-deep: #1b3a2b;
+  --eucalyptus: var(--forest);
+  --eucalyptus-deep: var(--forest-deep);
+  --terracotta: #89492f;
+  --terracotta-deep: #6e3a25;
+  --terracotta-tint: #eee3d4;
+  --sand:  #edece2;
+  --cream: #f8f6f0;
+  --paper: #fffdf8;
+  --copper: #a9642c;
+  --copper-light: #e1af86;
+  /* The book stages behind the two covers. */
+  --stage-buy: #e0e0d2;
+  --stage-sell: #eaded0;
 
   /* h1 and h2 are set in the serif (layout.tsx loads it as --font-serif);
      everything else, including h3 down, in Schibsted Grotesk. */
@@ -60,20 +71,35 @@
 }
 
 @theme {
-  /* Soft, generous corners. rounded-lg is fields, rounded-xl cards,
-     rounded-3xl (24px) the large campaign cards and panels. Buttons are
-     pills (rounded-full). */
-  --radius-lg: 10px;
-  --radius-xl: 16px;
-  --radius-2xl: 20px;
-  --radius-3xl: 24px;
+  /* Restrained corners (v7): 3px small controls, 4px buttons and fields,
+     6px panels, 8px the largest containers. Pills are gone; rounded-full
+     is for avatars, dots and the step markers only. */
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --radius-2xl: 6px;
+  --radius-3xl: 8px;
 }
 
 @theme inline {
-  --shadow-card: 0 1px 2px 0 rgb(20 32 27 / 0.04), 0 12px 32px -16px rgb(20 32 27 / 0.14);
-  --shadow-card-hover: 0 2px 4px 0 rgb(20 32 27 / 0.05), 0 22px 48px -20px rgb(20 32 27 / 0.22);
-  --shadow-card-hover-warm: 0 2px 4px 0 rgb(20 32 27 / 0.05), 0 22px 48px -20px rgb(20 32 27 / 0.22);
-  --shadow-soft: 0 30px 60px -30px rgb(20 32 27 / 0.28);
+  /* Fine rules instead of shadows: cards sit on a hairline, and only
+     floating things (a menu, a book) cast a soft shadow. */
+  --shadow-card: 0 1px 0 0 rgb(32 61 48 / 0.04);
+  --shadow-card-hover: 0 1px 0 0 rgb(32 61 48 / 0.06), 0 14px 30px -22px rgb(32 61 48 / 0.28);
+  --shadow-card-hover-warm: 0 1px 0 0 rgb(32 61 48 / 0.06), 0 14px 30px -22px rgb(32 61 48 / 0.28);
+  --shadow-soft: 0 24px 48px -30px rgb(32 61 48 / 0.32);
+  --shadow-book: 11px 19px 22px -10px rgb(38 51 38 / 0.21);
+  /* White is the warm paper white, so bg-white cards and text-white on
+     forest pick up the palette without touching every component. */
+  --color-white: var(--paper);
+  --color-forest: var(--forest);
+  --color-forest-deep: var(--forest-deep);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-deep: var(--terracotta-deep);
+  --color-terracotta-tint: var(--terracotta-tint);
+  --color-paper: var(--paper);
+  --color-stage-buy: var(--stage-buy);
+  --color-stage-sell: var(--stage-sell);
   --color-eucalyptus: var(--eucalyptus);
   --color-eucalyptus-deep: var(--eucalyptus-deep);
   --color-sand: var(--sand);
@@ -119,14 +145,14 @@
 :root {
   /* Ink, text-colour roles */
   --ink:        var(--gray-900);
-  --ink-muted:  var(--gray-600);   /* 6.1:1 on sand */
-  --ink-subtle: #616b66;           /* 4.5:1 on sand */
+  --ink-muted:  var(--gray-600);   /* 5.4:1 on sand */
+  --ink-subtle: #636c65;           /* 4.6:1 on sand */
 
   /* Surface, background roles */
   --surface:         var(--background);
-  --surface-raised:  #ffffff;
+  --surface-raised:  var(--paper);
   --surface-sunken:  var(--gray-50);
-  --surface-inverse: var(--eucalyptus);       /* eucalyptus band */
+  --surface-inverse: var(--forest);           /* the forest band */
 
   /* The alternate band: sand on the cream page. */
   --surface-warm:        var(--sand);
@@ -137,18 +163,20 @@
   --line-strong: var(--gray-300);
   --line-warm:   var(--gray-200);
 
-  /* Semantic state colours, accessible on white at AA */
-  --success: #157f3c;
-  --warning: #b95b00;
-  --danger:  #b42233;
+  /* Semantic state colours, accessible on cream at AA */
+  --success: #2f6b3f;
+  --warning: #9a5200;
+  --danger:  #a8322a;
   --info:    var(--primary);
 
-  /* CTA, the one action colour */
-  --cta:       var(--accent-dark);    /* #a9642c, 4.6:1 with white text */
-  --cta-hover: var(--accent-darker);  /* #8f5222 */
+  /* CTA, the one action colour: forest green with cream text (9.2:1).
+     Inside .tone-dark it flips to a cream button with forest text. */
+  --cta:       var(--forest);
+  --cta-hover: var(--forest-deep);
+  --cta-ink:   var(--cream);
 
   /* Text drawn on an ink-filled shape (a step number on bg-ink). */
-  --ink-inverse: #ffffff;
+  --ink-inverse: var(--cream);
 }
 
 /* ── Tone scopes (premium bands, Oct 2026) ────────────────────────
@@ -158,28 +186,34 @@
    variant. A white card inside one (a form, the guide funnel) resets with
    .tone-light. See BRAND.md section 11 and src/components/premium. */
 .tone-dark {
-  --ink:          #ffffff;
-  --ink-muted:    rgb(255 255 255 / 0.78);
-  --ink-subtle:   rgb(255 255 255 / 0.62);
+  --ink:          #f8f6f0;
+  --ink-muted:    rgb(248 246 240 / 0.8);
+  --ink-subtle:   rgb(248 246 240 / 0.66);
   --ink-inverse:  var(--surface-inverse);
-  --line:         rgb(255 255 255 / 0.16);
-  --line-strong:  rgb(255 255 255 / 0.32);
-  --primary:      var(--primary-lighter);
-  /* State colours light enough for eucalyptus (AA on #0f3d2e). */
-  --success:      #5fd18b;
-  --danger:       #ff8f8f;
+  --line:         rgb(248 246 240 / 0.2);
+  --line-strong:  rgb(248 246 240 / 0.34);
+  --primary:      var(--copper-light);
+  --cta:          var(--cream);
+  --cta-hover:    #ece8dc;
+  --cta-ink:      var(--forest);
+  /* State colours light enough for forest (AA on #244a37). */
+  --success:      #9fd3a9;
+  --danger:       #ffb3a6;
   color: var(--ink);
 }
 .tone-light {
   --ink:          var(--gray-900);
   --ink-muted:    var(--gray-600);
-  --ink-subtle:   #616b66;
-  --ink-inverse:  #ffffff;
+  --ink-subtle:   #636c65;
+  --ink-inverse:  var(--cream);
   --line:         var(--gray-200);
   --line-strong:  var(--gray-300);
-  --primary:      #9a5a26;
-  --success:      #157f3c;
-  --danger:       #b42233;
+  --primary:      #93532a;
+  --cta:          var(--forest);
+  --cta-hover:    var(--forest-deep);
+  --cta-ink:      var(--cream);
+  --success:      #2f6b3f;
+  --danger:       #a8322a;
   color: var(--ink);
 }
 
@@ -203,6 +237,7 @@
   --color-info:               var(--info);
   --color-cta:                var(--cta);
   --color-cta-hover:          var(--cta-hover);
+  --color-cta-ink:            var(--cta-ink);
 }
 
 body {
@@ -215,7 +250,7 @@ body {
 
 /* Selection colour */
 ::selection {
-  background: var(--accent-lighter);
+  background: var(--terracotta-tint);
   color: var(--ink);
 }
 
@@ -239,27 +274,27 @@ h2 em {
   font-family: var(--font-serif-italic), var(--font-serif), Georgia, "Times New Roman", serif;
 }
 
-/* Headings (v6): h1 and h2 in the serif at a regular weight, h3 down in
-   the grotesk. In @layer base so a weight or tracking utility on the
-   element still wins. */
+/* Headings (v7): h1 and h2 in the serif at a regular weight with tight
+   editorial tracking, h3 down in the grotesk at a medium weight. In
+   @layer base so a weight or tracking utility on the element still wins. */
 @layer base {
   h1, h2 {
     font-family: var(--font-display), Georgia, "Times New Roman", serif;
     font-weight: 400;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.035em;
   }
   h3, h4, h5, h6 {
     font-family: var(--font-sans), "Helvetica Neue", Arial, sans-serif;
-    font-weight: 700;
+    font-weight: 600;
     letter-spacing: -0.01em;
   }
   h4, h5, h6 { font-weight: 600; }
 }
 
-/* Tailwind's text-5xl / text-6xl set line-height:1 which is too tight for headings that may wrap.
-   Override to a minimum of 1.15 for all h1 elements. */
+/* Tailwind's text-5xl / text-6xl set line-height:1, too tight for serif
+   headings that wrap. */
 h1 {
-  line-height: 1.1;
+  line-height: 1.06;
 }
 
 /* Brand utilities, terracotta gradient panel for calculator results & CTAs */
@@ -391,7 +426,7 @@ h1 {
 /* Anchor-arrival pulse: when smooth scroll lands on #get-the-guide the
    funnel card rings once so the eye knows where it was sent. */
 @keyframes ypg-ping {
-  from { box-shadow: 0 0 0 0 rgb(169 100 44 / 0.35); }
+  from { box-shadow: 0 0 0 0 rgb(36 74 55 / 0.3); }
   to   { box-shadow: 0 0 0 12px transparent; }
 }
 html[data-motion] #get-the-guide:target [data-funnel-card] {
@@ -426,7 +461,7 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   display: flex;
   align-items: stretch;
   border: 1px solid var(--pi-border, var(--line));
-  border-radius: 6px;
+  border-radius: 4px;
   background: var(--pi-bg, var(--surface-raised));
   overflow: hidden;
   transition: border-color 200ms, box-shadow 200ms;
@@ -445,7 +480,7 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   --pi-ring-alpha: 100%;
 }
 .ypg-phone-input--plain {
-  --pi-bg: #fff;
+  --pi-bg: var(--paper);
   --pi-border: var(--gray-300);
   --pi-focus: var(--primary);
   --pi-ring: 1px;
@@ -555,10 +590,10 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
 
 .prose-ypg h2 {
   font-family: var(--font-display), Georgia, "Times New Roman", serif;
-  font-size: 1.875rem;
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.015em;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
   color: var(--ink);
   margin-top: 2.75em;
   margin-bottom: 0.75em;
@@ -567,8 +602,8 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
 
 .prose-ypg h3 {
   font-family: var(--font-sans), "Helvetica Neue", Arial, sans-serif;
-  font-size: 1.3rem;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 600;
   letter-spacing: -0.015em;
   line-height: 1.25;
   color: var(--ink);
@@ -588,7 +623,7 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
 }
 
 .prose-ypg a {
-  color: var(--primary);
+  color: var(--ink);
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
@@ -596,6 +631,7 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   transition: text-decoration-color 0.15s;
 }
 .prose-ypg a:hover {
+  color: var(--primary);
   text-decoration-color: var(--primary);
 }
 
@@ -623,8 +659,8 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   left: 0;
   top: 0.65em;
   width: 0.5em;
-  height: 2px;
-  background: var(--cta);
+  height: 1px;
+  background: var(--accent);
 }
 
 .prose-ypg ol { list-style: none; counter-reset: ol-counter; }
@@ -635,23 +671,25 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   counter-increment: ol-counter;
 }
 .prose-ypg ol > li::before {
-  content: counter(ol-counter) ".";
+  content: counter(ol-counter);
   position: absolute;
   left: 0;
-  top: 0;
-  font-weight: 700;
-  color: var(--ink);
-  font-size: 1em;
+  top: -0.05em;
+  font-family: var(--font-display), Georgia, serif;
+  color: var(--primary);
+  font-size: 1.15em;
 }
 
 .prose-ypg blockquote {
-  border-left: 3px solid var(--cta);
+  border-left: 1px solid var(--accent);
   padding: 0.25em 0 0.25em 1.25em;
   margin: 2em 0;
-  font-size: 1.15em;
-  font-weight: 500;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.3em;
+  font-weight: 400;
+  letter-spacing: -0.015em;
   color: var(--ink);
-  line-height: 1.45;
+  line-height: 1.4;
 }
 
 .prose-ypg code {
@@ -688,7 +726,7 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   line-height: 1.5;
 }
 .prose-ypg thead {
-  border-bottom: 1.5px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
 }
 .prose-ypg th {
   text-align: left;
@@ -709,7 +747,7 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
 
 /* Article images */
 .prose-ypg img {
-  border-radius: 8px;
+  border-radius: 2px;
   margin: 2em 0;
 }
 
@@ -721,6 +759,86 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   color: var(--ink);
   font-weight: 400;
 }
+
+/* ── The guide covers (v7, 20 Oct 2026) ─────────────────────────────────
+   src/components/brand/BookCover.tsx, the one cover source for the site,
+   the PDFs, the cover images and the emails. Everything inside is sized in
+   container units from the approved design's 246px-wide cover (1cqw =
+   2.46px there), so the cover is the same design at any width. */
+.ypg-cover {
+  container-type: inline-size;
+  position: relative;
+  flex: none;
+  aspect-ratio: 1 / 1.62;
+}
+.ypg-cover[data-shape="a4"] { aspect-ratio: 210 / 297; }
+.ypg-cover[data-tilted] { box-shadow: var(--shadow-book); }
+.ypg-cover__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--cover);
+  color: var(--cover-ink);
+}
+.ypg-cover[data-spine] .ypg-cover__face {
+  border-left: 2cqw solid color-mix(in srgb, var(--cover-ink) 25%, var(--cover));
+  border-right: 0.8cqw solid #b4b39e;
+}
+.ypg-cover__top {
+  display: flex;
+  flex-direction: column;
+  padding: 8.1cqw 8.5cqw 8.1cqw;
+}
+.ypg-cover__brand {
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-size: 5.3cqw;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
+}
+.ypg-cover__mark { width: 6.9cqw; height: 6.9cqw; flex: none; }
+.ypg-cover__title {
+  display: block;
+  margin-top: 9.75cqw;
+  margin-bottom: 5.3cqw;
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-size: 17.5cqw;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+.ypg-cover__subtitle {
+  display: block;
+  font-size: 4.5cqw;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+.ypg-cover__photo {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  background: color-mix(in srgb, var(--cover-ink) 12%, var(--cover));
+}
+.ypg-cover__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 3cqw;
+  padding: 4.5cqw 6.1cqw;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 4.5cqw;
+  line-height: 1.4;
+}
+/* The A4 print cover: a roomier top, the same parts. */
+.ypg-cover[data-shape="a4"] .ypg-cover__top { padding: 10cqw 9cqw 9cqw; }
+.ypg-cover[data-shape="a4"] .ypg-cover__title { margin-top: 18cqw; font-size: 16.5cqw; }
+.ypg-cover[data-shape="a4"] .ypg-cover__subtitle { font-size: 4.2cqw; }
+.ypg-cover[data-shape="a4"] .ypg-cover__foot { padding: 4.5cqw 9cqw; font-size: 3.6cqw; }
+.ypg-cover[data-shape="a4"] .ypg-cover__brand { font-size: 4.6cqw; }
+.ypg-cover[data-shape="a4"] .ypg-cover__mark { width: 6cqw; height: 6cqw; }
 
 /* ── Interactive parts (v5, 14 Oct 2026) ────────────────────────────────
    Things people use, not read: the 3D guide books, the live number tools
@@ -796,33 +914,34 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
 .book3d__cover-inside {
   transform: rotateY(180deg);
   border-radius: 5px 2px 2px 5px;
-  background: #efedea;
+  background: #f3f2ec;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: 0.2em;
   padding: 10%;
   font-size: calc(var(--bw) * 0.048);
-  color: #5f646b;
+  color: #566257;
 }
-.book3d__cover-inside span:first-child { font-weight: 700; color: #14201b; }
+.book3d__cover-inside span:first-child { font-weight: 600; color: #203d30; }
 .book3d__page {
   top: 3px;
   bottom: 3px;
   left: 0;
   right: 4px;
   transform: translateZ(calc(var(--bt) / 2 - 1px));
-  background: #fff;
+  background: #fffdf8;
   border-radius: 0 3px 3px 0;
   padding: 12% 9% 9% 11%;
-  color: #14201b;
+  color: #203d30;
   text-align: left;
   box-shadow: inset 8px 0 12px -8px rgb(0 0 0 / 0.22);
 }
 .book3d__contents-title {
   font-size: calc(var(--bw) * 0.066);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.03em;
 }
 .book3d__contents {
   margin-top: 9%;
@@ -835,9 +954,9 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   font-size: calc(var(--bw) * 0.043);
   line-height: 1.25;
 }
-.book3d__contents li span { color: #9a5a26; font-weight: 700; }
+.book3d__contents li span { color: #93532a; font-family: var(--font-display), Georgia, serif; }
 .book3d__contents li { transition: background-color 200ms; border-radius: 2px; margin: 0 -4%; padding: 0 4%; }
-.book3d__contents li[data-on] { background: #fbebe4; }
+.book3d__contents li[data-on] { background: #eee3d4; }
 .book3d__back {
   inset: 0;
   transform: translateZ(calc(var(--bt) / -2)) rotateY(180deg);
@@ -875,7 +994,7 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   bottom: -4%;
   height: 8%;
   border-radius: 50%;
-  background: rgb(20 32 27 / 0.38);
+  background: rgb(32 61 48 / 0.34);
   filter: blur(calc(var(--bw) * 0.055));
   transition: transform 900ms var(--ease-out-quint);
 }
@@ -920,8 +1039,8 @@ html[data-motion] #get-the-guide:target [data-funnel-card] {
   box-shadow: 0 2px 6px rgb(20 32 27 / 0.25);
 }
 .ypg-range:active::-webkit-slider-thumb { transform: scale(1.12); }
-.ypg-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgb(169 100 44 / 0.3); }
-.ypg-range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px rgb(169 100 44 / 0.3); }
+.ypg-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgb(36 74 55 / 0.25); }
+.ypg-range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px rgb(36 74 55 / 0.25); }
 
 /* A result that changed: a short settle so the eye catches it. */
 @keyframes ypg-swap {

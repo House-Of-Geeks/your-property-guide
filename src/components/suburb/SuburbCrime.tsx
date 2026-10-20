@@ -49,7 +49,7 @@ export function SuburbCrime({ crimeStat }: SuburbCrimeProps) {
   return (
     <div>
       <p className="text-ink">
-        <span className="font-display text-3xl font-bold tracking-tight">{total.toLocaleString()}</span>{" "}
+        <span className="font-display text-3xl font-normal tracking-[-0.03em]">{total.toLocaleString()}</span>{" "}
         <span className="text-[15px] text-ink-muted">
           {crimeStat.geoLevel === "lga"
             ? <>offences recorded in {crimeStat.period} across the {crimeStat.lgaName} LGA</>

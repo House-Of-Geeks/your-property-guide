@@ -210,7 +210,7 @@ export function SubmitButton({ busy, done, children, doneLabel = "Sent" }: { bus
       type="submit"
       disabled={busy || done}
       aria-disabled={busy || done}
-      className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-cta hover:bg-cta-hover text-white px-7 py-3.5 text-base font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-70"
+      className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-[4px] bg-cta hover:bg-cta-hover text-cta-ink px-7 py-3.5 text-base font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-70"
     >
       {done ? (
         <>

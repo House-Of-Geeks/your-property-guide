@@ -1,5 +1,5 @@
 import { type NextRequest } from "next/server";
-import { renderOgImage } from "@/lib/og/render";
+import { OG_BRAND, renderOgImage } from "@/lib/og/render";
 
 export const runtime = "edge";
 
@@ -26,8 +26,10 @@ export async function GET(req: NextRequest) {
       : description;
 
   return renderOgImage({
-    eyebrow: persona.toUpperCase(),
+    eyebrow: persona,
     title: safeTitle,
     subtitle: safeDesc,
+    // The selling guide's chapters carry its terracotta edition colour.
+    accentColor: /^Selling a home/.test(persona) ? OG_BRAND.terracotta : undefined,
   });
 }

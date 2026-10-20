@@ -455,7 +455,7 @@ export default function HowToPrepareForAPropertyAppraisalPage() {
           covers references, agreements and the negotiation.
         </li>
         <li>
-          <strong>Get the full playbook.</strong> The free{" "}
+          <strong>Get the full guide.</strong> The free{" "}
           <Link href="/selling-guide">selling guide</Link> covers the whole
           process from appraisal to settlement, personalised to your suburb.
         </li>

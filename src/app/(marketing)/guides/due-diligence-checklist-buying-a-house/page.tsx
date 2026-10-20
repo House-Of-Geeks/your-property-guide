@@ -21,7 +21,7 @@ import { guideOgImages } from "@/lib/og/helpers";
 const FRONTMATTER: GuideFrontmatter = {
   title: "Due Diligence Checklist for Buying a House in Australia (2026)",
   description:
-    "Every check, document, and red flag to investigate before you sign a contract on an Australian residential property. Use as a pre-offer and pre-settlement playbook.",
+    "Every check, document, and red flag to investigate before you sign a contract on an Australian residential property. Use as a pre-offer and pre-settlement checklist.",
   slug: "due-diligence-checklist-buying-a-house",
   publishedAt: "2026-05-13",
   updatedAt: "2026-10-16",

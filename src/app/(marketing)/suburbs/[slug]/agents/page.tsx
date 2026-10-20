@@ -141,7 +141,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
           // The page's one form: one local agent, free introduction. Intent
           // and suburb are set, so it opens on the timeframe question.
           <div id="agent-match" className="scroll-mt-24 rounded-xl border border-line bg-white p-5 sm:p-6">
-            <h2 className="font-display text-lg sm:text-xl font-bold text-ink leading-snug tracking-tight">
+            <h2 className="font-display text-lg sm:text-xl font-normal text-ink leading-snug tracking-[-0.03em]">
               One local agent, free introduction
             </h2>
             <p className="mt-1.5 mb-5 font-sans text-sm sm:text-[15px] text-ink-muted leading-relaxed">
@@ -167,7 +167,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
               ].map((c) => (
                 <div key={c.label} className="bg-white p-3 sm:p-4">
                   <dt className="font-sans text-xs sm:text-[13px] text-ink-muted mb-1.5">{c.label}</dt>
-                  <dd className="font-display text-lg sm:text-2xl font-bold text-ink leading-none">{formatPriceFull(c.value)}</dd>
+                  <dd className="font-display text-lg sm:text-2xl font-normal text-ink leading-none">{formatPriceFull(c.value)}</dd>
                 </div>
               ))}
             </dl>
@@ -190,13 +190,13 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
 
           {/* Choosing an agent here. */}
           <section id="choosing" className="scroll-mt-20">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+            <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-5">
               Five things to ask an agent in {sn}
             </h2>
             <ol className="grid md:grid-cols-2 gap-x-10 border-t border-line md:border-t-0">
               {CHOOSING_POINTS.map((p, i) => (
                 <li key={p.point} className="flex gap-4 border-b border-line py-4 md:first:border-t md:[&:nth-child(2)]:border-t">
-                  <span className="font-display text-lg font-bold text-ink leading-snug w-5 shrink-0">{i + 1}</span>
+                  <span className="font-display text-lg font-normal text-ink leading-snug w-5 shrink-0">{i + 1}</span>
                   <div>
                     <p className="font-sans font-semibold text-ink leading-snug">{p.point}</p>
                     <p className="font-sans text-sm text-ink-muted mt-1 leading-relaxed">{p.detail}</p>
@@ -210,7 +210,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
               page: answer it, with the price context, and point at the one
               form above rather than a second form. */}
           <section id="appraisal" className="scroll-mt-20 max-w-3xl">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-4">
+            <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-4">
               Free property appraisal in {sn}
             </h2>
             <p className="font-sans text-base text-ink leading-relaxed">
@@ -235,7 +235,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
 
           {nearbyAgents.length > 0 && (
             <section id="nearby-agents" className="scroll-mt-20">
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-5">
+              <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-5">
                 Real estate agents in nearby suburbs
               </h2>
               <ul className="grid gap-x-10 sm:grid-cols-2 lg:grid-cols-4 border-t border-line sm:border-t-0">
@@ -252,13 +252,13 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
 
           {/* Visible FAQ backing the FAQPage schema */}
           <section id="faq" className="scroll-mt-20 max-w-3xl">
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-ink tracking-tight mb-4">
+            <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink tracking-[-0.03em] mb-4">
               Agents in {sn}: common questions
             </h2>
             <dl className="divide-y divide-line border-y border-line">
               {model.faqs.map((f) => (
                 <div key={f.question} className="py-5">
-                  <dt className="font-display text-lg font-bold text-ink leading-snug mb-2">{f.question}</dt>
+                  <dt className="font-display text-lg font-normal text-ink leading-snug mb-2">{f.question}</dt>
                   <dd className="font-sans text-base text-ink-muted leading-relaxed">{f.answer}</dd>
                 </div>
               ))}

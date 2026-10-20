@@ -30,7 +30,7 @@ type KindCopy = { lead: string; ctaLabel: string };
 
 const SELLING_KIND_DEFAULTS: Record<MatchCTAKind, KindCopy> = {
   "selling-agent": {
-    lead:     "Choosing an agent soon? The free selling guide has the 10 questions that catch bad agents out, plus fee benchmarks for your state.",
+    lead:     "Choosing an agent soon? The free selling guide has the questions to ask every agent, plus fee benchmarks for your state.",
     ctaLabel: "Get the free selling guide",
   },
   "mortgage-broker": {
@@ -66,7 +66,7 @@ const BUYING_KIND_DEFAULTS: Record<MatchCTAKind, KindCopy> = {
     ctaLabel: "Get the free buying guide",
   },
   "buyers-agent": {
-    lead:     "Inspecting and getting ready to offer? The free buying guide covers how to inspect like a professional, how the selling side plays you, and making the offer.",
+    lead:     "Inspecting and getting ready to offer? The free buying guide covers inspecting a property, how homes are marketed and sold, and making an offer.",
     ctaLabel: "Get the free buying guide",
   },
   conveyancer: {

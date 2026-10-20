@@ -10,6 +10,7 @@ import {
   type LeadEmailData,
 } from "@/lib/lead-emails";
 import { EMAIL_COLORS } from "@/lib/email-theme";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 
 const guideLead = (overrides: Partial<LeadEmailData> = {}): LeadEmailData => ({
   type: "guide-download",
@@ -85,7 +86,7 @@ describe("scoreGuideLead (buying)", () => {
 describe("buying-guide confirmation email", () => {
   it("uses buying subject and links the buying PDF, not the selling one", () => {
     const copy = confirmationCopy(buyerLead());
-    expect(copy.subject).toContain("buying guide");
+    expect(copy.subject).toContain("Buying a home");
     const html = buildConfirmationHtml(buyerLead());
     expect(html).toContain("buying-property-australia.pdf");
     expect(html).not.toContain("selling-property-australia.pdf");
@@ -106,10 +107,10 @@ describe("buying-guide confirmation email", () => {
 });
 
 describe("guide-download confirmation copy", () => {
-  it("delivers the PDF download CTA with the value-led subject and preheader", () => {
+  it("delivers the PDF download CTA with the guide's name in the subject, and the preheader", () => {
     const copy = confirmationCopy(guideLead());
     expect(copy.cta?.url).toBe(GUIDE_PDF_URL);
-    expect(copy.subject).toBe("Your selling guide + the $20,000 question");
+    expect(copy.subject).toBe("Your copy of Selling a home, and where to start");
     expect(copy.preheader).toContain("Ten chapters, in order");
     expect(copy.preheader).not.toContain("pay for themselves");
   });
@@ -121,7 +122,7 @@ describe("guide-download confirmation copy", () => {
     expect(warm.next).toContain("time to prepare properly");
     const cold = confirmationCopy(guideLead({ sellingTimeframe: "researching" }));
     expect(cold.next).not.toContain("within three months");
-    expect(cold.next).toContain("pick your moment");
+    expect(cold.next).toContain("Is now the right time to sell?");
     const listed = confirmationCopy(guideLead({ agentStatus: "already-listed" }));
     expect(listed.next).toContain("already listed");
     expect(listed.next).toContain("go to no one");
@@ -145,12 +146,15 @@ describe("email branding", () => {
     expect(html).toContain("Downsizing");
   });
 
-  it("confirmation email carries the download button, value strip and HOT extras", () => {
+  it("confirmation email carries the download button, where-to-start strip and HOT extras", () => {
     const html = buildConfirmationHtml(guideLead());
-    expect(html).toContain(EMAIL_COLORS.terracotta);
+    expect(html).toContain(EMAIL_COLORS.forest);
     expect(html).toContain(GUIDE_PDF_URL);
-    expect(html).toContain("Where the money is");
-    expect(html).toContain("$20,000 question");
+    expect(html).toContain("Where to start");
+    // Chapter titles come from GUIDE_BOOKS, never a hard-coded list.
+    expect(html).toContain(GUIDE_BOOKS.selling.chapters[2].title);
+    expect(html).not.toContain("$20 million");
+    expect(html).not.toContain("#0f3d2e");
     // HOT gets the dark appraisal panel and a reply-with-a-question P.S.
     // (never an implied introduction: that needs the /get-help form).
     expect(html).toContain("Put a number on it");
@@ -168,13 +172,13 @@ describe("email branding", () => {
   it("listed sellers get no agent ask at all", () => {
     const html = buildConfirmationHtml(guideLead({ agentStatus: "already-listed" }));
     expect(html).not.toContain("Put a number on it");
-    expect(html).not.toContain("buyer's agent");
+    expect(html).not.toContain("buyer’s agent");
   });
 
   it("every buyer gets the buyer's agent panel", () => {
     for (const buyerPersona of ["first-home", "investing"]) {
       const html = buildConfirmationHtml(guideLead({ guideType: "buying", buyerPersona, sellingTimeframe: undefined, agentStatus: undefined }));
-      expect(html).toContain("What a buyer's agent does");
+      expect(html).toContain("What a buyer’s agent does");
       expect(html).not.toContain("Get matched");
       expect(html).toContain("/buyers-agents");
       expect(html).not.toContain("Put a number on it");
@@ -188,7 +192,7 @@ describe("email branding", () => {
       email: "marco@example.com",
     });
     expect(html).not.toContain(GUIDE_PDF_URL);
-    expect(html).not.toContain("Where the money is");
+    expect(html).not.toContain("Where to start");
   });
 });
 

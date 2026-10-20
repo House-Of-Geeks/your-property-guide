@@ -7,6 +7,9 @@ import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
 // Oct 2026 ("confident moves"). Columns follow the move (buying, selling,
 // both), then guides and tools, then the company and how we're paid. The
 // agent-facing pages sit in their own column, last.
+//
+// 20 Oct 2026 ("Clear decisions"): a cream footer under a fine rule, the
+// logo with one line about what we do, and the link columns in small type.
 const FOOTER_COLUMNS = [
   {
     heading: "Buying",
@@ -17,7 +20,7 @@ const FOOTER_COLUMNS = [
       { label: "Investing",               href: "/investing" },
       { label: "Stamp duty calculator",   href: "/stamp-duty-calculator" },
       { label: "Borrowing power",         href: "/borrowing-power-calculator" },
-      { label: "Free buying guide",       href: "/buying-guide" },
+      { label: "Free guide: Buying a home", href: "/buying-guide" },
     ],
   },
   {
@@ -28,14 +31,14 @@ const FOOTER_COLUMNS = [
       { label: "Agent fees and commission", href: "/guides/real-estate-agent-fees-australia" },
       { label: "Selling costs calculator",  href: "/selling-costs-calculator" },
       { label: "Agent proposal worksheet",  href: "/tools/agent-proposal-worksheet" },
-      { label: "Free selling guide",        href: "/selling-guide" },
+      { label: "Free guide: Selling a home", href: "/selling-guide" },
       { label: "Buying and selling",        href: "/buying-and-selling" },
     ],
   },
   {
     heading: "Guides and tools",
     links: [
-      { label: "Your next-step plan", href: "/plan" },
+      { label: "Find my next step",   href: "/plan" },
       { label: "All guides",          href: "/guides" },
       { label: "All calculators",     href: "/tools" },
       { label: "LMI calculator",      href: "/lmi-calculator" },
@@ -52,7 +55,7 @@ const FOOTER_COLUMNS = [
       { label: "Get personal help",    href: "/get-help" },
       { label: "How we’re paid",       href: "/about#ownership-funding" },
       { label: "How we choose agents", href: "/get-help#how-we-choose" },
-      { label: "About us",             href: "/about" },
+      { label: "About the guides",     href: "/about" },
       { label: "Editorial standards",  href: "/about#methodology" },
       { label: "Corrections",          href: "/about#corrections" },
       { label: "Contact",              href: "/contact" },
@@ -83,11 +86,11 @@ const NETWORK_LINKS = [
 function LinkCol({ heading, links }: { heading: string; links: { label: string; href: string }[] }) {
   return (
     <div>
-      <h3 className="text-sm font-semibold text-white mb-3 tracking-normal">{heading}</h3>
+      <h3 className="mb-3 text-[12px] font-medium uppercase tracking-[0.1em] text-primary">{heading}</h3>
       <ul className="space-y-2">
         {links.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className="text-sm text-white/70 hover:text-white transition-colors leading-snug block">
+            <Link href={l.href} className="block text-[14px] leading-snug text-ink hover:text-primary transition-colors">
               {l.label}
             </Link>
           </li>
@@ -107,23 +110,23 @@ function nearbyName(slug: string): string {
 
 function FooterBottom() {
   return (
-    <div className="mt-12 pt-8 border-t border-white/10 grid gap-6">
+    <div className="mt-12 pt-7 border-t border-line grid gap-5">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <p className="text-sm text-white/60">
+        <p className="text-[13px] text-ink-muted">
           &copy; {new Date().getFullYear()} Your Property Guide. Published from Brisbane, Australia.
         </p>
         <div className="flex flex-wrap gap-x-6 gap-y-2">
-          <Link href="/privacy" className="text-sm text-white/60 hover:text-white transition-colors">Privacy</Link>
-          <Link href="/contact" className="text-sm text-white/60 hover:text-white transition-colors">Contact</Link>
-          <Link href="/sitemap.xml" className="text-sm text-white/60 hover:text-white transition-colors">Sitemap</Link>
+          <Link href="/privacy" className="text-[13px] text-ink-muted hover:text-ink transition-colors">Privacy</Link>
+          <Link href="/contact" className="text-[13px] text-ink-muted hover:text-ink transition-colors">Contact</Link>
+          <Link href="/sitemap.xml" className="text-[13px] text-ink-muted hover:text-ink transition-colors">Sitemap</Link>
         </div>
       </div>
-      <p className="text-xs leading-relaxed text-white/70">
+      <p className="text-[12px] leading-relaxed text-ink-muted">
         Part of the Profit Geeks network:{" "}
         {NETWORK_LINKS.map((l, i) => (
           <span key={l.href}>
             {i > 0 && <span aria-hidden="true">, </span>}
-            <a href={l.href} target="_blank" rel="noopener noreferrer" className="hover:text-white/80 transition-colors">
+            <a href={l.href} target="_blank" rel="noopener noreferrer" className="hover:text-ink transition-colors">
               {l.label}
             </a>
           </span>
@@ -148,8 +151,8 @@ function SuburbFooter({ name, slug, nearbySuburbs }: { name: string; slug: strin
   ];
 
   return (
-    <footer className="bg-surface-inverse text-white">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <footer className="border-t border-line bg-background text-ink">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-12">
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
           <LinkCol heading="Selling" links={selling} />
           <LinkCol heading={name} links={suburbLinks} />
@@ -173,30 +176,30 @@ export { SuburbFooter };
 // stay cacheable.
 export function Footer() {
   return (
-    <footer className="bg-surface-inverse text-white">
+    <footer className="border-t border-line bg-background text-ink">
       <NewsletterBand />
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 pt-12 pb-10 sm:pt-14">
         <div className="grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-3 grid gap-4 content-start">
-            <Link href="/" aria-label="Your Property Guide, home">
-              <Logo tone="light" size="md" />
+            <Link href="/" aria-label="Your Property Guide, home" className="w-fit">
+              <Logo size="md" />
             </Link>
-            <p className="text-sm text-white/70 leading-relaxed max-w-xs">
-              Free guides, tools and plans for buying and selling property in
-              Australia. When you want personal help, we introduce one
-              participating local agent, with your permission. The agent pays
-              us a flat fee for the introduction, never a share of their
+            <p className="max-w-xs text-[14px] leading-relaxed text-ink-muted">
+              Free guides, tools and next-step plans for buying and selling
+              property in Australia. When you want personal help, we can
+              introduce a participating agent, with your permission. The agent
+              pays us a flat fee for the introduction, never a share of their
               commission; you pay us nothing.
             </p>
             <a
               href={`tel:${CONTACT_PHONE_E164}`}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-accent-light transition-colors w-fit"
+              className="inline-flex w-fit items-center gap-2 border-b border-line-strong pb-0.5 text-[14px] font-medium text-ink hover:text-primary hover:border-primary transition-colors"
             >
-              <Phone className="w-4 h-4" aria-hidden="true" />
+              <Phone className="h-4 w-4" aria-hidden="true" />
               {CONTACT_PHONE_DISPLAY}
             </a>
           </div>
-          <div className="lg:col-span-9 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8">
+          <div className="lg:col-span-9 grid grid-cols-2 gap-x-6 gap-y-9 sm:grid-cols-3 lg:grid-cols-5">
             {FOOTER_COLUMNS.map((col) => (
               <LinkCol key={col.heading} heading={col.heading} links={col.links} />
             ))}
@@ -208,20 +211,19 @@ export function Footer() {
   );
 }
 
-// Newsletter capture band above the link grid.
+// The newsletter, above the link grid. It promises no schedule (20 Oct 2026).
 function NewsletterBand() {
   return (
-    <section className="border-b border-white/10">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+    <section className="border-b border-line bg-surface-warm">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10 py-10">
         <div className="grid lg:grid-cols-12 gap-x-10 gap-y-6 items-center">
           <div className="lg:col-span-7">
-            <h2 className="text-2xl sm:text-3xl text-white leading-tight">
-              One useful email a quarter
+            <h2 className="text-[28px] sm:text-[32px] leading-[1.1] tracking-[-0.035em] text-ink">
+              New guides and rule changes, by email
             </h2>
-            <p className="mt-2 text-base text-white/70 leading-relaxed max-w-lg">
-              Rule changes, new guides and what they mean if you&rsquo;re
-              selling or buying. Nothing else, and separate from any plan or
-              guide emails you ask for.
+            <p className="mt-2 max-w-lg text-[15px] leading-relaxed text-ink-muted">
+              What changed and what it means if you&rsquo;re buying or selling.
+              Separate from any plan or guide emails you ask for.
             </p>
           </div>
           <div className="lg:col-span-5">

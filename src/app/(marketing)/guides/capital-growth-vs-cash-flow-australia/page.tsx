@@ -331,7 +331,7 @@ export default function CapitalGrowthVsCashFlowPage() {
 
       <GuideNewsletterCallout
         title="Want the next investor strategy read in your inbox?"
-        subtitle="One quarterly email on the Australian property market, RBA rate moves and the investor data updates that change how the cap-growth-vs-cash-flow trade-off should be read. No spam."
+        subtitle="Occasional emails on the Australian property market, RBA rate moves and the investor data updates that change how the cap-growth-vs-cash-flow trade-off should be read. No spam."
       />
 
       <h2 id="portfolio-stage">Where you are in building your portfolio</h2>

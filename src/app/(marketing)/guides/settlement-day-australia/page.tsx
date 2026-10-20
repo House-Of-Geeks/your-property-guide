@@ -352,8 +352,8 @@ export default function SettlementDayAustraliaPage() {
       </p>
 
       <GuideNewsletterCallout
-        title="Settlement day next month? Get the quarterly read"
-        subtitle="One email a quarter covering RBA decisions, capital city outlooks and the regulatory changes that affect every settlement. No spam."
+        title="Settlement day next month? Get the market updates"
+        subtitle="Occasional emails on RBA decisions, capital city outlooks and the rule changes that affect settlement. No spam."
       />
 
       <h2 id="delays">What can delay settlement</h2>

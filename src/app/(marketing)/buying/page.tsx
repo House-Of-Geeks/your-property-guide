@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Band, BUTTON_PRIMARY, BUTTON_SECONDARY, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
+import { Band, BUTTON_PRIMARY, BUTTON_SECONDARY, HeroLead, HeroTitle, LinkRows, PhotoHero, SectionHeading } from "@/components/premium";
 import { HelpBand } from "@/components/journeys/ServiceSections";
 import { Faq } from "@/components/guide";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -109,20 +109,8 @@ export default function BuyingHubPage() {
       </PhotoHero>
 
       <Band spacing="compact">
-        <h2 className="text-2xl sm:text-3xl text-ink">Start here</h2>
-        <ul className="mt-6 grid gap-4 md:grid-cols-3">
-          {START.map((s) => (
-            <li key={s.href}>
-              <Link href={s.href} className="group flex h-full flex-col rounded-2xl bg-surface-warm p-6 transition-colors hover:bg-surface-warm-sunken">
-                <span className="text-xl font-bold text-ink">{s.label}</span>
-                <span className="mt-2 text-base text-ink-muted leading-relaxed">{s.note}</span>
-                <span className="mt-auto pt-5 inline-flex items-center gap-1.5 font-semibold text-ink">
-                  Open <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <SectionHeading size="md" title="Start here" />
+        <LinkRows items={START} />
       </Band>
 
       <Band tone="quiet" spacing="compact">

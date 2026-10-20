@@ -9,7 +9,7 @@ export default function UnsubscribedPage() {
     <PhotoHero>
       <HeroTitle>You’re unsubscribed</HeroTitle>
       <HeroLead>
-        {`We won’t send you any more emails in that series. If you also get our quarterly newsletter, its own emails have their own unsubscribe link. The guides, tools and plans are still free to use.`}
+        {`We won’t send you any more emails in that series. If you also get our newsletter, its emails have their own unsubscribe link. The guides, tools and plans are still free to use.`}
       </HeroLead>
       <p className="mt-6 text-base text-ink-muted">
         <Link href="/" className="font-semibold text-ink underline underline-offset-4">Back to Your Property Guide</Link>

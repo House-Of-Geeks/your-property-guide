@@ -100,7 +100,7 @@ const FAQS: FaqItem[] = [
 
 const RELATED: RelatedGuide[] = [
   { title: "How to Choose a Selling Agent", href: "/guides/how-to-choose-a-selling-agent", description: "On the other side of the deal: picking the agent who lists your existing home." },
-  { title: "Property Auction Guide", href: "/guides/property-auction-guide", description: "If you're heading to auction with or without a buyer's agent, here's the playbook." },
+  { title: "Property Auction Guide", href: "/guides/property-auction-guide", description: "If you're heading to auction with or without a buyer's agent, here's how it works." },
   { title: "Real Estate Agent Fees in Australia", href: "/guides/real-estate-agent-fees-australia", description: "Selling agent commissions across every state, side-by-side." },
   { title: "Understanding Off-Market Properties", href: "/guides/understanding-off-market-properties", description: "Properties sold before they hit Domain or realestate.com.au, what buyer's agents access on your behalf." },
   { title: "Free buying guide", href: "/buying-guide", description: "What you can really spend, how not to overpay, and the contract through to settlement." },

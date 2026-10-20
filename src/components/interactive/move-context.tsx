@@ -17,8 +17,8 @@ import type { PlanPlace } from "@/lib/plans/start";
 
 export type Move = "selling" | "buying" | "both";
 
-/** The move the homepage starts on, so the header can match it before hydration. */
-export const DEFAULT_MOVE: Move = "selling";
+/** The move the homepage starts on (buying, as the approved design opens), so the header can match it before hydration. */
+export const DEFAULT_MOVE: Move = "buying";
 
 export const journeyForMove = (m: Move): Journey => (m === "both" ? "buying-and-selling" : m);
 

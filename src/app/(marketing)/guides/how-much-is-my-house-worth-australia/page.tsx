@@ -405,7 +405,7 @@ export default function HowMuchIsMyHouseWorthAustraliaPage() {
           to see what an agent costs on your likely sale price, by state.
         </li>
         <li>
-          <strong>Get the complete guide.</strong> The free{" "}
+          <strong>Take the full guide with you.</strong> The free{" "}
           <Link href="/selling-guide">selling guide</Link> pulls the whole
           process into one PDF, personalised to your suburb.
         </li>

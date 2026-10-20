@@ -81,7 +81,7 @@ export function SuburbClimate({ climate, withheld, suburbName }: SuburbClimatePr
           {stats.map((s) => (
             <div key={s.label} className="py-3 px-3 first:pl-0 flex flex-col justify-between gap-1">
               <dt className="text-[13px] font-sans text-ink-muted leading-snug">{s.label}</dt>
-              <dd className="font-display text-xl sm:text-2xl font-bold text-ink leading-none">{s.value}</dd>
+              <dd className="font-display text-xl sm:text-2xl font-normal text-ink leading-none">{s.value}</dd>
             </div>
           ))}
         </dl>

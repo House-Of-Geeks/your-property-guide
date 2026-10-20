@@ -133,7 +133,7 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
 
   return (
     <section aria-labelledby="related-heading" className="border-t border-line pt-10 sm:pt-12">
-      <h2 id="related-heading" className="font-display text-2xl sm:text-3xl font-bold text-ink leading-tight tracking-[-0.02em] mb-8">
+      <h2 id="related-heading" className="font-display text-2xl sm:text-3xl font-normal text-ink leading-tight tracking-[-0.02em] mb-8">
         More on {name} and nearby
       </h2>
       <div className={`grid grid-cols-2 ${LG_COLUMNS[groups]} gap-x-6 sm:gap-x-8 gap-y-10`}>

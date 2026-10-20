@@ -10,6 +10,7 @@ import { auMobileError } from "@/lib/utils/au-mobile";
 import { AuPhoneInput } from "@/components/forms/AuPhoneInput";
 import { GUIDE_PHONE_NOTE, GUIDE_SEQUENCE_LABEL, GUIDE_THANKS_KEY, downloadConsentText, type GuideThanksContext } from "@/lib/guide-consent";
 import { BUYING_GUIDE_PDF_PATH } from "@/lib/guide-pdfs";
+import { BUYING_CHAPTERS } from "@/lib/guide-books";
 import { SEQUENCES, sequenceFor } from "@/lib/email-sequences";
 import { useSiteFlags } from "@/components/flags/FlagsProvider";
 
@@ -206,15 +207,16 @@ export function BuyingGuideFunnel({ initialSuburbSlug: propSuburbSlug, source = 
   const stepTotal = 4;
   const stepIndex = Math.min(step, stepTotal - 1);
 
-  // Chapter titles as in /buying-guide's contents.
+  // Chapter titles as in /buying-guide's contents (src/lib/guide-books.ts).
+  const chapter = (n: number) => `Chapter ${n}: ${BUYING_CHAPTERS[n - 1].title}`;
   const startWith =
     persona === "first-home"
-      ? ["Chapter 3: schemes, state by state", "Chapter 2: what you can actually spend", finance === "pre-approved" || finance === "cash" ? "Chapter 5: inspecting like a professional" : "Chapter 8: finance to unconditional"]
+      ? [chapter(3), chapter(2), finance === "pre-approved" || finance === "cash" ? chapter(5) : chapter(8)]
       : persona === "investing"
-        ? ["Chapter 2: what you can actually spend", "Chapter 4: finding the right suburb", "Chapter 6: how the selling side plays you"]
+        ? [chapter(2), chapter(4), chapter(6)]
         : finance === "pre-approved" || finance === "cash"
-          ? ["Chapter 5: inspecting like a professional", "Chapter 6: how the selling side plays you", "Chapter 7: making the offer"]
-          : ["Chapter 2: what you can actually spend", "Chapter 8: finance to unconditional", "Chapter 6: how the selling side plays you"];
+          ? [chapter(5), chapter(6), chapter(7)]
+          : [chapter(2), chapter(8), chapter(6)];
 
   const optionCard = (active: boolean) =>
     `relative flex items-center justify-between rounded-lg border px-4 sm:px-5 py-3.5 transition-colors duration-150 cursor-pointer press ${
@@ -246,7 +248,7 @@ export function BuyingGuideFunnel({ initialSuburbSlug: propSuburbSlug, source = 
     back: number | null,
   ) => (
     <fieldset>
-      <legend className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">{legend}</legend>
+      <legend className="font-display text-[1.375rem] sm:text-2xl font-normal text-ink leading-tight tracking-[-0.02em] mb-2">{legend}</legend>
       {hint && <p className="text-sm text-ink-muted mb-5">{hint}</p>}
       <div className={`mt-4 flex flex-col gap-2.5 ${isAdvancing ? "pointer-events-none" : ""}`}>
         {options.map((opt) => (
@@ -281,7 +283,7 @@ export function BuyingGuideFunnel({ initialSuburbSlug: propSuburbSlug, source = 
         {step === 0 && (
           <div>
             <p className="text-[13px] text-ink-muted font-medium mb-2">Free guide · Three quick questions</p>
-            <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em] mb-2">
+            <h3 className="font-display text-[1.375rem] sm:text-2xl font-normal text-ink leading-tight tracking-[-0.02em] mb-2">
               <label htmlFor="buy-guide-suburb">Where are you looking?</label>
             </h3>
             <p id="buy-guide-suburb-hint" className="text-sm text-ink-muted mb-5">Grants, stamp duty and contract rules differ by state, so we point you to the right ones.</p>
@@ -332,7 +334,7 @@ export function BuyingGuideFunnel({ initialSuburbSlug: propSuburbSlug, source = 
 
         {step === 3 && (
           <div>
-            <h3 className="font-display text-[1.375rem] sm:text-2xl font-bold text-ink leading-tight tracking-[-0.02em]">Your guide is ready</h3>
+            <h3 className="font-display text-[1.375rem] sm:text-2xl font-normal text-ink leading-tight tracking-[-0.02em]">Your guide is ready</h3>
             <p className="mt-2 text-sm text-ink-muted">{suburbLabel ? `For ${suburbLabel}. ` : ""}Start with:</p>
             <ol className="mt-2 mb-5 space-y-1 text-[15px] text-ink">
               {startWith.map((c) => (
@@ -410,7 +412,7 @@ export function BuyingGuideFunnel({ initialSuburbSlug: propSuburbSlug, source = 
               <button
                 type="submit"
                 disabled={submitting || submitted}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-semibold px-6 py-3.5 text-base transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer press"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-cta-ink font-semibold px-6 py-3.5 text-base transition-colors disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer press"
               >
                 {submitted ? (
                   <>

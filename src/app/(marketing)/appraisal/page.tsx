@@ -169,7 +169,7 @@ export default function AppraisalPage() {
             </div>
 
             <div>
-              <h2 className="font-display text-ink tracking-[-0.02em] text-2xl sm:text-3xl leading-tight font-bold mb-4">
+              <h2 className="font-display text-ink tracking-[-0.02em] text-2xl sm:text-3xl leading-tight font-normal mb-4">
                 What to have ready
               </h2>
               <ul className="space-y-2.5 text-base text-ink-muted leading-relaxed">
@@ -189,7 +189,7 @@ export default function AppraisalPage() {
             </div>
 
             <div>
-              <h2 className="font-display text-ink tracking-[-0.02em] text-2xl sm:text-3xl leading-tight font-bold mb-4">
+              <h2 className="font-display text-ink tracking-[-0.02em] text-2xl sm:text-3xl leading-tight font-normal mb-4">
                 What happens after you ask
               </h2>
               <ol className="space-y-3 text-base text-ink-muted leading-relaxed list-decimal pl-5 marker:text-ink-subtle">
@@ -208,7 +208,7 @@ export default function AppraisalPage() {
           <aside className="lg:col-span-5 space-y-5">
             <PhotoPanel photo="kitchen" alt="Two people at a kitchen bench going over paperwork" className="aspect-[4/3]" />
             <div className="rounded-xl border border-line p-5 sm:p-6">
-              <h2 className="font-display text-lg font-bold text-ink leading-tight mb-4">Appraisals across Australia</h2>
+              <h2 className="font-display text-lg font-normal text-ink leading-tight mb-4">Appraisals across Australia</h2>
               <dl className="space-y-3">
                 {STATES.map((st) => (
                   <div key={st.name}>
@@ -223,7 +223,7 @@ export default function AppraisalPage() {
               </p>
             </div>
             <div className="rounded-xl border border-line p-5 sm:p-6">
-              <h2 className="font-display text-lg font-bold text-ink leading-tight mb-3">Before you ask</h2>
+              <h2 className="font-display text-lg font-normal text-ink leading-tight mb-3">Before you ask</h2>
               <ul className="divide-y divide-line text-sm">
                 {[
                   ["/guides/how-much-is-my-house-worth-australia", "How much is my house worth?"],

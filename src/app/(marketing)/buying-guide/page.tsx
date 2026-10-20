@@ -2,7 +2,6 @@ import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
 
 import { FaqAccordion } from "@/components/guide";
 import { RelatedGuidesSection } from "@/components/guide/GuideLinkList";
@@ -11,18 +10,17 @@ import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { GuideEntryCapture } from "@/components/analytics/GuideEntryCapture";
 import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 import { SITE_URL } from "@/lib/constants";
-import { guideOgImages } from "@/lib/og/helpers";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 import { HUB_GUIDE_LISTS, hubGuideGroups } from "@/lib/guides/hub-guides";
 import { StickyGuideBar } from "../selling-guide/StickyGuideBar";
-import { Book3D } from "@/components/interactive/Book3D";
 import { GuideContents } from "@/components/interactive/GuideContents";
 import { GuideIntroNote } from "@/components/guide-book/GuideIntroNote";
-import { GUIDE_BOOKS } from "@/lib/guide-books";
+import { GuidePitch as Pitch } from "@/components/guide-book/GuidePitch";
+import { GUIDE_BOOKS, subtitleLine } from "@/lib/guide-books";
 
-const META_TITLE = "Free guide to buying property in Australia: beat the campaign (2026)";
+const META_TITLE = "Buying a home: a free guide to buying property in Australia (2026)";
 const META_DESCRIPTION =
-  "Every listing comes with a seller’s campaign. Beat it: what you can really spend, 2026 schemes state by state, and how not to overpay. Free, personalised to your situation.";
+  "A free 10-chapter guide to buying a home in Australia: your budget, 2026 schemes by state, inspections, how homes are sold, offers and settlement. Read online or download the PDF.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -32,12 +30,8 @@ export const metadata: Metadata = {
     title: META_TITLE,
     description: META_DESCRIPTION,
     type: "website",
-    images: guideOgImages({
-      slug: "buying-guide",
-      title: "The Complete Guide to Buying Property in Australia",
-      description: "Free 10-chapter PDF for first home buyers, upgraders, investors and downsizers.",
-      persona: "first-home",
-    }),
+    // The guide's own social card (scripts/brand/render-brand-assets.mjs, from /print/og?card=buying).
+    images: [{ url: `${SITE_URL}/images/guide/buying-guide-og.jpg`, width: 1200, height: 630, alt: GUIDE_BOOKS.buying.title }],
   },
 };
 
@@ -69,42 +63,32 @@ const FAQS = [
 // phones, beside it (left column) on desktop.
 function GuidePitch() {
   return (
-    <>
-      <div className="flex items-start gap-5 sm:gap-6">
-        <div className="shrink-0 pl-1 pt-1">
-          <Book3D guide="buying" turn={18} className="[--bw:84px] sm:[--bw:120px] lg:[--bw:136px]" />
-        </div>
-        <ul className="space-y-3">
-          {[
-            "2026 schemes, grants and concessions, state by state",
-            "What a lender may lend you, buffer included",
-            "Underquoting and auction psychology, decoded",
-            "A printable 12-week buying timeline",
-          ].map((line) => (
-            <li key={line} className="flex items-start gap-2.5">
-              <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" aria-hidden="true" />
-              <span className="text-sm sm:text-base text-ink leading-snug">{line}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <p className="mt-6 text-sm text-ink-muted">
+    <Pitch
+      guide="buying"
+      lines={[
+        "2026 schemes, grants and concessions, state by state",
+        "What a lender may lend you, buffer included",
+        "How price guides, auctions and off-market sales work",
+        "A printable 12-week buying timeline",
+      ]}
+    >
+      <p className="mt-6 text-[14px] text-ink-muted">
         10 chapters · 60-second form · Never shared with selling agents
       </p>
-      <p className="mt-1 text-sm text-ink-muted">
+      <p className="mt-1 text-[14px] text-ink-muted">
         Want the steps now?{" "}
         <Link href="/guides/buying-property-australia" className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
           How to buy a house in Australia, step by step
         </Link>
       </p>
-    </>
+    </Pitch>
   );
 }
 
 export default function BuyingGuidePage() {
   return (
     <>
-      <BreadcrumbJsonLd items={[{ name: "Free Buying Guide", url: "/buying-guide" }]} />
+      <BreadcrumbJsonLd items={[{ name: GUIDE_BOOKS.buying.name, url: "/buying-guide" }]} />
       <FAQPageJsonLd faqs={FAQS} />
       <JsonLd
         data={{
@@ -113,7 +97,7 @@ export default function BuyingGuidePage() {
           name: `${GUIDE_BOOKS.buying.title} (2026 edition)`,
           description: META_DESCRIPTION,
           url: `${SITE_URL}/buying-guide`,
-          image: `${SITE_URL}/images/guide/buying-guide-cover.png`,
+          image: `${SITE_URL}${GUIDE_BOOKS.buying.cover}`,
           encodingFormat: "application/pdf",
           isAccessibleForFree: true,
           inLanguage: "en-AU",
@@ -172,23 +156,22 @@ export default function BuyingGuidePage() {
             </>
           }
         >
-          <p className="text-sm font-semibold text-ink-muted mb-3 sm:mb-5">
-            Free PDF, 2026 edition
+          <p className="mb-3 text-[12px] font-medium uppercase tracking-[0.1em] text-primary sm:mb-5">
+            Free guide · 2026 edition
           </p>
           <HeroTitle>
-            {GUIDE_BOOKS.buying.name}
-            <span className="mt-3 block font-sans text-[0.42em] font-semibold leading-snug tracking-[-0.01em] text-ink-muted">
-              {GUIDE_BOOKS.buying.subtitle}
+            {`${GUIDE_BOOKS.buying.name}.`}
+            <span className="mt-3 block font-display text-[0.5em] leading-snug tracking-[-0.025em] text-ink-muted">
+              {subtitleLine(GUIDE_BOOKS.buying)}
             </span>
           </HeroTitle>
           {/* Phone-sized lede, as before: the funnel stays on the first screen. */}
           <HeroLead className="max-sm:mt-4 max-sm:text-base">
-            Every seller&rsquo;s agent is running a campaign aimed at you.
-            Ten chapters show you how it works, so you can run your own,
-            whether it&rsquo;s your first home, your next one, an investment
-            or a downsize: what you can really spend, the schemes in your
-            state, inspecting, the seller&rsquo;s playbook and making the
-            offer.
+            A practical guide for your first home, your next one, an
+            investment or a downsize. Ten chapters, in order: your budget,
+            the schemes in your state, choosing an area, inspecting, how
+            homes are marketed and sold, making an offer, finance and
+            settlement.
           </HeroLead>
           <div className="hidden lg:block mt-12">
             <GuidePitch />
@@ -212,9 +195,9 @@ export default function BuyingGuidePage() {
           <p className="mt-10 text-base text-ink-muted">
             Selling as well?{" "}
             <Link href="/selling-guide" className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
-              The selling guide
+              Selling a home
             </Link>{" "}
-            is the other half of the move, also free.
+            covers the other half of the move, also free.
           </p>
         </div>
       </Band>
@@ -234,7 +217,7 @@ export default function BuyingGuidePage() {
             <p className="text-sm text-ink-muted">
               Selling, not buying?{" "}
               <Link href="/selling-guide" className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
-                There&rsquo;s a selling guide too
+                Read Selling a home
               </Link>
             </p>
           </div>

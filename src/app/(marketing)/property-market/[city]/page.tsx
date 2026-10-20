@@ -5,6 +5,7 @@ import Link from "next/link";
 import { TrendingUp, Home, DollarSign, Building2 } from "lucide-react";
 import { BreadcrumbJsonLd, FAQPageJsonLd, GuideArticleJsonLd } from "@/components/seo";
 import { ExpertCTA } from "@/components/journey";
+import { GUIDE_BOOKS } from "@/lib/guide-books";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { getCityMarket } from "@/lib/services/city-market-service";
 import { CAPITAL_CITIES, getCapitalCity } from "@/lib/utils/metro";
@@ -347,7 +348,7 @@ export default async function CityMarketPage({
           a good time to sell. */}
       <ExpertCTA
         headline={`Thinking about selling in ${city.name}?`}
-        body="The complete guide to selling in today's market: what it really costs, how agents price your home, the 10 questions that catch bad agents out, and a 12-week plan to settlement. Free PDF, in your inbox in 60 seconds."
+        body={`${GUIDE_BOOKS.selling.name}, the free guide: what it really costs, how agents price your home, the questions to ask before you choose one, and a 12-week plan to settlement. Free PDF, in your inbox in 60 seconds.`}
         ctaLabel="Get the free selling guide"
         href="/selling-guide"
       />

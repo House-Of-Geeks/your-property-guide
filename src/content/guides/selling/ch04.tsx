@@ -5,11 +5,11 @@ import { Box, Ch, Pull, Stat } from "../parts";
 export const chapter: Chapter = {
   guide: "selling",
   number: 4,
-  step: "Present for the top buyer",
+  step: "Decide what to prepare",
   standfirst:
-    "Buyers decide in the first 30 seconds and spend the rest of the inspection confirming the decision. Spend your money where those 30 seconds happen, and present the home for the buyer most likely to pay the most.",
+    "Buyers decide in the first 30 seconds and spend the rest of the inspection confirming the decision. Put your money where those 30 seconds happen, and leave alone the work a buyer would rather choose for themselves.",
   callout:
-    "Top-end homes are prepared for one person: the buyer most likely to pay the most. Every room is edited, lit and styled for that buyer, and defects are found and dealt with before the campaign, not discovered in the negotiation. The spend is small against the price; the discipline is the point.",
+    "Experienced sellers prepare the home for the people most likely to buy it. They fix what would give a buyer an easy reason to discount, find defects before the sale rather than during the negotiation, and leave alone the work a buyer would rather choose. The spend is usually small against the price; the planning is what makes it count.",
   checklist: [
     "Do the paint, light, street appeal and small broken things first",
     "Skip renovations done only to sell",
@@ -33,8 +33,8 @@ function Body() {
   return (
     <>
       <p>
-        Presentation is the part of the campaign every buyer sees first. The goal isn’t a renovation. It’s removing every reason the
-        top buyer has to discount, so the only conversation left is about price.
+        Presentation is the first thing every buyer sees. The goal isn’t a renovation. It’s removing the easy reasons for a buyer to
+        discount, so the conversation is about the home and its price rather than a list of jobs.
       </p>
 
       <h2>High-return fixes</h2>
@@ -119,16 +119,16 @@ function Body() {
         their own report regardless and may not trust yours.
       </p>
       <p>
-        The sensible middle: if your home is older than 30 years, has had past termite activity in the area, or you simply don’t know
-        its condition, get the report. Walking into a negotiation with less information than the other side is how sellers lose five
-        figures in an afternoon.
+        The sensible middle: if your home is older than 30 years, has had past termite activity in the area, or you don’t know its
+        condition, get the report. Going into a negotiation knowing less about your home than the buyer does can cost five figures in
+        an afternoon.
       </p>
 
       <Box title="Watch for">
         <p>
           Trades and stylists recommended exclusively by your agent without alternatives. Most agent referrals are honest, and some
-          agencies disclose referral fees, but get one outside quote for any job over $1,000. If the agent’s painter is 40 per cent
-          dearer, you’ve learned something about the rest of the advice.
+          agencies disclose referral fees, but get one outside quote for any job over $1,000. If the recommended painter is 40 per
+          cent dearer, ask why, and keep the answer in mind as you weigh the rest of the advice.
         </p>
       </Box>
     </>

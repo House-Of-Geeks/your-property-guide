@@ -106,7 +106,7 @@ const RELATED: RelatedGuide[] = [
   { title: "Conveyancing Guide",                       href: "/guides/conveyancing-guide",                     description: "What your conveyancer does for you, in Victoria specifically." },
   { title: "Property Auction Guide",                   href: "/guides/property-auction-guide",                 description: "Auction-specific contract behaviour: why no cooling-off applies." },
   { title: "Due Diligence Checklist",                  href: "/guides/due-diligence-checklist-buying-a-house", description: "What to check before signing, the better path than relying on cooling-off." },
-  { title: "Buying Property in Australia",             href: "/guides/buying-property-australia",              description: "The full national playbook for buyers." },
+  { title: "Buying Property in Australia",             href: "/guides/buying-property-australia",              description: "The full national guide for buyers." },
 ];
 
 export default function CoolingOffPeriodVicPage() {

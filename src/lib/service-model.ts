@@ -1,4 +1,5 @@
-// What Your Property Guide does, said once (Oct 2026 "confident moves").
+// What Your Property Guide does, said once (Oct 2026 "confident moves";
+// positioning "Clear decisions" since 20 Oct 2026).
 //
 // Every consumer page, form, email and the agent-facing pages read their
 // promises from here, so the homepage can't promise a team call, fee
@@ -23,30 +24,30 @@
 // a real, staffed service, change it here first.
 
 /**
- * The page-one promise (v6, 15 Oct 2026, "It's the campaign that wins").
- * `lead` and `accent` are the headline's two halves; the accent is set in the
- * serif italic in light copper.
+ * The page-one promise (20 Oct 2026, "Clear decisions", Andy's approved
+ * replacement for the 15 Oct campaign line). Everyday buyers and sellers,
+ * across budgets: what matters, what it costs, and the next step. The
+ * headline's middle word (`accent`) is set in the serif italic in copper.
  */
 export const PROMISE = {
-  headline: "It’s the campaign that wins. Not the market.",
-  lead: "It’s the campaign that wins.",
-  accent: "Not the market.",
-  eyebrow: "The $20 million playbook, for every home",
+  headline: "Know what matters before you buy or sell.",
+  lead: "Know what",
+  accent: "matters",
+  tail: "before you buy or sell.",
+  eyebrow: "Australian property, explained.",
   support:
-    "I learnt to sell Australia’s $10 to $20 million homes. The campaign that gets top dollar there is the same one that gets it for yours. Learn it free, then meet one agent who runs it in your suburb.",
-  /**
-   * What a visitor gets, said on the first screen (19 Oct 2026): free
-   * guidance, a next-step plan, and an introduction only if they ask.
-   */
-  offer: "Free guidance and a next-step plan built from your answers. An introduction to one participating agent only if you ask.",
+    "Understand the costs and choices ahead, with free guides, useful tools and a next-step plan for where you’re up to.",
+  /** What a visitor gets, in one sentence (cards, metadata, the about page). */
+  offer: "Free guides, tools and a next-step plan for where you’re up to. An introduction to a participating agent only if you ask.",
   receive: [
     "Guides and calculators for your state, free and with no sign-up",
-    "Your plan: the next three steps, the right tools and a checklist",
-    "An agent only if you ask: one for each job, never a list",
+    "A next-step plan: the next three steps, the right tools and a checklist",
+    "Personal help only if you ask: one introduction for each service, never a list",
   ],
-  /** Andy in one line, beside his photo in the hero (facts from src/lib/founder.ts). */
-  founderLine: "He sold $10 million to $20 million homes Australia-wide, then advised some of the biggest companies in property.",
-  closing: "Every home deserves a $20 million campaign.",
+  /** Andy in one line, as supporting background (facts from src/lib/founder.ts). */
+  founderLine: "Andy McMaster has worked in property sales and advised property businesses.",
+  /** The footer and closing line. */
+  closing: "Free guides, tools and next-step plans for buying and selling property in Australia.",
 } as const;
 
 /**
@@ -54,7 +55,7 @@ export const PROMISE = {
  * and selling are separate jobs with separate yeses, so "both" can mean a
  * selling agent and a buyer's agent, never two of either.
  */
-export const ONE_AGENT = "One agent for each job you ask us to help with. Never a list.";
+export const ONE_AGENT = "One introduction for each service you ask about. Never a list.";
 
 /**
  * What we take from an agent's commission (nothing), and the contrast with

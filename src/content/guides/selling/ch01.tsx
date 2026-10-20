@@ -5,22 +5,22 @@ import { Box, Ch, Pull, Stat } from "../parts";
 export const chapter: Chapter = {
   guide: "selling",
   number: 1,
-  step: "Know your number",
+  step: "Decide on timing",
   standfirst:
-    "The honest answer is that nobody picks the top of the market, including the people paid to talk about it. What you can do is read the conditions in front of you, then time the campaign to your property.",
+    "Nobody reliably picks the top of the market, including the people paid to talk about it. What you can do is read the conditions in your suburb, weigh them against your own reasons and plans, and choose a time that suits your property and your next move.",
   callout:
-    "At the top end, nobody waits for the market to rescue a sale. The campaign is timed to the property: launched when it shows best and competing stock is thin, with the likely buyers mapped before the first photo is taken. The calendar is a factor, never the plan.",
+    "Experienced sellers start with their own reasons and plans, then read local conditions honestly. Conditions affect both the price and how long a sale takes, so they check the suburb data rather than the headlines. They choose a launch window that suits the property and the local competition, and treat the calendar as one factor among several.",
   checklist: [
-    "Pull days on market, clearance rates, listings and discounting for your suburb and property type",
+    "Check days on market, clearance rates, listings and discounting for your suburb and property type",
     "Count how many comparable homes are listed against yours right now",
-    "Decide whether to sell first or buy first, and price the cost of each",
-    "Pick a launch window from your property’s best season and the local competition",
+    "Decide whether to sell first or buy first, and work out the cost of each",
+    "Choose a launch window from your property’s best season and the local competition",
     "Have a broker model bridging finance before you rely on it",
   ],
   cta: {
     kind: "plan",
     title: "Build your next-step plan",
-    body: "Three quick questions about where you’re selling and when, and your next three steps write themselves, with the tools and guides for your state.",
+    body: "Answer three quick questions about where you’re selling and when, and get your next three steps, with the tools and guides for your state.",
     label: "Build my next-step plan",
     href: "/plan?j=selling&from=selling-guide-ch1",
   },
@@ -32,9 +32,9 @@ function Body() {
   return (
     <>
       <p>
-        Most sellers start with the wrong question. They ask whether the market is right, when the bigger lever is whether their
-        campaign is. A good market won’t save a weak campaign. Timing still matters, though, and
-        the data you need to judge it is free, local, and takes about an hour to read properly.
+        Market conditions matter. They affect the price you’re likely to get and how long a sale takes. They’re also only part of
+        the picture: your reasons for selling, your next move, and how well the property is prepared, priced and marketed are the
+        parts you control. The data you need to judge local conditions is free, local, and takes about an hour to read properly.
       </p>
       <p>
         Every year, thousands of Australians delay a sale waiting for a better market, and thousands more rush one because a neighbour
@@ -51,7 +51,7 @@ function Body() {
       <ul>
         <li>
           <strong>Days on market.</strong> How long comparable properties are taking to sell. Under 30 days in most capitals suggests a
-          seller’s market. Past 60, buyers are in charge.
+          seller’s market. Past 60, conditions generally favour buyers.
         </li>
         <li>
           <strong>Auction clearance rates</strong> (if you’re in an auction city). Sustained clearance above roughly 65 per cent
@@ -68,11 +68,11 @@ function Body() {
       </ul>
       <p>
         You can pull all four from the big portals’ suburb profile pages, your state’s valuer-general data, our{" "}
-        <Link href="/suburbs">suburb profiles</Link>, or simply by watching what sells near you for six weeks. If an agent quotes
+        <Link href="/suburbs">suburb profiles</Link>, or by watching what sells near you for six weeks. If an agent quotes
         these numbers without being asked, that’s a point in their favour.
       </p>
 
-      <Stat value="60 days">Past this many days on market, buyers are in charge.</Stat>
+      <Stat value="60 days">Past this many days on market, conditions generally favour buyers.</Stat>
 
       <h2>Seasonality: spring is crowded for a reason</h2>
       <p>
@@ -83,10 +83,10 @@ function Body() {
       <p>
         Spring’s reputation is partly self-fulfilling: gardens look better, buyers are active, and everyone has been told spring is
         the time to sell. The catch is that everyone else got the same memo. A well-presented home in August or early February often
-        faces half the competition it would in October, in front of buyers who have been starved of stock for months.
+        faces half the competition it would in October, in front of buyers who have had little to choose from for months.
       </p>
       <p>
-        The practical rule: launch your campaign when your property shows well and your local competition is thin, not when the
+        The practical rule: list when your property shows well and your local competition is thin, rather than because the
         calendar says so. A north-facing living room photographs beautifully in winter light. A jacaranda-lined street earns its keep
         in November. Work with what you have.
       </p>
@@ -104,7 +104,7 @@ function Body() {
       <p>
         <strong>Buying first</strong> means you move once and you know exactly where you’re going. The risk is the other way: if your
         sale takes longer or lands lower than expected, you’re funding two properties and negotiating your sale under time pressure,
-        which buyers and their agents can smell. In a falling or slow market, buying first is the more dangerous order of operations.
+        which buyers and their agents often notice. In a falling or slow market, buying first is the riskier order of operations.
       </p>
       <p>
         A rough rule: in a hot market with thin stock, buying first is more defensible because your own sale is the easy part. In a
@@ -125,10 +125,10 @@ function Body() {
 
       <Box title="Watch for">
         <p>
-          Agents who tell you the market is about to take off, every season, every year. Listing volume is how agencies eat. An
-          agent’s incentive is for you to list soon and sell fast, which overlaps with your interests but is not identical to them.
-          Trust the suburb data over the pep talk. <Ch n={2} guide="selling">Chapter 2</Ch> shows you how to build your own number
-          from it.
+          A forecast that the market is about to take off, heard every season, every year. Agencies earn their income from listings,
+          so an agent’s incentive is for you to list soon and sell fast. That overlaps with your interests but isn’t identical to
+          them. Give the suburb data more weight than the forecast. <Ch n={2} guide="selling">Chapter 2</Ch> shows you how to build
+          your own price range from it.
         </p>
       </Box>
     </>

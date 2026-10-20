@@ -76,7 +76,7 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
   return (
     <div className="rounded-2xl overflow-hidden border border-primary/20 shadow-sm">
       {/* Header band */}
-      <div className="bg-primary px-6 py-4 flex items-center gap-3">
+      <div className="bg-forest text-cream px-6 py-4 flex items-center gap-3">
         <div className="flex-shrink-0 w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
           <Bell className="w-5 h-5 text-white" />
         </div>
@@ -176,7 +176,7 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[4px] bg-cta text-cta-ink text-sm font-medium hover:bg-cta-hover transition-colors disabled:opacity-50"
           >
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin" />

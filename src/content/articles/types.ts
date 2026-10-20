@@ -1,6 +1,8 @@
-// The campaign framing on each /guides/* article (campaign rebuild, 15 Oct
-// 2026): a short hook at the top that ties the topic to the campaign, and
-// one call to action at the end that fits why people read it.
+// The framing on each /guides/* article (15 Oct 2026; reworded 20 Oct 2026
+// for "Clear decisions"): a short hook at the top that says what matters
+// in the topic and what to check, and one call to action at the end that
+// fits why people read it. The type names keep their original "campaign"
+// wording; the copy no longer uses it as the idea.
 
 /** Which end-of-article call to action fits the article. */
 export type CampaignCtaKind =
@@ -8,14 +10,14 @@ export type CampaignCtaKind =
   | "buying-plan" // build my next-step plan (buying)
   | "moving-plan" // buying and selling
   | "agreement-check" // before you sign an agency agreement
-  | "selling-agent" // one selling agent who runs the campaign
+  | "selling-agent" // one participating selling agent
   | "buyers-agent"; // one buyer's agent on your side
 
 export interface ArticleCampaign {
   /**
-   * One or two sentences, at most about 50 words, that tie the article's
-   * topic to the campaign idea. Plain Australian English, no first person,
-   * and no fact that isn't already in the article.
+   * One or two sentences, at most about 50 words, that say what matters in
+   * the article's topic and what to check. Plain Australian English, no
+   * first person, and no fact that isn't already in the article.
    */
   hook: string;
   cta: CampaignCtaKind;

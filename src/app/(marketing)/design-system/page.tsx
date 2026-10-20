@@ -248,7 +248,7 @@ export default function DesignSystemPage() {
               </div>
               <div className="flex flex-wrap gap-3 items-center">
                 <p className="text-[13px] font-sans text-ink-subtle w-full">Phase 3 target, token-driven CTA:</p>
-                <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 transition-colors cursor-pointer">
+                <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-cta-ink font-medium px-6 py-3 transition-colors cursor-pointer">
                   Match me with a buyer&apos;s agent <ArrowRight className="w-4 h-4" />
                 </button>
                 <button className="inline-flex items-center justify-center gap-2 rounded-lg border border-line-strong text-ink hover:bg-surface-sunken font-medium px-6 py-3 transition-colors cursor-pointer">

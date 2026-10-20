@@ -12,7 +12,7 @@ import { chapterHref, type GuideBookId } from "@/lib/guide-books";
 export function Stat({ value, children }: { value: string; children: ReactNode }) {
   return (
     <div className="my-8 flex items-baseline gap-5 border-y border-line py-5 break-inside-avoid">
-      <div className="shrink-0 font-display text-[40px] leading-none text-accent-dark">{value}</div>
+      <div className="shrink-0 font-display text-[40px] leading-none tracking-[-0.03em] text-primary">{value}</div>
       <div className="text-[15px] leading-snug text-ink-muted">{children}</div>
     </div>
   );
@@ -21,8 +21,8 @@ export function Stat({ value, children }: { value: string; children: ReactNode }
 /** A boxed aside: "Watch for", a persona note, or a list worth printing. */
 export function Box({ title, children, tone = "plain" }: { title: string; children: ReactNode; tone?: "plain" | "warm" }) {
   return (
-    <aside className={`my-8 rounded-2xl border border-line p-5 sm:p-6 break-inside-avoid ${tone === "warm" ? "bg-sand" : "bg-white"}`}>
-      <div className="text-[13px] font-semibold uppercase tracking-[0.16em] text-primary">{title}</div>
+    <aside className={`my-8 p-5 sm:p-6 break-inside-avoid ${tone === "warm" ? "bg-surface-warm" : "border-y border-line px-0 sm:px-0"}`}>
+      <div className="text-[12px] font-medium uppercase tracking-[0.1em] text-primary">{title}</div>
       <div className="mt-3 [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">{children}</div>
     </aside>
   );
@@ -31,8 +31,8 @@ export function Box({ title, children, tone = "plain" }: { title: string; childr
 /** A line worth remembering, set large. */
 export function Pull({ children }: { children: ReactNode }) {
   return (
-    <figure className="my-10 border-l-2 border-primary pl-6 break-inside-avoid">
-      <div className="font-display text-[24px] italic leading-snug text-ink sm:text-[26px]">{children}</div>
+    <figure className="my-10 border-l border-accent pl-6 break-inside-avoid">
+      <div className="font-display text-[25px] leading-[1.35] tracking-[-0.025em] text-ink sm:text-[27px]">{children}</div>
     </figure>
   );
 }

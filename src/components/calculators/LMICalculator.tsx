@@ -155,7 +155,7 @@ export function LMICalculator() {
               </p>
             </>
           )}
-          <Link href="/guides/first-home-guarantee" className="inline-flex items-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-white font-medium px-6 py-3 text-sm transition-colors">
+          <Link href="/guides/first-home-guarantee" className="inline-flex items-center gap-2 rounded-lg bg-cta hover:bg-cta-hover text-cta-ink font-medium px-6 py-3 text-sm transition-colors">
             How the First Home Guarantee works
           </Link>
         </div>

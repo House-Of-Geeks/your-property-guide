@@ -2,7 +2,6 @@ import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
 
 import { FaqAccordion } from "@/components/guide";
 import { SellingGuideFunnel } from "@/components/journey";
@@ -10,16 +9,15 @@ import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { GuideEntryCapture } from "@/components/analytics/GuideEntryCapture";
 import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 import { SITE_URL } from "@/lib/constants";
-import { guideOgImages } from "@/lib/og/helpers";
 import { StickyGuideBar } from "./StickyGuideBar";
-import { Book3D } from "@/components/interactive/Book3D";
 import { GuideContents } from "@/components/interactive/GuideContents";
 import { GuideIntroNote } from "@/components/guide-book/GuideIntroNote";
-import { GUIDE_BOOKS } from "@/lib/guide-books";
+import { GuidePitch as Pitch } from "@/components/guide-book/GuidePitch";
+import { GUIDE_BOOKS, subtitleLine } from "@/lib/guide-books";
 
-const META_TITLE = "Free guide to selling your home in Australia: the $20 million campaign";
+const META_TITLE = "Selling a home: a free guide to selling property in Australia (2026)";
 const META_DESCRIPTION =
-  "The campaign that sells $20 million homes, for yours: your number, the top buyer, the right agent, the launch and the negotiation. Free, personalised to your suburb.";
+  "A free 10-chapter guide to selling your home in Australia: price evidence, costs by state, what to prepare, choosing an agent, offers and settlement. Read online or download the PDF.";
 
 export const metadata: Metadata = {
   title: META_TITLE,
@@ -29,21 +27,17 @@ export const metadata: Metadata = {
     title: META_TITLE,
     description: META_DESCRIPTION,
     type: "website",
-    images: guideOgImages({
-      slug: "selling-guide",
-      title: "The Complete Guide to Selling Your Property in Australia",
-      description: "Free 10-chapter PDF: costs, agents, auctions and a 12-week plan.",
-      persona: "selling",
-    }),
+    // The guide's own social card (scripts/brand/render-brand-assets.mjs, from /print/og?card=selling).
+    images: [{ url: `${SITE_URL}/images/guide/selling-guide-og.jpg`, width: 1200, height: 630, alt: GUIDE_BOOKS.selling.title }],
   },
 };
 
 
 const FAQS = [
   {
-    question: "How does a free guide save me money?",
+    question: "How does the guide help?",
     answer:
-      "By helping you make the big decisions with evidence. Chapter 3 lists every cost of selling in your state, so you can see what's negotiable. Chapter 5 gives you the questions to ask every agent, so you can compare them on their sales evidence, their fee and their plan rather than on the highest price estimate. Chapter 4 covers which repairs and presentation jobs tend to be worth doing, and which usually aren't. What it saves you depends on your sale.",
+      "It helps you make the big decisions with evidence. Chapter 3 lists every cost of selling in your state, so you can see what's negotiable. Chapter 5 gives you the questions to ask every agent, so you can compare them on their sales evidence, their fee and their plan rather than on the highest price estimate. Chapter 4 covers which repairs and presentation jobs tend to be worth doing, and which usually aren't. What it saves you depends on your sale.",
   },
   {
     question: "Is the selling guide really free?",
@@ -71,32 +65,22 @@ const FAQS = [
 // phones, beside it (left column) on desktop. Figures are the guide's own.
 function GuidePitch() {
   return (
-    <>
-      <div className="flex items-start gap-5 sm:gap-6">
-        <div className="shrink-0 pl-1 pt-1">
-          <Book3D guide="selling" turn={18} className="[--bw:84px] sm:[--bw:120px] lg:[--bw:136px]" />
-        </div>
-        <ul className="space-y-3">
-          {[
-            "The questions to ask every agent before you sign",
-            "Commission by state, and how to negotiate it",
-            "Which repairs and presentation jobs are worth paying for",
-            "A 12-week timeline you can print",
-          ].map((line) => (
-            <li key={line} className="flex items-start gap-2.5">
-              <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" aria-hidden="true" />
-              <span className="text-sm sm:text-base text-ink leading-snug">{line}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <p className="mt-6 text-sm text-ink-muted">
+    <Pitch
+      guide="selling"
+      lines={[
+        "The questions to ask every agent before you sign",
+        "Commission by state, and how to discuss it",
+        "Which repairs and presentation jobs are worth paying for",
+        "A 12-week timeline you can print",
+      ]}
+    >
+      <p className="mt-6 text-[14px] text-ink-muted">
         10 chapters · Three quick questions · Download straight away or by email
       </p>
-      <p className="mt-1 text-xs text-ink-subtle">
+      <p className="mt-1 text-[13px] text-ink-subtle">
         General information, not advice. Costs and rules are by state, with sources.
       </p>
-    </>
+    </Pitch>
   );
 }
 
@@ -104,7 +88,7 @@ export default function SellingGuidePage() {
   return (
     <>
       <BreadcrumbJsonLd
-        items={[{ name: "Free Selling Guide", url: "/selling-guide" }]}
+        items={[{ name: GUIDE_BOOKS.selling.name, url: "/selling-guide" }]}
       />
       <FAQPageJsonLd faqs={FAQS} />
       {/* The guide itself as a structured entity: free, downloadable,
@@ -117,7 +101,7 @@ export default function SellingGuidePage() {
           name: `${GUIDE_BOOKS.selling.title} (2026 edition)`,
           description: META_DESCRIPTION,
           url: `${SITE_URL}/selling-guide`,
-          image: `${SITE_URL}/images/guide/selling-guide-cover.png`,
+          image: `${SITE_URL}${GUIDE_BOOKS.selling.cover}`,
           encodingFormat: "application/pdf",
           isAccessibleForFree: true,
           inLanguage: "en-AU",
@@ -176,23 +160,22 @@ export default function SellingGuidePage() {
             </>
           }
         >
-          <p className="text-sm font-semibold text-ink-muted mb-3 sm:mb-5">
-            Free PDF, 2026 edition
+          <p className="mb-3 text-[12px] font-medium uppercase tracking-[0.1em] text-primary sm:mb-5">
+            Free guide · 2026 edition
           </p>
           <HeroTitle>
-            {GUIDE_BOOKS.selling.name}
-            <span className="mt-3 block font-sans text-[0.42em] font-semibold leading-snug tracking-[-0.01em] text-ink-muted">
-              {GUIDE_BOOKS.selling.subtitle}
+            {`${GUIDE_BOOKS.selling.name}.`}
+            <span className="mt-3 block font-display text-[0.5em] leading-snug tracking-[-0.025em] text-ink-muted">
+              {subtitleLine(GUIDE_BOOKS.selling)}
             </span>
           </HeroTitle>
           {/* Phone-sized lede, as before: the funnel stays on the first screen. */}
           <HeroLead className="max-sm:mt-4 max-sm:text-base">
-            The campaign that gets top dollar for a $20 million home, for
-            yours. Ten chapters, in order: your number, the real costs in
-            your state, presenting the home, hiring the agent who runs the
-            campaign, the method, the launch, the negotiation and
-            settlement. Read it free online, or get the PDF with pointers
-            for your stage.
+            A practical guide to the decisions ahead, in ten chapters:
+            timing, price evidence, the real costs in your state, what to
+            prepare, choosing an agent, how to sell, the marketing, offers
+            and settlement. Read it free online, or get the PDF with
+            pointers for where you&rsquo;re up to.
           </HeroLead>
           <div className="hidden lg:block mt-12">
             <GuidePitch />
@@ -252,7 +235,7 @@ export default function SellingGuidePage() {
             <p className="text-sm text-ink-muted">
               Buying, not selling?{" "}
               <Link href="/buying-guide" className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
-                There&rsquo;s a buying guide too
+                Read Buying a home
               </Link>
             </p>
           </div>

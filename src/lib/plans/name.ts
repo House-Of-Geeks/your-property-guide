@@ -5,14 +5,20 @@
 
 export const PLAN_NAME = "next-step plan";
 
-/** The hero's and the closing band's button. */
+/** The button that opens the plan's questions (the planner, the closing bands). */
 export const PLAN_CTA = "Build my next-step plan";
 
-/** The header's solid button, where there's less room. */
-export const PLAN_CTA_SHORT = "Get my next-step plan";
+/**
+ * The header's action, the homepage hero's button and the phone bar's first
+ * button (20 Oct 2026, "Clear decisions": the approved design's words).
+ */
+export const PLAN_CTA_SHORT = "Find my next step";
 
 /** The phone bar's first button. */
-export const PLAN_CTA_BAR = "Next-step plan";
+export const PLAN_CTA_BAR = "Find my next step";
+
+/** The homepage planner's button: it shows the first three steps on the page. */
+export const PLAN_CTA_SHOW = "Show my next steps";
 
 /** What it costs and asks, beside every plan button. */
 export const PLAN_TERMS = ["Free", "A few quick questions", "No sign-up"] as const;

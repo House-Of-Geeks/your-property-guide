@@ -200,9 +200,9 @@ export default function RealEstateAgentFeesPage() {
           turns these percentages into dollars on your sale price, including
           marketing and conveyancing. And if you&rsquo;re comparing agents now,
           the{" "}
-          <Link href="/selling-guide">free selling guide</Link> includes the 10
-          questions to ask every agent before you sign, plus the fee
-          negotiation tactics that actually work.
+          <Link href="/selling-guide">free selling guide</Link> includes the
+          questions to ask every agent before you sign, and how to compare
+          fees and agency agreements.
         </p>
       </Callout>
 
