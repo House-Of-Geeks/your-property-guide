@@ -7,6 +7,7 @@ import { publishedGrowthFor } from "@/lib/published-medians";
 import { grossYieldPercent, rentSourceKnown, salesProvenanceFor } from "@/lib/suburb-snapshot";
 import { monthYear, rentalSourceLabel } from "@/lib/rental-labels";
 import { capitalCityFor } from "@/lib/utils/metro";
+import { hasLga, isCapitalCouncil, lgaCouncilName } from "@/lib/utils/lga";
 
 export interface SuburbFaq {
   question: string;
@@ -81,11 +82,19 @@ export function buildSuburbFaqs(suburb: Suburb): SuburbFaq[] {
   // rank top-10 for. Metro classification comes from postcode ranges, so
   // it's phrased at greater-city granularity, never street-level claims.
   const capital = capitalCityFor(suburb.state, suburb.postcode);
+  const lga = hasLga(suburb);
+  // The "suburb of {capital}" answer holds only where the LGA is the capital's
+  // own council (or none is known). A suburb in another council's area is
+  // placed by that council instead, from suburb.region.
+  const inCapitalCouncil = capital !== null && (!lga || isCapitalCouncil(suburb.region, capital));
+  const lgaSentence = `${sn} is a suburb in the ${lgaCouncilName(suburb.region)} area, ${suburb.state} ${suburb.postcode}.`;
   faqs.push({
     question: `Where is ${sn}?`,
-    answer: capital
+    answer: inCapitalCouncil
       ? `${sn} is a suburb of ${capital.name}, in ${suburb.state} ${suburb.postcode}. It is part of the Greater ${capital.name} area${region ? `, in the ${region} region` : ""}.`
-      : `${sn} is a regional suburb in ${suburb.state}, postcode ${suburb.postcode}${region ? `, in the ${region} region` : ""}.`,
+      : lga
+        ? lgaSentence
+        : `${sn} is a regional suburb in ${suburb.state}, postcode ${suburb.postcode}.`,
   });
 
   // Median rent

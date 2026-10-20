@@ -16,8 +16,7 @@ import { SuburbInvestment } from "@/components/suburb/SuburbInvestment";
 import { SuburbContextualLinks } from "@/components/suburb/SuburbContextualLinks";
 import { SuburbMap } from "@/components/suburb/SuburbMap";
 import { getSuburbSubpageAvailability } from "@/lib/services/subpage-availability";
-import { SuburbPriceTrend } from "@/components/suburb/SuburbPriceTrend";
-import { BreadcrumbJsonLd, PlaceJsonLd } from "@/components/seo";
+import { BreadcrumbJsonLd, JsonLd, PlaceJsonLd } from "@/components/seo";
 import { BUTTON_PRIMARY, Band, SectionHeading } from "@/components/premium";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { isThinProfile } from "@/lib/suburb-indexability";
@@ -50,6 +49,9 @@ import { buildSuburbFaqs } from "@/lib/suburb-faq";
 import { guideFunnelHref } from "@/lib/guide-funnel";
 import { rentalSourceLabel } from "@/lib/rental-labels";
 import { climateSourceLabel } from "@/lib/climate";
+import { hasLga, lgaPlaceName, stateSchemaName } from "@/lib/utils/lga";
+import { formatUpdatedDate } from "@/lib/suburb-dates";
+import { localContentFor } from "@/lib/data/suburb-local-content";
 
 interface SuburbDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -137,6 +139,17 @@ const TEXT_LINK = "font-semibold text-ink underline decoration-line-strong under
 // The figures beside the answer: the snapshot tiles without the house median
 // (the answer itself), the yield (the investment section owns it, on its own
 // gate) and the walk score (the Location section's three scores own it).
+// Demographic grid columns from sm by the number of figures held (1 to 6), so
+// the grid adapts and Tailwind sees literal class names.
+const DEMOGRAPHIC_COLUMNS: Record<number, string> = {
+  1: "sm:grid-cols-1",
+  2: "sm:grid-cols-2",
+  3: "sm:grid-cols-3",
+  4: "sm:grid-cols-4",
+  5: "sm:grid-cols-3",
+  6: "sm:grid-cols-3",
+};
+
 const GLANCE_KEYS: ReadonlySet<SnapshotStat["key"]> = new Set(["unit", "rent", "dom", "population"]);
 
 export default async function SuburbDetailPage({ params }: SuburbDetailPageProps) {
@@ -195,7 +208,8 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
   const hasFaqs = buildSuburbFaqs(suburb).length > 0;
   const hasSchools = suburb.schools.length > 0;
   const sectionLinks = [
-    { label: "Prices", href: "#market" },
+    // The band is "Rent in X" while the median is withheld.
+    { label: priceTrusted ? "Prices" : "Rent", href: "#market" },
     { label: "About", href: "#about" },
     ...(hasSchools ? [{ label: "Schools", href: "#schools" }] : []),
     { label: "Location", href: "#location" },
@@ -205,19 +219,35 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
 
   // Census figures for the demographics list; population and age only when
   // the panel at the top does not already carry them.
+  // A figure with no value is dropped, not printed as a placeholder.
   const s = suburb.stats;
   const demographicFigures = [
     ...(inGlance.has("population")
       ? []
       : [
-          { label: "Population", value: s.population ? s.population.toLocaleString() : "–" },
-          { label: "Median age", value: s.medianAge ? String(s.medianAge) : "–" },
+          { label: "Population", value: s.population ? s.population.toLocaleString() : null },
+          { label: "Median age", value: s.medianAge ? String(s.medianAge) : null },
         ]),
-    { label: "Family households", value: s.householdsFamily ? `${s.householdsFamily}%` : "–" },
-    { label: "Lone person", value: s.householdsLonePerson ? `${s.householdsLonePerson}%` : "–" },
-    { label: "Owner occupied", value: s.ownerOccupied ? `${s.ownerOccupied}%` : "–" },
-    { label: "Renter occupied", value: s.renterOccupied ? `${s.renterOccupied}%` : "–" },
-  ];
+    { label: "Family households", value: s.householdsFamily ? `${s.householdsFamily}%` : null },
+    { label: "Lone person", value: s.householdsLonePerson ? `${s.householdsLonePerson}%` : null },
+    { label: "Owner occupied", value: s.ownerOccupied ? `${s.ownerOccupied}%` : null },
+    { label: "Renter occupied", value: s.renterOccupied ? `${s.renterOccupied}%` : null },
+  ].filter((f): f is { label: string; value: string } => f.value !== null);
+  // The weekly rents that exist; the all-dwellings case (WA) is its own pair.
+  const rentAllOnly = (suburb.stats.medianRentAll ?? 0) > 0 && !suburb.stats.medianRentHouse && !suburb.stats.medianRentUnit;
+  const rentFigures = rentAllOnly
+    ? [
+        { label: "Weekly rent (all dwellings)", value: `$${suburb.stats.medianRentAll}/wk` },
+        { label: "House or unit rent", value: "Not published" },
+      ]
+    : [
+        ...(suburb.stats.medianRentHouse ? [{ label: "Weekly rent (house)", value: `$${suburb.stats.medianRentHouse}/wk` }] : []),
+        ...(suburb.stats.medianRentUnit ? [{ label: "Weekly rent (unit)", value: `$${suburb.stats.medianRentUnit}/wk` }] : []),
+      ];
+  const shops = localContentFor(slug)?.shopsAndAmenities;
+  const hasShops = Boolean(shops && shops.paragraphs.length > 0);
+  const canonicalUrl = `${SITE_URL}/suburbs/${slug}`;
+  const updated = suburb.dataUpdatedAt ? formatUpdatedDate(suburb.dataUpdatedAt) : null;
   // The reading of the median and what it means for each side: all of it
   // rests on a trusted median, so a withheld one leaves the rent alone.
   const hasPriceStory = Boolean(marketSummary || sellerView || buyerView);
@@ -237,6 +267,26 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
         addressLocality={suburb.name}
         addressRegion={suburb.state}
         postalCode={suburb.postcode}
+        latitude={suburb.lat}
+        longitude={suburb.lng}
+        lgaName={hasLga(suburb) ? lgaPlaceName(suburb.region) : undefined}
+        stateName={stateSchemaName(suburb.state)}
+      />
+      {/* dateModified is the latest feed refresh for this suburb, never the
+          row's updatedAt or the render time; with none on file it is omitted
+          (and so is the visible Updated line). */}
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": canonicalUrl,
+          url: canonicalUrl,
+          name: suburbTitle(suburb),
+          inLanguage: "en-AU",
+          isPartOf: { "@id": `${SITE_URL}#website` },
+          about: { "@id": `${canonicalUrl}#place` },
+          ...(updated && { dateModified: updated.iso }),
+        }}
       />
 
       {/* First screen: the lookup answered (suburb, state and postcode in
@@ -244,6 +294,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
       <SuburbHero
         suburb={suburb}
         capitalCity={capitalCity}
+        updatedAt={suburb.dataUpdatedAt}
         aside={glance.length > 0 ? (
           <div className="tone-light rounded-xl border border-line bg-white">
             <p className="px-5 pt-4 pb-3 text-[15px] font-semibold text-ink">
@@ -336,11 +387,10 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             and the appraisal form further down the page. */}
         <div className="mt-8 border-t border-line pt-6">
           <p className="font-display text-lg sm:text-xl font-normal text-ink">
-            Selling in {suburb.name}?
+            {`Selling in ${suburb.name}?`}
           </p>
           <p className="mt-1 text-[15px] text-ink-muted leading-relaxed max-w-lg">
-            Get the free selling guide, personalised to {suburb.name}, or ask
-            for a free appraisal from a local agent.
+            {`Get the free selling guide, personalised to ${suburb.name}, or ask for a free appraisal from a local agent.`}
           </p>
           <div className="mt-4 flex flex-col sm:flex-row sm:items-center gap-x-6 gap-y-4">
             <Link href={guideHref} className={`${BUTTON_PRIMARY} justify-center`}>
@@ -397,30 +447,14 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           )}
 
           <div className={hasPriceStory ? "lg:col-span-5 space-y-6" : "max-w-xl space-y-6"}>
-            {/* Five-year trajectory, same trust gate as the median. */}
-            {priceTrusted && suburb.stats.medianHousePrice > 0 && suburb.stats.annualGrowthHouse !== 0 && (
-              <SuburbPriceTrend
-                medianHousePrice={suburb.stats.medianHousePrice}
-                annualGrowthHouse={suburb.stats.annualGrowthHouse}
-                suburbName={suburb.name}
-              />
-            )}
+            {/* The five-year trend chart returns when a real Valuer General series is supplied. */}
             {/* The rent, unless the panel at the top already shows it. */}
             <div>
-              {!inGlance.has("rent") && (
-                <dl className="grid grid-cols-2 border-y border-line">
-                  {(suburb.stats.medianRentAll ?? 0) > 0 && !suburb.stats.medianRentHouse && !suburb.stats.medianRentUnit ? (
-                    // WA bond data: one median across all dwellings, no split.
-                    <>
-                      <Figure label="Weekly rent (all dwellings)" value={`$${suburb.stats.medianRentAll}/wk`} />
-                      <Figure label="House or unit rent" value="Not published" divided />
-                    </>
-                  ) : (
-                    <>
-                      <Figure label="Weekly rent (house)" value={suburb.stats.medianRentHouse ? `$${suburb.stats.medianRentHouse}/wk` : "–"} />
-                      <Figure label="Weekly rent (unit)" value={suburb.stats.medianRentUnit ? `$${suburb.stats.medianRentUnit}/wk` : "–"} divided />
-                    </>
-                  )}
+              {!inGlance.has("rent") && rentFigures.length > 0 && (
+                <dl className={`grid ${rentFigures.length > 1 ? "grid-cols-2" : "grid-cols-1"} border-y border-line`}>
+                  {rentFigures.map((f, i) => (
+                    <Figure key={f.label} label={f.label} value={f.value} divided={i > 0} />
+                  ))}
                 </dl>
               )}
               <DataFreshnessNote
@@ -458,7 +492,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
               the lifestyle summary woven from climate, schools and walkability. */}
           <section id="about" className={SECTION}>
             <div className="max-w-3xl">
-              <SectionHeading size="md" title={<>What to know about {suburb.name}</>} />
+              <SectionHeading size="md" title={`What to know about ${suburb.name}`} />
               <div className="mt-6 space-y-4">
                 {stubDescription
                   ? intro.map((para, i) => (
@@ -486,6 +520,43 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
               )}
             </div>
           </section>
+
+          {/* Shops and amenities: shown only when copy has been supplied for
+              this suburb (src/lib/data/suburb-local-content.ts). */}
+          {hasShops && shops && (
+            <section id="shops" className={SECTION}>
+              <div className="max-w-3xl">
+                <h2 className={H2}>Shops and amenities</h2>
+                <div className="mt-5 space-y-4">
+                  {shops.paragraphs.map((para, i) => (
+                    <p key={i} className={PROSE}>
+                      {para}
+                    </p>
+                  ))}
+                </div>
+                {shops.links && shops.links.length > 0 && (
+                  <ul className="mt-5 space-y-2">
+                    {shops.links.map((l) => {
+                      const external = /^https?:\/\//.test(l.href);
+                      return (
+                        <li key={l.href}>
+                          {external ? (
+                            <a href={l.href} target="_blank" rel="noopener" className={TEXT_LINK}>
+                              {l.label}
+                            </a>
+                          ) : (
+                            <Link href={l.href} className={TEXT_LINK}>
+                              {l.label}
+                            </Link>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </div>
+            </section>
+          )}
 
           {/* Schools and location: side by side on a wide screen. */}
           <div className="grid lg:grid-cols-12 gap-14 lg:gap-12 border-t border-line pt-12 sm:pt-16">
@@ -569,19 +640,23 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                   {demographicsSummary}
                 </p>
               )}
-              <dl className={`mt-4 grid grid-cols-2 ${demographicFigures.length === 4 ? "sm:grid-cols-4" : "sm:grid-cols-3"} border-t border-line`}>
-                {demographicFigures.map((f) => (
-                  <div key={f.label} className="py-3 pr-3 border-b border-line">
-                    <dt className="text-[13px] text-ink-muted">{f.label}</dt>
-                    <dd className="mt-1 font-display text-xl font-normal text-ink leading-none">{f.value}</dd>
-                  </div>
-                ))}
-              </dl>
-              <DataFreshnessNote
-                label="Demographics"
-                asOf={suburb.dataFreshness?.censusAsOf ?? null}
-                source="ABS 2021 Census"
-              />
+              {demographicFigures.length > 0 && (
+                <>
+                  <dl className={`mt-4 grid grid-cols-2 ${DEMOGRAPHIC_COLUMNS[demographicFigures.length]} border-t border-line`}>
+                    {demographicFigures.map((f) => (
+                      <div key={f.label} className="py-3 pr-3 border-b border-line">
+                        <dt className="text-[13px] text-ink-muted">{f.label}</dt>
+                        <dd className="mt-1 font-display text-xl font-normal text-ink leading-none">{f.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <DataFreshnessNote
+                    label="Demographics"
+                    asOf={suburb.dataFreshness?.censusAsOf ?? null}
+                    source="ABS 2021 Census"
+                  />
+                </>
+              )}
             </section>
 
             {(suburb.stats.medianHousePrice > 0 || suburb.stats.medianUnitPrice > 0) && (
@@ -679,6 +754,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
               nearbySuburbs: suburb.nearbySuburbs,
             }}
             availability={availability}
+            hasPublishedMedian={priceTrusted}
           />
 
           {/* Sources and how we are paid */}

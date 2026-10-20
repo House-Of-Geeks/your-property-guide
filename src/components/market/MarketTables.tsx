@@ -105,7 +105,7 @@ export function SuburbTable({
                 )}
                 {showSales && (
                   <td className="px-4 py-3 text-right font-sans text-sm text-ink-muted">
-                    {row.salesCountHouse > 0 ? row.salesCountHouse.toLocaleString() : "–"}
+                    {row.salesCountHouse > 0 ? row.salesCountHouse.toLocaleString() : "-"}
                   </td>
                 )}
                 <td className="px-4 py-3 text-right">

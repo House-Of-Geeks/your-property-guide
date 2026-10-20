@@ -10,6 +10,7 @@ import { hasPublishedHouseMedian, isThinSuburbRow } from "@/lib/suburb-indexabil
 // not suburbs: every list and sitemap below leaves them out (LOCALITIES_ONLY).
 import { LOCALITIES_ONLY, isHiddenSlug, isNonLocalitySlug } from "@/lib/non-localities";
 import { withRentAllColumn } from "@/lib/services/rental-service";
+import { suburbDataUpdatedAt, SUBURB_REFRESH_SELECT } from "@/lib/suburb-dates";
 import { allDwellingsRent, isAllDwellingsOnly } from "@/lib/rental-labels";
 
 // Columns the indexability rules read (src/lib/suburb-indexability.ts).
@@ -222,6 +223,9 @@ function toSuburb(
     transportLinks: s.transportLinks,
     // "Caboolture BC" is not a neighbour; its URL redirects to Caboolture.
     nearbySuburbs:  s.nearbySuburbs.filter((n) => !isNonLocalitySlug(n)),
+    lat:            Number.isFinite(s.lat) ? s.lat : null,
+    lng:            Number.isFinite(s.lng) ? s.lng : null,
+    dataUpdatedAt:  suburbDataUpdatedAt(s),
     dataFreshness:  mergedFreshness,
     hazard: hazard
       ? {
@@ -447,13 +451,13 @@ export async function getSuburbSlugsWithReliablePrice(): Promise<string[]> {
 // above), once for all rows; the sitemap caches the result for a day. Feeds
 // the suburbs sitemap only; the sub-page sitemaps keep the raw gate because
 // each sub-page has its own indexing rule.
-export async function getIndexableSuburbProfilesWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {
+export async function getIndexableSuburbProfilesWithDates(): Promise<{ slug: string; dataUpdatedAt: Date | null }[]> {
   // One query after another, not Promise.all: the runtime pool holds a single
   // connection (src/lib/db.ts), so parallel queries queue for it, and the
   // one at the back of four can wait past the 5 s acquisition timeout.
   const rows = await db.suburb.findMany({
     where: LOCALITIES_ONLY,
-    select: { slug: true, updatedAt: true, walkScore: true, state: true, postcode: true, ...INDEX_ROW_SELECT },
+    select: { slug: true, walkScore: true, state: true, postcode: true, ...INDEX_ROW_SELECT, ...SUBURB_REFRESH_SELECT },
   });
   const rental = await db.suburbRentalStat.groupBy({ by: ["suburbSlug"], where: { suburbSlug: { not: null } } });
   const crime = await db.suburbCrimeStat.groupBy({ by: ["suburbSlug"], where: { suburbSlug: { not: null } } });
@@ -472,7 +476,9 @@ export async function getIndexableSuburbProfilesWithDates(): Promise<{ slug: str
       hasCrime: hasCrime.has(r.slug),
       hasRental: hasRental.has(r.slug),
     }))
-    .map(({ slug, updatedAt }) => ({ slug, updatedAt }));
+    // Not Suburb.updatedAt: every bulk write bumps it, so it says nothing
+    // about when the page's data changed.
+    .map((r) => ({ slug: r.slug, dataUpdatedAt: suburbDataUpdatedAt(r) }));
 }
 
 export async function getIndexableSuburbSlugsWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {

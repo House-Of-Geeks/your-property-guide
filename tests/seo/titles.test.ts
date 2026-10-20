@@ -59,7 +59,7 @@ function makeSuburb(overrides: Partial<Suburb> & { salesSource?: string | null; 
     name: "Test Suburb",
     postcode: "2000",
     state: "NSW",
-    region: "Sydney",
+    region: "",
     description: "",
     heroImage: "",
     schools: schoolList(20),
@@ -355,12 +355,12 @@ describe("item 2 rolls out by state cohort (R4): SA and TAS first, the rest of t
   });
   it("a control suburb keeps today's title and description, character for character", () => {
     const bondi = makeSuburb({ name: "Bondi", postcode: "2026", state: "NSW" });
-    expect(suburbTitle(bondi)).toBe("Bondi Postcode 2026 (NSW) — Suburb Profile & Median Price");
+    expect(suburbTitle(bondi)).toBe("Bondi Postcode 2026 (NSW): Suburb Profile & Median Price");
     expect(suburbTitle(bondi)).toBe(legacySuburbTitle(bondi));
     expect(suburbDescription(bondi)).toBe(legacySuburbDescription(bondi));
     expect(suburbDescription(bondi)).toBe("Bondi, NSW's postcode is 2026, in Greater Sydney. Median house price $1.1M, growth, schools and crime. No sign-up.");
     const hawthorn = makeSuburb({ name: "Hawthorn", postcode: "3122", state: "VIC", salesSource: "sales-vic" });
-    expect(suburbTitle(hawthorn)).toBe("Hawthorn Postcode 3122 (VIC) — Suburb Profile & Median Price");
+    expect(suburbTitle(hawthorn)).toBe("Hawthorn Postcode 3122 (VIC): Suburb Profile & Median Price");
   });
 });
 

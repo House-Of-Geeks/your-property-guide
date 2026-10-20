@@ -249,7 +249,7 @@ export function buildMarketSummary(suburb: Suburb): string {
   if (s.annualGrowthHouse !== 0) {
     parts.push(
       g.tone === "strong"
-        ? `The last 12 months delivered ${g.phrase} (${formatPercent(s.annualGrowthHouse, true)}) — well clear of the long-run average for the state.`
+        ? `The last 12 months delivered ${g.phrase} (${formatPercent(s.annualGrowthHouse, true)}), well clear of the long-run average for the state.`
         : g.tone === "moderate"
         ? `The 12-month picture is one of ${g.phrase} (${formatPercent(s.annualGrowthHouse, true)}).`
         : g.tone === "flat"
@@ -337,7 +337,7 @@ export function buildClimateSentence(c: Suburb["climate"]): string {
     parts.push(`Annual rainfall lands at about ${Math.round(rainfall).toLocaleString("en-AU")} mm.`);
   }
   if (isGridClimate(c)) {
-    parts.push("Figures are our 1991–2020 averages of SILO data for this location (Queensland Government, built from Bureau of Meteorology observations).");
+    parts.push("Figures are our 1991 to 2020 averages of SILO data for this location (Queensland Government, built from Bureau of Meteorology observations).");
   } else {
     parts.push(
       `Figures are long-term averages from the Bureau of Meteorology's ${c.bomStationName} station, ${formatStationDistance(c.distanceKm)} away.`,

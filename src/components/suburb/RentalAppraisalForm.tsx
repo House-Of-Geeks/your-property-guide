@@ -184,7 +184,7 @@ export function RentalAppraisalForm({ suburbName, suburbSlug, state, postcode }:
           onSelect={({ suburb }) => setAddressSuburbSlug(suburb?.slug ?? null)}
         />
         <p className="text-xs text-ink-muted">
-          Suburb: <span className="text-ink">{suburbName}, {state} {postcode}</span>
+          Suburb: <span className="text-ink">{`${suburbName}, ${state} ${postcode}`}</span>
           <span className="text-ink-subtle">{" (from this page; pick the address above if the property is next door)"}</span>
         </p>
 

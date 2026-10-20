@@ -79,7 +79,7 @@ export function SuburbSubrouteHeader({
         href={guideFunnelHref("selling", { suburb: suburb.slug, from })}
         className={`${BUTTON_PRIMARY} w-full sm:w-auto justify-center`}
       >
-        Selling in {suburb.name}? Get the free guide
+        {`Selling in ${suburb.name}? Get the free guide`}
         <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
       </Link>
     ) : null;

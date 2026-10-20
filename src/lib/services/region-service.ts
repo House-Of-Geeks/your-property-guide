@@ -4,6 +4,7 @@ import { buildCityMarket, type CityMarket, type CityMarketRow } from "@/lib/serv
 // Postal delivery names and institutions are not suburbs of a region.
 import { LOCALITIES_ONLY } from "@/lib/non-localities";
 import { withPublishedSales } from "@/lib/published-medians";
+import { slugify } from "@/lib/utils/slug";
 
 // State-level values that are not real SA3 regions, filter these out
 const STATE_NAMES = new Set([
@@ -18,13 +19,7 @@ const SKIP_REGIONS = new Set([
   "Not Applicable",
 ]);
 
-export function slugify(str: string): string {
-  return str
-    .toLowerCase()
-    .replace(/\s*-\s*/g, "-")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
+export { slugify };
 
 export function slugToRegionName(slug: string, regions: { region: string; slug: string }[]): string | null {
   return regions.find((r) => r.slug === slug)?.region ?? null;

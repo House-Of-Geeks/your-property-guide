@@ -134,7 +134,7 @@ describe("the suburb profile", () => {
     expect(svc).toContain("rentalRentUnit:  isAllDwellingsOnly(rental) ? 0 : rental?.medianRentUnit  ?? null,");
     expect(svc).toContain("medianRentAll:     rentalRentAll ?? 0,");
     const page = src("src/app/(marketing)/suburbs/[slug]/page.tsx");
-    expect(page).toContain('label="Weekly rent (all dwellings)"');
+    expect(page).toContain('label: "Weekly rent (all dwellings)"');
   });
 });
 

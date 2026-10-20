@@ -13,6 +13,7 @@ import { guideFunnelHref } from "@/lib/guide-funnel";
 import { hasReliablePrice } from "@/lib/suburb-data-quality";
 import { makeSchoolSlug } from "@/lib/utils/school";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { suburbPlaceProps } from "@/lib/utils/lga";
 import type { School } from "@/types";
 
 interface SuburbSchoolsPageProps {
@@ -153,6 +154,7 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
         addressLocality={suburb.name}
         addressRegion={suburb.state}
         postalCode={suburb.postcode}
+        {...suburbPlaceProps(suburb)}
       />
       {schools.length > 0 && (
         <ItemListJsonLd
