@@ -8,12 +8,13 @@ import { RelatedGuidesSection } from "@/components/guide/GuideLinkList";
 import { BuyingGuideFunnel } from "@/components/journey";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { GuideEntryCapture } from "@/components/analytics/GuideEntryCapture";
-import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
+import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PHOTOS, PhotoHero, PhotoPanel, SectionHeading } from "@/components/premium";
 import { SITE_URL } from "@/lib/constants";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
 import { HUB_GUIDE_LISTS, hubGuideGroups } from "@/lib/guides/hub-guides";
 import { StickyGuideBar } from "../selling-guide/StickyGuideBar";
 import { GuideContents } from "@/components/interactive/GuideContents";
+import { GuideAccess } from "@/components/guide-book/GuideAccess";
 import { GuideIntroNote } from "@/components/guide-book/GuideIntroNote";
 import { GuidePitch as Pitch } from "@/components/guide-book/GuidePitch";
 import { GUIDE_BOOKS, subtitleLine } from "@/lib/guide-books";
@@ -73,7 +74,7 @@ function GuidePitch() {
       ]}
     >
       <p className="mt-6 text-[14px] text-ink-muted">
-        10 chapters · 60-second form · Never shared with selling agents
+        10 chapters · Read online, download or have it emailed
       </p>
       <p className="mt-1 text-[14px] text-ink-muted">
         Want the steps now?{" "}
@@ -117,40 +118,18 @@ export default function BuyingGuidePage() {
         }}
       />
 
-      {/* Hero, same layout as the selling guide, over the buying photo.
-          Phones: headline, lede, then the funnel on the first screen, the
-          pitch after it. Desktop: headline, lede and pitch left, the funnel
-          right. The pitch is set once and placed twice (one per breakpoint)
-          so each layout keeps its order. */}
+      {/* Hero, same layout as the selling guide (20 Oct 2026): three plain
+          choices, with nothing asked first. Phones: headline, lede, the
+          choices, then the pitch. Desktop: headline, lede and pitch left,
+          the choices right. The pitch is set once and placed twice (one per
+          breakpoint) so each layout keeps its order. */}
       <div id="get-the-guide" className="scroll-mt-16">
         <PhotoHero
-          photo="buying"
           size="lg"
           aside={
             <>
-              {/* relative z-10: the suburb autocomplete's dropdown must
-                  paint over whatever follows the card. data-funnel-card
-                  drives the #get-the-guide:target ping (the buying funnel
-                  card doesn't carry it on the anchor itself). */}
-              <div id="guide-funnel" data-funnel-card className="relative z-10 rounded-xl scroll-mt-24">
-                <Suspense fallback={<div className="tone-light h-64 rounded-xl border border-line bg-white" aria-busy="true" />}>
-                  <BuyingGuideFunnel source="buying-guide-page" />
-                </Suspense>
-              </div>
-
-              <div className="mt-6 px-1">
-                <p className="text-sm font-semibold text-ink mb-2">What happens next</p>
-                <ol className="space-y-1.5 text-sm text-ink-muted leading-snug list-decimal pl-5 marker:text-ink-subtle">
-                  <li>Answer three quick questions</li>
-                  <li>Download it straight away, or have it emailed</li>
-                  <li>We point you at the chapters for your situation</li>
-                </ol>
-                <p className="mt-3 text-xs text-ink-subtle leading-relaxed">
-                  Free. Requesting the guide never passes your details to any agent.
-                </p>
-              </div>
-
-              <div className="lg:hidden mt-10">
+              <GuideAccess guide="buying" placement="buying-guide-page" />
+              <div className="lg:hidden mt-12">
                 <GuidePitch />
               </div>
             </>
@@ -165,19 +144,61 @@ export default function BuyingGuidePage() {
               {subtitleLine(GUIDE_BOOKS.buying)}
             </span>
           </HeroTitle>
-          {/* Phone-sized lede, as before: the funnel stays on the first screen. */}
+          {/* Phone-sized lede, as before: the choices stay near the first screen. */}
           <HeroLead className="max-sm:mt-4 max-sm:text-base">
             A practical guide for your first home, your next one, an
             investment or a downsize. Ten chapters, in order: your budget,
             the schemes in your state, choosing an area, inspecting, how
             homes are marketed and sold, making an offer, finance and
-            settlement.
+            settlement. Read it free online, download the PDF, or have it
+            emailed.
           </HeroLead>
           <div className="hidden lg:block mt-12">
             <GuidePitch />
           </div>
         </PhotoHero>
       </div>
+
+      {/* The optional extra: three quick questions for pointers to the
+          chapters for your stage and the schemes and rules in your state
+          (the funnel, unchanged). #guide-funnel is where guideFunnelHref()
+          sends links that carry a suburb. */}
+      <Band tone="quiet">
+        <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
+          <div className="lg:col-span-5">
+            <SectionHeading size="md" title="Want pointers for where you’re up to?" />
+            <p className="mt-5 text-[16px] leading-[1.7] text-ink-muted">
+              Optional. Answer three quick questions and we’ll point you to
+              the chapters that matter for your stage, with the schemes and
+              rules for your state.
+            </p>
+            <p className="mt-6 text-sm font-semibold text-ink mb-2">What happens next</p>
+            <ol className="space-y-1.5 text-sm text-ink-muted leading-snug list-decimal pl-5 marker:text-ink-subtle">
+              <li>Answer three quick questions</li>
+              <li>Download it straight away, or have it emailed</li>
+              <li>We point you at the chapters for your situation</li>
+            </ol>
+            <p className="mt-3 text-xs text-ink-subtle leading-relaxed">
+              Free. Requesting the guide never passes your details to any agent.
+            </p>
+            <PhotoPanel
+              photo="windowDetail"
+              alt={PHOTOS.windowDetail.alt}
+              className="mt-10 hidden aspect-[3/2] lg:block"
+              sizes="(min-width: 1280px) 480px, 38vw"
+            />
+          </div>
+          <div className="lg:col-span-7">
+            {/* relative z-10: the suburb autocomplete's dropdown must
+                paint over whatever follows the card. */}
+            <div id="guide-funnel" data-funnel-card className="relative z-10 rounded-xl scroll-mt-24">
+              <Suspense fallback={<div className="tone-light h-64 rounded-xl border border-line bg-white" aria-busy="true" />}>
+                <BuyingGuideFunnel source="buying-guide-page" />
+              </Suspense>
+            </div>
+          </div>
+        </div>
+      </Band>
 
       {/* Chapter contents */}
       <Band>
@@ -232,7 +253,7 @@ export default function BuyingGuidePage() {
         groups={hubGuideGroups(HUB_GUIDE_LISTS["/buying-guide"])}
       />
 
-      <StickyGuideBar />
+      <StickyGuideBar guide="buying" />
       {/* Records the ?from=<page slug> a guide CTA adds to this link in the
           attribution cookie, so the lead says which page sent it. */}
       <GuideEntryCapture />

@@ -11,6 +11,7 @@ export type { AnalyticsProps, AnalyticsKey } from "@/lib/analytics-props";
 //   engagement   tool_used, plan_started, plan_completed, guide_started,
 //                journey_selected, help_cta_clicked, intro_started
 //   learning     guide_delivered, plan_emailed, guide_downloaded_direct,
+//                guide_read_online, guide_email_requested, guide_email_queued,
 //                sequence_opted_in, newsletter_subscribed
 //   introduction intro_submitted (with the server's status: sent, held,
 //                not-introduced; a click is never counted as delivered)
@@ -34,6 +35,12 @@ export type AnalyticsEvent =
   | "guide_started"
   | "guide_delivered"
   | "guide_downloaded_direct"
+  // Guide access without a form (20 Oct 2026): "Read online", and "Email me
+  // a copy" counted on the click and again on the server's queued answer
+  // (queued for sending, never "delivered"). Props: guide, placement.
+  | "guide_read_online"
+  | "guide_email_requested"
+  | "guide_email_queued"
   | "sequence_opted_in"
   | "newsletter_subscribed"
   | "help_cta_clicked"

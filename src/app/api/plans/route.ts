@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { randomBytes } from "node:crypto";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { sendMail, ANDY_EMAIL } from "@/lib/email";
+import { ANDY_EMAIL } from "@/lib/email";
+import { queueAndSendNow } from "@/lib/mail/send";
+import { unsubscribePageUrl } from "@/lib/mail/unsubscribe";
 import { checkRateLimit, ipKeyFromRequest } from "@/lib/rate-limit";
 import { attributionFromRequest, attributionJson } from "@/lib/attribution-server";
 import { SITE_URL } from "@/lib/constants/seo";
@@ -89,28 +91,37 @@ export async function POST(request: Request) {
       select: { id: true },
     });
 
+    // Through the email queue (21 Oct 2026). "emailed" means SendGrid
+    // accepted it or it's queued for a retry, never that it arrived.
     let emailed = false;
+    let emailStatus = "not-sent";
     try {
       const planMail = {
         firstName: input.firstName,
         plan,
         planUrl: `${SITE_URL}${planHref(answers)}`,
         sequenceLabel: sequence ? SEQUENCES[sequence].label : null,
-        unsubscribeUrl: sequence ? `${SITE_URL}/api/unsubscribe?t=${token}` : null,
+        unsubscribeUrl: sequence ? unsubscribePageUrl(token) : null,
       };
-      await sendMail({
-        to: input.email.trim(),
+      const sent = await queueAndSendNow({
+        key: `plan:${row.id}`,
+        category: "transactional",
+        stream: "plan",
+        template: "plan/next-step",
+        to: input.email,
+        leadId: row.id,
         replyTo: ANDY_EMAIL,
         subject: planEmailSubject(plan),
         html: buildPlanEmailHtml(planMail),
         text: buildPlanEmailText(planMail),
       });
-      emailed = true;
-      await db.leadEvent.create({ data: { leadId: row.id, type: "plan-emailed", actor: "system" } });
+      emailStatus = sent.status;
+      emailed = sent.status === "accepted" || sent.status === "queued";
+      if (emailed) await db.leadEvent.create({ data: { leadId: row.id, type: "plan-emailed", actor: "system", detail: { status: sent.status, messageId: sent.id } } });
     } catch (err) {
       console.error("Plan email failed (row saved):", { id: row.id, error: err instanceof Error ? err.message : String(err) });
     }
-    return NextResponse.json({ ok: true, duplicate: false, id: row.id, emailed, sequence });
+    return NextResponse.json({ ok: true, duplicate: false, id: row.id, emailed, emailStatus, sequence });
   } catch (err) {
     // A simultaneous double submit: the first copy's row exists now.
     if (typeof err === "object" && err !== null && (err as { code?: string }).code === "P2002") {

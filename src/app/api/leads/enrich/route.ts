@@ -1,7 +1,8 @@
 import { NextResponse, after } from "next/server";
 import { z } from "zod";
 import { db } from "@/lib/db";
-import { sendMail, ANDY_EMAIL, LEADS_CC_EMAIL } from "@/lib/email";
+import { ANDY_EMAIL, LEADS_CC_EMAIL } from "@/lib/email";
+import { queueAndSendNow } from "@/lib/mail/send";
 import { visitorSubjectName } from "@/lib/email-format";
 import { buildPhoneAddedHtml, buildPhoneAddedText } from "@/lib/lead-emails";
 import { normalizePhone } from "@/lib/utils/phone";
@@ -74,7 +75,12 @@ export async function POST(request: Request) {
     // match-request goes to Andy only.
     const notify = async () => {
       try {
-        await sendMail({
+        await queueAndSendNow({
+          key: `team:phone:${lead.id}`,
+          category: "operational",
+          stream: "team",
+          template: "team/phone-added",
+          leadId: lead.id,
           to: ANDY_EMAIL,
           cc: lead.type === "match-request" ? undefined : LEADS_CC_EMAIL,
           subject: `Phone added: ${visitorSubjectName(lead.firstName, lead.lastName) || "A lead"}${lead.suburb ? ` (${lead.suburb})` : ""}`,

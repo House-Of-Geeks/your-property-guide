@@ -7,11 +7,44 @@ import { answersToParams, stageOf } from "@/lib/plans/questions";
 import { SEQUENCES, sequenceFor } from "@/lib/email-sequences";
 import { planEmailConsent } from "@/lib/plans/consent";
 import { useSiteFlags } from "@/components/flags/FlagsProvider";
+import { BUTTON_SECONDARY } from "@/components/premium/buttons";
 import { CheckField, Field, Honeypot, INPUT_CLASS, SubmitButton, describedBy, useRequestKey } from "./fields";
 
 // "Email me this plan" (the learning path). Offered after the plan is on
 // screen. Email only; no phone. The short series is its own unticked box,
 // offered only while the series really sends (src/lib/flags.ts, 20 Oct 2026).
+
+/** Where the form sits on /plan/result (the page wraps it in this id) and its email field. */
+export const PLAN_EMAIL_ANCHOR = "email-plan";
+const EMAIL_FIELD_ID = "plan-email";
+
+/**
+ * The plan's save actions at the top of /plan/result (20 Oct 2026): "Email
+ * me this plan" takes the reader to the form where it already sits (beside
+ * the steps on desktop, after them on phones) and puts the cursor in the
+ * email field; "Save or print" opens the print dialog (save as PDF there).
+ * Nothing opens over the steps. Without JavaScript the link is a plain jump.
+ */
+export function PlanSaveActions() {
+  const toEmail = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const target = document.getElementById(PLAN_EMAIL_ANCHOR);
+    if (!target) return;
+    e.preventDefault();
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    document.getElementById(EMAIL_FIELD_ID)?.focus({ preventScroll: true });
+  };
+  return (
+    <div className="flex flex-wrap gap-3">
+      <a href={`#${PLAN_EMAIL_ANCHOR}`} onClick={toEmail} className={BUTTON_SECONDARY}>
+        Email me this plan
+      </a>
+      <button type="button" onClick={() => window.print()} className={BUTTON_SECONDARY}>
+        Save or print
+      </button>
+    </div>
+  );
+}
 
 export function PlanEmailForm({ answers }: { answers: PlanAnswers }) {
   const requestKey = useRequestKey();
@@ -70,16 +103,18 @@ export function PlanEmailForm({ answers }: { answers: PlanAnswers }) {
     }
   };
 
+  // "emailed" means the email was accepted or queued for sending, never that
+  // it arrived (/api/plans, 21 Oct 2026), so the words say it's on its way.
   if (done) {
     return (
       <div className="rounded-xl border border-line bg-white p-5 sm:p-6" role="status">
-        <p className="text-lg font-bold text-ink">{done.emailed ? "Sent. Check your inbox." : "Saved, but the email didn’t go."}</p>
+        <p className="text-lg font-bold text-ink">{done.emailed ? "It’s on its way." : "Saved, but the email didn’t go."}</p>
         <p className="mt-2 text-[15px] text-ink-muted leading-relaxed">
           {done.emailed
             ? done.sequence
-              ? `Your plan is on its way, and the first of the short emails on ${seq.label} follows in a few days. Every email has an unsubscribe link.`
-              : "Your plan is on its way. That’s the only email we’ll send."
-            : "Bookmark this page instead: the plan lives at this address."}
+              ? `Your plan usually arrives within a few minutes; if you can’t see it, check your spam or Promotions folder. The first of the short emails on ${seq.label} follows in a few days, and every email has an unsubscribe link.`
+              : "Your plan usually arrives within a few minutes; if you can’t see it, check your spam or Promotions folder. That’s the only email we’ll send."
+            : "Bookmark this page instead, or save it as a PDF: the plan lives at this address."}
         </p>
       </div>
     );

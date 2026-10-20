@@ -30,7 +30,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   slug: "borrowing-power-calculator",
   schemaName: "Borrowing Power Calculator",
   schemaDescription: "Estimate how much you can borrow based on your income, expenses, and APRA buffer.",
-  updatedAt: "2026-10-08",
+  updatedAt: "2026-10-20",
   persona: "first-home",
 };
 
@@ -206,9 +206,16 @@ export default function BorrowingPowerCalculatorPage() {
             <li>It doesn&rsquo;t apply LMI or scheme-specific guarantees (FHBG, FHG, Help to Buy).</li>
           </ul>
           <p>
-            For any of those, run the basic numbers here, then verify with a broker
-            or a participating lender. <Link href="/find-an-expert?intent=refinancing">Get connected</Link>{" "}
-            if you want a free intro to one.
+            For any of those, run the basic numbers here, then ask a lender or a
+            mortgage broker for a written estimate: our guide to{" "}
+            <Link href="/guides/home-loan-pre-approval-australia">home loan pre-approval</Link>{" "}
+            explains what a conditional approval does and doesn’t promise. To put
+            the loan in your whole budget, the{" "}
+            <Link href="/stamp-duty-calculator">stamp duty calculator</Link> and the{" "}
+            <Link href="/affordability-calculator">affordability calculator</Link>{" "}
+            add the upfront costs, and a{" "}
+            <Link href="/plan?j=buying">next-step plan</Link> sets out what to do
+            next.
           </p>
         </>
       }

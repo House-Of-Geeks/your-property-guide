@@ -160,6 +160,18 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  // The email system's last 24 hours (21 Oct 2026): what SendGrid accepted,
+  // what the webhook confirmed, and anything that needs a look.
+  let emailLine = "";
+  try {
+    const groups = await db.emailMessage.groupBy({ by: ["status"], where: { createdAt: { gte: since } }, _count: { _all: true } });
+    const n = (st: string) => groups.find((g) => g.status === st)?._count._all ?? 0;
+    const attention = n("failed") + n("ambiguous") + n("bounced") + n("dropped");
+    emailLine = `<p style="margin:16px 0 0;font-size:14px;line-height:1.6;color:#566257;font-family:-apple-system,'Segoe UI',Arial,sans-serif;">Email, last ${WINDOW_HOURS}h: ${n("delivered")} delivered, ${n("accepted")} accepted (awaiting delivery confirmation), ${n("queued") + n("deferred")} queued or deferred, ${n("suppressed")} suppressed${attention ? `, <strong>${attention} need a look</strong> (failed, ambiguous, bounced or dropped)` : ""}. Details: /dashboard/admin/email</p>`;
+  } catch (err) {
+    console.error("leads-health cron: email stats failed", err);
+  }
+
   // Always send a daily email so silence is meaningful: zero leads -> alert,
   // some leads -> heartbeat. No email at all == the cron didn't run.
   const isZero = count === 0;
@@ -169,9 +181,10 @@ export async function GET(request: NextRequest) {
       subject: isZero
         ? `ALERT: No leads in last ${WINDOW_HOURS}h`
         : `Lead health: ${count} lead${count === 1 ? "" : "s"} in last ${WINDOW_HOURS}h`,
-      html: isZero
+      html: (isZero
         ? buildZeroFloorHtml(WINDOW_HOURS, newsletterCount)
-        : buildHeartbeatHtml(count, WINDOW_HOURS, newsletterCount, split),
+        : buildHeartbeatHtml(count, WINDOW_HOURS, newsletterCount, split)
+      ).replace("</body>", `${emailLine}</body>`),
     });
   } catch (mailErr) {
     console.error("leads-health cron: daily email failed", mailErr);

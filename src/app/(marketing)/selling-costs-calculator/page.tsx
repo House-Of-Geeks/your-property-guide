@@ -7,7 +7,25 @@ import { type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { STATE_RATES } from "@/lib/data/commission-rates";
 import { COST_OF_SELLING_STATE, COST_OF_SELLING_STATES } from "@/lib/data/cost-of-selling-state";
-import { sellingCostTable } from "@/lib/data/selling-costs";
+import { SELLING_COSTS_AS_AT, money, sellingCostTable } from "@/lib/data/selling-costs";
+
+// The FAQ's national answer at $800,000, worked state by state from the same
+// tables the calculator uses (as /guides/cost-of-selling-a-house-australia
+// does), instead of a typed range (search and conversion baseline, 20 Oct 2026).
+const PRICE = 800_000;
+const COST_LINES = sellingCostTable("NSW").lines;
+const costLine = (key: string) => COST_LINES.find((l) => l.key === key)!;
+const lowFor = (s: (typeof COST_OF_SELLING_STATES)[number]) =>
+  Math.round((PRICE * STATE_RATES[s].low) / 100) + costLine("marketing").low + costLine("conveyancing").low + sellingCostTable(s).documents.low;
+const highFor = (s: (typeof COST_OF_SELLING_STATES)[number]) =>
+  Math.round((PRICE * STATE_RATES[s].high) / 100) + costLine("marketing").high + costLine("conveyancing").high + sellingCostTable(s).documents.high + costLine("auctioneer").high + costLine("discharge").high;
+const TOTAL_LOW = Math.min(...COST_OF_SELLING_STATES.map(lowFor));
+const TOTAL_HIGH = Math.max(...COST_OF_SELLING_STATES.map(highFor));
+const pctOf = (n: number) => `${Math.round((n / PRICE) * 1000) / 10}%`;
+const RATE_LOW = Math.min(...COST_OF_SELLING_STATES.map((s) => STATE_RATES[s].low));
+const RATE_HIGH = Math.max(...COST_OF_SELLING_STATES.map((s) => STATE_RATES[s].high));
+const DOCS_LOW = Math.min(...COST_OF_SELLING_STATES.map((s) => sellingCostTable(s).documents.low));
+const DOCS_HIGH = Math.max(...COST_OF_SELLING_STATES.map((s) => sellingCostTable(s).documents.high));
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Selling Costs Calculator",
@@ -17,7 +35,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   schemaName: "Selling Costs Calculator",
   schemaDescription:
     "Calculate the total cost of selling a house in Australia by state, including commission, GST, marketing, conveyancing, legal documents and mortgage payout, with net proceeds.",
-  updatedAt: "2026-09-20",
+  updatedAt: "2026-10-20",
   persona: "selling",
 };
 
@@ -37,7 +55,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What does it cost to sell a house in Australia?",
     answer:
-      "Typically 2% to 4% of the sale price before any capital gains tax. Commission is the largest line at 1.6% to 3.25% depending on the state, then marketing ($2,000 to $8,000), conveyancing ($800 to $2,500), the legal documents your state requires ($100 to $1,500), and an auctioneer or mortgage discharge fee where they apply. On an $800,000 sale that is roughly $17,000 to $36,000.",
+      `On an ${money(PRICE)} sale, about ${money(TOTAL_LOW)} to ${money(TOTAL_HIGH)} (${pctOf(TOTAL_LOW)} to ${pctOf(TOTAL_HIGH)} of the price) before GST on the commission, styling and any capital gains tax, worked state by state from our figures (${SELLING_COSTS_AS_AT}). Commission is the largest line at ${RATE_LOW}% to ${RATE_HIGH}% depending on the state, then marketing (${money(costLine("marketing").low)} to ${money(costLine("marketing").high)}), conveyancing (${money(costLine("conveyancing").low)} to ${money(costLine("conveyancing").high)}), the legal documents your state requires (${money(DOCS_LOW)} to ${money(DOCS_HIGH)}), and an auctioneer or mortgage discharge fee where they apply. Commission is our compiled market range; the other lines are indicative ranges suppliers quote individually.`,
   },
   {
     question: "Is GST charged on real estate commission?",
@@ -70,6 +88,7 @@ const RELATED: RelatedGuide[] = [
   { title: "The cost of selling a house in Australia", href: "/guides/cost-of-selling-a-house-australia", description: "Every cost line explained, with a worked example." },
   { title: "Real estate commission calculator", href: "/real-estate-commission-calculator", description: "The agent's fee on its own, by state." },
   { title: "How to negotiate agent commission", href: "/guides/how-to-negotiate-real-estate-agent-commission", description: "The line you can move, and how." },
+  { title: "Agent proposal worksheet", href: "/tools/agent-proposal-worksheet", description: "Compare up to three agents' proposals at the same expected sale price." },
   { title: "Fixed fee vs commission agents", href: "/guides/fixed-fee-vs-commission-real-estate-agents", description: "Which model costs less on your sale." },
   { title: "CGT calculator", href: "/cgt-calculator", description: "Selling an investment property? Estimate the tax on your gain." },
   { title: "Free selling guide (PDF)", href: "/selling-guide", description: "Costs, agent selection and a 12-week plan, personalised to your suburb." },
@@ -85,6 +104,12 @@ export default function SellingCostsCalculatorPage() {
       explainer={
         <>
           <h2>How the cost of selling a house adds up</h2>
+          <p>
+            On an {money(PRICE)} sale the bill typically runs from about {money(TOTAL_LOW)} to {money(TOTAL_HIGH)}{" "}
+            ({pctOf(TOTAL_LOW)} to {pctOf(TOTAL_HIGH)}) before GST on the commission, styling and any capital gains tax,
+            worked state by state from our figures ({SELLING_COSTS_AS_AT}). The{" "}
+            <Link href="/guides/cost-of-selling-a-house-australia">cost of selling guide</Link> explains every line.
+          </p>
           <p>
             Commission gets the attention, but it is one of seven or eight lines on the bill, and the others together
             often add another 1% of the price. The calculator above works through each one for your state and shows the

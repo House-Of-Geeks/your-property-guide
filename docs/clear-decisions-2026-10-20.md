@@ -29,7 +29,7 @@ Andy's approved "Clear decisions" direction, implemented across the site on bran
 ## Still with Andy
 
 - **Publish the blog changes:** three evergreen "playbook" lines in `src/lib/data/blog-posts/` need `npm run publish:blogs` after deploy to reach production.
-- **ActiveCampaign:** the regenerated templates in `emails/activecampaign/` need re-pasting into AC (the AC keys are only in Vercel).
+- **ActiveCampaign:** ~~the regenerated templates need re-pasting into AC~~. Superseded 21 Oct: AC is retired and the templates removed; see `docs/email-system-2026-10-21.md`.
 - **Newsletter:** the remaining "quarterly" promises were removed, in line with #145; the form still waits on Andy's decision to start sending or remove it.
 - **Bylines:** Bec Ramirez and Ellie Johnston (unchanged, still to be confirmed).
 - **The homepage planner has no suburb field** (the approved design doesn't). The header and phone bar still pass on a suburb when a page publishes one; the full planner asks for state and suburb.
