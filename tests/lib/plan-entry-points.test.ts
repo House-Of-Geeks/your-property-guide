@@ -42,4 +42,15 @@ describe("plan entry points share the suburb", () => {
     expect(store).toMatch(/export function usePublishedPlace/);
     expect(store).toMatch(/publishedPlace = place/);
   });
+
+  it("treats the prerendered homepage path (/index) as the homepage", async () => {
+    const { sitePath } = await import("@/lib/journey-paths");
+    expect(sitePath("/index")).toBe("/");
+    expect(sitePath("/")).toBe("/");
+    expect(sitePath(null)).toBe("/");
+    expect(sitePath("/selling")).toBe("/selling");
+    for (const file of ["src/components/layout/Header.tsx", "src/components/layout/MobileBottomNav.tsx"]) {
+      expect(read(file)).toMatch(/sitePath\(usePathname\(\)\)/);
+    }
+  });
 });

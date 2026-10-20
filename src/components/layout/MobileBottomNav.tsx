@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { moveForPath } from "@/lib/journey-paths";
+import { moveForPath, sitePath } from "@/lib/journey-paths";
 import { PLAN_CTA_BAR } from "@/lib/plans/name";
 import { planStartHref } from "@/lib/plans/start";
 import { DEFAULT_MOVE, journeyForMove, usePublishedMove, usePublishedPlace } from "@/components/interactive/move-context";
@@ -39,7 +39,8 @@ const HELP = {
 } as const;
 
 export function MobileBottomNav() {
-  const pathname = usePathname();
+  // "/index" is the homepage (see sitePath).
+  const pathname = sitePath(usePathname());
   // Guides and posts mark their reader ([data-guide-audience]); read it once
   // the new page has committed so the server HTML still matches.
   const [pageAudience, setPageAudience] = useState<"buying" | "selling" | null>(null);

@@ -4,6 +4,17 @@
 
 import type { Journey } from "@/lib/lead-kinds";
 
+/**
+ * The page's path as the layout should treat it. Next's prerender of the
+ * homepage reports its path as "/index" until the router settles (seen live
+ * on 20 Oct 2026: the phone bar's entry was "bar-index" and the header lost
+ * the homepage's move), so "/index" is the homepage.
+ */
+export function sitePath(pathname: string | null): string {
+  if (!pathname || pathname === "/index") return "/";
+  return pathname;
+}
+
 export function moveForPath(pathname: string): Journey | null {
   const on = (p: string) => pathname === p || pathname.startsWith(p + "/");
   if (["/buying-and-selling", "/guides/sell-first-or-buy-first", "/bridging-loan-calculator", "/guides/bridging-loans-guide", "/guides/bridging-loan-alternatives"].some(on)) return "buying-and-selling";
