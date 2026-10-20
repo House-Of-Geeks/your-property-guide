@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { ChevronDown, Search, Phone, ArrowRight } from "lucide-react";
 import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
 import { Logo } from "@/components/brand/Logo";
-import { moveForPath } from "@/lib/journey-paths";
+import { moveForPath, sitePath } from "@/lib/journey-paths";
 import { PLAN_CTA_SHORT } from "@/lib/plans/name";
 import { planStartHref } from "@/lib/plans/start";
 import { DEFAULT_MOVE, journeyForMove, usePublishedMove, usePublishedPlace } from "@/components/interactive/move-context";
@@ -114,7 +114,8 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
-  const pathname = usePathname();
+  // "/index" is the homepage (see sitePath).
+  const pathname = sitePath(usePathname());
   // The page's move; on the homepage, the one picked in the planner, with
   // the suburb picked there too, through the same planStartHref.
   const published = usePublishedMove();
