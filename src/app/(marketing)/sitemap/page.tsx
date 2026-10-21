@@ -7,6 +7,9 @@ import { htmlSitemapMetadata, SitemapIndexView } from "./view";
 // Each child list is its own request, so the build does not walk thousands
 // of pages.
 export const dynamic = "force-dynamic";
+// One request walks every section, including the suburb and school queries.
+// 60s matches the admin sync route so a cold cache can finish.
+export const maxDuration = 60;
 
 export const metadata = htmlSitemapMetadata({
   title: "Sitemap",

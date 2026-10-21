@@ -4,6 +4,7 @@ import { getHtmlSitemapPage, htmlSitemapSectionTitle, isHtmlSitemapSection } fro
 import { htmlSitemapMetadata, SitemapSectionView } from "../view";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 export async function generateMetadata({
   params,

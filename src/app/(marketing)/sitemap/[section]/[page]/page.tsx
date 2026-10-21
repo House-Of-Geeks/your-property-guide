@@ -4,6 +4,7 @@ import { getHtmlSitemapPage, htmlSitemapSectionTitle, isHtmlSitemapSection } fro
 import { htmlSitemapMetadata, SitemapSectionView } from "../../view";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 function pageNumber(raw: string): number | null {
   if (!/^[1-9][0-9]*$/.test(raw)) return null;
