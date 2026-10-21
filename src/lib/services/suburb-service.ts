@@ -447,13 +447,13 @@ export async function getSuburbSlugsWithReliablePrice(): Promise<string[]> {
 // above), once for all rows; the sitemap caches the result for a day. Feeds
 // the suburbs sitemap only; the sub-page sitemaps keep the raw gate because
 // each sub-page has its own indexing rule.
-export async function getIndexableSuburbProfilesWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {
+export async function getIndexableSuburbProfilesWithDates(): Promise<{ slug: string; name: string; state: string; postcode: string; updatedAt: Date }[]> {
   // One query after another, not Promise.all: the runtime pool holds a single
   // connection (src/lib/db.ts), so parallel queries queue for it, and the
   // one at the back of four can wait past the 5 s acquisition timeout.
   const rows = await db.suburb.findMany({
     where: LOCALITIES_ONLY,
-    select: { slug: true, updatedAt: true, walkScore: true, state: true, postcode: true, ...INDEX_ROW_SELECT },
+    select: { slug: true, name: true, updatedAt: true, walkScore: true, state: true, postcode: true, ...INDEX_ROW_SELECT },
   });
   const rental = await db.suburbRentalStat.groupBy({ by: ["suburbSlug"], where: { suburbSlug: { not: null } } });
   const crime = await db.suburbCrimeStat.groupBy({ by: ["suburbSlug"], where: { suburbSlug: { not: null } } });
@@ -472,10 +472,10 @@ export async function getIndexableSuburbProfilesWithDates(): Promise<{ slug: str
       hasCrime: hasCrime.has(r.slug),
       hasRental: hasRental.has(r.slug),
     }))
-    .map(({ slug, updatedAt }) => ({ slug, updatedAt }));
+    .map(({ slug, name, state, postcode, updatedAt }) => ({ slug, name, state, postcode, updatedAt }));
 }
 
-export async function getIndexableSuburbSlugsWithDates(): Promise<{ slug: string; updatedAt: Date }[]> {
+export async function getIndexableSuburbSlugsWithDates(): Promise<{ slug: string; name: string; state: string; postcode: string; updatedAt: Date }[]> {
   return db.suburb.findMany({
     where: {
       ...LOCALITIES_ONLY,
@@ -485,6 +485,6 @@ export async function getIndexableSuburbSlugsWithDates(): Promise<{ slug: string
         { population: { gt: 0 } },
       ],
     },
-    select: { slug: true, updatedAt: true },
+    select: { slug: true, name: true, state: true, postcode: true, updatedAt: true },
   });
 }

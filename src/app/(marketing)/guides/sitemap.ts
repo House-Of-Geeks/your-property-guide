@@ -15,15 +15,33 @@ import { ALL_GUIDES, guideLastModified } from "@/lib/guides/registry";
 // database), so the per-request render costs nothing.
 export const dynamic = "force-dynamic";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export type GuideSitemapLink = {
+  url: string;
+  title: string;
+  lastModified?: string;
+  changeFrequency: "monthly" | "weekly";
+  priority: number;
+};
+
+export function getGuideSitemapLinks(): GuideSitemapLink[] {
   return ALL_GUIDES.map((guide) => {
     const lastModified = guideLastModified(guide);
     const isGuide = guide.kind === "guide";
     return {
       url: `${SITE_URL}${guide.href}`,
+      title: guide.title,
       ...(lastModified ? { lastModified } : {}),
-      changeFrequency: isGuide ? ("monthly" as const) : ("weekly" as const),
+      changeFrequency: isGuide ? "monthly" : "weekly",
       priority: isGuide ? 0.8 : 0.6,
     };
   });
+}
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  return getGuideSitemapLinks().map(({ url, lastModified, changeFrequency, priority }) => ({
+    url,
+    ...(lastModified ? { lastModified } : {}),
+    changeFrequency,
+    priority,
+  }));
 }
