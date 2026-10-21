@@ -9,14 +9,16 @@ import { getAllAgencySlugs } from "@/lib/services/agent-service";
 const getEntries = unstable_cache(
   async (): Promise<MetadataRoute.Sitemap> => {
     const slugs = await getAllAgencySlugs();
+    // No lastModified: these rows have no content date. A timestamp taken
+    // when the cache filled is not a content date. The directory is also
+    // out of the sitemap index.
     return slugs.map((slug) => ({
       url: `${SITE_URL}/real-estate-agencies/${slug}`,
-      lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.5,
     }));
   },
-  ["sitemap-agencies:v1"],
+  ["sitemap-agencies:v2"],
   { revalidate: 86400, tags: ["sitemap-agencies"] },
 );
 

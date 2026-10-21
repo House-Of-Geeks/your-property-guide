@@ -9,14 +9,29 @@ export const dynamic = "force-dynamic";
 
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
-import { cityEditionPath } from "@/lib/city-editions";
+import { cityEditionPath, cityEditionTitle } from "@/lib/city-editions";
 import { getIndexableCityEditions } from "@/lib/services/city-rankings-service";
+import { getCapitalCity } from "@/lib/utils/metro";
 
 // No lastModified: a per-request date makes lastmod meaningless to crawlers.
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+
+export type CityEditionSitemapLink = { url: string; title: string };
+
+export async function getCityEditionSitemapLinks(): Promise<CityEditionSitemapLink[]> {
   const editions = await getIndexableCityEditions();
-  return editions.map((e) => ({
-    url: `${SITE_URL}${cityEditionPath(e.category, e.citySlug)}`,
+  return editions.map((edition) => {
+    const city = getCapitalCity(edition.citySlug);
+    return {
+      url: `${SITE_URL}${cityEditionPath(edition.category, edition.citySlug)}`,
+      title: city ? cityEditionTitle(edition.category, city) : edition.citySlug,
+    };
+  });
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const links = await getCityEditionSitemapLinks();
+  return links.map(({ url }) => ({
+    url,
     changeFrequency: "weekly" as const,
     priority: 0.7,
   }));

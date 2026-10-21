@@ -15,7 +15,8 @@ export const getIndexableSuburbsForSitemaps = unstable_cache(
   async () => getIndexableSuburbSlugsWithDates(),
   // v2: earlier per-file caches stored differently-shaped payloads under
   // "sitemap-suburbs:v1"; a fresh key avoids reading those stale entries.
-  ["sitemap-suburbs:v3", NOT_PLACES_VERSION], // v3: without postal and institution names
+  // v4: each row also carries name, state and postcode for HTML sitemap labels.
+  ["sitemap-suburbs:v4", NOT_PLACES_VERSION], // v3: without postal and institution names
   { revalidate: 86400, tags: ["sitemap-suburbs"] },
 );
 
@@ -24,6 +25,8 @@ export const getIndexableSuburbsForSitemaps = unstable_cache(
 // sub-page sitemaps above keep their list.
 export const getIndexableSuburbProfilesForSitemaps = unstable_cache(
   async () => getIndexableSuburbProfilesWithDates(),
-  ["sitemap-suburb-profiles:v4", NOT_PLACES_VERSION], // v4: dataUpdatedAt (feed refresh date) replaces updatedAt
+  // v5: HTML labels (name, state, postcode) and dataUpdatedAt. v4 was used
+  // for each of those shapes on its own, so a fresh key avoids either payload.
+  ["sitemap-suburb-profiles:v5", NOT_PLACES_VERSION],
   { revalidate: 86400, tags: ["sitemap-suburbs"] },
 );

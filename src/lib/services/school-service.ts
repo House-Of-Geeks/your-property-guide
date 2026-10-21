@@ -35,14 +35,19 @@ export async function getSchoolBySlug(slug: string) {
   };
 }
 
-export async function getAllSchoolSlugs(): Promise<string[]> {
+export async function getAllSchoolsForSitemap(): Promise<{ slug: string; name: string }[]> {
   const schools = await db.school.findMany({
     where: { acaraId: { not: null } },
     select: { name: true, acaraId: true },
   });
   return schools
     .filter((s): s is typeof s & { acaraId: string } => s.acaraId !== null)
-    .map((s) => makeSchoolSlug(s.name, s.acaraId));
+    .map((s) => ({ slug: makeSchoolSlug(s.name, s.acaraId), name: s.name }));
+}
+
+export async function getAllSchoolSlugs(): Promise<string[]> {
+  const schools = await getAllSchoolsForSitemap();
+  return schools.map((s) => s.slug);
 }
 
 export interface SchoolResult {

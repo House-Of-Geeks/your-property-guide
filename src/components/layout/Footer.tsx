@@ -118,7 +118,7 @@ function FooterBottom() {
         <div className="flex flex-wrap gap-x-6 gap-y-2">
           <Link href="/privacy" className="text-[13px] text-ink-muted hover:text-ink transition-colors">Privacy</Link>
           <Link href="/contact" className="text-[13px] text-ink-muted hover:text-ink transition-colors">Contact</Link>
-          <Link href="/sitemap.xml" className="text-[13px] text-ink-muted hover:text-ink transition-colors">Sitemap</Link>
+          <Link href="/sitemap" className="text-[13px] text-ink-muted hover:text-ink transition-colors">Sitemap</Link>
         </div>
       </div>
       <p className="text-[12px] leading-relaxed text-ink-muted">

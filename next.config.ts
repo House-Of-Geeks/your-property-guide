@@ -38,6 +38,10 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // The HTML sitemap moved from /site-map to /sitemap. /sitemap.xml stays
+      // the XML index; these two old HTML addresses fold into the new page.
+      { source: "/site-map", destination: "/sitemap", statusCode: 301 },
+      { source: "/sitemap.html", destination: "/sitemap", statusCode: 301 },
       // Old agency URLs. While the directory is off (below) they go straight
       // to the introduction form; when it returns, point them back at
       // /real-estate-agencies and /real-estate-agencies/:slug* (permanent).

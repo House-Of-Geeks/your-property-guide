@@ -234,7 +234,7 @@ describe("lists that must not carry them", () => {
     has("src/app/api/suggest/route.ts", "slug: { notIn: NON_LOCALITY_SLUGS }");
     has("src/lib/services/suburb-rankings-service.ts", "const stateFilter = { ...(state ? { state } : {}), ...LOCALITIES_ONLY };");
     has("src/lib/services/suburb-rankings-service.ts", "if (!isNonLocalitySlug(n)) candidateNeighbourSlugs.add(n)");
-    has("src/app/(marketing)/compare/sitemap.ts", "sitemap-compare:v3");
+    has("src/app/(marketing)/compare/sitemap.ts", "sitemap-compare:v4");
     has("src/lib/services/suburb-service.ts", "if (isHiddenSlug(slug)) return null;");
     has("src/lib/services/postcode-service.ts", "where: LISTED_POSTCODES,");
     has("scripts/sync/slug-matcher.ts", "if (!stateMatchesPostcode(s)) continue;");

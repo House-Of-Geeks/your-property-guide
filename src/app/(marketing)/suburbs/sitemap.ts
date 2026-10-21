@@ -11,14 +11,31 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/constants";
 import { getIndexableSuburbProfilesForSitemaps } from "@/lib/sitemap-data";
 
+export type SuburbSitemapLink = {
+  url: string;
+  title: string;
+  lastModified?: Date;
+};
+
 // Only profiles that do not noindex themselves (src/lib/suburb-indexability.ts).
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+// Titles are the place name the profile page leads with. The HTML sitemap
+// reads this same list, so a suburb cannot appear in one and not the other.
+// lastModified is the latest feed refresh for the suburb; omitted when none
+// is recorded rather than guessed.
+export async function getSuburbSitemapLinks(): Promise<SuburbSitemapLink[]> {
   const suburbs = await getIndexableSuburbProfilesForSitemaps();
-  // lastModified is the latest feed refresh for the suburb; omitted when none
-  // is recorded rather than guessed.
-  return suburbs.map(({ slug, dataUpdatedAt }) => ({
+  return suburbs.map(({ slug, name, state, postcode, dataUpdatedAt }) => ({
     url: `${SITE_URL}/suburbs/${slug}`,
+    title: `${name}, ${state} ${postcode}`,
     ...(dataUpdatedAt ? { lastModified: dataUpdatedAt } : {}),
+  }));
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const links = await getSuburbSitemapLinks();
+  return links.map(({ url, lastModified }) => ({
+    url,
+    ...(lastModified ? { lastModified } : {}),
     changeFrequency: "weekly" as const,
     priority: 0.8,
   }));

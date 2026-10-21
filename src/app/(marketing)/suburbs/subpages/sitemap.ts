@@ -53,13 +53,24 @@ const getCachedReliablePriceSuburbs = unstable_cache(
   { revalidate: 86400, tags: ["sitemap-suburbs"] },
 );
 
-export default async function sitemap(props: {
-  id: Promise<string>;
-}): Promise<MetadataRoute.Sitemap> {
-  const type = await props.id;
+const SUBPAGE_LABEL: Record<(typeof SUBPAGE_TYPES)[number], string> = {
+  schools: "Schools",
+  "rental-market": "Rental market",
+  agents: "Agents",
+};
+
+export type SubpageSitemapLink = {
+  url: string;
+  title: string;
+  lastModified: Date;
+};
+
+// The HTML sitemap calls this with the same type ids the XML urlset uses.
+export async function getSubpageSitemapLinks(type: string): Promise<SubpageSitemapLink[]> {
   // force-dynamic means any /sitemap/{id}.xml request reaches this function,
   // so reject ids outside the known types rather than emitting junk URLs.
   if (!(SUBPAGE_TYPES as readonly string[]).includes(type)) return [];
+  const kind = SUBPAGE_LABEL[type as (typeof SUBPAGE_TYPES)[number]];
 
   let suburbs = await getIndexableSuburbsForSitemaps();
 
@@ -72,9 +83,21 @@ export default async function sitemap(props: {
     suburbs = suburbs.filter(({ slug }) => priced.has(slug));
   }
 
-  return suburbs.map(({ slug, updatedAt }) => ({
+  return suburbs.map(({ slug, name, state, postcode, updatedAt }) => ({
     url: `${SITE_URL}/suburbs/${slug}/${type}`,
+    title: `${kind} in ${name}, ${state} ${postcode}`,
     lastModified: updatedAt,
+  }));
+}
+
+export default async function sitemap(props: {
+  id: Promise<string>;
+}): Promise<MetadataRoute.Sitemap> {
+  const type = await props.id;
+  const links = await getSubpageSitemapLinks(type);
+  return links.map(({ url, lastModified }) => ({
+    url,
+    lastModified,
     changeFrequency: "monthly" as const,
     priority: 0.6,
   }));
