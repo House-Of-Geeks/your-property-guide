@@ -3,12 +3,16 @@ import type { ReactNode } from "react";
 import { HeroTitle, PhotoHero } from "@/components/premium";
 import { SuburbSearch } from "./SuburbSearch";
 import type { Suburb } from "@/types";
-import { fullLgaName } from "@/lib/utils/lga-names";
+import { hasLga, isCapitalCouncil, lgaCouncilName } from "@/lib/utils/lga";
+import { slugify } from "@/lib/utils/slug";
+import { formatUpdatedDate } from "@/lib/suburb-dates";
 
 interface SuburbHeroProps {
   suburb: Suburb;
   /** The Greater-capital the suburb sits in, for the place line and the city market link. */
   capitalCity?: { name: string; slug: string } | null;
+  /** When a feed last refreshed this suburb's data; the "Updated" line is drawn only when there is one. */
+  updatedAt?: Date | string | null;
   /** The answer: the published median (or why there is none) and the next step. */
   children: ReactNode;
   /**
@@ -29,8 +33,16 @@ interface SuburbHeroProps {
 // library street photo under the flat charcoal overlay. The photo is
 // generic and decorative (alt ""), never this suburb, so it is never
 // captioned as one.
-export function SuburbHero({ suburb, capitalCity, children, aside }: SuburbHeroProps) {
-  const regionLabel = suburb.region && suburb.region !== suburb.state ? fullLgaName(suburb.region) : null;
+const LINK = "text-ink-muted underline decoration-line-strong underline-offset-4 hover:text-ink hover:decoration-ink";
+
+export function SuburbHero({ suburb, capitalCity, updatedAt, children, aside }: SuburbHeroProps) {
+  const lga = hasLga(suburb);
+  const regionLabel = lga ? lgaCouncilName(suburb.region) : null;
+  // "Greater {capital}" only where the capital is this suburb's own council,
+  // or no LGA is known: a suburb in another council's area is not placed in
+  // the capital's.
+  const capitalLink = capitalCity && (!lga || isCapitalCouncil(suburb.region, capitalCity)) ? capitalCity : null;
+  const updated = updatedAt ? formatUpdatedDate(updatedAt) : null;
   return (
     <PhotoHero
       photo="street"
@@ -40,28 +52,29 @@ export function SuburbHero({ suburb, capitalCity, children, aside }: SuburbHeroP
       ]}
       aside={aside}
     >
-      <HeroTitle>
-        {suburb.name}, {suburb.state} {suburb.postcode}
-      </HeroTitle>
+      <HeroTitle>{`${suburb.name}, ${suburb.state} ${suburb.postcode}`}</HeroTitle>
       <p className="mt-4 text-base sm:text-lg text-ink-muted leading-relaxed">
-        {regionLabel && <span>{regionLabel}</span>}
-        {regionLabel && capitalCity && <span aria-hidden="true"> · </span>}
-        {capitalCity && (
-          <Link
-            href={`/property-market/${capitalCity.slug}`}
-            className="text-ink-muted underline decoration-line-strong underline-offset-4 hover:text-ink hover:decoration-ink"
-          >
-            Greater {capitalCity.name}
+        {regionLabel && (
+          <Link href={`/regions/${slugify(suburb.region)}`} className={LINK}>
+            {regionLabel}
           </Link>
         )}
-        {(regionLabel || capitalCity) && <span aria-hidden="true"> · </span>}
-        <Link
-          href={`/postcodes/${suburb.postcode}`}
-          className="text-ink-muted underline decoration-line-strong underline-offset-4 hover:text-ink hover:decoration-ink"
-        >
-          All suburbs in postcode {suburb.postcode}
+        {regionLabel && capitalLink && <span aria-hidden="true"> · </span>}
+        {capitalLink && (
+          <Link href={`/property-market/${capitalLink.slug}`} className={LINK}>
+            {`Greater ${capitalLink.name}`}
+          </Link>
+        )}
+        {(regionLabel || capitalLink) && <span aria-hidden="true"> · </span>}
+        <Link href={`/postcodes/${suburb.postcode}`} className={LINK}>
+          {`All suburbs in postcode ${suburb.postcode}`}
         </Link>
       </p>
+      {updated && (
+        <p className="mt-2 text-sm text-ink-subtle">
+          Updated <time dateTime={updated.iso}>{updated.label}</time>
+        </p>
+      )}
       {children}
     </PhotoHero>
   );

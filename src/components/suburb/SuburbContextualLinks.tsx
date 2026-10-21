@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { SubpageAvailability } from "@/lib/suburb-subpages";
+import { editorialLinksFor } from "@/lib/data/editorial-links";
 
 interface SuburbContextualLinksProps {
   suburb: {
@@ -14,6 +15,9 @@ interface SuburbContextualLinksProps {
   // For Rent listing columns went with the listing sub-pages on 14 Oct 2026
   // (docs/portal-consolidation-2026-10-14.md).
   availability: SubpageAvailability;
+  // Whether the page publishes a sourced house median: the "house prices"
+  // anchor (#market) is drawn only then, since the band is "Rent in X" otherwise.
+  hasPublishedMedian: boolean;
 }
 
 function nearbyName(slug: string): string {
@@ -74,6 +78,7 @@ function sellingLinksForState(state: string | undefined): { label: string; href:
 // on a second row. Tailwind reads class names from the source: spelt out.
 const LG_COLUMNS: Record<number, string> = {
   3: "lg:grid-cols-3",
+  4: "lg:grid-cols-4",
   5: "lg:grid-cols-5",
 };
 
@@ -102,16 +107,21 @@ function LinkColumn({ title, links }: { title: string; links: { label: string; h
  * seller guides for its state and the buyer tools. One tidy block, so the
  * neighbours are linked once here rather than in three places up the page.
  */
-export function SuburbContextualLinks({ suburb, availability }: SuburbContextualLinksProps) {
+export function SuburbContextualLinks({ suburb, availability, hasPublishedMedian }: SuburbContextualLinksProps) {
   const { name, slug, state, postcode, nearbySuburbs } = suburb;
-  const nearby = nearbySuburbs.slice(0, 10);
+  // Data-driven neighbours first (cut at ten), then the editorial links, which
+  // the cut does not touch. One link per href.
+  const nearbyLinks = nearbySuburbs.slice(0, 10).map((s) => ({ label: nearbyName(s), href: `/suburbs/${s}` }));
+  for (const e of editorialLinksFor(`/suburbs/${slug}`)) {
+    if (!nearbyLinks.some((l) => l.href === e.href)) nearbyLinks.push({ label: e.anchor, href: e.href });
+  }
   const compare = nearbySuburbs.slice(0, 6);
   const buyingLinks = buyingLinksForState(state);
   const sellingLinks = sellingLinksForState(state);
   const stateUpper = (state ?? "").toUpperCase();
 
   const suburbLinks = [
-    { label: `${name} house prices`, href: `/suburbs/${slug}#market` },
+    ...(hasPublishedMedian ? [{ label: `${name} house prices`, href: `/suburbs/${slug}#market` }] : []),
     ...(availability["rental-market"]
       ? [{ label: `${name} rental market`, href: `/suburbs/${slug}/rental-market` }]
       : []),
@@ -129,7 +139,8 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
     { label: "Find a local expert", href: `/find-an-expert?suburb=${slug}` },
   ];
 
-  const groups = 3 + (nearby.length > 0 ? 2 : 0);
+  // Three groups, plus the nearby suburbs, plus the comparisons: 3, 4 or 5.
+  const groups = 3 + (nearbyLinks.length > 0 ? 1 : 0) + (compare.length > 0 ? 1 : 0);
 
   return (
     <section aria-labelledby="related-heading" className="border-t border-line pt-10 sm:pt-12">
@@ -139,12 +150,7 @@ export function SuburbContextualLinks({ suburb, availability }: SuburbContextual
       <div className={`grid grid-cols-2 ${LG_COLUMNS[groups]} gap-x-6 sm:gap-x-8 gap-y-10`}>
         <LinkColumn title={name} links={suburbLinks} />
 
-        {nearby.length > 0 && (
-          <LinkColumn
-            title="Nearby suburbs"
-            links={nearby.map((s) => ({ label: nearbyName(s), href: `/suburbs/${s}` }))}
-          />
-        )}
+        {nearbyLinks.length > 0 && <LinkColumn title="Nearby suburbs" links={nearbyLinks} />}
 
         {/* Compare: drives readers into the side-by-side pages. */}
         {compare.length > 0 && (

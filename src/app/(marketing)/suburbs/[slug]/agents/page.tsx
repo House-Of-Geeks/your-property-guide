@@ -15,6 +15,7 @@ import { salesProvenanceFor } from "@/lib/suburb-snapshot";
 import { guideFunnelHref } from "@/lib/guide-funnel";
 import { STATE_NAMES, type StateCode } from "@/lib/data/commission-rates";
 import { formatPriceFull } from "@/lib/utils/format";
+import { suburbPlaceProps } from "@/lib/utils/lga";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 interface PageProps {
@@ -129,7 +130,7 @@ export default async function SuburbAgentsPage({ params }: PageProps) {
           { name: "Real Estate Agents", url: `/suburbs/${slug}/agents` },
         ]}
       />
-      <PlaceJsonLd name={sn} url={`/suburbs/${slug}`} addressLocality={sn} addressRegion={suburb.state} postalCode={suburb.postcode} />
+      <PlaceJsonLd name={sn} url={`/suburbs/${slug}`} addressLocality={sn} addressRegion={suburb.state} postalCode={suburb.postcode} {...suburbPlaceProps(suburb)} />
       <FAQPageJsonLd faqs={model.faqs} />
 
       <SuburbSubrouteHeader

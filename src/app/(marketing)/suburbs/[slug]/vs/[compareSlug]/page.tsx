@@ -17,6 +17,7 @@ import { januaryMeanMax } from "@/lib/climate";
 import { guideFunnelHref } from "@/lib/guide-funnel";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
+import { suburbPlaceProps } from "@/lib/utils/lga";
 import {
   buildCompareNarrative,
   buildCompareMetaDescription,
@@ -361,6 +362,7 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
         addressLocality={suburbA.name}
         addressRegion={suburbA.state}
         postalCode={suburbA.postcode}
+        {...suburbPlaceProps(suburbA)}
       />
       <PlaceJsonLd
         name={suburbB.name}
@@ -368,6 +370,7 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
         addressLocality={suburbB.name}
         addressRegion={suburbB.state}
         postalCode={suburbB.postcode}
+        {...suburbPlaceProps(suburbB)}
       />
 
       <SuburbSubrouteHeader

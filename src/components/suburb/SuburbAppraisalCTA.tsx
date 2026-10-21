@@ -33,7 +33,7 @@ export function SuburbAppraisalCTA({ suburbName, suburbSlug, source }: Props) {
           <p className="text-[13px] text-white/78 font-medium">Free appraisal in {suburbName}</p>
         </div>
         <h3 className="font-display text-2xl sm:text-3xl text-white leading-tight tracking-tight mb-2">
-          What&rsquo;s your home worth in {suburbName}?
+          {`What’s your home worth in ${suburbName}?`}
         </h3>
         <p className="text-sm text-white/75 leading-relaxed max-w-md">
           Ask us to introduce one participating agent who sells in your area for

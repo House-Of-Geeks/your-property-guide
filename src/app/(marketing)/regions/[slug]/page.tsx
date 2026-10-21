@@ -38,6 +38,7 @@ import { STATE_NAMES, type StateCode } from "@/lib/data/commission-rates";
 import { topSuburbsAmong } from "@/lib/data/top-suburbs";
 import { stateRankingLink } from "@/lib/ranking-notes";
 import { capitalCityFor } from "@/lib/utils/metro";
+import { editorialLinksFor } from "@/lib/data/editorial-links";
 import { formatPrice, formatPriceFull } from "@/lib/utils/format";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
 import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
@@ -128,6 +129,10 @@ export default async function RegionPage({ params }: RegionPageProps) {
   const capital = capitalSlug ? { slug: capitalSlug, name: capitalSlug.charAt(0).toUpperCase() + capitalSlug.slice(1) } : null;
 
   const suburbSlugs = suburbs.map((s) => s.slug);
+  // Editorial links to suburbs that sit just outside this region's list; one
+  // already in the list is dropped, so it is never linked twice.
+  const listedHrefs = new Set(suburbs.map((s) => `/suburbs/${s.slug}`));
+  const nearbyEditorial = editorialLinksFor(`/regions/${slug}`).filter((l) => !listedHrefs.has(l.href));
   const mostSearched = topSuburbsAmong(suburbSlugs, 24);
 
 
@@ -346,8 +351,8 @@ export default async function RegionPage({ params }: RegionPageProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {suburbs.map((suburb) => {
                 // Published figures: getRegionSuburbs has applied the suburb pages' rule.
-                const house = suburb.medianHousePrice > 0 ? formatPriceFull(suburb.medianHousePrice) : "–";
-                const unit = suburb.medianUnitPrice > 0 ? formatPriceFull(suburb.medianUnitPrice) : "–";
+                const house = suburb.medianHousePrice > 0 ? formatPriceFull(suburb.medianHousePrice) : null;
+                const unit = suburb.medianUnitPrice > 0 ? formatPriceFull(suburb.medianUnitPrice) : null;
                 return (
                   <Link
                     key={suburb.slug}
@@ -359,13 +364,31 @@ export default async function RegionPage({ params }: RegionPageProps) {
                         {suburb.name}
                         <span className="text-xs text-ink-subtle font-normal ml-1.5">{suburb.postcode}</span>
                       </span>
-                      <span className="text-sm font-semibold text-ink whitespace-nowrap">{house}</span>
+                      {house && <span className="text-sm font-semibold text-ink whitespace-nowrap">{house}</span>}
                     </div>
-                    <p className="text-xs text-ink-subtle mt-1">Units {unit}</p>
+                    {unit && <p className="text-xs text-ink-subtle mt-1">{`Units ${unit}`}</p>}
                   </Link>
                 );
               })}
             </div>
+            {nearbyEditorial.length > 0 && (
+              <div className="mt-8">
+                <h3 className="text-[15px] font-semibold text-ink mb-3">Nearby suburbs</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {nearbyEditorial.map((l) => (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      className="group rounded-xl border border-line bg-surface-raised px-4 py-3 hover:border-ink transition-colors"
+                    >
+                      <span className="text-sm font-medium text-ink group-hover:text-primary transition-colors truncate">
+                        {l.anchor}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
           </section>
         </div>
       </Band>

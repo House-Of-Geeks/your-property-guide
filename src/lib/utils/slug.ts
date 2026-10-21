@@ -34,3 +34,12 @@ export function streetSlug(
   const parts = [streetName, streetType, streetSuffix].filter(Boolean).join(" ");
   return toSlug(parts);
 }
+
+/** The region URL slug ("Lake Macquarie" -> "lake-macquarie"). Db-free so the hero can use it; region-service re-exports it. */
+export function slugify(str: string): string {
+  return str
+    .toLowerCase()
+    .replace(/\s*-\s*/g, "-")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}

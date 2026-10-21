@@ -14,30 +14,32 @@ interface ScoreConfig {
   icon:    ReactNode;
 }
 
-// One row of three scores out of 100, each with a thin bar. Ink, not
-// traffic-light colours: a score is a measure, not a warning.
-function Score({ label, score, icon }: ScoreConfig) {
+// One row of up to three scores out of 100, each with a thin bar. Ink, not
+// traffic-light colours: a score is a measure, not a warning. A score that is
+// not held is left out, and the row takes the width of the ones that are.
+function Score({ label, score, icon }: Omit<ScoreConfig, "score"> & { score: number }) {
   return (
     <div className="py-3 px-3 first:pl-0">
       <dt className="flex items-center gap-1.5 text-[13px] font-sans text-ink-muted">
         {icon}
         {label}
       </dt>
-      {score !== null ? (
-        <>
-          <dd className="mt-1 font-display text-2xl font-normal text-ink leading-none">
-            {score}<span className="text-sm font-normal text-ink-subtle">/100</span>
-          </dd>
-          <dd className="mt-2 h-1 w-full rounded-full bg-surface-warm overflow-hidden" aria-hidden="true">
-            <div className="h-full rounded-full bg-ink" style={{ width: `${score}%` }} />
-          </dd>
-        </>
-      ) : (
-        <dd className="mt-1 font-display text-2xl text-ink-subtle leading-none">–</dd>
-      )}
+      <dd className="mt-1 font-display text-2xl font-normal text-ink leading-none">
+        {score}<span className="text-sm font-normal text-ink-subtle">/100</span>
+      </dd>
+      <dd className="mt-2 h-1 w-full rounded-full bg-surface-warm overflow-hidden" aria-hidden="true">
+        <div className="h-full rounded-full bg-ink" style={{ width: `${score}%` }} />
+      </dd>
     </div>
   );
 }
+
+// Tailwind reads class names from the source: spelt out.
+const SCORE_COLUMNS: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+  3: "grid-cols-3",
+};
 
 export function SuburbWalkability({ walkScore, transitScore, bikeScore }: SuburbWalkabilityProps) {
   if (walkScore === null && transitScore === null && bikeScore === null) {
@@ -48,12 +50,19 @@ export function SuburbWalkability({ walkScore, transitScore, bikeScore }: Suburb
     );
   }
 
+  const scores: { label: string; score: number | null; icon: ReactNode }[] = [
+    { label: "Walk", score: walkScore, icon: <Footprints className="w-4 h-4" aria-hidden="true" /> },
+    { label: "Transit", score: transitScore, icon: <Bus className="w-4 h-4" aria-hidden="true" /> },
+    { label: "Bike", score: bikeScore, icon: <Bike className="w-4 h-4" aria-hidden="true" /> },
+  ];
+  const held = scores.filter((c): c is { label: string; score: number; icon: ReactNode } => c.score !== null);
+
   return (
     <div>
-      <dl className="grid grid-cols-3 divide-x divide-line border-y border-line">
-        <Score label="Walk" score={walkScore} icon={<Footprints className="w-4 h-4" aria-hidden="true" />} />
-        <Score label="Transit" score={transitScore} icon={<Bus className="w-4 h-4" aria-hidden="true" />} />
-        <Score label="Bike" score={bikeScore} icon={<Bike className="w-4 h-4" aria-hidden="true" />} />
+      <dl className={`grid ${SCORE_COLUMNS[held.length]} divide-x divide-line border-y border-line`}>
+        {held.map((c) => (
+          <Score key={c.label} label={c.label} score={c.score} icon={c.icon} />
+        ))}
       </dl>
       <p className="mt-3 text-xs font-sans text-ink-subtle">
         {walkScore !== null && <>{walkLabel(walkScore)}. </>}

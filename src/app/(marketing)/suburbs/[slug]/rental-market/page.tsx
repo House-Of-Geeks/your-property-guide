@@ -29,6 +29,7 @@ import { hasReliablePrice } from "@/lib/suburb-data-quality";
 import { Faq } from "@/components/guide/Faq";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
+import { suburbPlaceProps } from "@/lib/utils/lga";
 
 interface RentalMarketPageProps {
   params: Promise<{ slug: string }>;
@@ -288,6 +289,7 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
         addressLocality={suburb.name}
         addressRegion={suburb.state}
         postalCode={suburb.postcode}
+        {...suburbPlaceProps(suburb)}
       />
       <GuideArticleJsonLd
         title={`${model?.title ?? `${suburb.name} Rental Market | Rent Prices & Trends`} | ${SITE_NAME}`}

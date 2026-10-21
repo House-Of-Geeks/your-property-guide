@@ -11,5 +11,4 @@ export { SuburbInvestment } from "./SuburbInvestment";
 export { SourceTooltip, sourceLabel } from "./SourceTooltip";
 export { SuburbAlertWidget } from "./SuburbAlertWidget";
 export { SuburbContextualLinks } from "./SuburbContextualLinks";
-export { SuburbPriceTrend } from "./SuburbPriceTrend";
 export { SuburbFAQ } from "./SuburbFAQ";
