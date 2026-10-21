@@ -67,7 +67,7 @@ export function SuburbAlertWidget({ suburbName, suburbSlug }: Props) {
         <CheckCircle className="w-10 h-10 text-primary mx-auto mb-3" />
         <h3 className="text-lg font-bold text-gray-900">You&apos;re on the list!</h3>
         <p className="text-sm text-gray-600 mt-1">
-          We&apos;ll notify you when new properties hit the market in {suburbName}.
+          {`We’ll notify you when new properties hit the market in ${suburbName}.`}
         </p>
       </div>
     );

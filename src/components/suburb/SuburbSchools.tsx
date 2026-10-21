@@ -90,7 +90,7 @@ export function SuburbSchools({ suburbName, schools }: SuburbSchoolsProps) {
   return (
     <div>
       <p className="text-[15px] font-sans text-ink-muted mb-4">
-        Schools serving {suburbName}: government first, then Catholic and independent.
+        {`Schools serving ${suburbName}: government first, then Catholic and independent.`}
       </p>
 
       {/* Tabs. At px-4 the four need 310px and a 320px screen offers 288px,

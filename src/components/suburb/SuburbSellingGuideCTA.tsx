@@ -25,7 +25,7 @@ export function SuburbSellingGuideCTA({ suburbName, suburbSlug, from = "suburb-p
       <div className="flex items-center gap-6 sm:gap-10 p-6 sm:p-10">
         <div className="flex-1 min-w-0">
           <h2 className="font-display text-2xl sm:text-3xl font-normal text-ink leading-tight tracking-[-0.02em]">
-            Selling in {suburbName}? Get the free selling guide
+            {`Selling in ${suburbName}? Get the free selling guide`}
           </h2>
           <p className="mt-3 font-sans text-[15px] sm:text-base text-ink-muted leading-relaxed max-w-xl">
             What selling costs, how agents price homes, what to ask them and a

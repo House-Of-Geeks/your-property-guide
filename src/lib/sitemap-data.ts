@@ -25,6 +25,8 @@ export const getIndexableSuburbsForSitemaps = unstable_cache(
 // sub-page sitemaps above keep their list.
 export const getIndexableSuburbProfilesForSitemaps = unstable_cache(
   async () => getIndexableSuburbProfilesWithDates(),
-  ["sitemap-suburb-profiles:v4", NOT_PLACES_VERSION], // v3: the thin rule counts a locality's own data; v4: name for labels
+  // v5: HTML labels (name, state, postcode) and dataUpdatedAt. v4 was used
+  // for each of those shapes on its own, so a fresh key avoids either payload.
+  ["sitemap-suburb-profiles:v5", NOT_PLACES_VERSION],
   { revalidate: 86400, tags: ["sitemap-suburbs"] },
 );

@@ -425,6 +425,8 @@ export function PlaceJsonLd({
   postalCode,
   latitude,
   longitude,
+  lgaName,
+  stateName,
 }: {
   name: string;
   description?: string;
@@ -433,13 +435,18 @@ export function PlaceJsonLd({
   addressLocality?: string;
   addressRegion?: string;
   postalCode?: string;
-  latitude?: number;
-  longitude?: number;
+  latitude?: number | null;
+  longitude?: number | null;
+  /** The council as a place name (lgaPlaceName): "City of Ipswich". Drawn as the suburb's containing area. */
+  lgaName?: string;
+  /** The full state name ("Queensland"); the state code when absent. */
+  stateName?: string;
 }) {
   return (
     <JsonLdScript
       data={{
         "@context": "https://schema.org",
+        "@id": `${SITE_URL}${url}#place`,
         // Combined Place + AdministrativeArea types so AI search engines
         // can classify the entity as a real suburb-level administrative
         // boundary rather than a generic Place node. Maps better to query
@@ -456,17 +463,29 @@ export function PlaceJsonLd({
           ...(postalCode && { postalCode }),
           addressCountry: "AU",
         },
-        ...(addressRegion && {
-          containedInPlace: {
-            "@type": "AdministrativeArea",
-            name: addressRegion,
-            containedInPlace: {
-              "@type": "Country",
-              name: "Australia",
-            },
-          },
-        }),
-        ...(latitude && longitude && {
+        ...(lgaName
+          ? {
+              containedInPlace: {
+                "@type": "AdministrativeArea",
+                name: lgaName,
+                containedInPlace: {
+                  "@type": "State",
+                  name: stateName ?? addressRegion,
+                  containedInPlace: { "@type": "Country", name: "Australia" },
+                },
+              },
+            }
+          : addressRegion && {
+              containedInPlace: {
+                "@type": stateName ? "State" : "AdministrativeArea",
+                name: stateName ?? addressRegion,
+                containedInPlace: {
+                  "@type": "Country",
+                  name: "Australia",
+                },
+              },
+            }),
+        ...(typeof latitude === "number" && Number.isFinite(latitude) && typeof longitude === "number" && Number.isFinite(longitude) && {
           geo: {
             "@type": "GeoCoordinates",
             latitude,
