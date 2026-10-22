@@ -20,6 +20,7 @@ import { BreadcrumbJsonLd, JsonLd, PlaceJsonLd } from "@/components/seo";
 import { BUTTON_PRIMARY, Band, SectionHeading } from "@/components/premium";
 import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { isThinProfile } from "@/lib/suburb-indexability";
+import { allowedCompareSlugs } from "@/lib/compare-pairs";
 import { getSuburbCrimeWithLgaFallback } from "@/lib/services/data-freshness";
 import { suburbTitle, suburbDescription } from "@/lib/utils/seo";
 import { formatPriceFull, formatPercentage } from "@/lib/utils/format";
@@ -755,6 +756,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
             }}
             availability={availability}
             hasPublishedMedian={priceTrusted}
+            compareSlugs={await allowedCompareSlugs(suburb.slug, suburb.nearbySuburbs.slice(0, 6))}
           />
 
           {/* Sources and how we are paid */}
