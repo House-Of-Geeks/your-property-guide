@@ -26,7 +26,7 @@ function isValidState(slug: string): slug is StateSlug {
   return (STATE_SLUGS as readonly string[]).includes(slug);
 }
 
-export const revalidate = 86400; // cache as ISR for 24h, regen on demand
+export const revalidate = 604800; // cache as ISR for 7d, regen on demand (static commentary)
 
 export function generateStaticParams() {
   // Skip prerender at build time, page body queries the Suburb table and the

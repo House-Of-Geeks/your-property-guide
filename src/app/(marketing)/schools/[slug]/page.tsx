@@ -18,7 +18,7 @@ interface SchoolPageProps {
 // the left column (legacy demo listings, buy/rent/sold filters) went with the
 // portal on 14 Oct 2026; the column now points to the suburb and the next
 // steps for buying or selling near the school.
-export const revalidate = 86400;
+export const revalidate = 604800;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 
