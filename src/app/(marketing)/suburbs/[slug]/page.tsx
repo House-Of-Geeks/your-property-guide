@@ -566,7 +566,12 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
                 <div>
                   <h2 className={H2}>Schools in {suburb.name}</h2>
                   <div className="mt-4">
-                    <SuburbSchools suburbName={suburb.name} schools={suburb.schools} />
+                    <SuburbSchools
+                      suburbName={suburb.name}
+                      schools={suburb.schools.map(({ name, type, sector, yearRange, gender, acaraId }) => ({
+                        name, type, sector, yearRange, gender, acaraId,
+                      }))}
+                    />
                   </div>
                   <div className="mt-4">
                     <Link
