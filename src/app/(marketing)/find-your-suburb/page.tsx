@@ -13,6 +13,7 @@ import {
   type LifestyleStage,
   type QuizAnswers,
 } from "@/lib/services/suburb-finder-service";
+import { isAllowedComparePair } from "@/lib/compare-pairs";
 import { formatPrice } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
 
@@ -106,6 +107,9 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
   const matches = result?.matches ?? [];
   const unmeasured = result?.unmeasured ?? null;
   const notes = result?.notes ?? [];
+  // Side-by-side pages exist for a bounded set of pairs only (lib/compare-pairs.ts).
+  const topTwoPublished =
+    matches.length >= 2 && (await isAllowedComparePair(matches[0].slug, matches[1].slug));
 
   return (
     <>
@@ -397,13 +401,28 @@ export default async function FindYourSuburbPage({ searchParams }: FindPageProps
               <p className="text-xl font-bold text-ink leading-tight mb-4">
                 {matches[0].name} <span>vs</span> {matches[1].name}
               </p>
-              <Link
-                href={`/suburbs/${matches[0].slug}/vs/${matches[1].slug}`}
-                className="inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
-              >
-                See them side by side
-                <ArrowRight className="w-4 h-4" aria-hidden="true" />
-              </Link>
+              {topTwoPublished ? (
+                <Link
+                  href={`/suburbs/${matches[0].slug}/vs/${matches[1].slug}`}
+                  className="inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+                >
+                  See them side by side
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                </Link>
+              ) : (
+                <div className="flex flex-wrap gap-x-6 gap-y-2">
+                  {matches.slice(0, 2).map((m) => (
+                    <Link
+                      key={m.slug}
+                      href={`/suburbs/${m.slug}`}
+                      className="inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+                    >
+                      See {m.name}
+                      <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </Band>

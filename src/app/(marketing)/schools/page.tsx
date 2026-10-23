@@ -10,7 +10,7 @@ import { SchoolsResults } from "./Results";
 // ISR, page shell caches as static. searchParams reads are isolated to
 // the SchoolsResults Suspense child below so the parent stays in the CDN
 // cache. Filter-aware metadata was previously dynamic; now static for cache.
-export const revalidate = 86400;
+export const revalidate = 604800;
 
 export const metadata: Metadata = {
   title: "Find a School | Browse 9,600+ Australian Schools",

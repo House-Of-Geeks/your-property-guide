@@ -14,7 +14,7 @@ import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero } from "@/componen
 
 // ISR, DB-querying services have build-phase guards, so we cache for 24h
 // instead of running a function on every visit.
-export const revalidate = 86400;
+export const revalidate = 604800;
 
 export const metadata: Metadata = {
   title: "Property Price Guide | Australian Suburb Median Prices",

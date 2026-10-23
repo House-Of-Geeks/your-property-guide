@@ -31,7 +31,7 @@ import {
   indexableCityEditionsForLinks,
 } from "@/lib/services/city-rankings-service";
 
-export const revalidate = 86400;
+export const revalidate = 604800;
 
 const VALID_CATEGORIES: RankingCategory[] = [
   "for-families",
