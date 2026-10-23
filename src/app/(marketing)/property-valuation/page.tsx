@@ -111,7 +111,7 @@ const WEBPAGE_JSON_LD = {
   datePublished: PUBLISHED,
   dateModified: PUBLISHED,
   isPartOf: { "@type": "WebSite", url: SITE_URL, name: SITE_NAME },
-  publisher: { "@type": "Organization", "@id": `${SITE_URL}#organization`, name: SITE_NAME, url: SITE_URL },
+  publisher: { "@id": `${SITE_URL}/#organization` },
   about: [
     { "@type": "Thing", name: "Property valuation" },
     { "@type": "Thing", name: "Property appraisal" },

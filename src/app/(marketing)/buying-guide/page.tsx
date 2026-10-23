@@ -102,11 +102,7 @@ export default function BuyingGuidePage() {
           isAccessibleForFree: true,
           inLanguage: "en-AU",
           datePublished: "2026-06-11",
-          publisher: {
-            "@type": "Organization",
-            name: "Your Property Guide",
-            url: SITE_URL,
-          },
+          publisher: { "@id": `${SITE_URL}/#organization` },
           about: [
             "Buying property in Australia",
             "First home buyer schemes",

@@ -49,15 +49,16 @@ export function OrganizationJsonLd() {
           // sites. `knowsAbout` enumerates the property topics we cover so
           // retrieval-grade systems can match queries to our expertise.
           "@type": ["Organization", "NewsMediaOrganization"],
-          "@id": `${SITE_URL}#organization`,
+          "@id": `${SITE_URL}/#organization`,
           name: SITE_NAME,
           alternateName: "YPG",
           url: SITE_URL,
           logo: {
             "@type": "ImageObject",
-            url: `${SITE_URL}/og-image.jpg`,
-            width: 1200,
-            height: 630,
+            "@id": `${SITE_URL}/#logo`,
+            url: `${SITE_URL}/images/brand/icon-512.png`,
+            width: 512,
+            height: 512,
           },
           image: `${SITE_URL}/og-image.jpg`,
           description: SITE_DESCRIPTION_LONG,
@@ -77,7 +78,7 @@ export function OrganizationJsonLd() {
             name: FOUNDER.name,
             jobTitle: "Founder and editor",
             description: FOUNDER.facts.join(" "),
-            worksFor: { "@id": `${SITE_URL}#organization` },
+            worksFor: { "@id": `${SITE_URL}/#organization` },
             url: `${SITE_URL}/about`,
             sameAs: [
               "https://www.linkedin.com/in/andymcmaster",
@@ -123,13 +124,13 @@ export function OrganizationJsonLd() {
         data={{
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "@id": `${SITE_URL}#website`,
+          "@id": `${SITE_URL}/#website`,
           name: SITE_NAME,
           alternateName: "YPG",
           url: SITE_URL,
           description: SITE_DESCRIPTION_LONG,
           inLanguage: "en-AU",
-          publisher: { "@id": `${SITE_URL}#organization` },
+          publisher: { "@id": `${SITE_URL}/#organization` },
           // Internal site search is suburb-led on YPG, not listing-led —
           // points retrieval engines at the suburb directory rather than a
           // listings search box.
@@ -340,16 +341,7 @@ export function ArticleJsonLd({ post }: { post: BlogPost }) {
         author: personNode(post.author.name),
         // Andy edits every article and signs it off (BRAND.md §7).
         editor: { "@id": `${SITE_URL}/about#${FOUNDER.id}` },
-        publisher: {
-          "@type": "Organization",
-          "@id": `${SITE_URL}#organization`,
-          name: SITE_NAME,
-          url: SITE_URL,
-          logo: {
-            "@type": "ImageObject",
-            url: `${SITE_URL}/og-image.jpg`,
-          },
-        },
+        publisher: { "@id": `${SITE_URL}/#organization` },
         mainEntityOfPage: {
           "@type": "WebPage",
           "@id": `${SITE_URL}/guides/${post.slug}`,
@@ -571,11 +563,7 @@ export function WebApplicationJsonLd({
           price: "0",
           priceCurrency: "AUD",
         },
-        publisher: {
-          "@type": "Organization",
-          name: SITE_NAME,
-          url: SITE_URL,
-        },
+        publisher: { "@id": `${SITE_URL}/#organization` },
       }}
     />
   );
@@ -648,11 +636,7 @@ export function CollectionPageJsonLd({
             })),
           },
         }),
-        publisher: {
-          "@type": "Organization",
-          name: SITE_NAME,
-          url: SITE_URL,
-        },
+        publisher: { "@id": `${SITE_URL}/#organization` },
       }}
     />
   );
@@ -680,7 +664,7 @@ export function GuideArticleJsonLd({
   // author) is the Organization, never a made-up Person.
   const authorEntity = author && findPerson(author.name)
     ? personNode(author.name, author.role)
-    : { "@id": `${SITE_URL}#organization`, "@type": "Organization" as const, name: SITE_NAME, url: SITE_URL };
+    : { "@id": `${SITE_URL}/#organization`, "@type": "Organization" as const, name: SITE_NAME, url: SITE_URL };
   const reviewer = reviewedBy && findPerson(reviewedBy.name);
 
   return (
@@ -701,15 +685,7 @@ export function GuideArticleJsonLd({
         }),
         // Andy edits and signs off every guide (BRAND.md §7).
         editor: { "@id": `${SITE_URL}/about#${FOUNDER.id}` },
-        publisher: {
-          "@type": "Organization",
-          name: SITE_NAME,
-          url: SITE_URL,
-          logo: {
-            "@type": "ImageObject",
-            url: `${SITE_URL}/og-image.jpg`,
-          },
-        },
+        publisher: { "@id": `${SITE_URL}/#organization` },
         mainEntityOfPage: {
           "@type": "WebPage",
           "@id": `${SITE_URL}${url}`,
@@ -761,7 +737,7 @@ export function PersonJsonLd({
         ...(bio && { description: bio }),
         ...(imageUrl && { image: imageUrl }),
         url: `${SITE_URL}/about#${id}`,
-        worksFor: { "@id": `${SITE_URL}#organization` },
+        worksFor: { "@id": `${SITE_URL}/#organization` },
         ...(sameAs && sameAs.length > 0 && { sameAs }),
       }}
     />

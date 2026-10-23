@@ -106,11 +106,7 @@ export default function SellingGuidePage() {
           isAccessibleForFree: true,
           inLanguage: "en-AU",
           datePublished: "2026-06-10",
-          publisher: {
-            "@type": "Organization",
-            name: "Your Property Guide",
-            url: SITE_URL,
-          },
+          publisher: { "@id": `${SITE_URL}/#organization` },
           about: [
             "Selling property in Australia",
             "Real estate agent fees and commission",
