@@ -114,10 +114,7 @@ export function OrganizationJsonLd() {
             areaServed: "AU",
             availableLanguage: "English",
           },
-          sameAs: [
-            "https://www.facebook.com/yourpropertyguide",
-            "https://www.instagram.com/yourpropertyguide",
-          ],
+          sameAs: ["https://www.facebook.com/yourpropertyguide"],
         }}
       />
       <JsonLdScript
