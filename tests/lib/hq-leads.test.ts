@@ -11,7 +11,7 @@ import {
   deferLeadToHq,
   hqAttribution,
   hqNotes,
-  hqSource,
+  isAgentEnquiry,
   hqSourceUrl,
   isTestName,
   sendLeadToHq,
@@ -22,10 +22,10 @@ const lead: HqLead = {
   name: "Sarah Lee",
   email: "sarah@example.com",
   phone: "0412345678",
-  source: "appraisal_request",
-  brief: "Appraisal request from Sarah Lee",
+  source: "agent_enquiry",
+  brief: "Agent enquiry from Sarah Lee",
   notes: "Suburb: Burpengary",
-  sourceUrl: "https://www.yourpropertyguide.com.au/appraisal",
+  sourceUrl: "https://www.yourpropertyguide.com.au/real-estate-leads",
 };
 
 describe("checkLeadSpam", () => {
@@ -77,9 +77,11 @@ describe("isTestName", () => {
 });
 
 describe("payload helpers", () => {
-  it("snake_cases a lead type", () => {
-    expect(hqSource("appraisal-request")).toBe("appraisal_request");
-    expect(hqSource("introduction-request")).toBe("introduction_request");
+  it("treats only a for-agents general contact as an agent enquiry", () => {
+    expect(isAgentEnquiry({ type: "general-contact", source: "for-agents" })).toBe(true);
+    expect(isAgentEnquiry({ type: "general-contact", source: "website" })).toBe(false);
+    expect(isAgentEnquiry({ type: "general-contact" })).toBe(false);
+    expect(isAgentEnquiry({ type: "appraisal-request", source: "for-agents" })).toBe(false);
   });
 
   it("builds readable notes without blank rows", () => {
@@ -93,7 +95,7 @@ describe("payload helpers", () => {
 
   it("maps cookie attribution, preferring the last touch", () => {
     const out = hqAttribution({
-      sourcePage: "/appraisal",
+      sourcePage: "/real-estate-leads",
       gclid: "abc",
       state: {
         first: { at: "2026-10-01T00:00:00Z", referrer: "https://google.com/", landing_page: "/suburbs/x", utm_source: "newsletter" },
@@ -152,7 +154,7 @@ describe("sendLeadToHq", () => {
       name: "Sarah Lee",
       email: "sarah@example.com",
       phone: "0412345678",
-      source: "appraisal_request",
+      source: "agent_enquiry",
       nextAction: "Reply to the enquiry",
     });
     expect(body.test).toBeUndefined();

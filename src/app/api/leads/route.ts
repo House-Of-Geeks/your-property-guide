@@ -29,7 +29,7 @@ import { AGREEMENT_CHECK } from "@/lib/service-model";
 import { addressFromSuburbSlug } from "@/lib/sent247";
 import { SEQUENCES, dueAt, sequenceFor } from "@/lib/email-sequences";
 import { guidanceSeriesEnabled } from "@/lib/flags";
-import { checkLeadSpam, deferLeadToHq, hqAttribution, hqNotes, hqSource, hqSourceUrl } from "@/lib/hq-leads";
+import { checkLeadSpam, deferLeadToHq, hqAttribution, hqNotes, hqSourceUrl, isAgentEnquiry } from "@/lib/hq-leads";
 import { randomBytes } from "node:crypto";
 import {
   describeSent247,
@@ -358,29 +358,28 @@ export async function POST(request: Request) {
 
     const typeLabel = labelFor(lead.type, lead.guideType);
 
-    // House of Geeks HQ gets the lead as a deal, after the response and
+    // Agent enquiries (AgentEnquiryForm on /real-estate-leads) are the only
+    // leads House of Geeks HQ takes, as a deal, after the response and
     // best-effort (src/lib/hq-leads.ts). Never affects the email below.
-    const hqName = [lead.firstName, lead.lastName].filter(Boolean).join(" ");
-    deferLeadToHq({
-      name: hqName,
-      email: lead.email,
-      phone: storedPhone,
-      source: hqSource(lead.type),
-      brief: `${typeLabel} from ${hqName}${lead.suburb ? ` (${lead.suburb})` : ""}`,
-      notes: hqNotes([
-        ["Form", typeLabel],
-        ["Suburb", lead.suburb],
-        ["Property address", lead.appraisalAddress ?? lead.address],
-        ["Property type", lead.propertyType],
-        ["Bedrooms", lead.bedrooms],
-        ["Routed to", agentName],
-        ["Page source", lead.source],
-        ["Message", persistedMessage],
-      ]),
-      sourceUrl: hqSourceUrl(attribution.sourcePage),
-      nextAction: guideDownload ? "Review the guide download" : "Reply to the enquiry",
-      attribution: hqAttribution(attribution),
-    });
+    if (isAgentEnquiry(lead)) {
+      const hqName = [lead.firstName, lead.lastName].filter(Boolean).join(" ");
+      deferLeadToHq({
+        name: hqName,
+        email: lead.email,
+        phone: storedPhone,
+        source: "agent_enquiry",
+        brief: `Agent enquiry from ${hqName}`,
+        notes: hqNotes([
+          ["Email", lead.email],
+          ["Phone", storedPhone],
+          ["Message", persistedMessage],
+        ]),
+        sourceUrl: hqSourceUrl(attribution.sourcePage),
+        nextAction: "Reply to the enquiry",
+        attribution: hqAttribution(attribution),
+      });
+    }
+
     // Score prefix on guide leads so a HOT vendor is visible from the
     // inbox list without opening the email. Speed-to-lead is the whole
     // game: an appraisal-ready vendor contacted inside 24h converts at

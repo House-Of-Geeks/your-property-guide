@@ -5,7 +5,7 @@ import { SITE_URL } from "@/lib/constants/seo";
 
 // House of Geeks HQ lead hand-off, plus the spam check every lead form shares.
 //
-// Each accepted lead form submission becomes a deal in HQ (POST
+// Each accepted agent enquiry (the for-agents form) becomes a deal in HQ (POST
 // {HQ_URL}/api/inbound/leads). The call is server-side only, best effort and
 // never throws: the lead is already saved and the team email already goes
 // out whatever HQ does. The spam check runs first, so dropped submissions
@@ -82,6 +82,11 @@ export function checkLeadSpam(input: SpamInput): SpamVerdict {
   return { spam: false };
 }
 
+/** The one lead HQ takes: the for-agents enquiry form, which posts a general-contact lead. */
+export function isAgentEnquiry(lead: { type: string; source?: string | null }): boolean {
+  return lead.type === "general-contact" && lead.source === "for-agents";
+}
+
 /** Obvious test names ("test", "Test User", "TEST Dev Bot"). They still go through, flagged as tests. */
 export function isTestName(name: string | null | undefined): boolean {
   return /\b(?:test|testing|tester)\b/i.test(name ?? "");
@@ -108,7 +113,7 @@ export interface HqLead {
   name: string;
   email?: string | null;
   phone?: string | null;
-  /** Short snake_case label of which form, e.g. "appraisal_request". */
+  /** Short snake_case label of which form, e.g. "agent_enquiry". */
   source: string;
   /** One line. */
   brief: string;
@@ -117,11 +122,6 @@ export interface HqLead {
   sourceUrl?: string | null;
   nextAction?: string;
   attribution?: HqAttribution;
-}
-
-/** Snake_case a lead type for HQ ("appraisal-request" becomes "appraisal_request"). */
-export function hqSource(type: string): string {
-  return type.trim().toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "");
 }
 
 /** Readable "Label: value" lines, skipping blanks. */
