@@ -283,7 +283,7 @@ export default async function SuburbDetailPage({ params }: SuburbDetailPageProps
           url: canonicalUrl,
           name: suburbTitle(suburb),
           inLanguage: "en-AU",
-          isPartOf: { "@id": `${SITE_URL}#website` },
+          isPartOf: { "@id": `${SITE_URL}/#website` },
           about: { "@id": `${canonicalUrl}#place` },
           ...(updated && { dateModified: updated.iso }),
         }}

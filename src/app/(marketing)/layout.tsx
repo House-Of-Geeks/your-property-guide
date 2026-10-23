@@ -15,7 +15,7 @@ export default function MarketingLayout({
     <>
       {/* Organization + WebSite nodes on every marketing page. Inner-page
           JSON-LD (AgentJsonLd.worksFor, ArticleJsonLd.publisher) references
-          `${SITE_URL}#organization` by @id, and Google only resolves @id
+          `${SITE_URL}/#organization` by @id, and Google only resolves @id
           within the same page — so the node must ship site-wide, not just
           on / and /about. */}
       <OrganizationJsonLd />
