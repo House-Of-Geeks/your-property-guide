@@ -5,7 +5,6 @@ describe("showFooterFollowOnGoogle", () => {
   it.each([
     "/guides",
     "/guides/",
-    "/guides/stamp-duty-nsw",
     "/guides/category/news",
     "/about",
     "/privacy",
@@ -36,6 +35,9 @@ describe("showFooterFollowOnGoogle", () => {
     "/real-estate-leads",
     "/real-estate-leads/thanks",
     "/guidesx",
+    "/guides/stamp-duty-nsw",
+    "/guides/adelaide-property-market-2026",
+    "/guides/stamp-duty-nsw/",
     "/about-us",
     "/privacy-policy",
   ])("is off for %s", (path) => {
