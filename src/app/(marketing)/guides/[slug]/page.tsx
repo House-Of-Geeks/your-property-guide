@@ -7,6 +7,7 @@ import { ArticleJsonLd, BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo
 import { BlogShareButtons } from "@/components/blog/BlogShareButtons";
 import { BlogCover } from "@/components/blog/BlogCover";
 import { blogReadNext } from "@/components/blog/BlogGuideRail";
+import { FollowOnGoogle } from "@/components/FollowOnGoogle";
 import { AuthorBylineCard, GuideStartInline } from "@/components/guide";
 import { GuideByline } from "@/components/guide/GuideByline";
 import { GuideTOC, type GuideTOCEntry } from "@/components/guide/GuideTOC";
@@ -230,7 +231,10 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             <RelatedGuides items={keepReading} />
 
             <div className="mt-10 flex flex-wrap items-center justify-between gap-3">
-              <BlogShareButtons title={post.title} url={postUrl} />
+              <div className="flex flex-wrap items-center gap-3">
+                <BlogShareButtons title={post.title} url={postUrl} />
+                <FollowOnGoogle variant="block" />
+              </div>
               <Link
                 href="/guides"
                 className="text-sm font-medium text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
