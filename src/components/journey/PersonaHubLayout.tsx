@@ -20,7 +20,9 @@ import {
   HeroLead,
   HeroTitle,
   LinkRows,
+  PHOTOS,
   PhotoHero,
+  PhotoPanel,
   SectionHeading,
   type PhotoKey,
 } from "@/components/premium";
@@ -92,13 +94,23 @@ const PERSONA_EDITOR_NOTE: Record<PersonaId, React.ReactNode> = {
 
 // One documentary photo per hub, behind the hero (BRAND.md §6 and §11:
 // generated to the brief, generic people, never a named place or person;
-// decorative, so no alt text).
+// decorative unless PHOTOS gives alt text, as the brand photographs do).
 const PERSONA_PHOTO: Record<PersonaId, PhotoKey> = {
   "first-home": "firstHome",
-  "selling": "selling",
+  // The cottage (20 Oct 2026): illustrative brand imagery, never a real sale.
+  "selling": "cottage",
   "upgrading": "verandah",
   "investing": "flats",
   "renovating": "renovating",
+};
+
+// A second photograph beside the briefing, where one fits the hub (20 Oct
+// 2026): the kitchen for first home buyers, the cottage for people selling
+// one home to buy the next. Never the hub's own hero photo, and never on the
+// renovating hub, where a finished home could read as a completed renovation.
+const BRIEFING_PHOTO: Partial<Record<PersonaId, "kitchenLight" | "cottage">> = {
+  "first-home": "kitchenLight",
+  upgrading: "cottage",
 };
 
 // Hub content headings mark an emphasis token with asterisks (v3 italics);
@@ -141,6 +153,7 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
   const [answer, ...briefing] = content?.deepDive.paragraphs ?? [persona.hubLede];
   const guideHref = guideFunnelHref(isBuyingHub ? "buying" : "selling", { from: persona.hubPath.slice(1) });
   const calculators = (content?.calculators ?? []).filter((c) => !HERO_ACTION_HREFS.has(c.href));
+  const briefingPhoto = BRIEFING_PHOTO[personaId];
 
   // The bands between the hero and the charcoal funnel band alternate white
   // and grey over whichever of them this hub has, so two of a kind never
@@ -207,17 +220,32 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
           understand (the ranking body of the hub), opening with the answer. */}
       {content && (
         <Band tone={tone("briefing")}>
-          <div className="max-w-3xl">
-            <p className="text-sm font-semibold text-ink-muted mb-4">{content.deepDive.eyebrow}</p>
-            <SectionHeading title={plainHeading(content.deepDive.heading)} />
-            <div className="mt-10 space-y-5">
-              {[answer, ...briefing].map((para, i) => (
-                <p key={i} className="text-base sm:text-lg text-ink leading-[1.7]">
-                  {para}
-                </p>
-              ))}
+          <div className={briefingPhoto ? "grid gap-10 lg:grid-cols-12 lg:gap-14" : ""}>
+            <div className={briefingPhoto ? "lg:col-span-7" : "max-w-3xl"}>
+              <p className="text-sm font-semibold text-ink-muted mb-4">{content.deepDive.eyebrow}</p>
+              <SectionHeading title={plainHeading(content.deepDive.heading)} />
+              <div className="mt-10 space-y-5">
+                {[answer, ...briefing].map((para, i) => (
+                  <p key={i} className="text-base sm:text-lg text-ink leading-[1.7]">
+                    {para}
+                  </p>
+                ))}
+              </div>
+              <EditorNote>{PERSONA_EDITOR_NOTE[personaId]}</EditorNote>
             </div>
-            <EditorNote>{PERSONA_EDITOR_NOTE[personaId]}</EditorNote>
+            {/* 3:2 (the whole photograph) under the text on phones and
+                tablets; square beside it from lg, held in view while the
+                briefing scrolls. Lazy: it's below the fold. */}
+            {briefingPhoto && (
+              <div className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start">
+                <PhotoPanel
+                  photo={briefingPhoto}
+                  alt={PHOTOS[briefingPhoto].alt}
+                  className="aspect-[3/2] lg:aspect-square"
+                  sizes="(min-width: 1280px) 480px, (min-width: 1024px) 38vw, calc(100vw - 32px)"
+                />
+              </div>
+            )}
           </div>
         </Band>
       )}
@@ -277,6 +305,14 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
                 ? "Ten chapters for buyers: schemes, finance, inspections and the offer, in order. Free. Tell us where to send it; nothing else is sent unless you ask."
                 : "Ten chapters on selling well, in order: costs, preparation, choosing an agent, marketing and the contract. Free. Tell us where to send it; nothing else is sent unless you ask."}
             </p>
+            {/* A quiet detail beside the form, desktop only (the form comes
+                first on smaller screens). Never a hub's hero photo. */}
+            <PhotoPanel
+              photo="windowDetail"
+              alt={PHOTOS.windowDetail.alt}
+              className="mt-10 hidden aspect-[3/2] max-w-md lg:block"
+              sizes="(min-width: 1280px) 448px, 36vw"
+            />
           </div>
           <div className="lg:col-span-7">
             <Suspense fallback={null}>

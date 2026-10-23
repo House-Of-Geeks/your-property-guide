@@ -38,6 +38,7 @@ vi.mock("@/lib/email", () => ({
   transporter: {},
   DEFAULT_FROM: "test-from",
 }));
+vi.mock("@/lib/mail/send", () => import("../helpers/mail-send-passthrough"));
 
 import { POST } from "@/app/api/leads/route";
 import { AGENT_CALL_CONSENT, BUYING_EMAIL_CONSENT_PLAIN, SELLING_EMAIL_CONSENT, SELLING_EMAIL_CONSENT_PLAIN } from "@/lib/guide-consent";
@@ -123,18 +124,26 @@ describe("POST /api/leads", () => {
     expect(res.headers.get("Retry-After")).toBeTruthy();
   });
 
-  it("when notify email fails, lead still saves and fallback alert is sent", async () => {
-    sendMailMock.mockImplementationOnce(async () => { throw new Error("SendGrid down"); });
+  it("when SendGrid refuses the notify email, lead still saves and the fallback alert is sent", async () => {
+    sendMailMock.mockImplementationOnce(async () => { throw Object.assign(new Error("550 refused"), { responseCode: 550 }); });
     sendMailMock.mockResolvedValueOnce(undefined); // fallback alert succeeds
     sendMailMock.mockResolvedValueOnce(undefined); // user confirmation succeeds
 
     const res = await POST(makeRequest(baseLead));
     expect(res.status).toBe(200);
     expect(dbLeadCreate).toHaveBeenCalledTimes(1);
-    // notify (failed) + fallback alert + user confirmation = 3 attempts
+    // notify (refused) + fallback alert + user confirmation = 3 attempts
     expect(sendMailMock).toHaveBeenCalledTimes(3);
     const subjects = sendMailMock.mock.calls.map((c) => c[0].subject);
     expect(subjects.some((s: string) => s.startsWith("ALERT: Lead notification failed"))).toBe(true);
+  });
+
+  it("when SendGrid is briefly unavailable, the notify email stays queued for a retry (no alert)", async () => {
+    sendMailMock.mockImplementationOnce(async () => { throw Object.assign(new Error("421 try later"), { responseCode: 421 }); });
+    const res = await POST(makeRequest(baseLead));
+    expect(res.status).toBe(200);
+    const subjects = sendMailMock.mock.calls.map((c) => c[0].subject);
+    expect(subjects.some((s: string) => s.startsWith("ALERT"))).toBe(false);
   });
 
   it("guide-download lead is scored, subject-prefixed and serialised into message", async () => {
@@ -292,8 +301,12 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
     });
   });
 
+  // Since 21 Oct 2026 every guide is emailed by us through SendGrid. Sent 24/7
+  // no longer delivers guides (its lead-magnet code is removed), so
+  // LEAD_MAGNET_TO_SENT247 changes nothing and one request can't produce two
+  // deliveries.
   describe("a download (no phone)", () => {
-    it("is saved, YPG emails the guide while Sent 24/7 is off, and the team hears after the response", async () => {
+    it("is saved, we email the guide through the queue, and the team hears after the response", async () => {
       const res = await POST(makeRequest(seller));
       expect(res.status).toBe(200);
       expect((await res.json()).emailOnItsWay).toBe(true);
@@ -307,67 +320,36 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
       expect(adminMail().subject).toBe("[HOT] Selling Guide Download, Sarah Lee (burpengary-qld-4505)");
       expect(adminMail().cc).toBe("leads-cc@example.com");
       expect(adminMail().html).toContain("Guide email");
-      expect(adminMail().html).toContain("Sent by YPG");
+      expect(adminMail().html).toContain("Accepted by SendGrid");
     });
 
-    it("is posted to Sent 24/7 as a lead magnet when switched on, and YPG sends nothing", async () => {
+    it("never goes to Sent 24/7, even with the old lead-magnet switch on", async () => {
       configure();
       s247(201, { success: true, signup_id: "sg_1", status: "new", emails: "started" });
       const res = await POST(makeRequest(seller));
       expect((await res.json()).emailOnItsWay).toBe(true);
-      expect(sendMailMock).not.toHaveBeenCalled();
-      const [url, init] = fetchMock.mock.calls[0];
-      expect(url).toBe("https://api.sent247.com/api/v1/lead-magnets");
-      expect(init.headers).toMatchObject({ Authorization: "Bearer sk_live_test" });
-      const body = JSON.parse(init.body);
-      expect(body.campaign_id).toBe("camp-vendor");
-      expect(body.magnet).toEqual({
-        slug: "selling-guide",
-        name: "Selling a home: a practical guide to selling property in Australia",
-        download_url: "https://www.yourpropertyguide.com.au/downloads/your-property-guide-selling-a-home-australia.pdf",
-      });
-      expect(body.lead).toMatchObject({ email: "Sarah@Example.com", first_name: "Sarah", postcode: "4505", state: "QLD" });
-      expect("phone" in body.lead).toBe(false);
-      // The series is off by default, so the statement mentions no box (20 Oct 2026).
-      expect(body.consent).toMatchObject({ email_consent: true, consent_text: SELLING_EMAIL_CONSENT_PLAIN });
-      expect(body.custom_fields).toMatchObject({ reference_id: "lead_test_123", lead_score: "HOT" });
+      await runDeferred();
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(mails().filter((m) => m.to === "Sarah@Example.com")).toHaveLength(1);
     });
 
-    it("uses the buying-guide magnet and consent for buyers", async () => {
-      configure();
-      s247(201, { success: true, emails: "started" });
+    it("uses the buying guide and its consent for buyers", async () => {
       await POST(makeRequest({ ...seller, guideType: "buying", agentStatus: undefined, buyerPersona: "first-home" }));
-      const body = JSON.parse(fetchMock.mock.calls[0][1].body);
-      expect(body.magnet.slug).toBe("buying-guide");
-      expect(body.consent.consent_text).toBe(BUYING_EMAIL_CONSENT_PLAIN);
+      expect(dbLeadCreate.mock.calls[0][0].data.consentText).toBe(BUYING_EMAIL_CONSENT_PLAIN);
+      expect(readerMail().subject).toBe("Your copy of Buying a home, and where to start");
     });
 
-    it("falls back to YPG's guide email when Sent 24/7 has no series to start", async () => {
-      configure();
-      s247(201, { success: true, status: "new", emails: "not_started", emails_reason: "no_active_series" });
-      const res = await POST(makeRequest(seller));
-      expect((await res.json()).emailOnItsWay).toBe(true);
-      expect(readerMail()).toBeTruthy();
-    });
-
-    it("emails nobody who is on Sent 24/7's suppression list, or who already has the series", async () => {
-      configure();
-      s247(201, { success: true, status: "new", emails: "not_started", emails_reason: "suppressed" });
-      expect((await (await POST(makeRequest(seller))).json()).emailOnItsWay).toBe(false);
-      s247(200, { success: true, status: "repeat", emails: "already_started" });
-      expect((await (await POST(makeRequest(seller))).json()).emailOnItsWay).toBe(false);
-      expect(sendMailMock).not.toHaveBeenCalled();
-    });
-
-    it("on a Sent 24/7 outage schedules a background retry and sends no second guide email", async () => {
-      configure();
-      s247(503, { error: { code: "UNAVAILABLE" } });
+    it("says the email isn't on its way when SendGrid refuses it", async () => {
+      sendMailMock.mockImplementationOnce(async () => { throw Object.assign(new Error("550 no such user"), { responseCode: 550 }); });
       const res = await POST(makeRequest(seller));
       expect(res.status).toBe(200);
       expect((await res.json()).emailOnItsWay).toBe(false);
-      // The lead magnet retry, then the team email.
-      expect(deferred).toHaveLength(2);
-      expect(sendMailMock).not.toHaveBeenCalled();
+    });
+
+    it("keeps it queued (and on its way) when SendGrid is briefly unavailable", async () => {
+      sendMailMock.mockImplementationOnce(async () => { throw Object.assign(new Error("421 try later"), { responseCode: 421 }); });
+      const res = await POST(makeRequest(seller));
+      expect((await res.json()).emailOnItsWay).toBe(true);
     });
   });
 
@@ -377,19 +359,13 @@ describe("guide funnels: download, call request and Sent 24/7", () => {
   describe("a download with a mobile (no call request)", () => {
     const download = { ...seller, phone: "+61491570156" };
 
-    it("goes to Sent 24/7 only as a lead magnet, without the phone, and never to the vendor campaign", async () => {
+    it("never goes to Sent 24/7 (neither as a guide nor to the vendor campaign)", async () => {
       configure();
       s247(201, { success: true, signup_id: "sg_2", status: "new", emails: "started" });
       const res = await POST(makeRequest(download));
       expect(res.status).toBe(200);
-      expect(fetchMock).toHaveBeenCalledTimes(1);
-      const [url, init] = fetchMock.mock.calls[0];
-      expect(url).toBe("https://api.sent247.com/api/v1/lead-magnets");
-      const body = JSON.parse(init.body);
-      expect(JSON.stringify(body)).not.toContain("491570156");
-      expect(body.consent.consent_text).toBe(SELLING_EMAIL_CONSENT_PLAIN);
       await runDeferred();
-      expect(fetchMock.mock.calls.map(([u]) => u)).not.toContain("https://api.sent247.com/api/v1/leads");
+      expect(fetchMock).not.toHaveBeenCalled();
     });
 
     it("stores the mobile and emails the team a callable lead with its score", async () => {

@@ -16,6 +16,13 @@ import {
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { STATE_RATES } from "@/lib/data/commission-rates";
+
+// The typical range from the table the calculators and fees guide use
+// (commission-rates.ts, our compiled market figures, September 2026), in
+// place of a typed "1.5 to 3%" (search and conversion baseline, 20 Oct 2026).
+const RATE_LOW = Math.min(...Object.values(STATE_RATES).map((r) => r.low));
+const RATE_HIGH = Math.max(...Object.values(STATE_RATES).map((r) => r.high));
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "23 Questions to Ask a Real Estate Agent Before You List (2026)",
@@ -23,7 +30,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "The questions to ask a real estate agent when selling: comparable sales, sale method, commission and marketing costs, the agency agreement, buyer qualification and what happens if it doesn't sell — with what a good answer sounds like versus an evasive one.",
   slug: "questions-to-ask-a-real-estate-agent",
   publishedAt: "2026-07-03",
-  updatedAt: "2026-07-03",
+  updatedAt: "2026-10-20",
   readingTimeMinutes: 11,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -53,7 +60,7 @@ export const metadata: Metadata = {
 const TLDR = [
   "Never sign an agency agreement at the first meeting. Take the agreement home, compare at least three agents, and put every answer you're given in writing.",
   "The three questions that expose a weak agent fastest: which comparable sales support your price estimate, what's your personal (not office-wide) track record in this suburb, and what's the plan if the property doesn't sell.",
-  "Commission is negotiable everywhere in Australia. No state sets or caps the rate, so 'that's our standard rate' is a sales line, not a fact. Typical range is 1.5 to 3% plus GST.",
+  `Commission is negotiable everywhere in Australia. No state sets or caps the rate, so 'that's our standard rate' is a sales line, not a fact. Our compiled state figures put typical rates between ${RATE_LOW}% and ${RATE_HIGH}%, usually plus GST.`,
   "Ask who pays marketing if the property doesn't sell. Vendor-paid advertising is generally payable whether or not you get a result, so get the budget capped in writing.",
   "Agreement mechanics matter as much as the pitch: exclusive period length, tail clause wording and how you exit. Queensland caps sole and exclusive appointments at 90 days; NSW gives one business day of cooling-off; Victoria gives none.",
   "A good answer is specific, evidenced and written down. An evasive answer is a vibe: 'trust me, I have buyers waiting'.",
@@ -86,7 +93,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Is real estate agent commission negotiable in Australia?",
     answer:
-      "Yes. No Australian state sets or caps commission, a point government consumer agencies such as NSW Fair Trading and Consumer Affairs Victoria make explicitly, so every rate you are quoted is an opening position. Typical rates sit somewhere between 1.5 and 3% plus GST depending on state, region and price bracket, with lower rates common in metro areas and on higher-value homes. Always confirm whether a quote includes GST and what marketing costs sit on top, because those two details change the real bill significantly.",
+      `Yes. No Australian state sets or caps commission, a point government consumer agencies such as NSW Fair Trading and Consumer Affairs Victoria make explicitly, so every rate you are quoted is an opening position. Our compiled state figures (September 2026) put typical rates between ${RATE_LOW}% and ${RATE_HIGH}%, usually plus GST, depending on the state, the area and the price. Always confirm whether a quote includes GST and what marketing costs sit on top, because those two details change the real bill significantly.`,
   },
   {
     question: "How long should an exclusive agency agreement be?",
@@ -313,9 +320,10 @@ export default function QuestionsToAskARealEstateAgentPage() {
 
       <h3>10. What’s your commission rate, and does that include GST?</h3>
       <p>
-        Typical rates run roughly 1.5 to 3% plus GST, lower in the big
-        metros and on higher-value homes, higher in regional markets. The
-        GST question matters: on a $20,000 fee it’s a $2,000 difference.
+        Our compiled state figures (September 2026) put typical rates
+        between {RATE_LOW}% and {RATE_HIGH}%, usually plus GST, depending on
+        the state, the area and the price. The GST question matters: on a
+        $20,000 fee it’s a $2,000 difference.
         Run your own numbers through the{" "}
         <Link href="/real-estate-commission-calculator">commission calculator</Link>{" "}
         before the meeting so you know what any rate means in dollars.

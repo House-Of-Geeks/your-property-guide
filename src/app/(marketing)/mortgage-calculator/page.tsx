@@ -157,9 +157,9 @@ export default function MortgageCalculatorPage() {
             <li>It doesn&rsquo;t cover construction loans (interest charged on drawn amount only).</li>
           </ul>
           <p>
-            For a precise quote on your specific situation, a mortgage broker can
-            compare 30+ lenders for you in one process.{" "}
-            <Link href="/find-an-expert?intent=refinancing">Get connected</Link> if you want a free intro to one.
+            For a precise quote on your situation, ask a lender or a mortgage broker; our{" "}
+            <Link href="/guides/home-loan-pre-approval-australia">home loan pre-approval guide</Link>{" "}
+            explains what they&rsquo;ll need.
           </p>
         </>
       }

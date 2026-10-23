@@ -2,7 +2,8 @@ import { NextResponse, after } from "next/server";
 import { z } from "zod";
 import { routeLead } from "@/lib/utils/lead-routing";
 import { db } from "@/lib/db";
-import { sendMail, ANDY_EMAIL, LEADS_CC_EMAIL } from "@/lib/email";
+import { ANDY_EMAIL, LEADS_CC_EMAIL } from "@/lib/email";
+import { queueAndSendNow } from "@/lib/mail/send";
 import { visitorSubjectName } from "@/lib/email-format";
 import {
   scoreGuideLead,
@@ -32,10 +33,8 @@ import { guidanceSeriesEnabled } from "@/lib/flags";
 import { randomBytes } from "node:crypto";
 import {
   describeSent247,
-  leadMagnetDeliveryEnabled,
   requestContext,
   sendSent247Lead,
-  sendSent247LeadMagnet,
   sent247Config,
   sent247HoldReason,
 } from "@/lib/sent247";
@@ -345,8 +344,8 @@ export async function POST(request: Request) {
       },
     });
 
-    // Guide leads no longer sync to ActiveCampaign (Oct 2026): Sent 24/7's
-    // lead magnet series is the only thing that emails guide readers.
+    // Guide readers are emailed by us through SendGrid (21 Oct 2026): no
+    // ActiveCampaign, and no Sent 24/7 lead-magnet delivery.
 
     const typeLabel = labelFor(lead.type, lead.guideType);
     // Score prefix on guide leads so a HOT vendor is visible from the
@@ -374,30 +373,39 @@ export async function POST(request: Request) {
     // The team email shows the number as stored, ready to dial.
     const notifyLead = { ...lead, phone: storedPhone };
 
-    // Internal notification to the team. Best-effort. If SendGrid is
-    // down or the key is rotated, log + escalate via a fallback alert
-    // so the lead is never silently lost.
+    // Internal notification to the team, through the email queue (21 Oct
+    // 2026): the row is written first, so a SendGrid outage is retried by
+    // the cron instead of losing the email. A permanent refusal still gets
+    // the fallback alert, from a second, simpler message.
     const notifyTeam = async (deliveryRows: Array<[string, string]>) => {
       try {
-        await sendMail({
+        const sent = await queueAndSendNow({
+          key: `team:lead:${saved.id}`,
+          category: "operational",
+          stream: "team",
+          template: "team/lead",
           to: NOTIFY_EMAIL,
           cc: isMatchRequest ? undefined : CC_EMAIL,
+          leadId: saved.id,
           subject,
           html: buildAdminEmailHtml(notifyLead, agentName, routing?.reason ?? "", attributionRowsFor(attribution), deliveryRows),
           text: buildAdminEmailText(notifyLead, agentName, routing?.reason ?? "", attributionRowsFor(attribution), deliveryRows),
         });
+        if (sent.status === "failed") throw new Error("SendGrid refused the team notification");
       } catch (mailErr) {
         console.error("Lead notification email failed (lead saved to DB):", {
           leadId: saved.id,
           type: lead.type,
           error: mailErr instanceof Error ? mailErr.message : String(mailErr),
         });
-        // Fallback alert — a second, simpler message from a different
-        // code path. If THIS also fails the DB row is still the source of
-        // truth and the daily zero-floor cron will surface a wider outage.
         try {
-          await sendMail({
+          await queueAndSendNow({
+            key: `team:lead-alert:${saved.id}`,
+            category: "operational",
+            stream: "team",
+            template: "team/lead-alert",
             to: NOTIFY_EMAIL,
+            leadId: saved.id,
             subject: `ALERT: Lead notification failed (${saved.id})`,
             html: buildFailureAlertHtml(saved.id, notifyLead, mailErr),
             text: buildFailureAlertText(saved.id, notifyLead, mailErr),
@@ -411,59 +419,40 @@ export async function POST(request: Request) {
       }
     };
 
-    // A download: the guide, plus the team email after the response (the
-    // mobile is for the team to call; nothing goes to an agent). Sent 24/7
-    // emails the guide when switched on; otherwise, or when it won't (no
-    // series yet, a rejected post), YPG sends its own guide email. A
-    // retryable failure is retried in the background and YPG stays quiet,
-    // so nobody gets the guide twice: the thanks page has it anyway.
+    // A download: the guide by email through SendGrid (21 Oct 2026), plus
+    // the team email after the response (the mobile is for the team to
+    // call; nothing goes to an agent). Sent 24/7 no longer delivers guides,
+    // so one request can only ever produce this one guide email. "On its
+    // way" means SendGrid accepted it (or it's queued for a retry), never
+    // that it arrived; the webhook records delivery.
     if (guideDownload) {
       let emailOnItsWay = false;
-      let sendOwnEmail = true;
       let guideEmail = "Not sent";
-      const cfg = sent247Config();
-      if (cfg && leadMagnetDeliveryEnabled()) {
-        const outcome = await sendSent247LeadMagnet(
-          cfg.apiKey,
-          {
-            lead,
-            campaignId: cfg.vendorCampaignId,
-            referenceId: saved.id,
-            consentText: downloadConsentText(lead.guideType, series),
-            attribution,
-            ctx,
-          },
-          (task) => after(task),
-        );
-        if (outcome.kind === "sent") {
-          emailOnItsWay = outcome.emails === "started";
-          // Repeat downloads ("already_started") and suppressed addresses
-          // get nothing more; only a series that never started falls back.
-          sendOwnEmail = outcome.emails === "not_started" && outcome.emailsReason !== "suppressed";
-          guideEmail = `Sent 24/7: ${outcome.emails ?? "accepted"}${outcome.emailsReason ? ` (${outcome.emailsReason})` : ""}`;
-        } else {
-          sendOwnEmail = outcome.kind === "rejected";
-          if (outcome.kind === "failed") guideEmail = `Sent 24/7 unavailable (${outcome.reason}), retrying in the background`;
-        }
-      }
-      if (sendOwnEmail) {
-        try {
-          await sendMail({
-            to: lead.email,
-            replyTo: ANDY_EMAIL,
-            subject: confirmationCopy(lead).subject,
-            html: buildConfirmationHtml(lead),
-            text: buildConfirmationText(lead),
-          });
-          emailOnItsWay = true;
-          guideEmail = "Sent by YPG";
-        } catch (confirmErr) {
-          guideEmail = "FAILED, not sent (the thanks page has the download)";
-          console.error("Guide email failed (download saved to DB):", {
-            leadId: saved.id,
-            error: confirmErr instanceof Error ? confirmErr.message : String(confirmErr),
-          });
-        }
+      try {
+        const sent = await queueAndSendNow({
+          key: `guide:${lead.guideType === "buying" ? "buying" : "selling"}:${saved.id}`,
+          category: "transactional",
+          stream: "guide-delivery",
+          template: `guide/${lead.guideType === "buying" ? "buying" : "selling"}`,
+          to: lead.email,
+          leadId: saved.id,
+          replyTo: ANDY_EMAIL,
+          subject: confirmationCopy(lead).subject,
+          html: buildConfirmationHtml(lead),
+          text: buildConfirmationText(lead),
+        });
+        emailOnItsWay = sent.status === "accepted" || sent.status === "queued";
+        guideEmail =
+          sent.status === "accepted" ? "Accepted by SendGrid (delivery is confirmed by the webhook)"
+          : sent.status === "queued" ? "Queued: SendGrid didn't answer, the email cron will retry"
+          : sent.status === "suppressed" ? "Not sent: this address is suppressed (bounced or complained before)"
+          : `NOT SENT (${sent.status}); the thanks page has the download`;
+      } catch (confirmErr) {
+        guideEmail = "FAILED, not sent (the thanks page has the download)";
+        console.error("Guide email failed (download saved to DB):", {
+          leadId: saved.id,
+          error: confirmErr instanceof Error ? confirmErr.message : String(confirmErr),
+        });
       }
       // After the response, as the phone-added email is: the reader
       // shouldn't wait out an SMTP round-trip for the team's copy.
@@ -546,8 +535,13 @@ export async function POST(request: Request) {
     const confirmLead = callKind ? { ...lead, callKind } : lead;
     try {
       const { subject: confirmSubject } = confirmationCopy(confirmLead);
-      await sendMail({
+      await queueAndSendNow({
+        key: `confirm:${lead.type}:${saved.id}`,
+        category: "transactional",
+        stream: lead.type === "agreement-check" ? "agreement-check" : "confirmation",
+        template: `confirm/${lead.type}`,
         to: lead.email,
+        leadId: saved.id,
         replyTo: ANDY_EMAIL,
         subject: confirmSubject,
         html: buildConfirmationHtml(confirmLead),
@@ -556,7 +550,6 @@ export async function POST(request: Request) {
     } catch (confirmErr) {
       console.error("Lead confirmation email failed:", {
         leadId: saved.id,
-        to: lead.email,
         error: confirmErr instanceof Error ? confirmErr.message : String(confirmErr),
       });
     }

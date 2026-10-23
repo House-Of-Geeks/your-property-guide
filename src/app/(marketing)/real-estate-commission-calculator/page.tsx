@@ -5,6 +5,21 @@ import { CommissionCalculator } from "@/components/calculators/CommissionCalcula
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { type FaqItem, type RelatedGuide } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
+import { STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
+import { SELLING_COSTS_AS_AT, money, sellingCostTable } from "@/lib/data/selling-costs";
+
+// Every rate on this page comes from commission-rates.ts (our compiled market
+// figures, the table the calculator itself uses), so the FAQ, the explainer
+// and the widget can't disagree (search and conversion baseline, 20 Oct 2026).
+const STATE_ORDER: StateCode[] = ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"];
+const RATE_LOW = Math.min(...STATE_ORDER.map((s) => STATE_RATES[s].low));
+const RATE_HIGH = Math.max(...STATE_ORDER.map((s) => STATE_RATES[s].high));
+const PRICE = 800_000;
+const RATE = 2;
+const FEE = money(Math.round((PRICE * RATE) / 100));
+const FEE_GST = money(Math.round((PRICE * RATE * 1.1) / 100));
+const OTHER_LINES = sellingCostTable("NSW").lines;
+const otherLine = (key: string) => OTHER_LINES.find((l) => l.key === key)!;
 
 const FRONTMATTER: CalculatorPageFrontmatter = {
   title: "Real Estate Commission Calculator",
@@ -14,7 +29,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   schemaName: "Real Estate Commission Calculator",
   schemaDescription:
     "Calculate Australian real estate agent commission and total selling costs by state, with estimated net proceeds.",
-  updatedAt: "2026-06-10",
+  updatedAt: "2026-10-20",
   persona: "selling",
 };
 
@@ -39,12 +54,17 @@ const FAQS: FaqItem[] = [
   {
     question: "What is the average real estate commission in Australia?",
     answer:
-      "Most Australian agents charge between 1.6% and 3.25% of the sale price, with the national average sitting near 2% to 2.5%. Metro suburbs with strong competition sit at the low end (Sydney and Melbourne often 1.6% to 2.2%), while regional areas and smaller markets like Tasmania run higher (2.5% to 3.25%).",
+      `There's no official average, because no state sets commission. Our compiled state figures (${SELLING_COSTS_AS_AT}) put typical rates between ${RATE_LOW}% and ${RATE_HIGH}% of the sale price, with typical rates of about ${STATE_RATES.NSW.typical}% in NSW, ${STATE_RATES.VIC.typical}% in Victoria, ${STATE_RATES.QLD.typical}% in Queensland and ${STATE_RATES.TAS.typical}% in Tasmania. At ${RATE}% on an ${money(PRICE)} sale that's ${FEE}, or ${FEE_GST} if the rate is quoted before GST.`,
   },
   {
     question: "Does agent commission include GST?",
     answer:
       "Not always, and it matters. A 2.5% rate quoted excluding GST is really 2.75% all-in. Always ask whether a quoted rate includes GST and get it in writing in the agency agreement before you sign.",
+  },
+  {
+    question: "How do you calculate real estate commission?",
+    answer:
+      `Multiply the sale price by the rate, then add GST if the rate was quoted without it. At ${RATE}% on ${money(PRICE)}: ${money(PRICE)} × ${RATE}% = ${FEE}, plus 10% GST = ${FEE_GST}. For a tiered rate, work each band separately: for example 2% up to an agreed price and a higher rate on anything above it. Marketing is billed on top.`,
   },
   {
     question: "Is real estate commission negotiable?",
@@ -71,6 +91,7 @@ const FAQS: FaqItem[] = [
 const RELATED: RelatedGuide[] = [
   { title: "Free selling guide (PDF)",            href: "/selling-guide",                                description: "Costs, agent selection and a 12-week selling plan, personalised to your suburb." },
   { title: "Real estate agent fees in Australia", href: "/guides/real-estate-agent-fees-australia",      description: "The full state-by-state breakdown of what agents charge and why." },
+  { title: "Selling costs calculator",            href: "/selling-costs-calculator",                     description: "Every cost of selling, with GST and your net proceeds." },
   { title: "How to choose a selling agent",       href: "/guides/how-to-choose-a-selling-agent",         description: "What actually predicts a good agent, beyond the rate." },
   { title: "How to sell a house in Australia",    href: "/guides/how-to-sell-a-house-australia",         description: "The whole process, from appraisal to settlement." },
   { title: "CGT calculator",                      href: "/cgt-calculator",                               description: "Selling an investment property? Estimate the tax on your gain." },
@@ -88,48 +109,44 @@ export default function CommissionCalculatorPage() {
         <>
           <h2>How real estate commission works in Australia</h2>
           <p>
-            Agent commission is a percentage of your final sale price, agreed
-            in writing before the property goes to market. It is not set by
-            any government body in any state, so the rate you pay comes down
-            to your suburb, your property, and how well you negotiate.
+            Commission is your sale price multiplied by the agreed rate: at {RATE}% on an {money(PRICE)} sale that&rsquo;s{" "}
+            {FEE}, or {FEE_GST} if the rate is quoted before GST. The rate is agreed in writing in the agency agreement
+            before the property goes to market. No government body sets it in any state, so what you pay comes down to
+            your suburb, your property and how well you negotiate.
           </p>
 
           <h3>Typical commission rates by state (2026)</h3>
           <p>
-            Rates vary more by location than by anything else. Competitive
-            metro markets run cheaper than regional ones because more agents
-            are fighting for each listing.
+            These are our compiled market figures ({SELLING_COSTS_AS_AT}), the same ones the calculator above pre-fills.
+            They are a starting point for comparing quotes, not a published survey.
           </p>
           <ul>
-            <li><Link href="/guides/real-estate-commission-nsw"><strong>NSW:</strong></Link> 1.8% to 2.5%, Sydney metro often under 2%</li>
-            <li><Link href="/guides/real-estate-commission-vic"><strong>VIC:</strong></Link> 1.6% to 2.5%, Melbourne metro the cheapest market in the country</li>
-            <li><Link href="/guides/real-estate-commission-qld"><strong>QLD:</strong></Link> 2.3% to 2.9%</li>
-            <li><Link href="/guides/real-estate-commission-sa"><strong>SA:</strong></Link> 1.8% to 2.75%</li>
-            <li><Link href="/guides/real-estate-commission-wa"><strong>WA:</strong></Link> 2% to 2.8%</li>
-            <li><Link href="/guides/real-estate-commission-tas"><strong>TAS:</strong></Link> 2.5% to 3.25%, the highest typical rates in Australia</li>
-            <li><Link href="/guides/real-estate-commission-nt"><strong>NT:</strong></Link> 2.4% to 2.7%</li>
-            <li><Link href="/guides/real-estate-commission-act"><strong>ACT:</strong></Link> 1.8% to 2.25%</li>
+            {STATE_ORDER.map((s) => (
+              <li key={s}>
+                <Link href={`/guides/real-estate-commission-${s.toLowerCase()}`}><strong>{s}:</strong></Link>{" "}
+                {STATE_RATES[s].low}% to {STATE_RATES[s].high}%, typically about {STATE_RATES[s].typical}%
+              </li>
+            ))}
           </ul>
 
           <h3>Commission is not the number that matters most</h3>
           <p>
-            A cheap agent who sells your home for $20,000 under its potential
-            costs you far more than the 0.4% you saved on commission. On an
-            $850,000 sale, the gap between a 1.8% and a 2.2% rate is $3,400.
-            The gap between a strong negotiator and a weak one is routinely
-            ten times that. Judge an agent on recent comparable sales and
-            days on market first, then negotiate the rate with the one you
-            want.
+            On an $850,000 sale, the gap between a 1.8% and a 2.2% rate is $3,400. An agent who sells for even 1% less
+            than another ($8,500) costs you more than that saving. Judge an agent on recent comparable sales and days
+            on market first, then negotiate the rate with the one you want. The{" "}
+            <Link href="/tools/agent-proposal-worksheet">agent proposal worksheet</Link> compares up to three quotes at
+            the same expected sale price.
           </p>
 
           <h3>The costs beyond commission</h3>
           <p>
-            Plan for 3% to 5% of the sale price all-in once you add
-            marketing ($2,000 to $10,000 depending on portal tier and
-            photography), conveyancing ($800 to $2,500), and any styling,
-            repairs or lender discharge fees. The calculator above gives you
-            the full picture, and our free selling guide breaks down where
-            each dollar goes and which ones you can claw back.
+            Commission is most of the bill, not all of it. Add marketing ({money(otherLine("marketing").low)} to{" "}
+            {money(otherLine("marketing").high)} in our indicative ranges), conveyancing ({money(otherLine("conveyancing").low)}{" "}
+            to {money(otherLine("conveyancing").high)}), the legal documents your state requires, and any auctioneer,
+            styling or mortgage discharge fees. The{" "}
+            <Link href="/selling-costs-calculator">selling costs calculator</Link> adds every line, with GST and your
+            loan payout, and shows what you walk away with; the{" "}
+            <Link href="/guides/cost-of-selling-a-house-australia">cost of selling guide</Link> explains each one.
           </p>
         </>
       }

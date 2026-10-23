@@ -677,6 +677,132 @@ model LeadEvent {
   @@index([type, createdAt])
 }
 
+// ---------------------------------------------------------------------------
+// Email (21 Oct 2026): the application owns templates, consent, audiences,
+// schedules and history; SendGrid only delivers. Every email the site sends
+// is one EmailMessage row, created with a unique key so a retried request,
+// a double click or two overlapping cron runs can never send it twice.
+// Delivery facts come from SendGrid's signed Event Webhook (EmailEvent),
+// never from the moment SendGrid accepted the message. DDL:
+// scripts/sql/2026-10-21-email-system.sql. Rules: src/lib/mail/.
+// ---------------------------------------------------------------------------
+
+model EmailMessage {
+  // Opaque id, sent to SendGrid as the custom argument ypg_mid so events
+  // correlate without any personal detail.
+  id                String    @id @default(cuid())
+  // Idempotency key: "guide:selling:<leadId>", "seq:<leadId>:seller-early:2",
+  // "newsletter:<issueId>:<email>". Unique, so enqueueing twice is a no-op.
+  key               String    @unique
+  // "transactional" (asked for: a guide, a plan, a confirmation),
+  // "marketing" (consented: a series, the newsletter, the welcome),
+  // "operational" (to our own team).
+  category          String
+  // The flow: "guide-delivery" | "plan" | "introduction" | "agreement-check"
+  // | "sequence" | "newsletter" | "newsletter-welcome" | "intro-checkin" | "team"...
+  stream            String
+  template          String
+  toEmail           String
+  // Operational email only (the team's CC).
+  cc                String?
+  leadId            String?
+  newsletterIssueId String?
+  subject           String
+  html              String
+  text              String
+  replyTo           String?
+  // Extra SMTP headers (List-Unsubscribe for marketing).
+  headers           Json?
+  // queued -> sending -> accepted (SendGrid took it) -> delivered | deferred
+  // | bounced | dropped | failed (permanent) | ambiguous (send outcome
+  // unknown; held, never auto-resent) | suppressed (never sent) | cancelled
+  status            String    @default("queued")
+  attempts          Int       @default(0)
+  maxAttempts       Int       @default(5)
+  nextAttemptAt     DateTime  @default(now())
+  lockedAt          DateTime?
+  lockedBy          String?
+  // SendGrid's SMTP queue id ("queued as …"), the first half of sg_message_id.
+  providerMessageId String?
+  lastError         String?
+  acceptedAt        DateTime?
+  deliveredAt       DateTime?
+  failedAt          DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  events            EmailEvent[]
+
+  @@index([status, nextAttemptAt])
+  @@index([toEmail])
+  @@index([leadId])
+  @@index([newsletterIssueId])
+  @@index([stream, createdAt])
+}
+
+// One SendGrid event (delivered, bounce, dropped, deferred, spamreport,
+// unsubscribe…), stored once: sg_event_id is unique, so a webhook retry or a
+// duplicate batch is ignored.
+model EmailEvent {
+  id         String        @id @default(cuid())
+  sgEventId  String        @unique
+  messageId  String?
+  message    EmailMessage? @relation(fields: [messageId], references: [id], onDelete: SetNull)
+  event      String
+  email      String
+  reason     String?
+  occurredAt DateTime
+  raw        Json
+  createdAt  DateTime      @default(now())
+
+  @@index([messageId])
+  @@index([event, occurredAt])
+}
+
+// Who must not be emailed, by address (lower-cased), across every Lead row
+// with that address. scope "marketing" stops the series, the newsletter and
+// the welcome; scope "all" (hard bounce, invalid address, spam complaint)
+// also stops transactional sends. Provider suppressions are never bypassed.
+model EmailSuppression {
+  id        String   @id @default(cuid())
+  email     String
+  scope     String
+  // "unsubscribe" | "spamreport" | "bounce" | "invalid" | "dropped" | "manual"
+  reason    String
+  // "app" | "sendgrid-webhook" | "admin"
+  source    String
+  detail    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([email, scope])
+  @@index([email])
+}
+
+// A newsletter, written and published from the admin (no schedule is
+// promised). Publishing queues one EmailMessage per consented subscriber.
+model NewsletterIssue {
+  id           String    @id @default(cuid())
+  subject      String
+  preheader    String?
+  heading      String
+  // Plain paragraphs and "## " section headings, rendered by src/lib/mail/newsletter.ts.
+  body         String
+  linkLabel    String?
+  linkHref     String?
+  // Show the window-detail image in the header.
+  showImage    Boolean   @default(true)
+  // "draft" | "publishing" | "published" | "cancelled"
+  status       String    @default("draft")
+  audienceSize Int?
+  testSentTo   String?
+  testSentAt   DateTime?
+  createdBy    String?
+  publishedBy  String?
+  publishedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
 // RETIRED (Oct 2026, same day): the guide is now given for an email, so
 // there is no partial to keep. Nothing reads or writes this table; it stays
 // here only because it exists in production (drop with DROP TABLE

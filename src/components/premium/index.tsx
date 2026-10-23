@@ -17,11 +17,47 @@ import { GUIDE_BOOKS, type GuideBookId } from "@/lib/guide-books";
 
 const SHELL = "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10";
 
+interface LibraryPhoto {
+  src: string;
+  /** The crop (object-position), per breakpoint where the wide hero needs it. */
+  position: string;
+  /** Alt text, where the photo carries meaning; without it the photo is decorative. */
+  alt?: string;
+  /** The corner the guide covers stand on in a wide hero, when the default (right) would hide the subject. */
+  bookSide?: "left" | "right";
+}
+
 /** The photo library (public/images), with the crop each one needs as a hero. */
 export const PHOTOS = {
   // The "Clear decisions" brand photographs (illustrative; never a real property or sale).
   apartment: { src: "/images/brand/apartment-light.jpg",  position: "object-[50%_52%]" },
   door:      { src: "/images/brand/terracotta-door.jpg",  position: "object-[50%_40%]" },
+  // The next-pass brand photographs (20 Oct 2026; originals in docs/brand/clear-decisions/).
+  // Illustrative, never captioned as a real property. Crops checked at 390,
+  // 768 and 1280 wide in the wide hero (220/320/380px tall): the kitchen keeps
+  // the table and the open balcony door, the cottage its door and veranda.
+  // The covers stand on the left, over the kitchen bench and the garden bed,
+  // so neither subject is hidden. x only matters in a narrower panel (the
+  // square beside a hub's briefing): the kitchen keeps door and table at
+  // 50%, the cottage its door and veranda at 62%.
+  kitchenLight: {
+    src: "/images/brand/buying-kitchen-light.jpg",
+    position: "object-[50%_60%] lg:object-[50%_58%]",
+    alt: "Illustrative sunlit Australian apartment kitchen and dining area opening onto a leafy balcony.",
+    bookSide: "left",
+  },
+  cottage: {
+    src: "/images/brand/selling-cottage-garden.jpg",
+    position: "object-[62%_40%] sm:object-[62%_38%] lg:object-[62%_36%]",
+    alt: "Illustrative Australian weatherboard cottage with a terracotta door and an established native garden.",
+    bookSide: "left",
+  },
+  // A quiet detail for supporting sections, not a hero.
+  windowDetail: {
+    src: "/images/brand/window-detail.jpg",
+    position: "object-[42%_50%]",
+    alt: "Illustrative sunlit window with sage timber frames, linen and a terracotta vase holding eucalyptus.",
+  },
   selling:   { src: "/images/photos/selling-house.jpg",     position: "object-[50%_45%]" },
   street:    { src: "/images/photos/home-street.jpg",       position: "object-[50%_60%]" },
   buying:    { src: "/images/photos/open-home.jpg",         position: "object-center" },
@@ -34,7 +70,7 @@ export const PHOTOS = {
   paperwork: { src: "/images/photos/paperwork.jpg",         position: "object-center" },
   verandah:  { src: "/images/photos/verandah-couple.jpg",   position: "object-center" },
   kitchen:   { src: "/images/photos/appraisal-kitchen.jpg", position: "object-center" },
-} as const;
+} as const satisfies Record<string, LibraryPhoto>;
 
 export type PhotoKey = keyof typeof PHOTOS;
 
@@ -80,10 +116,11 @@ interface PhotoHeroProps {
  * hubs and conversion pages ("lg") keep a shorter crop below the text.
  */
 export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside, size = "md", book, bookHref, caption, captionNote, className = "" }: PhotoHeroProps) {
+  const library: LibraryPhoto | null = photo ? PHOTOS[photo] : null;
   const image = ownImage
-    ? { src: ownImage.src, position: ownImage.position ?? "object-center", unoptimized: ownImage.unoptimized ?? false }
-    : photo
-      ? { ...PHOTOS[photo], unoptimized: false }
+    ? { src: ownImage.src, position: ownImage.position ?? "object-center", unoptimized: ownImage.unoptimized ?? false, alt: "", bookSide: "right" as const }
+    : library
+      ? { ...library, unoptimized: false, alt: library.alt ?? "", bookSide: library.bookSide ?? "right" }
       : null;
   const top = breadcrumbs
     ? size === "lg" ? "pt-6 sm:pt-9 lg:pt-11" : "pt-5 sm:pt-7 lg:pt-9"
@@ -91,7 +128,7 @@ export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside
   const bottom = size === "lg" ? "pb-10 sm:pb-12 lg:pb-14" : "pb-10 sm:pb-12 lg:pb-14";
   const books = book ? (typeof book === "string" ? [book] : book) : [];
   const bookStand = books.length > 0 && (
-    <div className="pointer-events-none absolute bottom-0 right-4 flex translate-y-[18%] items-end sm:right-8 lg:right-10">
+    <div className={`pointer-events-none absolute bottom-0 flex translate-y-[18%] items-end ${image?.bookSide === "left" ? "left-4 sm:left-8 lg:left-10" : "right-4 sm:right-8 lg:right-10"}`}>
       {books.map((b, i) => (
         <Link
           key={b}
@@ -120,7 +157,17 @@ export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside
         <figure className={`mt-9 sm:mt-11 ${books.length ? "mb-10 sm:mb-12" : ""}`}>
           <div className="relative h-[220px] overflow-visible sm:h-[320px] lg:h-[380px]">
             <div className="absolute inset-0 overflow-hidden bg-surface-warm">
-              <Image src={image.src} alt="" fill preload unoptimized={image.unoptimized} sizes="(min-width: 1280px) 1200px, 100vw" className={`object-cover ${image.position}`} />
+              {/* The page's one above-the-fold image, so the only preload. sizes
+                  follows the shell: full width less its padding, 1200px at most. */}
+              <Image
+                src={image.src}
+                alt={image.alt}
+                fill
+                preload
+                unoptimized={image.unoptimized}
+                sizes="(min-width: 1280px) 1200px, (min-width: 1024px) calc(100vw - 80px), (min-width: 640px) calc(100vw - 48px), calc(100vw - 32px)"
+                className={`object-cover ${image.position}`}
+              />
             </div>
             {bookStand}
           </div>
@@ -139,7 +186,7 @@ export function PhotoHero({ photo, image: ownImage, breadcrumbs, children, aside
         <div className="lg:col-span-7">{children}</div>
         <div className="hidden sm:block lg:col-span-5">
           <div className="relative aspect-[16/10] overflow-hidden bg-surface-warm lg:aspect-[5/6]">
-            <Image src={image.src} alt="" fill preload unoptimized={image.unoptimized} sizes="(min-width: 1024px) 40vw, 100vw" className={`object-cover ${image.position}`} />
+            <Image src={image.src} alt={image.alt} fill preload unoptimized={image.unoptimized} sizes="(min-width: 1024px) 40vw, 100vw" className={`object-cover ${image.position}`} />
           </div>
         </div>
       </div>

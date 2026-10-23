@@ -5,13 +5,29 @@ import {
   GuideArticleLayout,
   Callout,
   KeyFigure,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
   type RelatedGuide,
+  type SourceItem,
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
+
+// The state table and every national figure on this page come from
+// commission-rates.ts (our compiled market figures, September 2026), the same
+// table the calculators read, so the page can't print a range of its own
+// (search and conversion baseline, 20 Oct 2026).
+const STATE_ORDER: StateCode[] = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"];
+const RATE_LOW = Math.min(...STATE_ORDER.map((s) => STATE_RATES[s].low));
+const RATE_HIGH = Math.max(...STATE_ORDER.map((s) => STATE_RATES[s].high));
+const EXAMPLE_PRICE = 800_000;
+const EXAMPLE_RATE = 2;
+const aud = (n: number) => `$${Math.round(n).toLocaleString("en-AU")}`;
+const EXAMPLE_FEE = aud((EXAMPLE_PRICE * EXAMPLE_RATE) / 100);
+const EXAMPLE_FEE_GST = aud((EXAMPLE_PRICE * EXAMPLE_RATE * 1.1) / 100);
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "Real estate agent fees and commission in Australia (2026)",
@@ -19,7 +35,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "What real estate agents charge across Australia: commission rates by state, what's included, marketing costs charged separately, fixed-fee alternatives, and how to negotiate.",
   slug: "real-estate-agent-fees-australia",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-09-30",
+  updatedAt: "2026-10-20",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -47,9 +63,9 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Australian real estate commission is negotiable and typically ranges from 1.5% to 3.5% of the sale price, depending on state, suburb and property value.",
-  "Higher-value properties (above $2M) often achieve commission rates below 1.5% because the absolute dollar amount is large.",
-  "Marketing costs (photography, online listings, signboard, styling) are usually charged separately on top of commission and typically run $3,000 to $6,000 for an average home.",
+  `No state sets real estate commission: it's whatever you agree in the agency agreement. Our compiled state figures (September 2026) put typical rates between ${RATE_LOW}% and ${RATE_HIGH}% of the sale price, depending on the state. At ${EXAMPLE_RATE}% on an ${aud(EXAMPLE_PRICE)} sale that's ${EXAMPLE_FEE}, or ${EXAMPLE_FEE_GST} if the rate is quoted before GST.`,
+  "On higher-value homes the commission is large in dollars, so there is usually more room to negotiate the percentage. Compare quotes in dollars, not just as a rate.",
+  "Marketing (photography, portal listings, signboard, any styling) is usually charged separately on top of commission. We use $2,000 to $8,000 as an indicative budget, and it's usually payable whether or not the home sells.",
   "Fixed-fee agencies charge $3,000 to $10,000 flat. They can save money on high-value sales but reduce the agent's incentive to negotiate hard for you.",
   "Always interview at least three agents and compare the full package: pricing strategy, marketing plan, suburb track record, not just the commission rate.",
   "An extra $20,000 on the sale more than covers a slightly higher rate (0.25% on $800,000 is $2,000). The cheapest agent is not always the best return.",
@@ -71,7 +87,7 @@ const FAQS: FaqItem[] = [
   {
     question: "What's a normal real estate commission in Australia?",
     answer:
-      "Typical residential commission ranges from 1.5% to 3.0% of the sale price in most capital cities, with averages around 2.0% in NSW, VIC, SA and ACT, and 2.5% to 3.0% in QLD, WA, TAS and NT. Higher-value properties often achieve lower percentage rates because the dollar amount is large. There's no legislated minimum, everything is negotiable.",
+      `There's no official rate: commission is negotiable and set in the agency agreement. Our compiled state figures (September 2026) put typical residential rates between ${RATE_LOW}% and ${RATE_HIGH}% of the sale price, with a typical rate of about ${STATE_RATES.NSW.typical}% in NSW and ${STATE_RATES.VIC.typical}% in Victoria, ${STATE_RATES.QLD.typical}% in Queensland, ${STATE_RATES.WA.typical}% in WA and ${STATE_RATES.TAS.typical}% in Tasmania. On an ${aud(EXAMPLE_PRICE)} sale at ${EXAMPLE_RATE}%, that's ${EXAMPLE_FEE} before GST. Check whether a quote includes GST.`,
   },
   {
     question: "Is real estate commission paid upfront or at settlement?",
@@ -81,7 +97,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Are marketing costs included in commission?",
     answer:
-      "No. Commission almost never includes marketing. Photography ($500 to $1,500), online listings on REA and Domain ($800 to $2,000+), signboard ($200 to $600), social ads ($300 to $1,000+) and optional styling ($2,000 to $8,000+) are billed separately. Budget $3,000 to $6,000 total for an average home, more in premium markets.",
+      "No. Commission almost never includes marketing. Photography ($500 to $1,500), online listings on REA and Domain ($800 to $2,000+), signboard ($200 to $600), social ads ($300 to $1,000+) and optional styling ($2,000 to $8,000+) are billed separately. We use $2,000 to $8,000 as an indicative marketing budget before any styling, more in premium markets. These are indicative ranges, quoted individually by agents and suppliers; no published survey sets them.",
   },
   {
     question: "Should I use a fixed-fee agent?",
@@ -91,7 +107,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Can I negotiate commission rates?",
     answer:
-      "Yes, almost always. Most vendors don't realise commission is fully negotiable. Get quotes from at least three agents, compare full packages (not just the rate), and consider a tiered or performance-based commission that pays the agent more if they exceed a target price. Don't over-negotiate, shaving 0.2% off a $700,000 sale saves $1,400, and the better agent often makes that back many times.",
+      "Yes, almost always. Most vendors don't realise commission is fully negotiable. Get quotes from at least three agents, compare full packages (not just the rate), and consider a tiered or performance-based commission that pays the agent more if they exceed a target price. Don't over-negotiate: shaving 0.2% off a $700,000 sale saves $1,400, and an agent who achieves even 1% more on the price ($7,000) more than covers it. The agent proposal worksheet compares quotes at the same expected sale price.",
   },
   {
     question: "Do real estate agents get paid if the house doesn't sell?",
@@ -103,6 +119,8 @@ const FAQS: FaqItem[] = [
 const RELATED: RelatedGuide[] = [
   { title: "Free selling guide (PDF)",       href: "/selling-guide",                        description: "Costs, agent selection and a 12-week selling plan, personalised to your suburb." },
   { title: "Commission calculator",          href: "/real-estate-commission-calculator",    description: "What an agent costs on your sale price, by state." },
+  { title: "Selling costs calculator",       href: "/selling-costs-calculator",             description: "Every cost of selling by state, with GST and your net proceeds." },
+  { title: "Agent proposal worksheet",       href: "/tools/agent-proposal-worksheet",       description: "Compare up to three agents' proposals at the same expected sale price." },
   { title: "How to Choose a Selling Agent",  href: "/guides/how-to-choose-a-selling-agent", description: "Pick the right agent first, then negotiate the fee." },
   { title: "Sell First or Buy First?",       href: "/guides/sell-first-or-buy-first",       description: "If you're upgrading, the decision tree before you sell." },
   { title: "Free appraisal",                 href: "/appraisal",                            description: "Get a real-world appraisal from a local agent. No commitment." },
@@ -132,9 +150,12 @@ export default function RealEstateAgentFeesPage() {
       <p className="lead">
         When you sell a property through a real estate agent in Australia, you
         pay the agent a <strong>commission</strong>, a percentage of the final
-        sale price. Commission is only payable if the property sells (typically
-        at settlement), so agents are incentivised to achieve the best possible
-        price.
+        sale price that you agree in the agency agreement. Our compiled state
+        figures put typical rates between {RATE_LOW}% and {RATE_HIGH}%; at{" "}
+        {EXAMPLE_RATE}% on an {aud(EXAMPLE_PRICE)} sale that&rsquo;s {EXAMPLE_FEE},
+        or {EXAMPLE_FEE_GST} including GST. Commission is usually payable only
+        if the property sells (typically at settlement), while marketing is
+        usually payable either way.
       </p>
       <p>
         Commission is not a fixed dollar amount, it scales with the sale price.
@@ -154,10 +175,10 @@ export default function RealEstateAgentFeesPage() {
 
       <h2 id="rates-by-state">Commission rates by state (typical ranges, 2026)</h2>
       <p>
-        Commission rates vary significantly by state, suburb, and property type.
-        Premium suburbs in capital cities often attract lower percentage rates
-        because agents compete more aggressively for high-value listings.
-        Regional areas may have higher rates.
+        Commission rates vary by state, suburb and property type, and no state
+        sets them. The ranges below are our compiled market figures (September
+        2026), the same ones our calculators use. They are a starting point for
+        comparing quotes, not a published survey.
       </p>
 
       <table>
@@ -165,18 +186,19 @@ export default function RealEstateAgentFeesPage() {
           <tr>
             <th>State</th>
             <th>Typical range</th>
-            <th>Average</th>
+            <th>Typical rate</th>
+            <th>On {aud(EXAMPLE_PRICE)} at the typical rate</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td><Link href="/guides/real-estate-commission-nsw"><strong>NSW</strong></Link></td><td>1.8% to 2.5%</td><td>~2.0%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-vic"><strong>VIC</strong></Link></td><td>1.6% to 2.5%</td><td>~2.0%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-qld"><strong>QLD</strong></Link></td><td>2.3% to 2.9%</td><td>~2.5%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-wa"><strong>WA</strong></Link></td><td>2.0% to 2.8%</td><td>~2.4%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-sa"><strong>SA</strong></Link></td><td>1.8% to 2.75%</td><td>~2.0%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-tas"><strong>TAS</strong></Link></td><td>2.5% to 3.25%</td><td>~2.9%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-nt"><strong>NT</strong></Link></td><td>2.4% to 2.7%</td><td>~2.5%</td></tr>
-          <tr><td><Link href="/guides/real-estate-commission-act"><strong>ACT</strong></Link></td><td>1.8% to 2.25%</td><td>~2.1%</td></tr>
+          {STATE_ORDER.map((s) => (
+            <tr key={s}>
+              <td><Link href={`/guides/real-estate-commission-${s.toLowerCase()}`}><strong>{s}</strong></Link></td>
+              <td>{STATE_RATES[s].low}% to {STATE_RATES[s].high}%</td>
+              <td>~{STATE_RATES[s].typical}%</td>
+              <td>{aud((EXAMPLE_PRICE * STATE_RATES[s].typical) / 100)} before GST</td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
@@ -206,12 +228,12 @@ export default function RealEstateAgentFeesPage() {
         </p>
       </Callout>
 
-      <Callout variant="info" title="High-value properties achieve lower rates">
+      <Callout variant="info" title="On higher-value homes, compare in dollars">
         <p>
-          On properties above $2M, percentage rates often drop below 1.5%
-          because the absolute dollar value of commission is high. The
-          headline rate is much less important than the dollar amount, always
-          calculate both.
+          The higher the price, the larger the commission in dollars, so there
+          is usually more room to negotiate the percentage. The headline rate
+          matters less than the dollar amount: always calculate both, and
+          compare every quote at the same expected sale price.
         </p>
       </Callout>
 
@@ -242,14 +264,21 @@ export default function RealEstateAgentFeesPage() {
         <li><strong>Property styling / staging.</strong> $2,000 to $8,000+ if using a professional stylist (optional, but can significantly improve sale price).</li>
       </ul>
       <p>
-        For an average family home, expect total marketing costs of $3,000 to
-        $6,000. In premium markets, campaigns can easily exceed $10,000.
+        We use $2,000 to $8,000 as an indicative marketing budget for a typical
+        home before styling; premium campaigns can exceed $10,000. Agents and
+        suppliers quote these individually and no published survey sets them,
+        so ask for the schedule line by line. The{" "}
+        <Link href="/selling-costs-calculator">selling costs calculator</Link>{" "}
+        adds marketing to commission, GST, conveyancing and your state’s
+        documents, and the{" "}
+        <Link href="/guides/cost-of-selling-a-house-australia">cost of selling guide</Link>{" "}
+        explains every line.
       </p>
 
       <KeyFigure
-        value="$3k–$6k"
-        label="Typical total marketing spend on an average Australian home (photography, listings, signboard, social, optional styling). Charged separately from commission."
-        context="Premium markets and styled campaigns run higher"
+        value="$2k–$8k"
+        label="Our indicative marketing budget for a typical Australian home (photography, portal listings, signboard, floor plan), before styling. Charged separately from commission."
+        context="Indicative only: premium and styled campaigns run higher"
       />
 
       <Callout variant="warning" title="Marketing is usually payable whether or not it sells">
@@ -281,6 +310,9 @@ export default function RealEstateAgentFeesPage() {
         Fixed-fee models can work well in a sellers&rsquo; market. In a slower
         market where active negotiation is critical, a full-commission agent
         may achieve a higher price that more than covers the fee difference.
+        Our guide to{" "}
+        <Link href="/guides/fixed-fee-vs-commission-real-estate-agents">fixed fee vs commission agents</Link>{" "}
+        works both models through on the same sale.
       </p>
 
       <h2 id="negotiate">How to negotiate agent fees</h2>
@@ -292,6 +324,14 @@ export default function RealEstateAgentFeesPage() {
         <li><strong>Don&rsquo;t over-negotiate on commission.</strong> Shaving 0.2% off commission on a $700,000 property saves $1,400. If the better agent achieves $15,000 more at auction, it&rsquo;s not worth the saving. Focus on who you think will get you the best price.</li>
         <li><strong>Ask what happens if it doesn&rsquo;t sell.</strong> Understand any conditions in the agency agreement about what happens if the property is passed in or withdrawn.</li>
       </ol>
+      <p>
+        The{" "}
+        <Link href="/guides/how-to-negotiate-real-estate-agent-commission">commission negotiation guide</Link>{" "}
+        has the scripts, and the{" "}
+        <Link href="/tools/agent-proposal-worksheet">agent proposal worksheet</Link>{" "}
+        lines up to three quotes at the same expected sale price, so you compare
+        fees in dollars rather than headline rates.
+      </p>
 
       <h2 id="cheapest-agent">The risk of choosing the cheapest agent</h2>
       <p>
@@ -334,9 +374,14 @@ export default function RealEstateAgentFeesPage() {
           Be cautious about signing for more than 90 days without a strong reason.
         </li>
         <li>
-          <strong>Cooling-off period.</strong>{" "}In most states, you have a short
-          cooling-off period (often 1 to 3 days) after signing an agency agreement
-          to cancel without penalty. Check your state&rsquo;s rules.
+          <strong>Cooling-off period.</strong>{" "}NSW gives sellers one business
+          day to cancel a residential agency agreement: the cooling-off period
+          ends at 5pm on the next business day or Saturday (NSW Government,
+          Agency agreements, updated 8 July 2026). Victoria, Queensland, South
+          Australia and WA have no cooling-off period on an agency agreement, so
+          read it before you sign. Our{" "}
+          <Link href="/guides/real-estate-agency-agreements-by-state">agency agreements guide</Link>{" "}
+          covers the term, the tail clause and how to get out, state by state.
         </li>
         <li>
           <strong>Commission trigger.</strong> Understand exactly when commission
@@ -355,6 +400,14 @@ export default function RealEstateAgentFeesPage() {
         <Link href="/appraisal">property appraisal</Link> from one local agent
         in your suburb.
       </p>
+
+      <Sources items={AGENT_FEES_SOURCES} />
     </GuideArticleLayout>
   );
 }
+
+const AGENT_FEES_SOURCES: readonly SourceItem[] = [
+  { label: "NSW Government: Agency agreements for the sale of property", href: "https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/selling-a-property/agency-agreements", note: "Updated 8 July 2026, read 20 October 2026. Commission and fees are negotiable; one business day cooling-off on a residential agency agreement." },
+  { label: "Your Property Guide: Agency agreements by state", href: "/guides/real-estate-agency-agreements-by-state", note: "The cooling-off, term and exit rules in NSW, Victoria, Queensland, SA and WA, read from each state's Act." },
+  { label: "Your Property Guide: commission and selling-cost figures", href: "/selling-costs-calculator", note: "Commission ranges are our compiled market figures (September 2026); marketing and other costs are indicative ranges quoted individually by suppliers. No state publishes a commission survey." },
+];

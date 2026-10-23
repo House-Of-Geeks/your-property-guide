@@ -163,7 +163,7 @@ Shared parts in `src/components/premium` pick up v7 through the tokens and their
 
 ## 12. Emails, social and print
 
-- Emails (`src/lib/email-theme.ts` and the builders, `scripts/ac-emails/build.ts` for the ActiveCampaign templates): cream page, paper card, forest ink, the forest button with 4px corners, serif headings, the mark and wordmark, footer line "Know what matters before you buy or sell." Guide emails use `GUIDE_BOOKS[id].coverEmail`.
+- Emails (`src/lib/email-theme.ts` and the builders in `src/lib/lead-emails.ts`, `src/lib/email-sequence-html.ts` and `src/lib/mail/newsletter.ts`; every email is sent by the app through SendGrid, see `docs/email-system-2026-10-21.md`): cream page, paper card, forest ink, the forest button with 4px corners, serif headings, the mark and wordmark, footer line "Know what matters before you buy or sell." Guide emails use `GUIDE_BOOKS[id].coverEmail`.
 - Social: `public/og-image.jpg` (the opening line beside the apartment), the guides' cards in `public/images/guide/<guide>-guide-og.jpg`, and dynamic cards for articles, chapters and suburbs (`src/lib/og/render.tsx`, cream with a serif title and a forest or terracotta rule).
 - Print: the guide PDFs are printed from `/print/guides/<guide>`; the spring countdown from `scripts/guide-pdf/spring-selling-checklist.html`.
 
