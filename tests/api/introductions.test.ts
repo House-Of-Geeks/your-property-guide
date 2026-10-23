@@ -243,4 +243,22 @@ describe("POST /api/introductions", () => {
     expect(res.status).toBe(200);
     expect(m.create).not.toHaveBeenCalled();
   });
+
+  it("drops script, link and SEO spam like a honeypot hit", async () => {
+    for (const bad of [{ firstName: "Иван" }, { notes: "Cheap backlinks and SEO services" }, { notes: "http://a.example http://b.example http://c.example" }]) {
+      const res = await POST(req({ ...seller, ...bad }));
+      expect(res.status).toBe(200);
+    }
+    expect(m.create).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("never sends an introduction to HQ", async () => {
+    vi.stubEnv("HQ_LEADS_SECRET", "hq-secret");
+    vi.stubEnv("SENT247_API_KEY", "");
+    const res = await POST(req(seller));
+    expect(res.status).toBe(200);
+    expect(teamMail()).toBeTruthy();
+    expect(fetchMock.mock.calls.some((c) => String(c[0]).includes("/api/inbound/leads"))).toBe(false);
+  });
 });

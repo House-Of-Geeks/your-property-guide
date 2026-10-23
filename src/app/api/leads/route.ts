@@ -29,6 +29,7 @@ import { AGREEMENT_CHECK } from "@/lib/service-model";
 import { addressFromSuburbSlug } from "@/lib/sent247";
 import { SEQUENCES, dueAt, sequenceFor } from "@/lib/email-sequences";
 import { guidanceSeriesEnabled } from "@/lib/flags";
+import { checkLeadSpam, deferLeadToHq, hqAttribution, hqNotes, hqSourceUrl, isAgentEnquiry } from "@/lib/hq-leads";
 import { randomBytes } from "node:crypto";
 import {
   describeSent247,
@@ -161,9 +162,16 @@ export async function POST(request: Request) {
 
     const lead = result.data;
 
-    // Honeypot trip. Silently succeed (200) without persisting so the
-    // bot believes the submission worked and doesn't retry differently.
-    if (lead.website && lead.website.trim().length > 0) {
+    // Honeypot trip or other obvious spam (foreign-script text, links,
+    // SEO pitches). Silently succeed (200) without persisting, emailing or
+    // sending to HQ so the bot believes the submission worked and doesn't
+    // retry differently.
+    const spam = checkLeadSpam({
+      honeypot: lead.website,
+      name: [lead.firstName, lead.lastName].filter(Boolean).join(" "),
+      message: lead.message,
+    });
+    if (spam.spam) {
       return NextResponse.json({ success: true, message: "Enquiry submitted successfully" });
     }
 
@@ -349,6 +357,29 @@ export async function POST(request: Request) {
     // lead magnet series is the only thing that emails guide readers.
 
     const typeLabel = labelFor(lead.type, lead.guideType);
+
+    // Agent enquiries (AgentEnquiryForm on /real-estate-leads) are the only
+    // leads House of Geeks HQ takes, as a deal, after the response and
+    // best-effort (src/lib/hq-leads.ts). Never affects the email below.
+    if (isAgentEnquiry(lead)) {
+      const hqName = [lead.firstName, lead.lastName].filter(Boolean).join(" ");
+      deferLeadToHq({
+        name: hqName,
+        email: lead.email,
+        phone: storedPhone,
+        source: "agent_enquiry",
+        brief: `Agent enquiry from ${hqName}`,
+        notes: hqNotes([
+          ["Email", lead.email],
+          ["Phone", storedPhone],
+          ["Message", persistedMessage],
+        ]),
+        sourceUrl: hqSourceUrl(attribution.sourcePage),
+        nextAction: "Reply to the enquiry",
+        attribution: hqAttribution(attribution),
+      });
+    }
+
     // Score prefix on guide leads so a HOT vendor is visible from the
     // inbox list without opening the email. Speed-to-lead is the whole
     // game: an appraisal-ready vendor contacted inside 24h converts at
