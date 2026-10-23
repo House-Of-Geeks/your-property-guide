@@ -20,6 +20,17 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## House of Geeks HQ lead hand-off
+
+Lead forms that notify the team (everything posting to `/api/leads`: enquiries, appraisal and rental appraisal requests, suburb alerts, property interest, agency contact, guide downloads and the agreement check, plus `/api/introductions`) also create a deal in House of Geeks HQ. The call lives in `src/lib/hq-leads.ts`, runs server-side after the response, times out after 4 seconds and never affects the visitor or the team email. Newsletter and plan-email signups do not notify anyone, so they are not sent.
+
+| Variable | Purpose |
+| --- | --- |
+| `HQ_LEADS_SECRET` | Bearer secret for HQ `POST /api/inbound/leads`. Server-side only. When empty, the hand-off is skipped with a log line. |
+| `HQ_URL` | HQ base URL. Defaults to `https://hq.houseofgeeks.com.au`. |
+
+The same module holds the shared spam check. A filled honeypot (`website`), a name or message mostly in Cyrillic or CJK script, a URL in the name, more than two links in the message, or obvious SEO and advertising phrases get the normal success response but no email and no HQ deal. Names containing the word "test" still go through and reach HQ flagged `test: true`.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

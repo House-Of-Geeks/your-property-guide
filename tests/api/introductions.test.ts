@@ -243,4 +243,34 @@ describe("POST /api/introductions", () => {
     expect(res.status).toBe(200);
     expect(m.create).not.toHaveBeenCalled();
   });
+
+  it("drops script, link and SEO spam like a honeypot hit", async () => {
+    for (const bad of [{ firstName: "Иван" }, { notes: "Cheap backlinks and SEO services" }, { notes: "http://a.example http://b.example http://c.example" }]) {
+      const res = await POST(req({ ...seller, ...bad }));
+      expect(res.status).toBe(200);
+    }
+    expect(m.create).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("sends the request to HQ as one deal, best effort", async () => {
+    vi.stubEnv("HQ_LEADS_SECRET", "hq-secret");
+    vi.stubEnv("SENT247_API_KEY", "");
+    const res = await POST(req(seller));
+    expect(res.status).toBe(200);
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe("https://hq.houseofgeeks.com.au/api/inbound/leads");
+    expect(init.headers.Authorization).toBe("Bearer hq-secret");
+    expect(JSON.parse(init.body)).toMatchObject({ venture: "your-property-guide", name: "Sarah Lee", source: "introduction_request", email: "sarah@example.com" });
+  });
+
+  it("does not fail the request or the emails when HQ is down", async () => {
+    vi.stubEnv("HQ_LEADS_SECRET", "hq-secret");
+    vi.stubEnv("SENT247_API_KEY", "");
+    fetchMock.mockRejectedValue(new Error("down"));
+    const res = await POST(req(seller));
+    expect(res.status).toBe(200);
+    expect(teamMail()).toBeTruthy();
+  });
 });

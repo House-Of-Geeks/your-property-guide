@@ -111,6 +111,71 @@ describe("POST /api/leads", () => {
     expect(sendMailMock).not.toHaveBeenCalled();
   });
 
+  describe("HQ hand-off and spam", () => {
+    const hqFetch = vi.fn();
+    beforeEach(() => {
+      hqFetch.mockReset();
+      hqFetch.mockResolvedValue(new Response("{}", { status: 201 }));
+      vi.stubGlobal("fetch", hqFetch);
+      vi.stubEnv("HQ_LEADS_SECRET", "hq-secret");
+    });
+    afterEach(() => {
+      vi.unstubAllEnvs();
+      vi.unstubAllGlobals();
+    });
+
+    it("sends an accepted lead to HQ after the response, alongside the emails", async () => {
+      const res = await POST(makeRequest({ ...baseLead, lastName: "Citizen", phone: "0412345678", message: "Keen to sell" }, { referer: "https://example.com/appraisal?x=1", host: "example.com" }));
+      expect(res.status).toBe(200);
+      expect(sendMailMock).toHaveBeenCalledTimes(2);
+      await Promise.all(deferred.map((task) => task()));
+      expect(hqFetch).toHaveBeenCalledTimes(1);
+      const body = JSON.parse(hqFetch.mock.calls[0][1].body);
+      expect(body).toMatchObject({
+        venture: "your-property-guide",
+        name: "Jane Citizen",
+        email: "jane@example.com",
+        source: "appraisal_request",
+        sourceUrl: "https://www.yourpropertyguide.com.au/appraisal?x=1",
+      });
+      expect(body.notes).toContain("Message: Keen to sell");
+      expect(body.test).toBeUndefined();
+    });
+
+    it("still emails and responds normally when HQ is down", async () => {
+      hqFetch.mockRejectedValue(new Error("connection refused"));
+      const res = await POST(makeRequest(baseLead));
+      expect(res.status).toBe(200);
+      await Promise.all(deferred.map((task) => task()));
+      expect(sendMailMock).toHaveBeenCalledTimes(2);
+    });
+
+    it("flags obvious test names as test deals but still emails", async () => {
+      await POST(makeRequest({ ...baseLead, firstName: "TEST", lastName: "Dev Bot" }));
+      await Promise.all(deferred.map((task) => task()));
+      expect(sendMailMock).toHaveBeenCalledTimes(2);
+      expect(JSON.parse(hqFetch.mock.calls[0][1].body).test).toBe(true);
+    });
+
+    it("drops spam with a success response, no row, no email and no HQ deal", async () => {
+      const spam = [
+        { ...baseLead, firstName: "Иван", lastName: "Петров" },
+        { ...baseLead, firstName: "http://spam.example" },
+        { ...baseLead, message: "a http://a.example b http://b.example c http://c.example" },
+        { ...baseLead, message: "Our SEO services will put you on the first page of Google" },
+      ];
+      for (const body of spam) {
+        const res = await POST(makeRequest(body));
+        expect(res.status).toBe(200);
+        expect((await res.json()).success).toBe(true);
+      }
+      await Promise.all(deferred.map((task) => task()));
+      expect(dbLeadCreate).not.toHaveBeenCalled();
+      expect(sendMailMock).not.toHaveBeenCalled();
+      expect(hqFetch).not.toHaveBeenCalled();
+    });
+  });
+
   it("rate-limits after 5 requests from the same IP within 60s", async () => {
     const ip = "203.0.113.99";
     const opts = { "x-forwarded-for": ip };

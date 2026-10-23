@@ -4,6 +4,7 @@ import { checkRateLimit, ipKeyFromRequest } from "@/lib/rate-limit";
 import { attributionFromRequest } from "@/lib/attribution-server";
 import { requestContext } from "@/lib/sent247";
 import { normalizePhone } from "@/lib/utils/phone";
+import { checkLeadSpam, deferLeadToHq, hqAttribution, hqNotes, hqSource, hqSourceUrl } from "@/lib/hq-leads";
 import { handleIntroductionRequest } from "@/lib/introductions/server";
 
 // POST /api/introductions: the introduction path (Oct 2026). Someone asks to
@@ -66,8 +67,13 @@ export async function POST(request: Request) {
   }
   const input = parsed.data;
 
-  if (input.website && input.website.trim()) {
-    // Honeypot: look successful, keep nothing.
+  const spam = checkLeadSpam({
+    honeypot: input.website,
+    name: [input.firstName, input.lastName].filter(Boolean).join(" "),
+    message: input.notes,
+  });
+  if (spam.spam) {
+    // Honeypot or obvious spam: look successful, keep nothing.
     return NextResponse.json({ ok: true, groupId: "ok", duplicate: false, items: [] });
   }
   // An introduction needs a yes for at least one service it asks for.
@@ -79,7 +85,38 @@ export async function POST(request: Request) {
   }
 
   try {
-    const result = await handleIntroductionRequest(input, attributionFromRequest(request), requestContext(request));
+    const attribution = attributionFromRequest(request);
+    const result = await handleIntroductionRequest(input, attribution, requestContext(request));
+    if (!result.duplicate) {
+      const name = [input.firstName, input.lastName].filter(Boolean).join(" ");
+      const wanted = input.services.map((s) => (s === "selling-agent" ? "selling agent" : "buyer's agent")).join(" and ");
+      deferLeadToHq({
+        name,
+        email: input.email,
+        phone: input.phone,
+        source: hqSource("introduction-request"),
+        brief: `Introduction request (${wanted}) from ${name}${input.suburb ? `, ${input.suburb}` : ""}`,
+        notes: hqNotes([
+          ["Wants an introduction to", wanted],
+          ["Journey", input.journey],
+          ["Preferred contact", input.preferredContact],
+          ["Best time", input.bestTime],
+          ["State", input.state],
+          ["Suburb", input.suburb],
+          ["Property type", input.propertyType],
+          ["Timeframe", input.timeframe],
+          ["Selling status", input.sellerStatus],
+          ["Buying status", input.buyerStatus],
+          ["Buyer type", input.buyerType],
+          ["Budget", input.budget],
+          ["Page source", input.source],
+          ["Notes", input.notes],
+        ]),
+        sourceUrl: hqSourceUrl(attribution.sourcePage),
+        nextAction: "Check the introduction went to the agent",
+        attribution: hqAttribution(attribution),
+      });
+    }
     return NextResponse.json({ ok: true, ...result });
   } catch (err) {
     console.error("Introduction request error:", err);
