@@ -18,6 +18,9 @@ interface SuburbContextualLinksProps {
   // Whether the page publishes a sourced house median: the "house prices"
   // anchor (#market) is drawn only then, since the band is "Rent in X" otherwise.
   hasPublishedMedian: boolean;
+  // Nearby suburbs that have a published side-by-side page with this one
+  // (lib/compare-pairs.ts). Only those are linked, so no link 404s.
+  compareSlugs: string[];
 }
 
 function nearbyName(slug: string): string {
@@ -107,7 +110,7 @@ function LinkColumn({ title, links }: { title: string; links: { label: string; h
  * seller guides for its state and the buyer tools. One tidy block, so the
  * neighbours are linked once here rather than in three places up the page.
  */
-export function SuburbContextualLinks({ suburb, availability, hasPublishedMedian }: SuburbContextualLinksProps) {
+export function SuburbContextualLinks({ suburb, availability, hasPublishedMedian, compareSlugs }: SuburbContextualLinksProps) {
   const { name, slug, state, postcode, nearbySuburbs } = suburb;
   // Data-driven neighbours first (cut at ten), then the editorial links, which
   // the cut does not touch. One link per href.
@@ -115,7 +118,7 @@ export function SuburbContextualLinks({ suburb, availability, hasPublishedMedian
   for (const e of editorialLinksFor(`/suburbs/${slug}`)) {
     if (!nearbyLinks.some((l) => l.href === e.href)) nearbyLinks.push({ label: e.anchor, href: e.href });
   }
-  const compare = nearbySuburbs.slice(0, 6);
+  const compare = compareSlugs;
   const buyingLinks = buyingLinksForState(state);
   const sellingLinks = sellingLinksForState(state);
   const stateUpper = (state ?? "").toUpperCase();

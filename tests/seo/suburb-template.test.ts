@@ -120,6 +120,7 @@ describe("related links", () => {
       suburb: { name: s.name, slug: s.slug, state: s.state, postcode: s.postcode, nearbySuburbs: s.nearbySuburbs },
       availability: {} as never,
       hasPublishedMedian,
+      compareSlugs: [],
     }));
 
   it("draws the house prices anchor only with a published median", () => {

@@ -12,13 +12,13 @@ interface SchoolPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// 24h ISR (fix item 4a, part two). The annual schools sync and the
+// 7-day ISR (fix item 4a, part two). The annual schools sync and the
 // quarterly sync revalidate these paths on demand
 // (scripts/sync/revalidate-paths.ts). The listing search that used to fill
 // the left column (legacy demo listings, buy/rent/sold filters) went with the
 // portal on 14 Oct 2026; the column now points to the suburb and the next
 // steps for buying or selling near the school.
-export const revalidate = 86400;
+export const revalidate = 604800;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 
@@ -247,10 +247,11 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
               </div>
             </div>
 
-            {/* Compare this school */}
+            {/* Other schools in the suburb. These link to each school's own
+                profile: school-vs-school pages are no longer published. */}
             {school.acaraId && nearbySchools.length > 0 && (
               <div className="bg-white rounded-xl border border-line p-5">
-                <h3 className="text-base text-ink mb-3">Compare {school.name}</h3>
+                <h3 className="text-base text-ink mb-3">Other schools in {school.suburb.name}</h3>
                 <ul className="space-y-2">
                   {nearbySchools.map((other) => {
                     if (!other.acaraId) return null;
@@ -258,7 +259,7 @@ export default async function SchoolPage({ params }: SchoolPageProps) {
                     return (
                       <li key={other.acaraId}>
                         <Link
-                          href={`/schools/${slug}/vs/${otherSlug}`}
+                          href={`/schools/${otherSlug}`}
                           className="flex items-center justify-between gap-2 text-sm text-ink hover:text-primary transition-colors group"
                         >
                           <span className="truncate group-hover:underline">{other.name}</span>

@@ -21,6 +21,13 @@ import { prisma } from "./db";
 
 const BASE = (process.env.REVALIDATE_TARGET_URL ?? "https://www.yourpropertyguide.com.au").replace(/\/$/, "");
 const CHUNK = 500; // /api/revalidate accepts up to 1000 per call
+const SUBURB_AGGREGATE_PATTERNS = [
+  "/regions/[slug]",
+  "/states/[state]",
+  "/property-market/[city]",
+  "/best-suburbs/[category]",
+  "/best-suburbs/[category]/[state]",
+];
 
 async function post(body: Record<string, unknown>): Promise<void> {
   const res = await fetch(`${BASE}/api/revalidate`, {
@@ -70,6 +77,12 @@ async function main(): Promise<void> {
     sent += chunk.length;
   }
   console.log(`revalidate-paths: invalidated ${sent} paths (${changed.length} suburbs updated in last ${windowHours}h, ${postcodes.size} postcodes)`);
+
+  // Aggregate pages built from suburb stats are 7-day ISR too. Invalidate
+  // their route patterns (lazy, regenerated on next request) so they pick
+  // up the new numbers without waiting out the window.
+  await post({ paths: SUBURB_AGGREGATE_PATTERNS, type: "page" });
+  console.log(`revalidate-paths: invalidated route patterns ${SUBURB_AGGREGATE_PATTERNS.join(", ")}`);
 }
 
 main()

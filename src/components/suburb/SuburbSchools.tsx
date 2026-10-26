@@ -1,8 +1,13 @@
 "use client";
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import type { School } from "@/types";
+import type { School as FullSchool } from "@/types";
 import { makeSchoolSlug } from "@/lib/utils/school";
+
+// Only the fields this list draws. The page passes these and nothing else, so
+// the other School fields (website, ICSEA, enrolment, distance) are not
+// serialized into the HTML and the RSC payload of every suburb page.
+export type School = Pick<FullSchool, "name" | "type" | "sector" | "yearRange" | "gender" | "acaraId">;
 
 interface SuburbSchoolsProps {
   suburbName: string;

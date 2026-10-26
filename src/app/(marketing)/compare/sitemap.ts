@@ -12,22 +12,15 @@ import { unstable_cache } from "next/cache";
 import { SITE_URL } from "@/lib/constants";
 import { canonicalComparePath } from "@/lib/suburb-indexability";
 import { NOT_PLACES_VERSION } from "@/lib/non-localities";
-import {
-  getTopComparisonPairsByState,
-  type ComparisonPair,
-} from "@/lib/services/suburb-rankings-service";
-
-const STATES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"];
-const PAIRS_PER_STATE = 80;
+import type { ComparisonPair } from "@/lib/services/suburb-rankings-service";
+import { getCompareSitemapPairs } from "@/lib/compare-pairs";
 
 export type CompareSitemapLink = { url: string; title: string };
 
 const getEntries = unstable_cache(
   async (): Promise<CompareSitemapLink[]> => {
-    const byState = await Promise.all(
-      STATES.map((s) => getTopComparisonPairsByState(s, PAIRS_PER_STATE)),
-    );
-    const pairs: ComparisonPair[] = byState.flat();
+    // The same pairs the /suburbs/[slug]/vs/[compareSlug] route accepts.
+    const pairs: ComparisonPair[] = await getCompareSitemapPairs();
     const nameBySlug = new Map<string, string>();
     for (const pair of pairs) {
       nameBySlug.set(pair.aSlug, pair.aName);
