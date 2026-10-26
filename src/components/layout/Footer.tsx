@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Phone } from "lucide-react";
 import { NewsletterForm as NewsletterFormFooter } from "@/components/newsletter/NewsletterForm";
 import { Logo } from "@/components/brand/Logo";
+import { FooterFollowOnGoogle } from "@/components/layout/FooterFollowOnGoogle";
 import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164 } from "@/lib/constants";
 
 // Oct 2026 ("confident moves"). Columns follow the move (buying, selling,
@@ -198,6 +199,7 @@ export function Footer() {
               <Phone className="h-4 w-4" aria-hidden="true" />
               {CONTACT_PHONE_DISPLAY}
             </a>
+            <FooterFollowOnGoogle />
           </div>
           <div className="lg:col-span-9 grid grid-cols-2 gap-x-6 gap-y-9 sm:grid-cols-3 lg:grid-cols-5">
             {FOOTER_COLUMNS.map((col) => (
