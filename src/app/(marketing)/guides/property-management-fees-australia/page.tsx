@@ -215,9 +215,8 @@ export default function PropertyManagementFeesGuide() {
       <p>
         <small>
           Sources for the table, with dates. The state averages are
-          LocalAgentFinder&rsquo;s, the same figures Google&rsquo;s AI Overview
-          prints for this search; the ranges are REIQ&rsquo;s table (sourced to
-          realestate.com.au) and WhichRealEstateAgent&rsquo;s city guides. A
+          LocalAgentFinder&rsquo;s; the ranges are REIQ&rsquo;s table (sourced
+          to realestate.com.au) and WhichRealEstateAgent&rsquo;s city guides. A
           &ldquo;no published range&rdquo; cell means none of these names a
           figure for that state, not that the charge does not exist.
         </small>
@@ -227,9 +226,13 @@ export default function PropertyManagementFeesGuide() {
           <li key={s.n}>
             <small>
               [{s.n}]{" "}
-              <a href={s.href} target="_blank" rel="nofollow noopener">
-                {s.label}
-              </a>
+              {s.href ? (
+                <a href={s.href} target="_blank" rel="nofollow noopener">
+                  {s.label}
+                </a>
+              ) : (
+                s.label
+              )}
               {s.date ? `, ${s.date}` : ""}.
             </small>
           </li>
@@ -271,9 +274,9 @@ export default function PropertyManagementFeesGuide() {
       <p>
         The headline percentage, calculated on rent <em>collected</em>, not
         rent owed, so a vacancy costs no fee. Published ranges run from 5% to 8% in
-        New South Wales, 5% to 10% in Victoria, between 7% and 12% in
-        Queensland, 8.5% to 11% in Western Australia and 9% to 15% in South
-        Australia; the table above has each state.
+        Sydney, 5% to 10% in Victoria, 7% to 12% in Queensland, 8.5% to 11% in
+        Perth and 9% to 15% in South Australia; the table above has each state,
+        including the regional figures.
       </p>
 
       <h3>2. Letting fee</h3>

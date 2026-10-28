@@ -13,6 +13,7 @@ import { SITE_NAME } from "@/lib/constants/seo";
 import { PM_FEES_FAQS } from "@/lib/data/property-management-fees";
 import { CALCULATOR_GUIDES } from "@/lib/guides/hub-guides";
 import { TOOL_GROUPS } from "@/lib/tools";
+import { PropertyManagementFeesCalculator, type PropertyManagementFeesCalculatorProps } from "@/components/calculators/PropertyManagementFeesCalculator";
 import CalculatorPage, { metadata as calcMeta } from "@/app/(marketing)/property-management-fees-calculator/page";
 import { metadata as guideMeta } from "@/app/(marketing)/guides/property-management-fees-australia/page";
 
@@ -86,11 +87,16 @@ describe("meta descriptions", () => {
     const { PM_FEES_FAQS, PM_FEE_SOURCES } = await import("@/lib/data/property-management-fees");
     const q5 = PM_FEES_FAQS.find((f) => f.question.includes("tax deductible"))!;
     expect(q5.answer).toContain("(ATO, Common property expenses)");
-    expect(q5.answer.split(/\s+/).length).toBeGreaterThanOrEqual(40);
+    const words = q5.answer.split(/\s+/).length;
+    expect(words).toBeGreaterThanOrEqual(40);
+    expect(words).toBeLessThanOrEqual(60);
     expect(q5.answer).not.toMatch(/Rental properties guide|advertising|buyer's agent|selling the property/);
     expect(PM_FEE_SOURCES.ato.label).toContain("Common property expenses");
     expect(PM_FEE_SOURCES.ato.label).not.toContain("Rental properties guide");
     expect(PM_FEE_SOURCES.ato.date).toBeUndefined();
+    expect(new URL(PM_FEE_SOURCES.ato.href!).hostname).toBe("www.ato.gov.au");
+    const q4 = PM_FEES_FAQS.find((f) => f.question.includes("average property management fee")) ?? PM_FEES_FAQS[2];
+    expect(q4.answer).not.toContain("and Queensland");
   });
 });
 
@@ -149,7 +155,57 @@ describe("no all-in claim", () => {
     }
     const guide = read(GUIDE_FILE);
     expect(guide).not.toMatch(/7% to 12% in Brisbane, Perth and Adelaide/);
+    expect(guide).toContain("5% to 8% in\n        Sydney");
+    expect(guide).not.toMatch(/AI Overview/);
     expect(guide).not.toContain("6% to 12%");
     expect(read("public/llms.txt")).not.toMatch(/Property management fees Australia\]\([^)]*\): [^\n]*(all-in|8 fee types and)/);
+  });
+});
+
+const Calc = PropertyManagementFeesCalculator as (p: PropertyManagementFeesCalculatorProps) => ReturnType<typeof PropertyManagementFeesCalculator>;
+
+describe("South Australia's starting fee", () => {
+  const pct = (html: string) => html.match(/id="pm-pct"[^>]*value="([^"]*)"/)?.[1];
+  it("renders 9 in the management fee box with SA selected, with its own hint, and 7.5 for Queensland", () => {
+    const sa = renderToStaticMarkup(createElement(Calc, { initialState: "SA" }));
+    expect(pct(sa)).toBe("9");
+    expect(sa).toContain("The low end of the published range is the starting figure.");
+    const qld = renderToStaticMarkup(createElement(Calc, { initialState: "QLD" }));
+    expect(pct(qld)).toBe("7.5");
+    expect(qld).toContain("The average is the starting figure.");
+  });
+  it("the guide meta description does not contain the word calculator", () => {
+    expect(String(guideMeta.description)).not.toMatch(/calculator/i);
+  });
+});
+
+describe("no links to LocalAgentFinder or WhichRealEstateAgent", () => {
+  const BANNED = /local-?agent-?finder|which-?real-?estate-?agent/i;
+  const urlsIn = (v: unknown, out: string[] = []): string[] => {
+    if (typeof v === "string") { if (/^https?:\/\//i.test(v)) out.push(v); }
+    else if (Array.isArray(v)) v.forEach((x) => urlsIn(x, out));
+    else if (v && typeof v === "object") Object.values(v).forEach((x) => urlsIn(x, out));
+    return out;
+  };
+  it("neither site has a URL in the reference list, and both are still named in plain text", async () => {
+    const { PM_FEE_SOURCES } = await import("@/lib/data/property-management-fees");
+    for (const src of Object.values(PM_FEE_SOURCES)) expect(src.href ?? "", src.label).not.toMatch(BANNED);
+    expect(Object.values(PM_FEE_SOURCES).some((s) => s.label.startsWith("LocalAgentFinder"))).toBe(true);
+    expect(Object.values(PM_FEE_SOURCES).some((s) => s.label.startsWith("WhichRealEstateAgent"))).toBe(true);
+  });
+  it("the new page's HTML has no href, and its JSON-LD no url, sameAs or citation, pointing at either site", () => {
+    const html = renderToStaticMarkup(createElement(CalculatorPage));
+    for (const m of html.matchAll(/href="([^"]*)"/g)) expect(m[1]).not.toMatch(BANNED);
+    const blocks = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1].replace(/\\u003c/g, "<")));
+    expect(blocks.length).toBeGreaterThan(0);
+    for (const u of urlsIn(blocks)) expect(u).not.toMatch(BANNED);
+    // Plain-text naming survives in the page text.
+    expect(html).toMatch(/LocalAgentFinder/);
+  });
+  it("the guide, the calculator component and llms.txt contain no link to either site", () => {
+    for (const f of [GUIDE_FILE, CALC_FILE, "src/components/calculators/PropertyManagementFeesCalculator.tsx", "src/lib/data/property-management-fees.ts"]) {
+      expect(read(f), f).not.toMatch(/https?:\/\/[^\s"']*(localagentfinder|whichrealestateagent)/i);
+    }
+    for (const l of read("public/llms.txt").split("\n").filter((x) => /property-management-fees/.test(x))) expect(l).not.toMatch(BANNED);
   });
 });

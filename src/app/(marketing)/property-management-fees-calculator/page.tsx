@@ -174,9 +174,13 @@ export default function PropertyManagementFeesCalculatorPage() {
               <li key={src.n}>
                 <small>
                   [{src.n}]{" "}
-                  <a href={src.href} target="_blank" rel="nofollow noopener">
-                    {src.label}
-                  </a>
+                  {src.href ? (
+                    <a href={src.href} target="_blank" rel="nofollow noopener">
+                      {src.label}
+                    </a>
+                  ) : (
+                    src.label
+                  )}
                   {src.date ? `, ${src.date}` : ""}.
                 </small>
               </li>

@@ -38,7 +38,8 @@ export interface PmSource {
   /** Footnote number printed under the table, in this order. */
   n: number;
   label: string;
-  href: string;
+  /** Link to the source page. Left out for LocalAgentFinder and WhichRealEstateAgent, which are named in plain text and never linked. */
+  href?: string;
   /** The publication or last-updated date as the source shows it, or the date we read it. Left out when we have not opened the page. */
   date?: string;
 }
@@ -47,7 +48,6 @@ export const PM_FEE_SOURCES: Record<PmSourceKey, PmSource> = {
   laf: {
     n: 1,
     label: "LocalAgentFinder, Property Management Fees Australia: 2026 Guide (state average management and letting fees)",
-    href: "https://www.localagentfinder.com.au/blog/property-management-commission-fees",
     date: "13 March 2026",
   },
   reiq: {
@@ -59,43 +59,36 @@ export const PM_FEE_SOURCES: Record<PmSourceKey, PmSource> = {
   "wra-syd": {
     n: 3,
     label: "WhichRealEstateAgent, Sydney Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/nsw-sydney/",
     date: "updated 19 March 2026",
   },
   "wra-mel": {
     n: 4,
     label: "WhichRealEstateAgent, Melbourne Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/vic-melbourne/",
     date: "2026 edition, read 30 September 2026",
   },
   "wra-bne": {
     n: 5,
     label: "WhichRealEstateAgent, Brisbane Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/qld-brisbane/",
     date: "2026 edition, read 30 September 2026",
   },
   "wra-per": {
     n: 6,
     label: "WhichRealEstateAgent, Perth Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/wa-perth/",
     date: "2026 edition, read 30 September 2026",
   },
   "wra-adl": {
     n: 7,
     label: "WhichRealEstateAgent, Adelaide Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/sa-adelaide/",
     date: "updated 19 March 2026",
   },
   "wra-hba": {
     n: 8,
     label: "WhichRealEstateAgent, Hobart Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/tas-hobart/",
     date: "2026 edition, read 30 September 2026",
   },
   "wra-cbr": {
     n: 9,
     label: "WhichRealEstateAgent, Canberra Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/act-canberra/",
     date: "2026 edition, read 30 September 2026",
   },
   "nsw-agency": {
@@ -181,12 +174,14 @@ export interface PmPctRange {
   /** Published range, percent of rent collected. */
   low: number;
   high: number;
-  /** State average, LocalAgentFinder March 2026 (the figure the AI Overview prints). */
+  /** State average, LocalAgentFinder March 2026. */
   average: number;
   /** Where the capital differs from the state. */
   note?: string;
   /** Set when the average is a separate measure from the published range, so the two are not read as one series. */
   averageNote?: string;
+  /** Calculator starting percentage when the average is not part of the published range: the low end of that range. */
+  startPct?: number;
   sources: PmSourceKey[];
 }
 
@@ -287,7 +282,7 @@ export const PM_STATE_FEES: Record<StateCode, PmStateFees> = {
     state: "SA",
     name: STATE_NAMES.SA,
     capital: "Adelaide",
-    management: { low: 9, high: 15, average: 7.5, note: "Adelaide agencies mostly 9% to 11%", averageNote: "a separate statewide measure from LocalAgentFinder, not part of the Adelaide range", sources: ["laf", "reiq", "wra-adl"] },
+    management: { low: 9, high: 15, average: 7.5, note: "Adelaide agencies mostly 9% to 11%", averageNote: "a separate statewide measure from LocalAgentFinder, not part of the Adelaide range", startPct: 9, sources: ["laf", "reiq", "wra-adl"] },
     letting: { low: 2, high: 2, average: 1.9, sources: ["laf", "wra-adl"] },
     renewal: { low: 1, high: 1, unit: "weeks", note: "often one week's rent", sources: ["wra-adl"] },
     inspection: { low: 50, high: 100, unit: "dollars", note: "each", sources: ["wra-adl"] },
@@ -462,12 +457,12 @@ export const PM_FEES_FAQS: PmFaq[] = [
   {
     question: "What is the average property management fee in Australia?",
     answer:
-      "About 7.5% of weekly rent, with a letting fee averaging 1.4 weeks' rent (LocalAgentFinder, March 2026). New South Wales (5.8%) and Victoria (5.9%) are the cheapest states; Western Australia and Tasmania (8.7%) the dearest. The published range goes up to about 12% in regional New South Wales and Queensland (REIQ, December 2023). Letting, renewal, inspection and statement charges come on top where an agency charges them. Western Australia and South Australia are the two states where all of the renewal, inspection and statement ranges are published, and the calculator on this page adds the lines up for each state.",
+      "About 7.5% of weekly rent, with a letting fee averaging 1.4 weeks' rent (LocalAgentFinder, March 2026). New South Wales (5.8%) and Victoria (5.9%) are the cheapest states; Western Australia and Tasmania (8.7%) the dearest. The published range goes up to about 12% in regional New South Wales (REIQ, December 2023). Letting, renewal, inspection and statement charges come on top where an agency charges them. Western Australia and South Australia are the two states where all of the renewal, inspection and statement ranges are published, and the calculator on this page adds the lines up for each state.",
   },
   {
     question: "Is the property management fee tax deductible?",
     answer:
-      "Yes. A property agent's fees and commission on a rental property are an immediate deduction (ATO, Common property expenses). The management fee is charged as a percentage of the rent collected, and the national average is 7.5% (LocalAgentFinder, March 2026), so the amount you can deduct rises and falls with the rent. Keep the agency's end-of-financial-year statement for your tax return.",
+      "Yes. A property agent's fees and commission on a rental property are an immediate deduction (ATO, Common property expenses). The management fee is charged as a percentage of the rent collected, and the national average is 7.5% (LocalAgentFinder, March 2026), so the deduction moves with the rent. Keep the agency's end-of-financial-year statement for your tax return.",
   },
   {
     question: "Can I negotiate the property management fee?",

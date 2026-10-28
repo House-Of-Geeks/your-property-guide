@@ -77,7 +77,7 @@ describe("computePmFees", () => {
     for (const s of PM_STATE_ORDER) {
       const f = PM_STATE_FEES[s];
       const d = defaultPmFeesInput(s, 700);
-      expect(d.managementPct).toBe(f.management.average);
+      expect(d.managementPct).toBe(f.management.startPct ?? f.management.average);
       expect(d.lettingWeeks).toBe(f.letting.average);
       expect(d.inspectionsPerYear).toBe(f.inspectionsPerYear);
       expect(d.renewalFee).toBe(f.renewal ? (f.renewal.unit === "weeks" ? Math.round((700 * (f.renewal.low + f.renewal.high)) / 2) : Math.round((f.renewal.low + f.renewal.high) / 2)) : 0);
@@ -85,6 +85,13 @@ describe("computePmFees", () => {
       expect(d.adminFeePerYear).toBe(f.admin ? Math.round((f.admin.low + f.admin.high) / 2) : 0);
     }
     expect(defaultPmFeesInput("SA", 700).renewalFee).toBe(700); // often one week's rent
+  });
+  it("starts South Australia at 9%, the low end of the Adelaide range, not the 7.5% statewide average, and no other state is overridden", () => {
+    expect(defaultPmFeesInput("SA", 700).managementPct).toBe(9);
+    expect(PM_STATE_FEES.SA.management.startPct).toBe(PM_STATE_FEES.SA.management.low);
+    expect(PM_STATE_FEES.SA.management.average).toBe(7.5);
+    expect(computePmFees(defaultPmFeesInput("SA", 700)).managementCost).toBe(3_276); // 9% of $36,400
+    for (const s of PM_STATE_ORDER) if (s !== "SA") expect(PM_STATE_FEES[s].management.startPct).toBeUndefined();
   });
   it("keeps the FAQ free of an all-in range: NSW, VIC, QLD, TAS, ACT and NT have no published extras", () => {
     for (const f of PM_FEES_FAQS) {
@@ -123,8 +130,10 @@ describe("state fee table", () => {
     for (const src of PM_FEE_SOURCE_LIST) {
       // A date is printed only for pages we opened; the ATO page blocks automated fetches, so it carries none.
       if (src.date !== undefined) expect(src.date).toMatch(/20(2[0-9])/);
-      else expect(src.href).toContain("ato.gov.au");
-      expect(src.href).toMatch(/^https:\/\//);
+      else expect(new URL(src.href!).hostname).toBe("www.ato.gov.au");
+      // LocalAgentFinder and WhichRealEstateAgent are named in plain text and carry no link.
+      if (/^(LocalAgentFinder|WhichRealEstateAgent)/.test(src.label)) expect(src.href, src.label).toBeUndefined();
+      else expect(src.href, src.label).toMatch(/^https:\/\//);
     }
     expect(PM_FEE_SOURCE_LIST.map((s) => s.n)).toEqual(PM_FEE_SOURCE_LIST.map((_, i) => i + 1));
   });
