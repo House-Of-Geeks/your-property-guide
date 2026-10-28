@@ -20,14 +20,18 @@ export interface FeeSource {
   label: string;
   /** Date on the page, or the date it was read when it carries none. */
   date: string;
-  url: string;
+  /**
+   * Outbound link. Optional: LocalAgentFinder and WhichRealEstateAgent are
+   * named as plain-text sources only, never linked, so their entries carry
+   * no url and the page prints the label and date as text.
+   */
+  url?: string;
 }
 
 export const FEE_SOURCES = {
   laf: {
     label: "LocalAgentFinder, Property Management Fees Australia: 2026 Guide",
     date: "13 March 2026",
-    url: "https://www.localagentfinder.com.au/blog/property-management-commission-fees",
   },
   reiq: {
     label: "REIQ, Property management fees: an in-depth guide",
