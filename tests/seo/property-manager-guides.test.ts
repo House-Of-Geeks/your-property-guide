@@ -43,7 +43,7 @@ const decode = (s: string) =>
 const text = (html: string) => decode(html.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
 const pageFile = (slug: string) => `src/app/(marketing)/guides/${slug}/page.tsx`;
 
-function jsonLd(html: string): Array<Record<string, any>> {
+function jsonLd(html: string): Array<Record<string, unknown>> {
   return [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map((m) =>
     JSON.parse(m[1].replace(/\\u003c/g, "<")),
   );
@@ -160,7 +160,7 @@ describe("no placeholders, dev notes or dashes", () => {
 });
 
 describe("registry, hub, sitemap and search index", () => {
-  const slugs = PAGES.map((p) => p.slug);
+  const slugs: string[] = PAGES.map((p) => p.slug);
   it("the guide registry lists all three, dated 2026-10-28, in the investing section", () => {
     for (const s of slugs) {
       const g = getGuide(s);
