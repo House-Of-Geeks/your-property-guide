@@ -9,10 +9,12 @@ import { STATE_NAMES } from "@/lib/data/commission-rates";
 import {
   PM_FEES_AS_AT,
   PM_FEES_FAQS,
+  PM_FEE_SOURCE_LIST,
   PM_STATE_FEES,
   PM_STATE_ORDER,
   lettingCell,
   managementCell,
+  type PmCell,
 } from "@/lib/data/property-management-fees";
 import { computePmFees, defaultPmFeesInput } from "@/lib/property-management-fees-calc";
 import { formatPriceFull } from "@/lib/utils/format";
@@ -70,6 +72,25 @@ const FAQS: FaqItem[] = PM_FEES_FAQS.filter((f) => FAQ_QUESTIONS.includes(f.ques
   answer: f.answer,
 }));
 
+function Cell({ c }: { c: PmCell }) {
+  return (
+    <>
+      {c.text}
+      {c.refs.length > 0 && (
+        <>
+          {" "}
+          <sup>[{c.refs.join(", ")}]</sup>
+        </>
+      )}
+    </>
+  );
+}
+
+// Footnotes used in the state table, so the list under it names exactly those.
+const TABLE_REFS = [
+  ...new Set(PM_STATE_ORDER.flatMap((s) => [...managementCell(PM_STATE_FEES[s]).refs, ...lettingCell(PM_STATE_FEES[s]).refs])),
+].sort((a, b) => a - b);
+
 const RELATED: RelatedGuide[] = [
   { title: "Property management fees in Australia", href: "/guides/property-management-fees-australia", description: "Fee ranges by state, what the law says and the sources." },
   { title: "Rental yield calculator", href: "/rental-yield-calculator", description: "Gross and net yield on the same property." },
@@ -123,8 +144,8 @@ export default function PropertyManagementFeesCalculatorPage() {
             The calculator starts from each state&rsquo;s published figures. The{" "}
             <Link href="/guides/property-management-fees-australia">property management fees guide</Link>{" "}
             sets out the sources and what each state&rsquo;s law says. {UNPUBLISHED_LIST}{" "}
-            have no published renewal, inspection or admin ranges, so those lines
-            start at zero for those states and you enter the amounts from your agency&rsquo;s fee schedule.
+            have no renewal, inspection or admin ranges in the sources we use, so
+            those lines start at zero for those states, the starting total may understate the cost, and you enter the amounts from your agency&rsquo;s fee schedule.
           </p>
           <div className="overflow-x-auto">
             <table>
@@ -135,13 +156,32 @@ export default function PropertyManagementFeesCalculatorPage() {
                 {PM_STATE_ORDER.map((s) => (
                   <tr key={s}>
                     <td>{STATE_NAMES[s].replace(/^the /, "")}</td>
-                    <td>{managementCell(PM_STATE_FEES[s]).text}</td>
-                    <td>{lettingCell(PM_STATE_FEES[s]).text}</td>
+                    <td><Cell c={managementCell(PM_STATE_FEES[s])} /></td>
+                    <td><Cell c={lettingCell(PM_STATE_FEES[s])} /></td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          <p>
+            <small>
+              Sources for the table, with dates. The state averages are LocalAgentFinder&rsquo;s; the ranges are REIQ&rsquo;s table
+              (sourced to realestate.com.au) and WhichRealEstateAgent&rsquo;s city guides.
+            </small>
+          </p>
+          <ol>
+            {PM_FEE_SOURCE_LIST.filter((src) => TABLE_REFS.includes(src.n)).map((src) => (
+              <li key={src.n}>
+                <small>
+                  [{src.n}]{" "}
+                  <a href={src.href} target="_blank" rel="nofollow noopener">
+                    {src.label}
+                  </a>
+                  , {src.date}.
+                </small>
+              </li>
+            ))}
+          </ol>
 
           <h2>A worked example</h2>
           <p>

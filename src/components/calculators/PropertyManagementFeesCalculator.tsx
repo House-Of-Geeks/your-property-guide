@@ -179,14 +179,16 @@ export function PropertyManagementFeesCalculator({
         </dl>
         <p className="text-xs text-gray-500 mt-4">
           Indicative only: this is an estimate, not a quote, and not financial, tax or legal advice. The starting figures are each
-          state&rsquo;s published averages and ranges, and the fee figures are as at {PM_FEES_AS_AT} (sources under the table above); every
+          state&rsquo;s published averages and ranges, and the fee figures are as at {PM_FEES_AS_AT} (sources are listed with the state fee table); every
           line is negotiable and quoted individually. Management fees are deductible against rental income.
         </p>
-        <p className="text-xs text-gray-500 mt-2" data-testid="pm-fees-unpublished-note">
-          {UNPUBLISHED_LIST}{" "}
-          have no published renewal, inspection or admin ranges, so those lines start at zero and the starting total
-          understates the cost for those states. Enter the amounts in your agency&rsquo;s fee schedule.
-        </p>
+        {UNPUBLISHED_STATES.includes(state) && (
+          <p className="text-xs text-gray-500 mt-2" data-testid="pm-fees-unpublished-note">
+            {UNPUBLISHED_LIST}{" "}
+            have no renewal, inspection or admin ranges in the sources we use, so those lines start at zero and the starting total
+            may understate the cost for those states. Enter the amounts in your agency&rsquo;s fee schedule.
+          </p>
+        )}
       </div>
     </div>
   );

@@ -91,7 +91,11 @@ describe("/property-management-fees-calculator", () => {
   });
   it("tells the reader which states have no published renewal, inspection or admin ranges", () => {
     expect(widget).toContain('data-testid="pm-fees-unpublished-note"');
-    expect(widget).toContain("no published renewal, inspection or admin ranges");
+    expect(widget).toContain("have no renewal, inspection or admin ranges in the sources we use");
+    expect(widget).toContain("may understate");
+    expect(widget).not.toContain("understates");
+    expect(widget).toContain("UNPUBLISHED_STATES.includes(state)");
+    expect(widget).not.toContain("sources under the table above");
   });
   it("leaves the word calculator to this page: the fees guide drops it from its title and links here", () => {
     const frontmatterTitle = /title: "([^"]+)",\s*description:/.exec(guide)![1];
