@@ -284,7 +284,7 @@ export default function WhatDoesAPropertyManagerDoPage() {
       <ScrollTable label="Where to check in each state">
         <table>
           <thead>
-            <tr><th>State or territory</th><th>Regulator</th><th>Register link</th><th>Where to check</th></tr>
+            <tr><th>State or territory</th><th>Regulator</th><th>Where to check</th><th>What the regulator says</th></tr>
           </thead>
           <tbody>
             <tr><td>NSW</td><td>NSW Fair Trading</td><td><a href="https://www.nsw.gov.au/housing-and-construction/buying-and-selling-property/buying-property-nsw/preparing-to-purchase/property-agent-or-conveyancer-licence-check" target="_blank" rel="noopener noreferrer">Verify NSW licence check</a></td><td>Shows licence holder, category, conditions and disciplinary action</td></tr>
@@ -327,7 +327,7 @@ export default function WhatDoesAPropertyManagerDoPage() {
         <li><a href="https://www.consumerprotection.wa.gov.au/publications/you-and-your-property-manager" target="_blank" rel="noopener noreferrer">You and your property manager, Consumer Protection WA</a>: a regulator guide with questions to ask a property manager, written for Western Australian owners.</li>
       </ul>
 
-      <Sources title="Sources and last checked" intro={SOURCES_INTRO} items={SOURCES} />
+      <Sources title="Sources and last checked" intro={SOURCES_INTRO} noteSeparator=". " items={SOURCES} />
     </GuideArticleLayout>
   );
 }

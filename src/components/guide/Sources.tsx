@@ -17,9 +17,11 @@ interface SourcesProps {
   title?: string;
   /** Optional paragraph between the heading and the list. */
   intro?: string;
+  /** Text between a source's label and its note. Defaults to " · ". */
+  noteSeparator?: string;
 }
 
-export function Sources({ items, title = "Sources and methodology", intro }: SourcesProps) {
+export function Sources({ items, title = "Sources and methodology", intro, noteSeparator = " · " }: SourcesProps) {
   if (items.length === 0) return null;
   return (
     <section id="sources" className="mt-12 pt-8 border-t border-line scroll-mt-28">
@@ -44,7 +46,7 @@ export function Sources({ items, title = "Sources and methodology", intro }: Sou
               ) : (
                 <span>{item.label}</span>
               )}
-              {item.note && <span className="text-ink-subtle"> · {item.note}</span>}
+              {item.note && <span className="text-ink-subtle">{noteSeparator}{item.note}</span>}
             </li>
           );
         })}

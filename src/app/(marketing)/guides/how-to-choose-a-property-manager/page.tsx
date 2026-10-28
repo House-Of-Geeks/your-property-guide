@@ -156,11 +156,6 @@ const SOURCES: SourceItem[] = [
     note: "Last updated 9 April 2026.",
   },
   {
-    label: "Consumer and Business Services SA, Find a licence holder",
-    href: "https://www.cbs.sa.gov.au/find-a-licence-holder",
-    note: "No update date shown on the page.",
-  },
-  {
     label: "Property Agents Board of Tasmania, home page",
     href: "https://propertyagentsboard.com.au/",
     note: "No update date shown on the page.",
@@ -314,7 +309,7 @@ export default function HowToChooseAPropertyManagerPage() {
 
       <h2 id="check-the-licence-and-how-rent-reaches-you">Check the licence and how rent reaches you</h2>
 
-      <p>Search your state register before you sign, and ask for the licence number. In New South Wales, Verify NSW shows licence details. In Western Australia you can use the licence search or call Consumer Protection’s licensing branch. Victoria, Queensland, South Australia, Tasmania, the ACT and the Northern Territory each publish a register, linked below.</p>
+      <p>Search your state register before you sign, and ask for the licence number. In New South Wales, Verify NSW shows licence details. In Western Australia you can use the licence search or call Consumer Protection’s licensing branch. Victoria, Queensland, Tasmania, the ACT and the Northern Territory each publish a register, linked below. For South Australia, check with the state regulator.</p>
 
       <ScrollTable label="Check the licence and how rent reaches you">
         <table>
@@ -326,7 +321,6 @@ export default function HowToChooseAPropertyManagerPage() {
             <tr><td>VIC</td><td><a href="https://www.consumer.vic.gov.au/licensing-and-registration/estate-agents/public-register" target="_blank" rel="noopener noreferrer">Consumer Affairs Victoria, public register</a></td></tr>
             <tr><td>QLD</td><td><a href="https://www.qld.gov.au/law/laws-regulated-industries-and-accountability/queensland-laws-and-regulations/regulated-industries-and-licensing/regulated-industries-licensing-and-legislation/property-industry-regulation/check-a-property-licence" target="_blank" rel="noopener noreferrer">Queensland Government, check a property licence</a></td></tr>
             <tr><td>WA</td><td><a href="https://www.consumerprotection.wa.gov.au/consumer-protection/consumer-protection-licence-and-registration-search" target="_blank" rel="noopener noreferrer">Consumer Protection WA, licence search</a></td></tr>
-            <tr><td>SA</td><td><a href="https://www.cbs.sa.gov.au/find-a-licence-holder" target="_blank" rel="noopener noreferrer">Consumer and Business Services, find a licence holder</a></td></tr>
             <tr><td>TAS</td><td><a href="https://propertyagentsboard.com.au/" target="_blank" rel="noopener noreferrer">Property Agents Board of Tasmania</a></td></tr>
             <tr><td>ACT</td><td><a href="https://www.accesscanberra.act.gov.au/business-and-work/public-registers" target="_blank" rel="noopener noreferrer">Access Canberra, public registers</a></td></tr>
             <tr><td>NT</td><td><a href="https://licensingnt.nt.gov.au/PublicRegister/PublicRegister/LicenceSearch.aspx" target="_blank" rel="noopener noreferrer">NT Government, public register</a></td></tr>
@@ -334,7 +328,7 @@ export default function HowToChooseAPropertyManagerPage() {
         </table>
       </ScrollTable>
 
-      <p>Consumer Affairs Victoria says the agent should forward rent to you within a reasonable time, which can depend on whether the renter pays on time and how often the agent distributes payments from their trust account. It also says the agent should explain their accounting timelines. Ask each agent in writing how and when rent reaches you.</p>
+      <p>Rent usually passes through the agent. Consumer Affairs Victoria says the agent distributes payments from their trust account and should explain their accounting timelines. Consumer Protection WA refers to trust account requirements placed on real estate agents. Ask each agent in writing how and when rent reaches you.</p>
 
       <h2 id="warning-signs-to-ask-more-about">Warning signs to ask more about</h2>
 
@@ -360,7 +354,7 @@ export default function HowToChooseAPropertyManagerPage() {
 
       <p>{FEE_DISCLOSURE}</p>
 
-      <Sources title="Sources and last checked" intro={SOURCES_INTRO} items={SOURCES} />
+      <Sources title="Sources and last checked" intro={SOURCES_INTRO} noteSeparator=". " items={SOURCES} />
     </GuideArticleLayout>
   );
 }

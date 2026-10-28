@@ -152,11 +152,6 @@ const SOURCES: SourceItem[] = [
     note: "Last updated 21 January 2026.",
   },
   {
-    label: "Consumer and Business Services SA, Find a licence holder",
-    href: "https://www.cbs.sa.gov.au/find-a-licence-holder",
-    note: "No update date shown on the page.",
-  },
-  {
     label: "Property Agents Board of Tasmania, home page",
     href: "https://propertyagentsboard.com.au/",
     note: "No update date shown on the page.",
@@ -296,7 +291,7 @@ export default function SwitchingPropertyManagersPage() {
 
       <p>{FEE_DISCLOSURE}</p>
 
-      <Sources title="Sources and last checked" intro={SOURCES_INTRO} items={SOURCES} />
+      <Sources title="Sources and last checked" intro={SOURCES_INTRO} noteSeparator=". " items={SOURCES} />
     </GuideArticleLayout>
   );
 }
