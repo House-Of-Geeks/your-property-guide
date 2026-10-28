@@ -32,7 +32,7 @@ import { formatPriceFull } from "@/lib/utils/format";
 const FRONTMATTER: GuideFrontmatter = {
   title: "Property Management Fees in Australia 2026: Rates by State",
   description:
-    "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), letting fees in weeks, renewal, inspection and statement charges, sourced and dated, with an annual cost calculator.",
+    "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), plus letting, renewal, inspection and statement charges, sourced and dated.",
   slug: "property-management-fees-australia",
   publishedAt: "2026-05-06",
   updatedAt: "2026-10-16",
@@ -42,11 +42,12 @@ const FRONTMATTER: GuideFrontmatter = {
   persona: "investing",
 };
 
-// The <title> is shorter than the H1: the root layout appends
-// " | Your Property Guide", and 60 characters before that suffix is the SERP
-// budget (tests/seo/titles.test.ts). The long form stays the H1 and the
-// Article headline, which read FRONTMATTER.title.
-const SEO_TITLE = "Property Management Fees 2026: Rates by State";
+// The <title> is shorter than the H1. The root layout appends
+// " | Your Property Guide" (22 characters) and the rendered title stays at 60
+// characters including it, so this string is 38 or fewer
+// (tests/seo/calculator-pages.test.ts measures the rendered form). The long
+// form stays the H1 and the Article headline, which read FRONTMATTER.title.
+const SEO_TITLE = "Property Management Fees by State 2026";
 
 export const metadata: Metadata = {
   title: SEO_TITLE,
@@ -426,14 +427,14 @@ export default function PropertyManagementFeesGuide() {
       <ol>
         <li>
           Get three written fee schedules from local managers. Compare the
-          all-in annual number from the calculator, not the headline
+          annual total from the calculator, not the headline
           percentage.
         </li>
         <li>
           Ask each candidate for their average vacancy days and arrears rate.
         </li>
         <li>
-          Put the all-in cost, not just the management percentage, into the{" "}
+          Put the total annual cost, not just the management percentage, into the{" "}
           <a href="/rental-yield-calculator">rental yield calculator</a> to
           see your true net yield.
         </li>

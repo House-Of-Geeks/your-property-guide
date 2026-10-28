@@ -32,7 +32,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   persona: "investing",
 };
 
-const META_TITLE = "Property Management Fees Calculator: Annual Cost by State";
+const META_TITLE = "Property Management Fees Calculator";
 const META_DESCRIPTION =
   "Free property management fees calculator. Work out the annual cost of managing your rental, starting from the published fee ranges for each state.";
 
