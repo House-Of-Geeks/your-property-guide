@@ -32,10 +32,10 @@ import { formatPriceFull } from "@/lib/utils/format";
 const FRONTMATTER: GuideFrontmatter = {
   title: "Property Management Fees in Australia 2026: Rates by State",
   description:
-    "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), plus letting, renewal, inspection and statement charges, sourced and dated.",
+    "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), letting fees, and renewal, inspection and statement charges where published.",
   slug: "property-management-fees-australia",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-16",
+  updatedAt: "2026-10-28",
   readingTimeMinutes: 12,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -230,7 +230,7 @@ export default function PropertyManagementFeesGuide() {
               <a href={s.href} target="_blank" rel="nofollow noopener">
                 {s.label}
               </a>
-              , {s.date}.
+              {s.date ? `, ${s.date}` : ""}.
             </small>
           </li>
         ))}
@@ -270,9 +270,10 @@ export default function PropertyManagementFeesGuide() {
       <h3>1. Management fee</h3>
       <p>
         The headline percentage, calculated on rent <em>collected</em>, not
-        rent owed, so a vacancy costs no fee. About 5% to 8% in Sydney and
-        Melbourne, 7% to 12% in Brisbane, Perth and Adelaide and in regional
-        areas; the table above has each state.
+        rent owed, so a vacancy costs no fee. Published ranges run from 5% to 8% in
+        New South Wales, 5% to 10% in Victoria, between 7% and 12% in
+        Queensland, 8.5% to 11% in Western Australia and 9% to 15% in South
+        Australia; the table above has each state.
       </p>
 
       <h3>2. Letting fee</h3>
@@ -420,7 +421,7 @@ export default function PropertyManagementFeesGuide() {
         conversations.
       </p>
       <p>
-        For most investors, the time and risk reduction is worth the 6% to 12%.
+        For most investors, the time and risk reduction is worth the fee, which averages between 5.8% and 8.7% by state.
       </p>
 
       <h2 id="next-steps">Next steps</h2>

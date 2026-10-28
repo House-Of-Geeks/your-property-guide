@@ -37,7 +37,7 @@ const RAIL_BY_BLOG_SLUG: Record<string, RailGuide[]> = {
   "investment-property-guide-moreton-bay-corridor": [
     { href: "/guides/house-vs-apartment-investment-australia", title: "House vs apartment investment",   description: "Capital growth vs cash flow with a 20-year worked example." },
     { href: "/guides/negative-gearing-australia",            title: "Negative gearing in Australia",     description: "How it works and whether it fits your strategy." },
-    { href: "/guides/property-management-fees-australia",    title: "Property management fees",          description: "All-in cost most quotes hide." },
+    { href: "/guides/property-management-fees-australia",    title: "Property management fees",          description: "Fee ranges by state and the extra charges." },
   ],
   "top-5-suburbs-families-moreton-bay": [
     { href: "/guides/best-brisbane-suburbs-for-families-2026", title: "Best Brisbane suburbs for families", description: "Inner / middle / outer ring family picks." },

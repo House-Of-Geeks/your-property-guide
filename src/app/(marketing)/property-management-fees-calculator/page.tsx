@@ -177,7 +177,7 @@ export default function PropertyManagementFeesCalculatorPage() {
                   <a href={src.href} target="_blank" rel="nofollow noopener">
                     {src.label}
                   </a>
-                  , {src.date}.
+                  {src.date ? `, ${src.date}` : ""}.
                 </small>
               </li>
             ))}

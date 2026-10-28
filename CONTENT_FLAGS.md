@@ -60,8 +60,6 @@ Raised while the articles were reviewed for their campaign hooks, batch by batch
 | Check | `cost-of-selling-state.ts:281`, cost-of-selling-a-house-wa | The dollar commission on a typical Perth sale is "now close to Sydney levels a decade ago" | No source. On the page's own figures a Perth median sale pays about $24,000, which looks well above a 2016 Sydney sale. |
 | Check | `cost-of-selling-state.ts:77`, cost-of-selling-a-house-nsw | "From late 2026 the NSW underquoting reforms will also require a price or range in every advertisement" | No start date, and it's now October 2026. Check NSW Fair Trading. |
 | Check | `cost-of-selling-state.ts:93`, cost-of-selling-a-house-nsw | "most agents will release a seller who asks in writing" | A general claim about how agents behave, with no source. |
-| Conflict | property-management-fees-australia `page.tsx:418` | "worth the 6% to 12%" | The page's own range is 5% to 12%, and the state averages are 5.8% to 8.7% (`PM_STATE_FEES`). |
-| Conflict | property-management-fees-australia `page.tsx:270` | "7% to 12% in Brisbane, Perth and Adelaide" | `src/lib/data/property-management-fees.ts:457` says 7% to 11% for the same cities, and the data has Perth at 8.5% to 11%. |
 | Review | property-management-fees-australia `page.tsx:215` | The averages are "the same figures Google’s AI Overview prints for this search" | SEO language in a reader-facing source note. Suggest deleting it. |
 
 ### Batch 3: renters' rights, first home and schemes, granny flats, negotiation, settlement

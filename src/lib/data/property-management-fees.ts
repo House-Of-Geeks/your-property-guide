@@ -39,8 +39,8 @@ export interface PmSource {
   n: number;
   label: string;
   href: string;
-  /** The publication or last-updated date as the source shows it, or the date we read it. */
-  date: string;
+  /** The publication or last-updated date as the source shows it, or the date we read it. Left out when we have not opened the page. */
+  date?: string;
 }
 
 export const PM_FEE_SOURCES: Record<PmSourceKey, PmSource> = {
@@ -172,9 +172,8 @@ export const PM_FEE_SOURCES: Record<PmSourceKey, PmSource> = {
   },
   ato: {
     n: 22,
-    label: "ATO, Common property expenses (property agent's fees and commission are an immediate deduction), matching the Rental properties guide 2026",
+    label: "ATO, Common property expenses (property agent's fees and commission are an immediate deduction)",
     href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/property-and-land/residential-rental-properties/rental-expenses/common-property-expenses",
-    date: "21 May 2026",
   },
 };
 
@@ -468,7 +467,7 @@ export const PM_FEES_FAQS: PmFaq[] = [
   {
     question: "Is the property management fee tax deductible?",
     answer:
-      "Yes. Fees you pay a property agent to manage, inspect or collect rent for a rental property, such as regular management fees and commissions, are an immediate deduction in the income year you incur them, provided the property is rented or available to rent on commercial terms (ATO, Common property expenses, May 2026; ATO, Rental properties guide 2026). The cost of advertising for tenants is deductible the same way, but agent costs for selling the property and a buyer's agent's fees are not. Keep the agency's end-of-financial-year statement: it lists every fee for the return.",
+      "Yes. A property agent's fees and commission on a rental property are an immediate deduction (ATO, Common property expenses). The management fee is charged as a percentage of the rent collected, and the national average is 7.5% (LocalAgentFinder, March 2026), so the amount you can deduct rises and falls with the rent. Keep the agency's end-of-financial-year statement for your tax return.",
   },
   {
     question: "Can I negotiate the property management fee?",

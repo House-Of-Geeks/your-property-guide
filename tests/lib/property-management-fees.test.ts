@@ -121,7 +121,9 @@ describe("state fee table", () => {
       expect(f.regulated.length).toBeGreaterThan(80);
     }
     for (const src of PM_FEE_SOURCE_LIST) {
-      expect(src.date).toMatch(/20(2[0-9])/);
+      // A date is printed only for pages we opened; the ATO page blocks automated fetches, so it carries none.
+      if (src.date !== undefined) expect(src.date).toMatch(/20(2[0-9])/);
+      else expect(src.href).toContain("ato.gov.au");
       expect(src.href).toMatch(/^https:\/\//);
     }
     expect(PM_FEE_SOURCE_LIST.map((s) => s.n)).toEqual(PM_FEE_SOURCE_LIST.map((_, i) => i + 1));
@@ -213,6 +215,6 @@ describe("the guide page", () => {
     expect(src).toContain("PropertyManagementFeesCalculator");
     expect(src).toContain("stateFeeAnswer(");
     expect(src).toContain("faqs={PM_FEES_FAQS}");
-    expect(src).toContain('updatedAt: "2026-10-16"');
+    expect(src).toContain('updatedAt: "2026-10-28"');
   });
 });

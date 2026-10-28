@@ -71,6 +71,27 @@ describe("meta descriptions", () => {
     expect(Math.max(...avgs)).toBe(8.7);
     expect(String(guideMeta.description)).toContain("5.8% NSW to 8.7% WA and Tasmania");
   });
+  it("the guide's description says the extra charges are published only where they are", () => {
+    expect(String(guideMeta.description)).toBe(
+      "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), letting fees, and renewal, inspection and statement charges where published.",
+    );
+    expect(String(guideMeta.description).length).toBeLessThanOrEqual(155);
+  });
+  it("the guide's updatedAt is the same in the page and the manifest", () => {
+    const manifest = (JSON.parse(read("src/lib/data/static-guides.json")) as { guides: Array<{ slug: string; updatedAt: string }> }).guides;
+    expect(read(GUIDE_FILE)).toContain('updatedAt: "2026-10-28"');
+    expect(manifest.find((g) => g.slug === "property-management-fees-australia")?.updatedAt).toBe("2026-10-28");
+  });
+  it("the tax FAQ cites only sources that exist in the source list and prints no date it did not read", async () => {
+    const { PM_FEES_FAQS, PM_FEE_SOURCES } = await import("@/lib/data/property-management-fees");
+    const q5 = PM_FEES_FAQS.find((f) => f.question.includes("tax deductible"))!;
+    expect(q5.answer).toContain("(ATO, Common property expenses)");
+    expect(q5.answer.split(/\s+/).length).toBeGreaterThanOrEqual(40);
+    expect(q5.answer).not.toMatch(/Rental properties guide|advertising|buyer's agent|selling the property/);
+    expect(PM_FEE_SOURCES.ato.label).toContain("Common property expenses");
+    expect(PM_FEE_SOURCES.ato.label).not.toContain("Rental properties guide");
+    expect(PM_FEE_SOURCES.ato.date).toBeUndefined();
+  });
 });
 
 describe("FAQ and FAQPage JSON-LD", () => {
@@ -120,5 +141,15 @@ describe("no all-in claim", () => {
       expect(read(f), f).not.toMatch(/all[- ]in\b/i);
     }
     expect(text(renderToStaticMarkup(createElement(CalculatorPage)))).not.toMatch(/all[- ]in\b/i);
+  });
+  it("the guide prose, llms.txt, the guide rail and the article hook carry no all-in or stale range", () => {
+    for (const f of ["public/llms.txt", "src/components/blog/BlogGuideRail.tsx", "src/content/articles/batches/batch-02.ts"]) {
+      const lines = read(f).split("\n").filter((l) => l.includes("property-management-fees-australia") || l.includes("property manager too"));
+      for (const l of lines) expect(l, f).not.toMatch(/all[- ]in\b/i);
+    }
+    const guide = read(GUIDE_FILE);
+    expect(guide).not.toMatch(/7% to 12% in Brisbane, Perth and Adelaide/);
+    expect(guide).not.toContain("6% to 12%");
+    expect(read("public/llms.txt")).not.toMatch(/Property management fees Australia\]\([^)]*\): [^\n]*(all-in|8 fee types and)/);
   });
 });
