@@ -71,7 +71,7 @@ export const batch2: ArticleCampaignBatch = {
     cta: "selling-plan",
   },
   "property-management-fees-australia": {
-    hook: "The rule for choosing a selling agent holds for a property manager too: hire on results, not the headline rate. A cheap manager who leaves the property empty costs more, so get every fee in writing and compare the all-in annual cost.",
+    hook: "The rule for choosing a selling agent holds for a property manager too: hire on results, not the headline rate. A cheap manager who leaves the property empty costs more, so get every fee in writing and compare the total annual cost.",
     cta: "buying-plan",
   },
 };

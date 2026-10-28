@@ -49,6 +49,7 @@ export async function getPageSitemapEntries(): Promise<PageEntry[]> {
     { url: `${SITE_URL}/refinancing-calculator`,       title: "Refinancing Calculator", changeFrequency: "yearly",  priority: 0.6 },
     { url: `${SITE_URL}/lmi-calculator`,               title: "LMI calculator: what lenders mortgage insurance costs in 2026", changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/negative-gearing-calculator`,  title: "Negative gearing calculator: your weekly cost after tax (2026)", changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/property-management-fees-calculator`, title: "Property Management Fees Calculator", changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/bridging-loan-calculator`,     title: "Bridging loan calculator", changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/help-to-buy-calculator`,       title: "Help to Buy calculator", changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/fhss-calculator`,              title: "FHSS calculator", changeFrequency: "monthly", priority: 0.8 },

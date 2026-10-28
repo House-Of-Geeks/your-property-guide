@@ -558,6 +558,7 @@ describe("calculator page titles stay inside the SERP budget", () => {
   const pages: Array<[string, RegExp]> = [
     ["lmi-calculator", /^LMI Calculator/],
     ["negative-gearing-calculator", /^Negative Gearing Calculator/],
+    ["property-management-fees-calculator", /^Property Management Fees Calculator/],
   ];
   for (const [slug, lead] of pages) {
     it(`/${slug}`, async () => {

@@ -86,16 +86,23 @@ describe("computePmFees", () => {
     }
     expect(defaultPmFeesInput("SA", 700).renewalFee).toBe(700); // often one week's rent
   });
-  it("keeps the FAQ's all-in range honest: NSW about 7% and WA about 12% of rent at the defaults", () => {
-    const nsw = computePmFees(defaultPmFeesInput("NSW", 600)).pctOfRent;
-    const wa = computePmFees(defaultPmFeesInput("WA", 600)).pctOfRent;
-    expect(nsw).toBeGreaterThanOrEqual(6.5);
-    expect(nsw).toBeLessThanOrEqual(7.5);
-    expect(wa).toBeGreaterThanOrEqual(11.5);
-    expect(wa).toBeLessThanOrEqual(12.5);
-    const faq = PM_FEES_FAQS.find((f) => f.question === "What is the average property management fee in Australia?");
-    expect(faq?.answer).toContain("about 7% of annual rent");
-    expect(faq?.answer).toContain("about 12%");
+  it("starts South Australia at its 7.5% statewide average like every other state, not inside the 9% to 15% Adelaide range", () => {
+    expect(defaultPmFeesInput("SA", 700).managementPct).toBe(PM_STATE_FEES.SA.management.average);
+    expect(defaultPmFeesInput("SA", 700).managementPct).toBe(7.5);
+    expect(computePmFees(defaultPmFeesInput("SA", 700)).managementCost).toBe(2_730); // 7.5% of $36,400
+    expect(PM_STATE_FEES.SA.management.averageNote).toMatch(/separate statewide measure/);
+    expect(PM_STATE_FEES.SA.management.average).toBeLessThan(PM_STATE_FEES.SA.management.low);
+  });
+  it("keeps the FAQ free of an all-in range: NSW, VIC, QLD, TAS, ACT and NT have no published extras", () => {
+    for (const f of PM_FEES_FAQS) {
+      expect(f.answer, f.question).not.toMatch(/all[- ]in/i);
+      expect(f.answer, f.question).not.toContain("7% to 11%");
+      expect(f.answer, f.question).not.toContain("about 7% of annual rent");
+    }
+    const avg = PM_FEES_FAQS.find((f) => f.question === "What is the average property management fee in Australia?");
+    expect(avg?.answer).toContain("Western Australia and South Australia are the two states where all of the renewal, inspection and statement ranges are published");
+    const complete = PM_STATE_ORDER.filter((s) => PM_STATE_FEES[s].renewal && PM_STATE_FEES[s].inspection && PM_STATE_FEES[s].admin);
+    expect(complete).toEqual(["WA", "SA"]);
   });
 });
 
@@ -121,8 +128,12 @@ describe("state fee table", () => {
       expect(f.regulated.length).toBeGreaterThan(80);
     }
     for (const src of PM_FEE_SOURCE_LIST) {
-      expect(src.date).toMatch(/20(2[0-9])/);
-      expect(src.href).toMatch(/^https:\/\//);
+      // A date is printed only for pages we opened; the ATO page blocks automated fetches, so it carries none.
+      if (src.date !== undefined) expect(src.date).toMatch(/20(2[0-9])/);
+      else expect(new URL(src.href!).hostname).toBe("www.ato.gov.au");
+      // LocalAgentFinder and WhichRealEstateAgent are named in plain text and carry no link.
+      if (/^(LocalAgentFinder|WhichRealEstateAgent)/.test(src.label)) expect(src.href, src.label).toBeUndefined();
+      else expect(src.href, src.label).toMatch(/^https:\/\//);
     }
     expect(PM_FEE_SOURCE_LIST.map((s) => s.n)).toEqual(PM_FEE_SOURCE_LIST.map((_, i) => i + 1));
   });
@@ -134,6 +145,14 @@ describe("state fee table", () => {
     expect(PM_STATE_FEES.SA.management.average).toBe(7.5);
     expect(PM_STATE_FEES.TAS.management.average).toBe(8.7);
     expect(PM_NATIONAL.managementAverage).toBe(7.5);
+  });
+  it("labels the SA state average as a separate statewide measure and leaves other states unchanged", () => {
+    const sa = managementCell(PM_STATE_FEES.SA);
+    expect(sa.text.startsWith("9% to 15% (Adelaide agencies mostly 9% to 11%); state average 7.5%")).toBe(true);
+    expect(sa.text).toContain("(a separate statewide measure from LocalAgentFinder, not part of the Adelaide range)");
+    expect(stateFeeAnswer("SA")).toContain("LocalAgentFinder's March 2026 state average is 7.5%, a separate statewide measure that sits below the Adelaide range.");
+    expect(managementCell(PM_STATE_FEES.WA).text).toBe("8.5% to 11% (Perth; 11% or more in regional WA); state average 8.7%");
+    expect(managementCell(PM_STATE_FEES.NSW).text).not.toContain("separate statewide");
   });
   it("prints a footnoted cell for every published figure and says so where a state has no published range", () => {
     const wa = PM_STATE_FEES.WA;
@@ -193,11 +212,11 @@ describe("the guide page", () => {
   const src = readFileSync(PAGE, "utf8");
   it("promises the state table and the calculator in its title and delivers both", () => {
     // H1 and Article headline: the long form, from the frontmatter.
-    expect(src).toContain('title: "Property Management Fees in Australia 2026: Rates by State, With Calculator"');
-    // <title>: the short form, inside the 60-character budget before the " | Your Property Guide" suffix.
+    expect(src).toContain('title: "Property Management Fees in Australia 2026: Rates by State"');
+    // <title>: the short form, inside 60 characters including the " | Your Property Guide" suffix.
     const seo = src.match(/const SEO_TITLE = "([^"]+)";/)?.[1];
-    expect(seo).toBe("Property Management Fees 2026: Rates by State & Calculator");
-    expect(seo!.length).toBeLessThanOrEqual(60);
+    expect(seo).toBe("Property Management Fees by State 2026");
+    expect(seo!.length + " | Your Property Guide".length).toBeLessThanOrEqual(60);
     expect(src).toMatch(/export const metadata: Metadata = \{\s*title: SEO_TITLE,/);
     expect(src).toMatch(/openGraph: \{\s*(?:\.\.\.DEFAULT_OG,\s*)?url: [^\n]*\n\s*title: SEO_TITLE,/);
     // Six columns scroll in their own box; the containment keeps the table's width out of the page width on a phone.
@@ -205,6 +224,6 @@ describe("the guide page", () => {
     expect(src).toContain("PropertyManagementFeesCalculator");
     expect(src).toContain("stateFeeAnswer(");
     expect(src).toContain("faqs={PM_FEES_FAQS}");
-    expect(src).toContain('updatedAt: "2026-10-16"');
+    expect(src).toContain('updatedAt: "2026-10-28"');
   });
 });
