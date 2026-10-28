@@ -86,16 +86,16 @@ describe("computePmFees", () => {
     }
     expect(defaultPmFeesInput("SA", 700).renewalFee).toBe(700); // often one week's rent
   });
-  it("keeps the FAQ's all-in range honest: NSW about 7% and WA about 12% of rent at the defaults", () => {
-    const nsw = computePmFees(defaultPmFeesInput("NSW", 600)).pctOfRent;
-    const wa = computePmFees(defaultPmFeesInput("WA", 600)).pctOfRent;
-    expect(nsw).toBeGreaterThanOrEqual(6.5);
-    expect(nsw).toBeLessThanOrEqual(7.5);
-    expect(wa).toBeGreaterThanOrEqual(11.5);
-    expect(wa).toBeLessThanOrEqual(12.5);
-    const faq = PM_FEES_FAQS.find((f) => f.question === "What is the average property management fee in Australia?");
-    expect(faq?.answer).toContain("about 7% of annual rent");
-    expect(faq?.answer).toContain("about 12%");
+  it("keeps the FAQ free of an all-in range: NSW, VIC, QLD, TAS, ACT and NT have no published extras", () => {
+    for (const f of PM_FEES_FAQS) {
+      expect(f.answer, f.question).not.toMatch(/all[- ]in/i);
+      expect(f.answer, f.question).not.toContain("7% to 11%");
+      expect(f.answer, f.question).not.toContain("about 7% of annual rent");
+    }
+    const avg = PM_FEES_FAQS.find((f) => f.question === "What is the average property management fee in Australia?");
+    expect(avg?.answer).toContain("Western Australia and South Australia are the two states where all of the renewal, inspection and statement ranges are published");
+    const complete = PM_STATE_ORDER.filter((s) => PM_STATE_FEES[s].renewal && PM_STATE_FEES[s].inspection && PM_STATE_FEES[s].admin);
+    expect(complete).toEqual(["WA", "SA"]);
   });
 });
 

@@ -172,9 +172,9 @@ export const PM_FEE_SOURCES: Record<PmSourceKey, PmSource> = {
   },
   ato: {
     n: 22,
-    label: "ATO, Rental properties 2025: rental expenses (property agent's fees and commissions are an immediate deduction)",
-    href: "https://www.ato.gov.au/forms-and-instructions/rental-properties-2025/rental-expenses",
-    date: "June 2025",
+    label: "ATO, Common property expenses (property agent's fees and commission are an immediate deduction), matching the Rental properties guide 2026",
+    href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/property-and-land/residential-rental-properties/rental-expenses/common-property-expenses",
+    date: "21 May 2026",
   },
 };
 
@@ -448,7 +448,7 @@ export const PM_FEES_FAQS: PmFaq[] = [
   {
     question: "What percentage do most property management companies charge?",
     answer:
-      "Most Australian agencies charge between 5% and 12% of the rent they collect, and the national average is about 7.5% (LocalAgentFinder, March 2026). The state averages run from 5.8% in New South Wales and 5.9% in Victoria to 7.1% in the ACT, 7.5% in Queensland and South Australia, 8.5% in the Northern Territory and 8.7% in Western Australia and Tasmania. Regional areas sit at the top of each state's range, and a quote may or may not include GST, so ask.",
+      "The national average is about 7.5% of the rent collected (LocalAgentFinder, March 2026). The state averages run from 5.8% in New South Wales and 5.9% in Victoria to 7.1% in the ACT, 7.5% in Queensland and South Australia, 8.5% in the Northern Territory and 8.7% in Western Australia and Tasmania. The published ranges are wider than the averages, from 5% at the low end in New South Wales, Victoria, Tasmania and the Northern Territory to 15% at the top of South Australia's range (REIQ, December 2023; WhichRealEstateAgent, 2026). South Australia's 7.5% average is a separate statewide measure from its Adelaide range of 9% to 15%.",
   },
   {
     question: "What is the typical property management fee in Western Australia?",
@@ -458,17 +458,17 @@ export const PM_FEES_FAQS: PmFaq[] = [
   {
     question: "What is a reasonable management fee?",
     answer:
-      "A reasonable fee sits inside your state's published range and buys the full service: rent collection, arrears follow-up, routine inspections, maintenance coordination and tribunal work. In Sydney and Melbourne that is about 5% to 8%; in Brisbane, Adelaide, Perth and Hobart it is 7% to 11% (WhichRealEstateAgent city guides, 2026). Compare the all-in annual cost from the calculator on this page rather than the headline rate: a 6% manager who charges for every inspection, statement and renewal can cost more than an 8% manager who includes them.",
+      "A reasonable fee sits inside your state's published range, and the headline rate is only part of the cost. Sydney agencies publish 5% to 8%, Perth agencies 8.5% to 11% and Adelaide agencies mostly 9% to 11% (WhichRealEstateAgent city guides, 2026). Letting, renewal, inspection and statement charges are added on top wherever an agency charges them, so compare the annual total from the calculator on this page rather than the percentage. As an illustration only, a 6% manager who charges separately for every inspection, statement and renewal can cost more over a year than an 8% manager who includes them.",
   },
   {
     question: "What is the average property management fee in Australia?",
     answer:
-      "About 7.5% of weekly rent, with a letting fee averaging 1.4 weeks' rent (LocalAgentFinder, March 2026). New South Wales (5.8%) and Victoria (5.9%) are the cheapest states; Western Australia and Tasmania (8.7%) the dearest. Regional areas run higher than the capitals everywhere, up to about 12% in regional New South Wales and Queensland (REIQ, December 2023). Add the letting fee and the published extras and the all-in cost runs from about 7% of annual rent at New South Wales' figures to about 12% at Western Australia's (the calculator on this page shows each state).",
+      "About 7.5% of weekly rent, with a letting fee averaging 1.4 weeks' rent (LocalAgentFinder, March 2026). New South Wales (5.8%) and Victoria (5.9%) are the cheapest states; Western Australia and Tasmania (8.7%) the dearest. The published range goes up to about 12% in regional New South Wales and Queensland (REIQ, December 2023). Letting, renewal, inspection and statement charges come on top where an agency charges them. Western Australia and South Australia are the two states where all of the renewal, inspection and statement ranges are published, and the calculator on this page adds the lines up for each state.",
   },
   {
     question: "Is the property management fee tax deductible?",
     answer:
-      "Yes. Property management fees are deductible against rental income in the year you pay them for a property that is rented or genuinely available for rent, and the same applies to letting fees, lease renewal fees, inspection charges and statement fees, because they are costs of earning the rent (ATO, Rental properties 2025: rental expenses, June 2025). Keep the agency's end-of-financial-year statement: it lists every fee for the return.",
+      "Yes. Fees you pay a property agent to manage, inspect or collect rent for a rental property, such as regular management fees and commissions, are an immediate deduction in the income year you incur them, provided the property is rented or available to rent on commercial terms (ATO, Common property expenses, May 2026; ATO, Rental properties guide 2026). The cost of advertising for tenants is deductible the same way, but agent costs for selling the property and a buyer's agent's fees are not. Keep the agency's end-of-financial-year statement: it lists every fee for the return.",
   },
   {
     question: "Can I negotiate the property management fee?",
@@ -478,7 +478,7 @@ export const PM_FEES_FAQS: PmFaq[] = [
   {
     question: "What is a letting fee?",
     answer:
-      "A one-off charge when the agency finds and signs a new tenant, covering advertising, applicant screening, the tenancy agreement and the ingoing condition report. It is usually 1 to 2 weeks' rent, 2 to 3 weeks in Perth and up to 4 weeks in some Melbourne and Hobart agencies (WhichRealEstateAgent, 2026); the national average is 1.4 weeks (LocalAgentFinder, March 2026). You pay it each time the tenant changes, so a property that turns over every year pays twice what one on a two-year tenancy does.",
+      "A one-off charge when the agency signs a new tenant. It runs from 1 to 2 weeks' rent in Sydney, Brisbane and Canberra to 2 to 3 weeks in Perth and up to 4 weeks in Melbourne and Hobart (WhichRealEstateAgent, 2026); the national average is 1.4 weeks (LocalAgentFinder, March 2026). You pay it each time the tenant changes, so a property that turns over every year pays twice what one on a two-year tenancy does.",
   },
   {
     question: "How often should I get routine inspections?",
