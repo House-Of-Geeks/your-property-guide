@@ -9,6 +9,15 @@ import { ALL_GUIDES, getGuide } from "@/lib/guides/registry";
 
 const ALL_BATCHES_IN = true;
 
+// Guides published with the approved copy exactly as written (28 Oct 2026),
+// so no hook or call to action has been written for them yet. Remove a slug
+// here when its entry is added to a batch.
+const NO_HOOK_YET: readonly string[] = [
+  "what-does-a-property-manager-do",
+  "switching-property-managers",
+  "how-to-choose-a-property-manager",
+];
+
 const entries = Object.entries(ARTICLE_CAMPAIGN);
 
 describe("article campaign hooks", () => {
@@ -25,7 +34,7 @@ describe("article campaign hooks", () => {
   });
 
   it.runIf(ALL_BATCHES_IN)("cover every guide in the registry", () => {
-    expect(ALL_GUIDES.filter((g) => !ARTICLE_CAMPAIGN[g.slug]).map((g) => g.slug)).toEqual([]);
+    expect(ALL_GUIDES.filter((g) => !ARTICLE_CAMPAIGN[g.slug] && !NO_HOOK_YET.includes(g.slug)).map((g) => g.slug)).toEqual([]);
   });
 
   it("every article points to a real guide chapter, on the side of its call to action", () => {

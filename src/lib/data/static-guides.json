@@ -452,6 +452,14 @@
       "persona": "first-home"
     },
     {
+      "slug": "how-to-choose-a-property-manager",
+      "title": "How to Choose a Property Manager",
+      "description": "How to choose a property manager in Australia: check the licence, read the agreement, ask the right questions and compare written fees.",
+      "publishedAt": "2026-10-28",
+      "updatedAt": "2026-10-28",
+      "persona": "investing"
+    },
+    {
       "slug": "how-to-choose-a-selling-agent",
       "title": "How to Choose a Selling Agent in Australia (2026)",
       "description": "A practical guide to picking the right real estate agent to sell your home: how to interview, what questions to ask, the appraisal trap, fee structures, and how to negotiate the listing agreement.",
@@ -768,6 +776,14 @@
       "persona": "investing"
     },
     {
+      "slug": "switching-property-managers",
+      "title": "Switching Property Managers",
+      "description": "How to switch property managers in Australia: check your agreement, give written notice, sort keys and records, and tell your tenant.",
+      "publishedAt": "2026-10-28",
+      "updatedAt": "2026-10-28",
+      "persona": "investing"
+    },
+    {
       "slug": "sydney-vs-melbourne-property-market",
       "title": "Sydney vs Melbourne Property Market: Which Should You Buy In? (2026)",
       "description": "Sydney vs Melbourne in 2026: median prices, capital growth, rental yields, affordability, and lifestyle compared. The honest case for each market and who each suits.",
@@ -784,6 +800,14 @@
       "updatedAt": "2026-10-07",
       "readingTimeMinutes": 7,
       "persona": "first-home"
+    },
+    {
+      "slug": "what-does-a-property-manager-do",
+      "title": "What Does a Property Manager Do?",
+      "description": "What a property manager does for a landlord in Australia, what stays with you as the owner, and how to check their licence in your state.",
+      "publishedAt": "2026-10-28",
+      "updatedAt": "2026-10-28",
+      "persona": "investing"
     },
     {
       "slug": "what-to-fix-before-selling-a-house",
