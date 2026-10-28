@@ -201,10 +201,10 @@ describe("the guide page", () => {
   const src = readFileSync(PAGE, "utf8");
   it("promises the state table and the calculator in its title and delivers both", () => {
     // H1 and Article headline: the long form, from the frontmatter.
-    expect(src).toContain('title: "Property Management Fees in Australia 2026: Rates by State, With Calculator"');
+    expect(src).toContain('title: "Property Management Fees in Australia 2026: Rates by State"');
     // <title>: the short form, inside the 60-character budget before the " | Your Property Guide" suffix.
     const seo = src.match(/const SEO_TITLE = "([^"]+)";/)?.[1];
-    expect(seo).toBe("Property Management Fees 2026: Rates by State & Calculator");
+    expect(seo).toBe("Property Management Fees 2026: Rates by State");
     expect(seo!.length).toBeLessThanOrEqual(60);
     expect(src).toMatch(/export const metadata: Metadata = \{\s*title: SEO_TITLE,/);
     expect(src).toMatch(/openGraph: \{\s*(?:\.\.\.DEFAULT_OG,\s*)?url: [^\n]*\n\s*title: SEO_TITLE,/);

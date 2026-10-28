@@ -121,8 +121,9 @@ export default function PropertyManagementFeesCalculatorPage() {
           <h2>Fees by state</h2>
           <p>
             The calculator starts from each state&rsquo;s published figures. The{" "}
-            <Link href="/guides/property-management-fees-australia">property management fees guide</Link> sets out the sources and
-            what each state&rsquo;s law says. {UNPUBLISHED_LIST} have no published renewal, inspection or admin ranges, so those lines
+            <Link href="/guides/property-management-fees-australia">property management fees guide</Link>{" "}
+            sets out the sources and what each state&rsquo;s law says. {UNPUBLISHED_LIST}{" "}
+            have no published renewal, inspection or admin ranges, so those lines
             start at zero for those states and you enter the amounts from your agency&rsquo;s fee schedule.
           </p>
           <div className="overflow-x-auto">
@@ -145,8 +146,8 @@ export default function PropertyManagementFeesCalculatorPage() {
           <h2>A worked example</h2>
           <p>
             A rental in Perth at {fmt(EX_INPUT.weeklyRent)} a week, on the calculator&rsquo;s Western Australian starting figures: a{" "}
-            {EX_INPUT.managementPct}% management fee, a letting fee of {EX_INPUT.lettingWeeks} weeks&rsquo; rent
-            ({fmt(ex.lettingFeeOnce)} each time), a tenant change every {EX_INPUT.tenancyYears} years,{" "}
+            {EX_INPUT.managementPct}% management fee, a letting fee of {EX_INPUT.lettingWeeks}{" "}
+            weeks&rsquo; rent ({fmt(ex.lettingFeeOnce)} each time), a tenant change every {EX_INPUT.tenancyYears} years,{" "}
             {EX_INPUT.inspectionsPerYear} inspections a year at {fmt(EX_INPUT.inspectionFee)} each, a {fmt(EX_INPUT.renewalFee)} renewal
             fee and {fmt(EX_INPUT.adminFeePerYear)} a year for statements. Annual rent is {fmt(ex.annualRent)}.
           </p>

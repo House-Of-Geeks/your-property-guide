@@ -30,7 +30,7 @@ import { computePmFees, defaultPmFeesInput } from "@/lib/property-management-fee
 import { formatPriceFull } from "@/lib/utils/format";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Property Management Fees in Australia 2026: Rates by State, With Calculator",
+  title: "Property Management Fees in Australia 2026: Rates by State",
   description:
     "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), letting fees in weeks, renewal, inspection and statement charges, sourced and dated, with an annual cost calculator.",
   slug: "property-management-fees-australia",
@@ -46,7 +46,7 @@ const FRONTMATTER: GuideFrontmatter = {
 // " | Your Property Guide", and 60 characters before that suffix is the SERP
 // budget (tests/seo/titles.test.ts). The long form stays the H1 and the
 // Article headline, which read FRONTMATTER.title.
-const SEO_TITLE = "Property Management Fees 2026: Rates by State & Calculator";
+const SEO_TITLE = "Property Management Fees 2026: Rates by State";
 
 export const metadata: Metadata = {
   title: SEO_TITLE,
@@ -103,6 +103,7 @@ const TOC: GuideTOCEntry[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
+  { title: "Property management fees calculator", href: "/property-management-fees-calculator", description: "The annual cost of managing a rental in your state, on its own page." },
   { title: "Rental Yield Calculator", href: "/rental-yield-calculator", description: "Calculate gross and net rental yield with management fees factored in." },
   { title: "Negative Gearing in Australia", href: "/guides/negative-gearing-australia", description: "How property management fees flow through to your tax return." },
   { title: "Property Depreciation Guide", href: "/guides/property-depreciation-guide", description: "The other big deduction on your investment property." },
@@ -249,7 +250,8 @@ export default function PropertyManagementFeesGuide() {
         annual cost of management and its share of the rent, which is the
         figure to put into the{" "}
         <a href="/rental-yield-calculator">rental yield calculator</a> as your
-        management cost.
+        management cost. The same calculator is also available on{" "}
+        <a href="/property-management-fees-calculator">its own page</a>.
       </p>
       <div className="not-prose my-6">
         <PropertyManagementFeesCalculator initialState="NSW" initialRent={EXAMPLE_RENT} headingLevel="h3" />

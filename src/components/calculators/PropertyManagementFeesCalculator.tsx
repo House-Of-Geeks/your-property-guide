@@ -183,7 +183,8 @@ export function PropertyManagementFeesCalculator({
           line is negotiable and quoted individually. Management fees are deductible against rental income.
         </p>
         <p className="text-xs text-gray-500 mt-2" data-testid="pm-fees-unpublished-note">
-          {UNPUBLISHED_LIST} have no published renewal, inspection or admin ranges, so those lines start at zero and the starting total
+          {UNPUBLISHED_LIST}{" "}
+          have no published renewal, inspection or admin ranges, so those lines start at zero and the starting total
           understates the cost for those states. Enter the amounts in your agency&rsquo;s fee schedule.
         </p>
       </div>
