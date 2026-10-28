@@ -133,6 +133,12 @@ export const TOOL_GROUPS: readonly ToolGroup[] = [
           "Rental loss, tax saving at the 2026–27 rates, and your weekly cost after tax.",
       },
       {
+        href: "/property-management-fees-calculator",
+        title: "Property Management Fees Calculator",
+        description:
+          "The annual cost of managing a rental in your state, from the management percentage to the letting and extra fees.",
+      },
+      {
         href: "/cgt-calculator",
         title: "Capital Gains Tax Calculator",
         description:

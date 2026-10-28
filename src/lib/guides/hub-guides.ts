@@ -147,6 +147,7 @@ export const CALCULATOR_GUIDES: readonly CalculatorGuides[] = [
   { href: "/refinancing-calculator", label: "Refinancing Calculator", guides: ["fixed-vs-variable-rate-guide", "offset-accounts-explained-australia"] },
   { href: "/rental-yield-calculator", label: "Rental Yield Calculator", guides: ["capital-growth-vs-cash-flow-australia", "property-management-fees-australia"] },
   { href: "/negative-gearing-calculator", label: "Negative Gearing Calculator", guides: ["negative-gearing-australia", "negative-gearing-cgt-changes-now-law-2026", "property-depreciation-guide"] },
+  { href: "/property-management-fees-calculator", label: "Property Management Fees Calculator", guides: ["property-management-fees-australia"] },
   { href: "/cgt-calculator", label: "Capital Gains Tax Calculator", guides: ["cgt-changes-2026-budget", "negative-gearing-cgt-changes-now-law-2026"] },
   {
     href: "/real-estate-commission-calculator",
