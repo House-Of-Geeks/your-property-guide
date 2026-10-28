@@ -180,8 +180,6 @@ export interface PmPctRange {
   note?: string;
   /** Set when the average is a separate measure from the published range, so the two are not read as one series. */
   averageNote?: string;
-  /** Calculator starting percentage when the average is not part of the published range: the low end of that range. */
-  startPct?: number;
   sources: PmSourceKey[];
 }
 
@@ -282,7 +280,7 @@ export const PM_STATE_FEES: Record<StateCode, PmStateFees> = {
     state: "SA",
     name: STATE_NAMES.SA,
     capital: "Adelaide",
-    management: { low: 9, high: 15, average: 7.5, note: "Adelaide agencies mostly 9% to 11%", averageNote: "a separate statewide measure from LocalAgentFinder, not part of the Adelaide range", startPct: 9, sources: ["laf", "reiq", "wra-adl"] },
+    management: { low: 9, high: 15, average: 7.5, note: "Adelaide agencies mostly 9% to 11%", averageNote: "a separate statewide measure from LocalAgentFinder, not part of the Adelaide range", sources: ["laf", "reiq", "wra-adl"] },
     letting: { low: 2, high: 2, average: 1.9, sources: ["laf", "wra-adl"] },
     renewal: { low: 1, high: 1, unit: "weeks", note: "often one week's rent", sources: ["wra-adl"] },
     inspection: { low: 50, high: 100, unit: "dollars", note: "each", sources: ["wra-adl"] },

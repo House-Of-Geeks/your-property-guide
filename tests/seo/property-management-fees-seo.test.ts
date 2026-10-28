@@ -15,10 +15,16 @@ import { CALCULATOR_GUIDES } from "@/lib/guides/hub-guides";
 import { TOOL_GROUPS } from "@/lib/tools";
 import { PropertyManagementFeesCalculator, type PropertyManagementFeesCalculatorProps } from "@/components/calculators/PropertyManagementFeesCalculator";
 import CalculatorPage, { metadata as calcMeta } from "@/app/(marketing)/property-management-fees-calculator/page";
-import { metadata as guideMeta } from "@/app/(marketing)/guides/property-management-fees-australia/page";
+import Guide, { metadata as guideMeta } from "@/app/(marketing)/guides/property-management-fees-australia/page";
 
 // The shared layouts reach a module marked server-only.
 vi.mock("server-only", () => ({}));
+// The guide's inline start box reads the router, which is not mounted outside the app.
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push() {}, replace() {}, prefetch() {} }),
+  usePathname: () => "/",
+  useSearchParams: () => new URLSearchParams(),
+}));
 
 const ROOT = path.resolve(__dirname, "../..");
 const read = (p: string) => fs.readFileSync(path.join(ROOT, p), "utf8");
@@ -27,6 +33,7 @@ const GUIDE_FILE = "src/app/(marketing)/guides/property-management-fees-australi
 
 // The root layout's template is `%s | ${SITE_NAME}`.
 const rendered = (t: unknown) => `${String(t)} | ${SITE_NAME}`;
+const squash = (s: string) => s.replace(/\s+/g, " ");
 const text = (html: string) =>
   html.replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/&#x27;|&#39;|&rsquo;/g, "'").replace(/\s+/g, " ").trim();
 
@@ -155,7 +162,7 @@ describe("no all-in claim", () => {
     }
     const guide = read(GUIDE_FILE);
     expect(guide).not.toMatch(/7% to 12% in Brisbane, Perth and Adelaide/);
-    expect(guide).toContain("5% to 8% in\n        Sydney");
+    expect(squash(guide)).toContain("5% to 8% in Sydney");
     expect(guide).not.toMatch(/AI Overview/);
     expect(guide).not.toContain("6% to 12%");
     expect(read("public/llms.txt")).not.toMatch(/Property management fees Australia\]\([^)]*\): [^\n]*(all-in|8 fee types and)/);
@@ -166,13 +173,16 @@ const Calc = PropertyManagementFeesCalculator as (p: PropertyManagementFeesCalcu
 
 describe("South Australia's starting fee", () => {
   const pct = (html: string) => html.match(/id="pm-pct"[^>]*value="([^"]*)"/)?.[1];
-  it("renders 9 in the management fee box with SA selected, with its own hint, and 7.5 for Queensland", () => {
+  it("renders the SA average (7.5) in the management fee box like every other state, and says it is separate from the Adelaide range", () => {
     const sa = renderToStaticMarkup(createElement(Calc, { initialState: "SA" }));
-    expect(pct(sa)).toBe("9");
-    expect(sa).toContain("The low end of the published range is the starting figure.");
-    const qld = renderToStaticMarkup(createElement(Calc, { initialState: "QLD" }));
-    expect(pct(qld)).toBe("7.5");
-    expect(qld).toContain("The average is the starting figure.");
+    expect(pct(sa)).toBe("7.5");
+    const t = text(sa);
+    expect(t).toContain("9% to 15% (Adelaide agencies mostly 9% to 11%); state average 7.5% (a separate statewide measure from LocalAgentFinder, not part of the Adelaide range)");
+    expect(t).toContain("The statewide average is the starting figure; it is a separate measure from the published range.");
+    expect(t).not.toContain("The low end of the published range is the starting figure.");
+    const nsw = renderToStaticMarkup(createElement(Calc, { initialState: "NSW" }));
+    expect(pct(nsw)).toBe("5.8");
+    expect(text(nsw)).toContain("The average is the starting figure.");
   });
   it("the guide meta description does not contain the word calculator", () => {
     expect(String(guideMeta.description)).not.toMatch(/calculator/i);
@@ -193,14 +203,29 @@ describe("no links to LocalAgentFinder or WhichRealEstateAgent", () => {
     expect(Object.values(PM_FEE_SOURCES).some((s) => s.label.startsWith("LocalAgentFinder"))).toBe(true);
     expect(Object.values(PM_FEE_SOURCES).some((s) => s.label.startsWith("WhichRealEstateAgent"))).toBe(true);
   });
-  it("the new page's HTML has no href, and its JSON-LD no url, sameAs or citation, pointing at either site", () => {
-    const html = renderToStaticMarkup(createElement(CalculatorPage));
+  it.each([
+    ["the new calculator page", CalculatorPage],
+    ["the guide", Guide],
+  ])("%s: no href, and no JSON-LD url, sameAs or citation, points at either site", (_name, Page) => {
+    const html = renderToStaticMarkup(createElement(Page));
+    expect(html.length).toBeGreaterThan(10_000);
     for (const m of html.matchAll(/href="([^"]*)"/g)) expect(m[1]).not.toMatch(BANNED);
     const blocks = [...html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1].replace(/\\u003c/g, "<")));
     expect(blocks.length).toBeGreaterThan(0);
     for (const u of urlsIn(blocks)) expect(u).not.toMatch(BANNED);
-    // Plain-text naming survives in the page text.
+    // Plain-text naming survives in the page text, and other sources still link.
     expect(html).toMatch(/LocalAgentFinder/);
+    expect(html).toMatch(/WhichRealEstateAgent/);
+    expect(html).toMatch(/href="https:\/\/[^"]*reiq/i);
+  });
+  it("the guide's Article JSON-LD keeps its reviewer", () => {
+    const html = renderToStaticMarkup(createElement(Guide));
+    expect(html).toContain("Andy McMaster");
+  });
+  it("the guide says the calculator starts at the state average, with no South Australia exception", () => {
+    const t = squash(read(GUIDE_FILE));
+    expect(t).toContain("start at the state average from the table, the extra charges");
+    expect(t).not.toMatch(/starts at the low end of its published range/);
   });
   it("the guide, the calculator component and llms.txt contain no link to either site", () => {
     for (const f of [GUIDE_FILE, CALC_FILE, "src/components/calculators/PropertyManagementFeesCalculator.tsx", "src/lib/data/property-management-fees.ts"]) {

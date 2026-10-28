@@ -101,9 +101,7 @@ function dollarsOf(range: PmDollarRange | null, weeklyRent: number): number {
 
 /**
  * The calculator's starting figures for a state: the state average
- * management percentage (South Australia starts at 9%, the low end of its
- * published Adelaide range, because its 7.5% average is a separate statewide
- * measure) and the average letting weeks (LocalAgentFinder, March 2026),
+ * management percentage and letting weeks (LocalAgentFinder, March 2026),
  * the midpoint of each published extra, nothing where no range is published,
  * a two-year tenancy and GST-inclusive quotes.
  */
@@ -111,7 +109,7 @@ export function defaultPmFeesInput(state: StateCode, weeklyRent: number): PmFees
   const s = PM_STATE_FEES[state];
   return {
     weeklyRent,
-    managementPct: s.management.startPct ?? s.management.average,
+    managementPct: s.management.average,
     lettingWeeks: s.letting.average,
     tenancyYears: 2,
     renewalFee: dollarsOf(s.renewal, weeklyRent),

@@ -75,7 +75,7 @@ describe("/rental-yield-calculator", () => {
 
 describe("/property-management-fees-calculator", () => {
   const src = read(path.join(APP, "property-management-fees-calculator/page.tsx"));
-  const widget = read(path.resolve(__dirname, "../../src/components/calculators/PropertyManagementFeesCalculator.tsx"));
+  const widget = read(path.resolve(__dirname, "../../src/components/calculators/PropertyManagementFeesCalculator.tsx")).replace(/\s+/g, " ");
   const guide = read(path.join(APP, "guides/property-management-fees-australia/page.tsx"));
   it("names the tool first in the title, inside the budget, with the slug and schema name set", () => {
     const title = metaTitle(src);

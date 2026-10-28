@@ -77,7 +77,7 @@ describe("computePmFees", () => {
     for (const s of PM_STATE_ORDER) {
       const f = PM_STATE_FEES[s];
       const d = defaultPmFeesInput(s, 700);
-      expect(d.managementPct).toBe(f.management.startPct ?? f.management.average);
+      expect(d.managementPct).toBe(f.management.average);
       expect(d.lettingWeeks).toBe(f.letting.average);
       expect(d.inspectionsPerYear).toBe(f.inspectionsPerYear);
       expect(d.renewalFee).toBe(f.renewal ? (f.renewal.unit === "weeks" ? Math.round((700 * (f.renewal.low + f.renewal.high)) / 2) : Math.round((f.renewal.low + f.renewal.high) / 2)) : 0);
@@ -86,12 +86,12 @@ describe("computePmFees", () => {
     }
     expect(defaultPmFeesInput("SA", 700).renewalFee).toBe(700); // often one week's rent
   });
-  it("starts South Australia at 9%, the low end of the Adelaide range, not the 7.5% statewide average, and no other state is overridden", () => {
-    expect(defaultPmFeesInput("SA", 700).managementPct).toBe(9);
-    expect(PM_STATE_FEES.SA.management.startPct).toBe(PM_STATE_FEES.SA.management.low);
-    expect(PM_STATE_FEES.SA.management.average).toBe(7.5);
-    expect(computePmFees(defaultPmFeesInput("SA", 700)).managementCost).toBe(3_276); // 9% of $36,400
-    for (const s of PM_STATE_ORDER) if (s !== "SA") expect(PM_STATE_FEES[s].management.startPct).toBeUndefined();
+  it("starts South Australia at its 7.5% statewide average like every other state, not inside the 9% to 15% Adelaide range", () => {
+    expect(defaultPmFeesInput("SA", 700).managementPct).toBe(PM_STATE_FEES.SA.management.average);
+    expect(defaultPmFeesInput("SA", 700).managementPct).toBe(7.5);
+    expect(computePmFees(defaultPmFeesInput("SA", 700)).managementCost).toBe(2_730); // 7.5% of $36,400
+    expect(PM_STATE_FEES.SA.management.averageNote).toMatch(/separate statewide measure/);
+    expect(PM_STATE_FEES.SA.management.average).toBeLessThan(PM_STATE_FEES.SA.management.low);
   });
   it("keeps the FAQ free of an all-in range: NSW, VIC, QLD, TAS, ACT and NT have no published extras", () => {
     for (const f of PM_FEES_FAQS) {
