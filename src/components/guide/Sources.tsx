@@ -15,15 +15,18 @@ export type SourceItem =
 interface SourcesProps {
   items: readonly SourceItem[];
   title?: string;
+  /** Optional paragraph between the heading and the list. */
+  intro?: string;
 }
 
-export function Sources({ items, title = "Sources and methodology" }: SourcesProps) {
+export function Sources({ items, title = "Sources and methodology", intro }: SourcesProps) {
   if (items.length === 0) return null;
   return (
     <section id="sources" className="mt-12 pt-8 border-t border-line scroll-mt-28">
       <h2 className="text-base font-bold text-ink mb-3">
         {title}
       </h2>
+      {intro && <p className="font-sans text-sm text-ink-muted leading-relaxed mb-3">{intro}</p>}
       <ul className="font-sans text-sm text-ink-muted leading-relaxed space-y-2 list-disc pl-5 marker:text-line-strong">
         {items.map((item, i) => {
           if (typeof item === "string") return <li key={i}>{item}</li>;
