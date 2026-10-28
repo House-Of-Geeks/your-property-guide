@@ -98,7 +98,9 @@ export default function BuyingHubPage() {
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Buying", url: "/buying" }]} />
-      <PhotoHero photo="buying" breadcrumbs={[{ label: "Buying" }]} size="lg" book="buying" bookHref="/buying-guide?from=buying">
+      {/* The kitchen photograph (illustrative brand imagery, never a real
+          property): PHOTOS.kitchenLight has its crops and its alt text. */}
+      <PhotoHero photo="kitchenLight" breadcrumbs={[{ label: "Buying" }]} size="lg" book="buying" bookHref="/buying-guide?from=buying">
         <HeroTitle>Buying property: where to start</HeroTitle>
         <HeroLead>{`Your budget, the help you qualify for, and every step from pre-approval to the keys.`}</HeroLead>
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3">

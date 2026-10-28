@@ -7,10 +7,12 @@ import {
   KeyFigure,
   GuideNewsletterCallout,
   GuideSuburbSearch,
+  Sources,
   type GuideFrontmatter,
   type GuideTOCEntry,
   type FaqItem,
   type RelatedGuide,
+  type SourceItem,
 } from "@/components/guide";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
@@ -22,7 +24,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "When is the best time to buy property in Australia? The honest answer covers seasonal patterns (winter softness), the rate cycle, life stage, and why 'time in market' usually beats 'timing the market'.",
   slug: "best-time-to-buy-property-australia",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-10-20",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -72,12 +74,12 @@ const FAQS: FaqItem[] = [
   {
     question: "When is the cheapest time of year to buy property?",
     answer:
-      "Mid-winter (June–August) and the Christmas–New Year window (mid-December to late January) are the two softest periods nationally. Stock is thinner, but so is competition. Auction clearance rates typically dip 5 to 10 percentage points compared to spring.",
+      "Mid-winter (June–August) and the Christmas–New Year window (mid-December to late January) are traditionally the quietest periods. Stock is thinner, but so is competition. The rate cycle can outweigh the season: in spring 2026 clearance rates fell rather than rose, to 45.4% across the combined capitals in the week ending 4 October, against 67.4% a year earlier (Cotality).",
   },
   {
     question: "Should I wait for interest rates to fall before buying?",
     answer:
-      "Probably not. When rates fall, borrowing capacity rises and prices follow within 2 to 4 quarters. Buyers who wait for cuts often find that the price increase outpaces the repayment savings. The exception: if you're stretched at current rates, waiting for a cycle of cuts to refinance into may be sensible.",
+      "Probably not. When rates fall, borrowing capacity rises for every buyer at once, and prices tend to follow, so waiting for a cut can mean competing with more buyers at higher prices. The exception: if you're stretched at current rates, waiting for a cycle of cuts to refinance into may be sensible.",
   },
   {
     question: "Is there a worst time to buy property in Australia?",
@@ -146,11 +148,10 @@ export default function BestTimeToBuyGuide() {
 
       <h3>Winter (June–August)</h3>
       <p>
-        Historically the softest selling period. Listings drop 20% to 30%
-        below spring volumes. Auction clearance rates typically sit 5 to 10
-        percentage points lower than spring. The buyers in market are often
-        more committed (less &ldquo;just looking&rdquo; foot traffic at open
-        homes), and sellers who list in winter are usually motivated.
+        Traditionally the quietest selling period, with fewer new listings than
+        spring, especially in the colder capitals. The buyers in market are
+        often more committed (less &ldquo;just looking&rdquo; foot traffic at
+        open homes), and sellers who list in winter are usually motivated.
       </p>
       <p>
         <strong>Buyer advantage:</strong>{" "}Less competition, more leverage on
@@ -168,12 +169,13 @@ export default function BestTimeToBuyGuide() {
         September and October.
       </p>
       <p>
-        <strong>Buyer advantage:</strong> Maximum choice, usually 2 to 3 times
-        the listings of winter months.
+        <strong>Buyer advantage:</strong> The most choice of the year.
       </p>
       <p>
-        <strong>Buyer disadvantage:</strong> Maximum competition. Auction
-        clearance rates tend to peak in October–November.
+        <strong>Buyer disadvantage:</strong> Usually the most competition,
+        though not always: in spring 2026 capital-city homes were taking a
+        median of 39 days to sell, up from 23 a year earlier (Cotality, 1
+        October 2026), which gives buyers more room to negotiate.
       </p>
 
       <h3>Summer (December–February)</h3>
@@ -192,23 +194,26 @@ export default function BestTimeToBuyGuide() {
       <h3>Autumn (March–May)</h3>
       <p>
         A second mini-spring. Stock builds through March and April after the
-        post-holiday lull. Auction clearance often runs slightly higher than
-        spring because the buyer pool isn&rsquo;t as inflated.
+        post-holiday lull.
       </p>
 
       <KeyFigure
-        value="20% to 30%"
-        label="Drop in winter listings vs spring across capital cities"
-        context="Less stock means less choice for buyers, but also less competition for what's available."
+        value="39 days"
+        label="Median time to sell a capital-city home in September 2026, up from 23 days a year earlier"
+        context="Cotality, 1 October 2026. A slower market gives buyers more time and more room to negotiate."
       />
 
       <h2 id="by-rate-cycle">The rate cycle matters more than the season</h2>
       <p>
-        Seasons move prices a few percent. Rate cycles move prices 10% to
-        25%. The four conditions to track:
+        Seasons mostly change how much stock is on the market. The rate cycle
+        changes what every buyer can borrow, and that moves prices. In October
+        2026 the cycle is rising: the Reserve Bank lifted the cash rate to
+        4.60% on 29 September, its fourth rise of the year, and Cotality’s
+        national home value index fell 1.1% in September, its sixth monthly
+        fall in a row. The four conditions to track:
       </p>
       <ul>
-        <li><strong>Cutting cycle, early stage:</strong> Best time to buy. Borrowing capacity rises before prices fully respond, giving you a window of 1 to 3 quarters of relative affordability.</li>
+        <li><strong>Cutting cycle, early stage:</strong> Often the best time to buy. Borrowing capacity rises before prices fully respond, which can give you a window of relative affordability.</li>
         <li><strong>Cutting cycle, late stage:</strong> Prices have caught up. Still good for owner-occupiers, less of a clear edge for investors.</li>
         <li><strong>Hiking cycle, early stage:</strong> Borrowing capacity tightens but prices haven&rsquo;t fallen yet. The hardest combination; wait if you can.</li>
         <li><strong>Hiking cycle, late stage:</strong> Prices have softened, sellers are motivated. A genuine buyer&rsquo;s market.</li>
@@ -226,15 +231,18 @@ export default function BestTimeToBuyGuide() {
       <ul>
         <li><strong>Just settled into a stable job?</strong> Build 3 to 6 months of income proof before applying for finance, lenders want consistency.</li>
         <li><strong>About to start a family?</strong> Buy with the family configuration in mind. Moving with a 6-month-old is a different proposition to moving without kids.</li>
-        <li><strong>Considering a job change?</strong> Wait until you&rsquo;ve passed probation in the new role, most lenders won&rsquo;t consider income on probation.</li>
+        <li><strong>Considering a job change?</strong> Ask a lender or broker how they treat income on probation before you move: policies differ between lenders.</li>
         <li><strong>Have an inheritance coming?</strong> Don&rsquo;t time around it; the timing is unpredictable. Plan around your current resources and treat it as upside if it lands.</li>
       </ul>
 
       <h2 id="auction-vs-private">Auction vs private treaty timing</h2>
       <p>
-        Auctions are heavily seasonal: Saturday auction clearance rates spike
-        during the spring selling season and drop in winter. Private treaty
-        works year-round.
+        Auction numbers are seasonal: more homes go to auction in spring and
+        far fewer over the Christmas break. Clearance rates follow the market
+        more than the calendar, so check the latest weekly result before you
+        plan around one: Cotality’s combined capital-city rate was 45.4% in the
+        week ending 4 October 2026, against 67.4% a year earlier. Private
+        treaty works year-round.
       </p>
       <p>
         If you&rsquo;re bidding at auction:
@@ -246,8 +254,8 @@ export default function BestTimeToBuyGuide() {
       </ul>
       <p>
         If you&rsquo;re negotiating private treaty, winter and the
-        Christmas–New Year window are statistically the best time to find a
-        seller willing to discount.
+        Christmas–New Year window are when you&rsquo;re most likely to meet a
+        motivated seller with less competition from other buyers.
       </p>
 
       <h2 id="city-by-city">City-by-city seasonality</h2>
@@ -284,9 +292,9 @@ export default function BestTimeToBuyGuide() {
 
       <h3>&ldquo;I&rsquo;ll wait for the bottom&rdquo;</h3>
       <p>
-        The bottom is only visible in retrospect. Buyers who wait often
-        end up buying 6 to 12 months after the bottom anyway, but at higher
-        prices because the recovery moved faster than they expected.
+        The bottom is only visible in retrospect. Waiting for it can mean
+        buying after prices have already turned, when more buyers are back
+        in the market.
       </p>
 
       <h3>&ldquo;Auctions are always more expensive&rdquo;</h3>
@@ -315,8 +323,11 @@ export default function BestTimeToBuyGuide() {
           Don&rsquo;t plan around hypothetical future rates.
         </li>
         <li>
-          Get pre-approval. 90-day pre-approval is free and tells you what you
-          can actually buy.
+          Get pre-approval. It&rsquo;s usually free, typically lasts about
+          three to six months, and shows what a lender is prepared to lend,
+          subject to the property. Our{" "}
+          <Link href="/guides/home-loan-pre-approval-australia">pre-approval guide</Link>{" "}
+          explains the conditions.
         </li>
         <li>
           Track the sale prices on the{" "}
@@ -329,6 +340,14 @@ export default function BestTimeToBuyGuide() {
           context.
         </li>
       </ol>
+
+      <Sources items={BEST_TIME_TO_BUY_SOURCES} />
     </GuideArticleLayout>
   );
 }
+
+const BEST_TIME_TO_BUY_SOURCES: readonly SourceItem[] = [
+  { label: "Cotality (formerly CoreLogic): Australian housing values down for sixth straight month in September", href: "https://www.cotality.com/au/insights/articles/australian-housing-values-down-for-sixth-straight-month-in-september", note: "1 October 2026. National values and capital-city median days on market." },
+  { label: "Cotality: Final clearance rates, week ending 4 October 2026", href: "https://www.cotality.com/au/press-releases/final-clearance-rates-week-ending-4-october-2026", note: "8 October 2026. Combined capital-city final clearance rate 45.4%, 67.4% a year earlier." },
+  { label: "Reserve Bank of Australia: Cash rate target", href: "https://www.rba.gov.au/statistics/cash-rate/", note: "4.60% from the 29 September 2026 decision. Read 20 October 2026." },
+];

@@ -32,13 +32,39 @@ export interface SendMailOptions {
   replyTo?: string;
   /** Extra SMTP headers. Merged with the click-tracking header below. */
   headers?: Record<string, string>;
+  /**
+   * SendGrid unique arguments (X-SMTPAPI unique_args), echoed back on every
+   * Event Webhook event. Opaque ids only, never personal details (SendGrid
+   * keeps them long-term): the queue sends { ypg_mid: <EmailMessage.id> }.
+   */
+  customArgs?: Record<string, string>;
+  /** SendGrid categories, for SendGrid's own stats (no personal details). */
+  categories?: string[];
+}
+
+/** What the provider said when it took (or refused) the message. */
+export interface SendResult {
+  /** SendGrid's SMTP reply, e.g. "250 Ok: queued as AbC123". */
+  response: string;
+  /** The queue id from that reply ("AbC123"), the first half of sg_message_id. */
+  providerMessageId: string | null;
+  /** True when written to the log instead of sent (EMAIL_TRANSPORT=log). */
+  logged: boolean;
 }
 
 // SendGrid SMTP has no trackingSettings field. The X-SMTPAPI header is the
-// per-message backstop that keeps links off SendGrid's shared click domain.
+// per-message backstop that keeps links off SendGrid's shared click domain
+// (tokenised download, feedback and unsubscribe links stay exactly as
+// written). Since 21 Oct 2026 it also turns off open tracking for our mail:
+// the account has it on (shared with other brands), we report delivery from
+// the Event Webhook instead, and a tracking pixel adds nothing for readers.
 const CLICKTRACK_OFF = { enable: 0, enable_text: 0 } as const;
+const OPENTRACK_OFF = { enable: 0 } as const;
 
-export function withClickTrackingDisabled(headers?: Record<string, string>): Record<string, string> {
+export function withClickTrackingDisabled(
+  headers?: Record<string, string>,
+  extra?: { customArgs?: Record<string, string>; categories?: string[] },
+): Record<string, string> {
   const merged: Record<string, string> = { ...(headers ?? {}) };
   let payload: Record<string, unknown> = {};
   const existing = merged["X-SMTPAPI"];
@@ -57,16 +83,30 @@ export function withClickTrackingDisabled(headers?: Record<string, string>): Rec
       ? { ...(payload.filters as Record<string, unknown>) }
       : {};
   filters.clicktrack = { settings: { ...CLICKTRACK_OFF } };
+  filters.opentrack = { settings: { ...OPENTRACK_OFF } };
   payload.filters = filters;
+  if (extra?.customArgs && Object.keys(extra.customArgs).length) {
+    const prior = payload.unique_args && typeof payload.unique_args === "object" ? (payload.unique_args as Record<string, string>) : {};
+    payload.unique_args = { ...prior, ...extra.customArgs };
+  }
+  if (extra?.categories?.length) payload.category = extra.categories;
   merged["X-SMTPAPI"] = JSON.stringify(payload);
   return merged;
 }
 
+/** "250 Ok: queued as AbC123" → "AbC123". */
+export function queueIdFromResponse(response: string | undefined): string | null {
+  const m = response?.match(/queued as\s+([A-Za-z0-9._-]+)/i);
+  return m ? m[1] : null;
+}
+
 // Thin wrapper around transporter.sendMail. Caller is expected to
 // try/catch — we never want a mail failure to take down a request that
-// has already persisted the canonical data (lead row) to the DB.
-export async function sendMail(opts: SendMailOptions): Promise<void> {
-  const headers = withClickTrackingDisabled(opts.headers);
+// has already persisted the canonical data (lead row) to the DB. Customer
+// email goes through the durable queue (src/lib/mail/queue.ts), which calls
+// this and records the result; only the queue should call it for customers.
+export async function sendMail(opts: SendMailOptions): Promise<SendResult> {
+  const headers = withClickTrackingDisabled(opts.headers, { customArgs: opts.customArgs, categories: opts.categories });
   // EMAIL_TRANSPORT=log (local runs, tests and staging checks): record the
   // email instead of sending it, so an end-to-end test can't email Andy, Jos
   // or a real address. MAIL_LOG_DIR keeps a JSON copy of each for inspection.
@@ -79,9 +119,9 @@ export async function sendMail(opts: SendMailOptions): Promise<void> {
       await mkdir(dir, { recursive: true });
       await writeFile(`${dir}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.json`, JSON.stringify(record, null, 2));
     }
-    return;
+    return { response: "250 Ok: logged", providerMessageId: null, logged: true };
   }
-  await transporter.sendMail({
+  const info = await transporter.sendMail({
     from: opts.from ?? DEFAULT_FROM,
     to: opts.to,
     cc: opts.cc,
@@ -91,4 +131,6 @@ export async function sendMail(opts: SendMailOptions): Promise<void> {
     text: opts.text,
     headers,
   });
+  const response = typeof info?.response === "string" ? info.response : "";
+  return { response, providerMessageId: queueIdFromResponse(response), logged: false };
 }

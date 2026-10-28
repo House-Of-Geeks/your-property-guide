@@ -152,10 +152,10 @@ export default function RefinancingCalculatorPage() {
             <li>It doesn&rsquo;t factor in cashback offers, add manually if applicable.</li>
           </ul>
           <p>
-            For a full refinancing analysis on your specific loan, a mortgage
-            broker can compare the actual policies and packages of 30+ lenders.
-            <Link href="/find-an-expert?intent=refinancing">Get connected</Link> if
-            you want a free intro to one.
+            For a full refinancing analysis on your specific loan, ask your
+            lender or a mortgage broker; our{" "}
+            <Link href="/guides/home-loan-pre-approval-australia">home loan pre-approval guide</Link>{" "}
+            explains what a new lender will ask for.
           </p>
         </>
       }

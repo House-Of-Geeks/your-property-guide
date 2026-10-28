@@ -4,7 +4,7 @@ import Link from "next/link";
 import { StampDutyCalculator } from "@/components/calculators/StampDutyCalculator";
 import { StampDutyStateLinks } from "@/components/calculators/StampDutyStateLinks";
 import { STAMP_DUTY_VERIFIED_ON, STATE_DUTY_SCHEDULES } from "@/lib/utils/stamp-duty";
-import { ABBR, AUSTRALIAN_STATES, money, dutyFor } from "@/lib/data/stamp-duty-state";
+import { ABBR, AUSTRALIAN_STATES, IN, money, dutyFor } from "@/lib/data/stamp-duty-state";
 import { FIRST_HOME_REVIEWED_ON, currentExemptTo, formatPolicyDate, grantFor } from "@/lib/policy/first-home";
 import { CalculatorPageLayout, type CalculatorPageFrontmatter } from "@/components/calculators/CalculatorPageLayout";
 import { Callout, KeyFigure, type FaqItem, type RelatedGuide } from "@/components/guide";
@@ -17,7 +17,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   slug: "stamp-duty-calculator",
   schemaName: "Stamp Duty Calculator Australia",
   schemaDescription: "Calculate stamp duty costs across all Australian states and territories.",
-  updatedAt: "2026-10-14",
+  updatedAt: "2026-10-20",
   persona: "first-home",
 };
 
@@ -40,6 +40,14 @@ export const metadata: Metadata = {
 };
 
 const FOREIGN_RATES = AUSTRALIAN_STATES.flatMap((st) => (STATE_DUTY_SCHEDULES[st].foreign ? [STATE_DUTY_SCHEDULES[st].foreign!.rate] : []));
+
+// The direct answer at one price, from the same engine as the calculator
+// (rates checked against each revenue office), instead of a typed
+// "$20,000 to $60,000" (search and conversion baseline, 20 Oct 2026).
+const EXAMPLE_PRICE = 800_000;
+const EXAMPLE_DUTY = AUSTRALIAN_STATES.map((st) => ({ st, total: dutyFor(st, EXAMPLE_PRICE, "owner").total })).sort((a, b) => a.total - b.total);
+const DUTY_LOWEST = EXAMPLE_DUTY[0];
+const DUTY_HIGHEST = EXAMPLE_DUTY[EXAMPLE_DUTY.length - 1];
 
 const FAQS: FaqItem[] = [
   {
@@ -113,15 +121,17 @@ export default function StampDutyCalculatorPage() {
             at settlement.
           </p>
           <p>
-            It&rsquo;s the single largest upfront cost most buyers face after the deposit.
-            On a typical capital-city purchase it usually lands somewhere between
-            $20,000 and $60,000 of unavoidable cash, before concessions.
+            It&rsquo;s the largest upfront cost most buyers face after the deposit. On an{" "}
+            {money(EXAMPLE_PRICE)} home bought to live in, by a buyer who isn’t a first home buyer, duty ranges from{" "}
+            {money(DUTY_LOWEST.total)} in {IN[DUTY_LOWEST.st]} to {money(DUTY_HIGHEST.total)} in {IN[DUTY_HIGHEST.st]}{" "}
+            (rates checked {formatPolicyDate(STAMP_DUTY_VERIFIED_ON)}). Eligible first home buyers often pay far less, or
+            nothing, below their state’s threshold.
           </p>
 
           <KeyFigure
-            value="$20k–$60k+"
-            label="What unconcessioned stamp duty typically costs on a capital-city purchase, before any first-home or owner-occupier discount."
-            context="Estimate, varies by state and price"
+            value={`${money(DUTY_LOWEST.total)}–${money(DUTY_HIGHEST.total)}`}
+            label={`Stamp duty on an ${money(EXAMPLE_PRICE)} home for an owner-occupier who isn’t a first home buyer, across the eight states and territories.`}
+            context={`From the calculator’s schedules, rates checked ${formatPolicyDate(STAMP_DUTY_VERIFIED_ON)}`}
           />
 
           <h2>How rates differ across states</h2>
@@ -195,8 +205,14 @@ export default function StampDutyCalculatorPage() {
           </ul>
           <p>
             For a complete settlement-cost breakdown, a conveyancer is the
-            right person to ask. <Link href="/find-an-expert?intent=buying">Get connected</Link>{" "}
-            if you want a free intro to one.
+            right person to ask: our{" "}
+            <Link href="/guides/conveyancing-guide">conveyancing guide</Link>{" "}
+            covers what they do and what they charge. To put duty in your whole
+            budget, the{" "}
+            <Link href="/affordability-calculator">affordability calculator</Link>{" "}
+            combines it with your deposit and borrowing power, and a{" "}
+            <Link href="/plan?j=buying">next-step plan</Link> sets out what to do
+            next for where you’re up to.
           </p>
         </>
       }

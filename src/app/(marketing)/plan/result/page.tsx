@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, MapPin, Pencil } from "lucide-react";
 import { PhotoHero, HeroTitle, HeroLead } from "@/components/premium";
-import { PlanEmailForm } from "@/components/journeys/PlanEmailForm";
+import { PLAN_EMAIL_ANCHOR, PlanEmailForm, PlanSaveActions } from "@/components/journeys/PlanEmailForm";
 import { PrintButton } from "@/components/journeys/PrintButton";
 import { BUYER_TYPES, BUY_STAGES, MOVE_ORDERS, SELL_STAGES, TIMEFRAMES, answersFromParams, editPlanHref, suburbSlugLabel, type PlanAnswers } from "@/lib/plans/questions";
 import { PLAN_NAME } from "@/lib/plans/name";
 import { getSuburbName } from "@/lib/services/suburb-service";
-import { PLAN_DISCLAIMER, buildPlan } from "@/lib/plans/engine";
+import { PLAN_DISCLAIMER, buildPlan, helpHref, type Plan } from "@/lib/plans/engine";
+import { availabilityNote } from "@/lib/introductions/rules";
+import { COMMISSION_STANCE, HOW_WE_ARE_PAID_HREF, INTRODUCTION_STEPS, ONE_AGENT, SERVICES, type IntroService } from "@/lib/service-model";
 import { BUTTON_PRIMARY, BUTTON_SECONDARY } from "@/components/premium/buttons";
 import { redirect } from "next/navigation";
 
@@ -77,7 +79,10 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
             </li>
           )}
         </ul>
-        <div className="mt-6 flex flex-wrap gap-3 print:hidden">
+        {/* Keep it (20 Oct 2026): the email form stays beside the steps (after
+            them on phones); these take the reader to it, or to print. */}
+        <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-4 print:hidden">
+          <PlanSaveActions />
           <Link href={editHref} className="inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
             <Pencil className="h-4 w-4" aria-hidden="true" /> Change my answers
           </Link>
@@ -181,22 +186,111 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
             </ul>
           </div>
 
-          <div className="print:hidden">
+          <div id={PLAN_EMAIL_ANCHOR} className="scroll-mt-24 print:hidden">
             <PlanEmailForm answers={answers} />
             <div className="mt-3"><PrintButton /></div>
           </div>
 
-          <div className={`rounded-xl p-5 sm:p-6 print:hidden ${plan.help.level === "offer" ? "bg-surface-inverse tone-dark" : "bg-surface-warm"}`}>
-            <h2 className="font-display text-[24px] leading-snug tracking-[-0.03em] text-ink">{plan.help.headline}</h2>
-            <p className="mt-2 text-[15px] text-ink-muted leading-relaxed">{plan.help.body}</p>
-            {plan.help.cta && (
-              <Link href={plan.help.cta.href} className={`mt-5 ${plan.help.level === "offer" ? BUTTON_PRIMARY : BUTTON_SECONDARY}`}>
-                {plan.help.cta.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-            )}
-          </div>
+          <PersonalHelp plan={plan} answers={answers} />
         </aside>
       </div>
     </>
+  );
+}
+
+/**
+ * Personal help for the plan's move (20 Oct 2026). Sellers: compare the
+ * agents they meet (the proposal worksheet), and an appraisal introduction
+ * with the honest coverage line. Buyers: a buyer's agent where we can, said
+ * honestly (the network is still being built; the team reads every request).
+ * Both: separate introductions, each with its own yes. The headline, body
+ * and main action are the plan's own (src/lib/plans/engine.ts), so the
+ * buying / selling / both handoff to /get-help is unchanged; every promise
+ * here comes from src/lib/service-model.ts and src/lib/introductions/rules.ts.
+ */
+function PersonalHelp({ plan, answers }: { plan: Plan; answers: PlanAnswers }) {
+  const help = plan.help;
+  const offer = help.level === "offer";
+  const panel = `rounded-xl p-5 sm:p-6 print:hidden ${offer ? "bg-surface-inverse tone-dark" : "bg-surface-warm"}`;
+  const action = help.cta && (
+    <Link href={help.cta.href} className={`mt-5 ${offer ? BUTTON_PRIMARY : BUTTON_SECONDARY}`}>
+      {help.cta.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+    </Link>
+  );
+
+  // Signed with an agent: no introduction, nothing to compare.
+  if (help.level === "none") {
+    return (
+      <div className={panel}>
+        <h2 className="font-display text-[24px] leading-snug tracking-[-0.03em] text-ink">{help.headline}</h2>
+        <p className="mt-2 text-[15px] text-ink-muted leading-relaxed">{help.body}</p>
+        {action}
+      </div>
+    );
+  }
+
+  const sells = help.services.includes("selling-agent");
+  const buys = help.services.includes("buyers-agent");
+  const both = sells && buys;
+  // A row links to its own request only where the main action isn't already that request.
+  const rowLink = (service: IntroService) => {
+    const href = helpHref([service], answers);
+    return !both && help.cta?.href !== href ? href : null;
+  };
+  const appraisalHref = sells ? rowLink("selling-agent") : null;
+  const buyersHref = buys ? rowLink("buyers-agent") : null;
+  const rowLinkClass = "mt-2 inline-flex items-center gap-1.5 text-[15px] font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink";
+
+  return (
+    <section aria-labelledby="personal-help-title" className={panel}>
+      <p className="text-[12px] font-medium uppercase tracking-[0.1em] text-primary">Personal help, only if you ask</p>
+      <h2 id="personal-help-title" className="mt-2 font-display text-[24px] leading-snug tracking-[-0.03em] text-ink">{help.headline}</h2>
+      <p className="mt-2 text-[15px] text-ink-muted leading-relaxed">{help.body}</p>
+
+      <ul className="mt-5 border-t border-line">
+        {sells && (
+          <li className="border-b border-line py-4">
+            <h3 className="text-[16px] font-medium leading-snug text-ink">Compare the agents you meet</h3>
+            <p className="mt-1 text-[14px] leading-relaxed text-ink-muted">
+              Put up to three agents’ proposals side by side, with the cost of each in dollars, before you choose.
+            </p>
+            <Link href="/tools/agent-proposal-worksheet" className={rowLinkClass}>
+              Agent proposal worksheet <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </li>
+        )}
+        {sells && (
+          <li className="border-b border-line py-4">
+            <h3 className="text-[16px] font-medium leading-snug text-ink">An appraisal from one participating agent</h3>
+            <p className="mt-1 text-[14px] leading-relaxed text-ink-muted">
+              {`${SERVICES["selling-agent"].what[0]}. ${availabilityNote("selling-agent", answers.state).text}`}
+            </p>
+            {appraisalHref && (
+              <Link href={appraisalHref} className={rowLinkClass}>
+                Ask for an appraisal introduction <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            )}
+          </li>
+        )}
+        {buys && (
+          <li className="border-b border-line py-4">
+            <h3 className="text-[16px] font-medium leading-snug text-ink">A buyer’s agent, where we can</h3>
+            <p className="mt-1 text-[14px] leading-relaxed text-ink-muted">{availabilityNote("buyers-agent", answers.state).text}</p>
+            {buyersHref && (
+              <Link href={buyersHref} className={rowLinkClass}>
+                Ask about a buyer’s agent <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            )}
+          </li>
+        )}
+      </ul>
+
+      <p className="mt-4 text-[14px] leading-relaxed text-ink-muted">{both ? INTRODUCTION_STEPS[1].body : ONE_AGENT}</p>
+      {action}
+      <p className="mt-4 text-[13px] leading-relaxed text-ink-muted">
+        {`${COMMISSION_STANCE.ours} `}
+        <Link href={HOW_WE_ARE_PAID_HREF} className="underline underline-offset-4">How we’re paid</Link>
+      </p>
+    </section>
   );
 }

@@ -1,17 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowUp } from "lucide-react";
+import Link from "next/link";
+import { track } from "@/lib/analytics";
+import { chapterHref, type GuideBookId } from "@/lib/guide-books";
+import { GuideDownloadLink } from "@/components/guide-book/GuideDownloadLink";
+import { EMAIL_A_COPY_HASH } from "@/components/guide-book/GuideAccess";
 
 /**
- * Mobile-only sticky bar on /selling-guide. The funnel lives at the top
- * of the page; once a phone reader scrolls into the chapters/FAQ they're
- * two thumb-flicks from the form, so give them a one-tap way back.
- * Hidden from sm up, where the funnel sits beside the pitch in the hero.
+ * Mobile-only sticky bar on the guide pages (/selling-guide, /buying-guide).
+ * Once a phone reader scrolls into the chapters or the FAQ, the three ways
+ * to get the guide are one tap away (20 Oct 2026): read online (chapter 1),
+ * download the PDF, or have it emailed (#email-a-copy, which opens the form
+ * in the hero). No questions first; the funnel stays further down the page.
+ * Hidden from sm up, where the choices sit beside the pitch in the hero.
  */
-export function StickyGuideBar() {
+export function StickyGuideBar({ guide }: { guide: GuideBookId }) {
   const [visible, setVisible] = useState(false);
-  const [funnelVisible, setFunnelVisible] = useState(false);
+  const [heroVisible, setHeroVisible] = useState(false);
 
   useEffect(() => {
     let ticking = false;
@@ -31,13 +37,13 @@ export function StickyGuideBar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
 
-    // While the funnel itself is on screen the bar is pointing at
-    // something the reader can already see, so suppress it.
-    const funnel = document.querySelector("#get-the-guide");
+    // While the hero's choices are on screen the bar would repeat them, so
+    // suppress it.
+    const hero = document.querySelector("#get-the-guide");
     let observer: IntersectionObserver | undefined;
-    if (funnel) {
-      observer = new IntersectionObserver(([entry]) => setFunnelVisible(entry.isIntersecting));
-      observer.observe(funnel);
+    if (hero) {
+      observer = new IntersectionObserver(([entry]) => setHeroVisible(entry.isIntersecting));
+      observer.observe(hero);
     }
 
     return () => {
@@ -47,10 +53,13 @@ export function StickyGuideBar() {
     };
   }, []);
 
-  const shown = visible && !funnelVisible;
+  const shown = visible && !heroVisible;
+  const placement = `${guide}-guide-sticky-bar`;
+  const tab = shown ? undefined : -1;
+  const segment = "flex min-h-12 items-center justify-center px-2 py-3 text-center text-[14px] font-medium leading-tight text-cta-ink transition-colors hover:bg-cta-hover";
 
   // The site's mobile bottom bar is hidden on the guide pages (the page is
-  // the form), so the bar sits at the bottom edge.
+  // the guide), so the bar sits at the bottom edge.
   return (
     <div
       aria-hidden={!shown}
@@ -58,16 +67,22 @@ export function StickyGuideBar() {
         shown ? "opacity-100" : "opacity-0"
       }`}
     >
-      <a
-        href="#get-the-guide"
-        tabIndex={shown ? undefined : -1}
-        className={`flex items-center justify-center gap-2 rounded-[4px] bg-cta hover:bg-cta-hover text-cta-ink font-medium px-6 py-3.5 text-sm shadow-[0_8px_24px_rgb(32_61_48/0.22)] transition-colors ${
+      <nav
+        aria-label="Get the free guide"
+        className={`grid grid-cols-3 divide-x divide-cta-ink/20 overflow-hidden rounded-[4px] bg-cta shadow-[0_8px_24px_rgb(32_61_48/0.22)] ${
           shown ? "pointer-events-auto" : ""
         }`}
       >
-        Get the free guide
-        <ArrowUp className="w-4 h-4" aria-hidden="true" />
-      </a>
+        <Link href={chapterHref(guide, 1)} tabIndex={tab} onClick={() => track("guide_read_online", { guide, placement })} className={segment}>
+          Read online
+        </Link>
+        <GuideDownloadLink guide={guide} placement={placement} tabIndex={tab} className={segment}>
+          Download PDF
+        </GuideDownloadLink>
+        <a href={EMAIL_A_COPY_HASH} tabIndex={tab} className={segment}>
+          Email it
+        </a>
+      </nav>
     </div>
   );
 }

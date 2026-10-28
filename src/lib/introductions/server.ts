@@ -15,7 +15,8 @@
 import { randomBytes, randomUUID } from "node:crypto";
 import { budgetLabel, buyerTypeLabel } from "./labels";
 import { db } from "@/lib/db";
-import { sendMail, ANDY_EMAIL, LEADS_CC_EMAIL } from "@/lib/email";
+import { ANDY_EMAIL, LEADS_CC_EMAIL } from "@/lib/email";
+import { queueAndSendNow } from "@/lib/mail/send";
 import { attributionJson, attributionRowsFor, type LeadAttribution } from "@/lib/attribution-server";
 import { normalizePhone } from "@/lib/utils/phone";
 import type { AustralianState } from "@/lib/utils/stamp-duty";
@@ -346,12 +347,19 @@ async function createIntroductions(
     consentTexts,
   };
 
-  // The team hears about every request; a failure is logged, never fatal
-  // (the rows and events are the record, and the daily health check reads them).
+  // The team hears about every request; the confirmation goes to the
+  // person. Both through the email queue (21 Oct 2026): the rows are
+  // written first and a temporary failure is retried by the cron. A
+  // failure is logged, never fatal (the rows and events are the record).
   try {
-    await sendMail({
+    await queueAndSendNow({
+      key: `team:intro:${groupId}`,
+      category: "operational",
+      stream: "team",
+      template: "team/introduction",
       to: ANDY_EMAIL,
       cc: LEADS_CC_EMAIL,
+      leadId: items[0]?.leadId ?? null,
       subject: introTeamSubject(person, emailCtx, results),
       html: buildIntroTeamEmailHtml(person, emailCtx, results, attributionRowsFor(attribution)),
       text: buildIntroTeamEmailText(person, emailCtx, results, attributionRowsFor(attribution)),
@@ -360,8 +368,13 @@ async function createIntroductions(
     console.error("Introduction team email failed (rows saved):", { groupId, error: err instanceof Error ? err.message : String(err) });
   }
   try {
-    await sendMail({
+    await queueAndSendNow({
+      key: `intro:${groupId}`,
+      category: "transactional",
+      stream: "introduction",
+      template: "introduction/confirmation",
       to: email,
+      leadId: items[0]?.leadId ?? null,
       replyTo: ANDY_EMAIL,
       subject: introConfirmationSubject(results),
       html: buildIntroConfirmationHtml(person, emailCtx, results),
