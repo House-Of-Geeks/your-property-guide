@@ -135,6 +135,14 @@ describe("state fee table", () => {
     expect(PM_STATE_FEES.TAS.management.average).toBe(8.7);
     expect(PM_NATIONAL.managementAverage).toBe(7.5);
   });
+  it("labels the SA state average as a separate statewide measure and leaves other states unchanged", () => {
+    const sa = managementCell(PM_STATE_FEES.SA);
+    expect(sa.text.startsWith("9% to 15% (Adelaide agencies mostly 9% to 11%); state average 7.5%")).toBe(true);
+    expect(sa.text).toContain("(a separate statewide measure from LocalAgentFinder, not part of the Adelaide range)");
+    expect(stateFeeAnswer("SA")).toContain("LocalAgentFinder's March 2026 state average is 7.5%, a separate statewide measure that sits below the Adelaide range.");
+    expect(managementCell(PM_STATE_FEES.WA).text).toBe("8.5% to 11% (Perth; 11% or more in regional WA); state average 8.7%");
+    expect(managementCell(PM_STATE_FEES.NSW).text).not.toContain("separate statewide");
+  });
   it("prints a footnoted cell for every published figure and says so where a state has no published range", () => {
     const wa = PM_STATE_FEES.WA;
     expect(managementCell(wa)).toEqual({ text: "8.5% to 11% (Perth; 11% or more in regional WA); state average 8.7%", refs: [1, 2, 6] });

@@ -186,6 +186,8 @@ export interface PmPctRange {
   average: number;
   /** Where the capital differs from the state. */
   note?: string;
+  /** Set when the average is a separate measure from the published range, so the two are not read as one series. */
+  averageNote?: string;
   sources: PmSourceKey[];
 }
 
@@ -286,7 +288,7 @@ export const PM_STATE_FEES: Record<StateCode, PmStateFees> = {
     state: "SA",
     name: STATE_NAMES.SA,
     capital: "Adelaide",
-    management: { low: 9, high: 15, average: 7.5, note: "Adelaide agencies mostly 9% to 11%", sources: ["laf", "reiq", "wra-adl"] },
+    management: { low: 9, high: 15, average: 7.5, note: "Adelaide agencies mostly 9% to 11%", averageNote: "a separate statewide measure from LocalAgentFinder, not part of the Adelaide range", sources: ["laf", "reiq", "wra-adl"] },
     letting: { low: 2, high: 2, average: 1.9, sources: ["laf", "wra-adl"] },
     renewal: { low: 1, high: 1, unit: "weeks", note: "often one week's rent", sources: ["wra-adl"] },
     inspection: { low: 50, high: 100, unit: "dollars", note: "each", sources: ["wra-adl"] },
@@ -363,7 +365,8 @@ export function managementCell(s: PmStateFees): PmCell {
   const m = s.management;
   const range = m.low === m.high ? pct(m.low) : `${pct(m.low)} to ${pct(m.high)}`;
   const note = m.note ? ` (${m.note})` : "";
-  return { text: `${range}${note}; state average ${pct(m.average)}`, refs: refs(m.sources) };
+  const avgNote = m.averageNote ? ` (${m.averageNote})` : "";
+  return { text: `${range}${note}; state average ${pct(m.average)}${avgNote}`, refs: refs(m.sources) };
 }
 
 export function lettingCell(s: PmStateFees): PmCell {
@@ -398,7 +401,8 @@ export function stateFeeAnswer(state: StateCode): string {
     .join("; ");
   const range = m.low === m.high ? pct(m.low) : `${pct(m.low)} to ${pct(m.high)}`;
   const detail = m.note ? `${m.note}; ${rangeSources}` : rangeSources;
-  const first = `In ${s.name}, the published management fee is ${range} of rent collected (${detail}), and LocalAgentFinder's March 2026 state average is ${pct(m.average)}.`;
+  const avgClause = m.averageNote ? `, a separate statewide measure that sits below the ${s.capital} range` : "";
+  const first = `In ${s.name}, the published management fee is ${range} of rent collected (${detail}), and LocalAgentFinder's March 2026 state average is ${pct(m.average)}${avgClause}.`;
   const letting =
     l.low === undefined || l.high === undefined
       ? `The letting fee averages ${weeksRent(l.average)} (LocalAgentFinder, March 2026).`
