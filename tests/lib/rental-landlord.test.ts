@@ -2,7 +2,10 @@
 // the rental-market sub-page print only sourced fees, a worked line on a
 // rent whose source is named, and an investment FAQ from published figures.
 import fs from "node:fs";
+import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import { RentalMarketLandlordSections } from "../../src/components/suburb/RentalMarketLandlordSections";
 import type { Suburb } from "../../src/types/suburb";
 import type { SuburbRentalHistory } from "../../src/lib/services/rental-service";
 import {
@@ -49,10 +52,11 @@ describe("the state table", () => {
       expect(r.regional.lo).toBeGreaterThan(0);
       if (r.metro.hi !== null) expect(r.metro.hi).toBeGreaterThanOrEqual(r.metro.lo);
     }
-    for (const s of Object.values(FEE_SOURCES)) {
+    for (const s of Object.values(FEE_SOURCES) as { label: string; date: string; url?: string }[]) {
       expect(s.label.length).toBeGreaterThan(5);
       expect(s.date).toMatch(/20(20|23|26)/);
-      expect(s.url).toMatch(/^https:\/\//);
+      // A url is optional (LocalAgentFinder is named, never linked); when set it is https.
+      if (s.url !== undefined) expect(s.url).toMatch(/^https:\/\//);
     }
     for (const f of ANCILLARY_FEES) expect(f.range).toMatch(/^\$\d/);
   });
@@ -265,5 +269,33 @@ describe("the page keeps its gates", () => {
     expect(form).toContain("who pays us for the introduction");
     expect(form).not.toMatch(/useRouter|useSearchParams/);
     expect(form).toContain("website");
+  });
+});
+
+// Jos ruled: no link-outs to LocalAgentFinder or WhichRealEstateAgent. They
+// are named as plain-text sources only.
+describe("no outbound link to LocalAgentFinder or WhichRealEstateAgent", () => {
+  const BLOCKED = /localagentfinder|whichrealestateagent/i;
+
+  it("carries no url on any fee source, and no blocked host in any url", () => {
+    expect(FEE_SOURCES.laf).not.toHaveProperty("url");
+    for (const src of Object.values(FEE_SOURCES) as { url?: string }[]) {
+      if (src.url) expect(src.url).not.toMatch(BLOCKED);
+    }
+    for (const f of ANCILLARY_FEES) expect(f.source.url ?? "").not.toMatch(BLOCKED);
+  });
+
+  it("still names LocalAgentFinder as a plain-text source", () => {
+    expect(FEE_SOURCES.laf.label).toContain("LocalAgentFinder");
+    expect(FEE_SOURCES.laf.date).toBe("13 March 2026");
+  });
+
+  it("renders the landlord block with the source as text and no href to a blocked host", () => {
+    const m = buildLandlordModel(suburb(), [row()]);
+    const html = renderToStaticMarkup(React.createElement(RentalMarketLandlordSections, { suburb: suburb(), landlord: m }));
+    const hrefs = [...html.matchAll(/href="([^"]*)"/g)].map((x) => x[1]);
+    expect(hrefs.length).toBeGreaterThan(0);
+    for (const h of hrefs) expect(h).not.toMatch(BLOCKED);
+    expect(html).toContain("LocalAgentFinder, Property Management Fees Australia: 2026 Guide, 13 March 2026");
   });
 });
