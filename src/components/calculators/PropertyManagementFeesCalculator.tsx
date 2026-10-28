@@ -98,7 +98,7 @@ export function PropertyManagementFeesCalculator({
               onChange={(e) => set("managementPct", Number(e.target.value) || 0)}
               className={field}
             />
-            <p className="text-xs text-gray-500 mt-1">{published(managementCell(fees).text)} {fees.management.averageNote ? "The statewide average is the starting figure; it is a separate measure from the published range." : "The average is the starting figure."}</p>
+            <p className="text-xs text-gray-500 mt-1">{published(managementCell(fees).text)} {fees.management.averageNote ? "The statewide average is the starting figure." : "The average is the starting figure."}</p>
           </div>
           <div>
             <label htmlFor="pm-letting" className="block text-sm font-medium text-gray-700 mb-1">Letting fee (weeks of rent)</label>

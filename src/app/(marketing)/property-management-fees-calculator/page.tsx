@@ -27,14 +27,14 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   slug: "property-management-fees-calculator",
   schemaName: "Property Management Fees Calculator",
   schemaDescription:
-    "Calculate the annual cost of property management for an Australian rental: management fee, letting fee, lease renewals, inspections and admin charges, starting from each state's published fee ranges.",
+    "Free property management fees calculator. Work out the annual cost of managing your rental, starting from each state's average fee and published ranges.",
   updatedAt: "2026-10-28",
   persona: "investing",
 };
 
 const META_TITLE = "Property Management Fees Calculator";
 const META_DESCRIPTION =
-  "Free property management fees calculator. Work out the annual cost of managing your rental, starting from the published fee ranges for each state.";
+  "Free property management fees calculator. Work out the annual cost of managing your rental, starting from each state's average fee and published ranges.";
 
 export const metadata: Metadata = {
   title: META_TITLE,

@@ -57,6 +57,17 @@ describe("rendered titles", () => {
   });
 });
 
+describe("calculator page description", () => {
+  const WANT = "Free property management fees calculator. Work out the annual cost of managing your rental, starting from each state's average fee and published ranges.";
+  it("meta, OG and WebApplication schema descriptions are the same 152 characters", () => {
+    expect(WANT.length).toBe(152);
+    expect(calcMeta.description).toBe(WANT);
+    expect(calcMeta.openGraph?.description).toBe(WANT);
+    const app = jsonLd(renderToStaticMarkup(createElement(CalculatorPage))).find((b) => b["@type"] === "WebApplication");
+    expect(app?.description).toBe(WANT);
+  });
+});
+
 describe("meta descriptions", () => {
   it("both are 155 characters or fewer", () => {
     expect(String(calcMeta.description).length).toBeLessThanOrEqual(155);
@@ -178,7 +189,8 @@ describe("South Australia's starting fee", () => {
     expect(pct(sa)).toBe("7.5");
     const t = text(sa);
     expect(t).toContain("9% to 15% (Adelaide agencies mostly 9% to 11%); state average 7.5% (a separate statewide measure from LocalAgentFinder, not part of the Adelaide range)");
-    expect(t).toContain("The statewide average is the starting figure; it is a separate measure from the published range.");
+    expect(t).toContain("(a separate statewide measure from LocalAgentFinder, not part of the Adelaide range). The statewide average is the starting figure.");
+    expect(t).not.toContain("it is a separate measure from the published range");
     expect(t).not.toContain("The low end of the published range is the starting figure.");
     const nsw = renderToStaticMarkup(createElement(Calc, { initialState: "NSW" }));
     expect(pct(nsw)).toBe("5.8");
@@ -218,9 +230,12 @@ describe("no links to LocalAgentFinder or WhichRealEstateAgent", () => {
     expect(html).toMatch(/WhichRealEstateAgent/);
     expect(html).toMatch(/href="https:\/\/[^"]*reiq/i);
   });
-  it("the guide's Article JSON-LD keeps its reviewer", () => {
-    const html = renderToStaticMarkup(createElement(Guide));
-    expect(html).toContain("Andy McMaster");
+  it("the guide's Article JSON-LD names Andy McMaster in reviewedBy", () => {
+    const article = jsonLd(renderToStaticMarkup(createElement(Guide))).find((b) => b["@type"] === "Article");
+    expect(article).toBeDefined();
+    const reviewer = article!.reviewedBy as { name?: string } | undefined;
+    expect(reviewer?.name).toBe("Andy McMaster");
+    expect(JSON.stringify(article!.reviewedBy)).toContain("Andy McMaster");
   });
   it("the guide says the calculator starts at the state average, with no South Australia exception", () => {
     const t = squash(read(GUIDE_FILE));
