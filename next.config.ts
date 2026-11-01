@@ -15,8 +15,8 @@ const NON_LOCALITY_REDIRECTS = nonLocalities.entries.flatMap((e) => {
 
 // The listing sections retired on 14 Oct 2026 that had a child sitemap at
 // /{section}/sitemap.xml: the redirect skips that one file, and
-// src/app/(retired-sitemaps) answers it with valid XML instead of a 308 to an
-// HTML hub, which Search Console reports as a sitemap error.
+// src/app/(retired-sitemaps) answers it 410 Gone instead of a 308 to an HTML
+// hub, which Search Console reports as a sitemap error.
 function retiredSection(section: string, destination: string) {
   if (!(section in RETIRED_SITEMAP_SECTIONS)) {
     return [{ source: `/${section}/:path*`, destination, permanent: true }];

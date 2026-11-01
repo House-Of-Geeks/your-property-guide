@@ -97,8 +97,9 @@ destination is itself redirected.
   to the hubs. `/sold/sitemap.xml` had been submitted to Search Console on its
   own, and the 308 to the `/suburbs` HTML page showed there as a sitemap error
   (2 Nov 2026 crawl). Since then the redirect skips these five files and
-  `src/app/(retired-sitemaps)` answers each with a valid urlset that lists
-  only its hub (`src/lib/retired-sitemap.ts`).
+  `src/app/(retired-sitemaps)` answers each `410 Gone` with a plain text
+  body, like the removed street pages (`src/lib/retired-sitemap.ts`). Every
+  other path under those sections still redirects in one hop.
   `/suburbs/subpages/sitemap/{buy,rent,houses,units,townhouses,land}.xml`
   answer 404. If any of these were submitted to Search Console or Bing on
   their own, remove them there; the index at `/sitemap.xml` no longer lists

@@ -129,7 +129,7 @@ describe("the consolidated routes redirect permanently, in one hop", () => {
   });
 });
 
-describe("the retired child sitemaps answer valid XML, not a redirect", () => {
+describe("the retired child sitemaps answer 410 Gone, not a redirect", () => {
   // Search Console reported "1 error" on /sold/sitemap.xml (2 Nov 2026 crawl):
   // it was submitted on its own and 308ed to the /suburbs HTML page.
   const SECTIONS = Object.keys(RETIRED_SITEMAP_SECTIONS) as (keyof typeof RETIRED_SITEMAP_SECTIONS)[];
@@ -139,28 +139,23 @@ describe("the retired child sitemaps answer valid XML, not a redirect", () => {
   });
 
   for (const section of SECTIONS) {
-    it(`/${section}/sitemap.xml is served by its route and lists only its hub`, async () => {
+    it(`/${section}/sitemap.xml is not redirected and its route answers 410 with no XML`, async () => {
       expect(await resolve(`/${section}/sitemap.xml`)).toBeNull();
       const file = path.join(ROOT, "src/app/(retired-sitemaps)", section, "sitemap.xml/route.ts");
       expect(fs.existsSync(file), file).toBe(true);
       const { GET } = await import(file);
       const res: Response = await GET();
-      expect(res.status).toBe(200);
-      expect(res.headers.get("content-type")).toContain("application/xml");
-      const xml = await res.text();
-      expect(xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>')).toBe(true);
-      expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
-      const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-      const hub = CONSOLIDATED[`/${section}`];
-      expect(locs).toEqual([`https://www.yourpropertyguide.com.au${hub}`]);
-      // The hub is served where it is, not redirected again.
-      expect(await resolve(hub)).toBeNull();
+      expect(res.status).toBe(410);
+      expect(res.headers.get("content-type")).toBe("text/plain");
+      const body = await res.text();
+      expect(body).not.toContain("<");
     });
   }
 
-  it("everything else under those sections still redirects", async () => {
+  it("everything else under those sections still redirects to the same hub", async () => {
     for (const section of SECTIONS) {
       const to = CONSOLIDATED[`/${section}`];
+      expect(RETIRED_SITEMAP_SECTIONS[section]).toBe(to);
       for (const p of [`/${section}`, `/${section}/x`, `/${section}/a/b`, `/${section}/sitemap.xml.bak`, `/${section}/x/sitemap.xml`]) {
         expect(await resolve(p), p).toEqual({ status: 308, location: to });
       }
