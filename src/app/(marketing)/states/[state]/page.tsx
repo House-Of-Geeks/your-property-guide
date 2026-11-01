@@ -24,7 +24,7 @@ interface StatePageProps {
   params: Promise<{ state: string }>;
 }
 
-export const revalidate = 604800; // cache as ISR for 7d, regen on demand (synced data)
+export const revalidate = 2592000; // cache as ISR for 30d, regen on demand (synced data)
 
 export async function generateStaticParams() {
   // Skip prerender at build time, page body queries the DB. Pages render

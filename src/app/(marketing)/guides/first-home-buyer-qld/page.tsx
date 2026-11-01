@@ -281,7 +281,7 @@ export default function FirstHomeBuyerQLDPage() {
         <li><strong>Regional Queensland:</strong> Toowoomba, Rockhampton, Mackay, house medians $400K to $600K with high rental yields</li>
       </ul>
       <p>
-        Browse <Link href="/suburbs">QLD suburb profiles</Link> for current data.
+        Browse <Link href="/suburbs" prefetch={false}>QLD suburb profiles</Link> for current data.
       </p>
 
       <h2 id="buying-process">The QLD buying process</h2>

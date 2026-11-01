@@ -2,6 +2,7 @@
 
 import { useRef, useState, type CSSProperties, type ReactNode } from "react";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight } from "lucide-react";
 import { STATE_RATES } from "@/lib/data/commission-rates";
 import { computeSellingCosts, defaultSellingCostsInput } from "@/lib/selling-costs-calc";
@@ -154,10 +155,10 @@ function Big({ label, value, sub }: { label: string; value: number | null; sub?:
 function Actions({ primary, secondary }: { primary: { label: string; href: string }; secondary: { label: string; href: string } }) {
   return (
     <div className="mt-auto flex flex-col gap-3 pt-8 sm:flex-row sm:items-center sm:gap-6">
-      <Link href={primary.href} className="press inline-flex h-12 items-center justify-between gap-4 rounded-lg bg-cta px-5 text-base font-semibold text-cta-ink transition-colors hover:bg-cta-hover sm:justify-center">
+      <Link href={primary.href} prefetch={linkPrefetch(primary.href)} className="press inline-flex h-12 items-center justify-between gap-4 rounded-lg bg-cta px-5 text-base font-semibold text-cta-ink transition-colors hover:bg-cta-hover sm:justify-center">
         {primary.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </Link>
-      <Link href={secondary.href} className="inline-flex items-center gap-1.5 text-base font-semibold text-ink underline-offset-4 hover:underline">
+      <Link href={secondary.href} prefetch={linkPrefetch(secondary.href)} className="inline-flex items-center gap-1.5 text-base font-semibold text-ink underline-offset-4 hover:underline">
         {secondary.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
       </Link>
     </div>

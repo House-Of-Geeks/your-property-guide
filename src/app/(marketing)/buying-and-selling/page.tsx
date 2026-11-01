@@ -1,6 +1,7 @@
 import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight, BookOpen, Calculator, CalendarClock, KeyRound, Wallet } from "lucide-react";
 import {
   BUTTON_PRIMARY,
@@ -76,7 +77,7 @@ function LinkList({ title, icon: Icon, links }: { title: string; icon: typeof Ca
       <ul className="mt-4 divide-y divide-line">
         {links.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className="group flex items-start justify-between gap-3 py-3.5">
+            <Link href={l.href} prefetch={linkPrefetch(l.href)}className="group flex items-start justify-between gap-3 py-3.5">
               <span className="min-w-0">
                 <span className="block font-semibold text-ink group-hover:underline underline-offset-4">{l.label}</span>
                 <span className="block mt-0.5 text-sm text-ink-muted leading-snug">{l.note}</span>
@@ -115,7 +116,7 @@ export default function BuyingAndSellingPage() {
           <Link href={PLAN_HREF} className={`${BUTTON_PRIMARY} justify-center`}>
             Build my next-step plan
           </Link>
-          <Link href={HELP_HREF} className={`${BUTTON_SECONDARY} justify-center`}>
+          <Link href={HELP_HREF} prefetch={false} className={`${BUTTON_SECONDARY} justify-center`}>
             Ask for personal help
           </Link>
         </div>
@@ -169,7 +170,7 @@ export default function BuyingAndSellingPage() {
                   <>
                     {s.body}
                     {s.link && (
-                      <Link href={s.link.href} className={`mt-3 flex w-fit items-center gap-1.5 ${LINK}`}>
+                      <Link href={s.link.href} prefetch={linkPrefetch(s.link.href)}className={`mt-3 flex w-fit items-center gap-1.5 ${LINK}`}>
                         {s.link.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
                       </Link>
                     )}
@@ -281,7 +282,7 @@ export default function BuyingAndSellingPage() {
             </p>
           </div>
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
-            <Link href={HELP_HREF} className={`${BUTTON_PRIMARY} justify-center`}>
+            <Link href={HELP_HREF} prefetch={false} className={`${BUTTON_PRIMARY} justify-center`}>
               Ask for personal help <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
             <Link href={PLAN_HREF} className={`${BUTTON_SECONDARY} justify-center`}>

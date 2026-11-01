@@ -351,7 +351,7 @@ export default function PropertyAuctionGuidePage() {
         <li>
           <strong>Research comparable sales.</strong> Look at recent sales in
           the suburb to understand what a fair price looks like. Browse{" "}
-          <Link href="/suburbs">suburb data</Link> for medians and growth.
+          <Link href="/suburbs" prefetch={false}>suburb data</Link> for medians and growth.
         </li>
       </ul>
 

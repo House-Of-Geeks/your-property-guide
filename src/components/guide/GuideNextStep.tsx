@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight } from "lucide-react";
 import { GuideCover } from "@/components/brand/GuideCover";
 import { guideFunnelHref, type GuideAudience } from "@/lib/guide-funnel";
@@ -50,6 +51,7 @@ export function GuideNextStep({ audience, from, variant = "block", heading, body
         </div>
         <Link
           href={href}
+          prefetch={linkPrefetch(href)}
           className="mt-4 flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-cta-ink font-semibold px-4 py-2.5 text-sm"
         >
           Get the free guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
@@ -82,6 +84,7 @@ export function GuideNextStep({ audience, from, variant = "block", heading, body
       <div className="mt-5 sm:pl-[100px]">
         <Link
           href={href}
+          prefetch={linkPrefetch(href)}
           className="flex sm:inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-cta-ink font-semibold px-6 py-3.5 sm:py-3 text-base"
         >
           Get the free {audience} guide <ArrowRight className="w-4 h-4" aria-hidden="true" />

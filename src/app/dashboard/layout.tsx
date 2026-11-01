@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { Home, User, Building2, LogOut, List, Users, ShieldCheck } from "lucide-react";
@@ -94,6 +95,7 @@ function NavLink({ href, icon, label }: { href: string; icon: React.ReactNode; l
   return (
     <Link
       href={href}
+      prefetch={linkPrefetch(href)}
       className="flex items-center gap-2.5 px-3 py-2 text-sm text-ink-muted hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
     >
       {icon}

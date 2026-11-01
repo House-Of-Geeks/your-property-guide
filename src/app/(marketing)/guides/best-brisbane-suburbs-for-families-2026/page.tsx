@@ -308,7 +308,7 @@ export default function BestBrisbaneFamilySuburbsGuide() {
         </li>
         <li>
           Check the sale prices for each suburb on its{" "}
-          <Link href="/suburbs">suburb page</Link>.
+          <Link href="/suburbs" prefetch={false}>suburb page</Link>.
         </li>
         <li>
           Run flood reports on any address you’re seriously considering.

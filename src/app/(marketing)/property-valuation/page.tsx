@@ -324,7 +324,7 @@ export default function PropertyValuationPage() {
         <SectionHeading title="How to check what your property is worth" />
         <ol className="mt-10 space-y-3 font-sans text-base text-ink-muted leading-relaxed list-decimal pl-5 max-w-3xl">
           <li>Pick your suburb and dwelling type in the range block above for the published median and its band. That is the suburb, not your home; it anchors everything that follows.</li>
-          <li>Look up sold prices, not asking prices, for homes like yours from the last 90 days: similar bedrooms, land and condition. Our <Link href="/suburbs" className={linkClass}>suburb pages</Link> are a start.</li>
+          <li>Look up sold prices, not asking prices, for homes like yours from the last 90 days: similar bedrooms, land and condition. Our <Link href="/suburbs" prefetch={false} className={linkClass}>suburb pages</Link> are a start.</li>
           <li>Get two or three free appraisals from agents who actually sell in your suburb, and ask each for the comparable sales behind the figure. When they cluster, that is your range; when one sits far above the rest, treat it as a pitch.</li>
           <li>If a lender, a court or the tax office needs the number, book a licensed valuer. Expect $300 to $600 (Aussie, January 2025) and a written report you can hand over.</li>
           <li>Before you list, run the figure through the <Link href="/selling-costs-calculator" className={linkClass}>selling costs calculator</Link> so you know what you keep, then read <Link href="/guides/how-to-choose-a-selling-agent" className={linkClass}>how to choose a selling agent</Link>.</li>

@@ -271,7 +271,7 @@ export default function HouseVsApartmentInvestmentGuide() {
         </li>
         <li>
           Check the sale prices on the{" "}
-          <Link href="/suburbs">suburb page</Link> to ground-truth the asking price.
+          <Link href="/suburbs" prefetch={false}>suburb page</Link> to ground-truth the asking price.
         </li>
         <li>
           Read our{" "}

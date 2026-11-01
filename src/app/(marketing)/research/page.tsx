@@ -1,6 +1,7 @@
 import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import Image from "next/image";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
@@ -173,6 +174,7 @@ function Card({ card }: { card: ResearchCard }) {
   return (
     <Link
       href={card.href}
+      prefetch={linkPrefetch(card.href)}
       className="group flex flex-col gap-4 rounded-xl bg-surface-raised border border-line p-6 hover:border-ink transition-colors"
     >
       <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-surface-warm border border-line">

@@ -155,7 +155,7 @@ export default function AffordabilityCalculatorPage() {
               again at 10 to 15% lower. The lower figure is usually the more
               comfortable target, leaving headroom for rate rises and life
               changes. Then check the suburbs that match the lower number using
-              our <Link href="/suburbs">suburb search</Link>.
+              our <Link href="/suburbs" prefetch={false}>suburb search</Link>.
             </p>
           </Callout>
 

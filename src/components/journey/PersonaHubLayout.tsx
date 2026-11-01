@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { Suspense } from "react";
 import { ArrowRight } from "lucide-react";
 import { SellingGuideFunnel } from "./SellingGuideFunnel";
@@ -240,7 +241,7 @@ export function PersonaHubLayout({ personaId }: PersonaHubLayoutProps) {
           <ul className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 border-t border-line">
             {calculators.map((c) => (
               <li key={c.href} className="border-b border-line">
-                <Link href={c.href} className="group flex items-start justify-between gap-3 py-5">
+                <Link href={c.href} prefetch={linkPrefetch(c.href)} className="group flex items-start justify-between gap-3 py-5">
                   <span className="min-w-0">
                     <span className="block text-lg font-semibold text-ink group-hover:underline underline-offset-4">{c.label}</span>
                     <span className="block mt-1 text-sm text-ink-muted leading-snug">{c.blurb}</span>

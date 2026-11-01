@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { MapPin, GraduationCap, TrendingUp, BookOpen, ArrowRight } from "lucide-react";
 
 const TOPICS = [
@@ -51,6 +52,7 @@ export function ResearchTopics() {
               <Link
                 key={topic.title}
                 href={topic.href}
+                prefetch={linkPrefetch(topic.href)}
                 className="group relative block bg-surface-raised rounded-2xl border border-line-warm overflow-hidden hover:shadow-lg hover:border-line-strong transition-all duration-200"
               >
                 {/* Black top strip */}

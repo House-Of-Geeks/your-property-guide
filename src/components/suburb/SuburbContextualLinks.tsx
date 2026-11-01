@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import type { SubpageAvailability } from "@/lib/suburb-subpages";
 import { editorialLinksFor } from "@/lib/data/editorial-links";
 
@@ -94,7 +95,7 @@ function LinkColumn({ title, links }: { title: string; links: { label: string; h
       <ul className="space-y-2">
         {links.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className={LINK}>
+            <Link href={l.href} prefetch={linkPrefetch(l.href)} className={LINK}>
               {l.label}
             </Link>
           </li>

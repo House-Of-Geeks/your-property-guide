@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 
@@ -32,7 +33,7 @@ export default function NotFound() {
         <ul className="mt-12 grid max-w-5xl border-t border-line sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3">
           {LINKS.map((l) => (
             <li key={l.href} className="border-b border-line">
-              <Link href={l.href} className="group flex items-start justify-between gap-4 py-5">
+              <Link href={l.href} prefetch={linkPrefetch(l.href)} className="group flex items-start justify-between gap-4 py-5">
                 <span>
                   <span className="block font-display text-[22px] leading-snug tracking-[-0.025em] text-ink group-hover:text-primary">{l.label}</span>
                   <span className="mt-1 block text-[14px] leading-relaxed text-ink-muted">{l.blurb}</span>

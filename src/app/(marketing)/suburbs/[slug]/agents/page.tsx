@@ -22,9 +22,9 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-// 7-day ISR like the other suburb sub-pages: without these exports the
+// 30-day ISR like the other suburb sub-pages: without these exports the
 // route renders from the database on every crawler hit (see rental-market).
-export const revalidate = 604800;
+export const revalidate = 2592000;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 

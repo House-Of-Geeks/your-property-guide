@@ -159,7 +159,7 @@ export default function MortgageCalculatorPage() {
           <p>
             For a precise quote on your specific situation, a mortgage broker can
             compare 30+ lenders for you in one process.{" "}
-            <Link href="/find-an-expert?intent=refinancing">Get connected</Link> if you want a free intro to one.
+            <Link href="/find-an-expert?intent=refinancing" prefetch={false}>Get connected</Link> if you want a free intro to one.
           </p>
         </>
       }

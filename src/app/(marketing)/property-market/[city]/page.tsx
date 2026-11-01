@@ -28,7 +28,7 @@ import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/componen
 
 const CURRENT_YEAR = 2026;
 
-export const revalidate = 604800; // ISR weekly, regen on demand (synced data)
+export const revalidate = 2592000; // ISR 30d, regen on demand (synced data)
 export const dynamicParams = true;
 
 export function generateStaticParams() {

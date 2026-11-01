@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight, Loader2, MapPin } from "lucide-react";
 import { SuburbAutocomplete } from "@/components/search/SuburbAutocomplete";
 import { SuburbAppraisalCTA } from "@/components/suburb/SuburbAppraisalCTA";
@@ -201,6 +202,7 @@ export function SuburbValueRange({
         {after === "link" && (
           <Link
             href={appraisalHref}
+            prefetch={linkPrefetch(appraisalHref)}
             className="group mt-6 inline-flex items-center justify-center gap-2 rounded-md bg-cta hover:bg-cta-hover text-cta-ink font-semibold px-5 py-3 font-sans text-sm transition-colors"
           >
             Get a free appraisal of your {dwelling}

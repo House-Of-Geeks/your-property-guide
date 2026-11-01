@@ -14,7 +14,7 @@ import {
 } from "@/components/best-suburbs/BestSuburbsListing";
 import { cityEditionLinks, indexableCityEditionsForLinks } from "@/lib/services/city-rankings-service";
 
-export const revalidate = 604800;
+export const revalidate = 2592000;
 
 const VALID_CATEGORIES: RankingCategory[] = [
   "for-families",

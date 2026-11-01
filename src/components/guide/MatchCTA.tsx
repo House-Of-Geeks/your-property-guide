@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight } from "lucide-react";
 import { guideFunnelHref, type GuideAudience } from "@/lib/guide-funnel";
 import { useGuidePage } from "./GuideAudienceContext";
@@ -114,6 +115,7 @@ export function MatchCTA({ kind, lead, ctaLabel, href, audience: audienceProp }:
         </p>
         <Link
           href={resolvedHref}
+          prefetch={linkPrefetch(resolvedHref)}
           className="shrink-0 inline-flex items-center justify-center gap-2 rounded-md border border-ink text-ink hover:bg-ink hover:text-white font-semibold px-5 py-2.5 text-sm"
         >
           {resolvedLabel}

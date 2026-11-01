@@ -207,7 +207,7 @@ export default function BorrowingPowerCalculatorPage() {
           </ul>
           <p>
             For any of those, run the basic numbers here, then verify with a broker
-            or a participating lender. <Link href="/find-an-expert?intent=refinancing">Get connected</Link>{" "}
+            or a participating lender. <Link href="/find-an-expert?intent=refinancing" prefetch={false}>Get connected</Link>{" "}
             if you want a free intro to one.
           </p>
         </>

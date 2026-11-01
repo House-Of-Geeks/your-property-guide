@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { useId, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { DEFAULT_MOVE, journeyForMove, useMove, type Move } from "@/components/interactive/move-context";
@@ -112,7 +113,7 @@ export function StartPlanner() {
                     <span className="font-display text-[24px] leading-none text-primary" aria-hidden="true">
                       {i + 1}
                     </span>
-                    <Link href={s.href} className="text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary">
+                    <Link href={s.href} prefetch={linkPrefetch(s.href)} className="text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary">
                       {s.label}
                     </Link>
                   </li>

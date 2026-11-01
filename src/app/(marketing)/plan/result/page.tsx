@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight, MapPin, Pencil } from "lucide-react";
 import { PhotoHero, HeroTitle, HeroLead } from "@/components/premium";
 import { PlanEmailForm } from "@/components/journeys/PlanEmailForm";
@@ -66,7 +67,7 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
           {suburb && (
             <li>
               {suburb.href ? (
-                <Link href={suburb.href} className="inline-flex items-center gap-1.5 rounded-[4px] border border-ink px-3.5 py-1.5 text-sm font-semibold text-ink hover:bg-ink hover:text-ink-inverse">
+                <Link href={suburb.href} prefetch={linkPrefetch(suburb.href)}className="inline-flex items-center gap-1.5 rounded-[4px] border border-ink px-3.5 py-1.5 text-sm font-semibold text-ink hover:bg-ink hover:text-ink-inverse">
                   <MapPin className="h-3.5 w-3.5" aria-hidden="true" /> {suburb.label}
                 </Link>
               ) : (
@@ -98,7 +99,7 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
                     <h3 className="text-xl text-ink">{s.title}</h3>
                     <p className="mt-2 text-base text-ink-muted leading-relaxed">{s.body}</p>
                     {s.link && (
-                      <Link href={s.link.href} className="mt-3 inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
+                      <Link href={s.link.href} prefetch={linkPrefetch(s.link.href)}className="mt-3 inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
                         {s.link.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
                       </Link>
                     )}
@@ -146,7 +147,7 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
               <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
                 {answers.journey === "buying" ? "Recent prices, rents, schools and local data, to judge each price guide against." : "Recent prices and local data, to test any agent’s price against."}
               </p>
-              <Link href={suburb.href} className="mt-4 inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
+              <Link href={suburb.href} prefetch={linkPrefetch(suburb.href)}className="mt-4 inline-flex items-center gap-1.5 text-base font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">
                 See the suburb profile <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </div>
@@ -163,7 +164,7 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
             <ul className="mt-4 divide-y divide-line">
               {plan.tools.map((t) => (
                 <li key={t.href} className="py-3">
-                  <Link href={t.href} className="text-base font-semibold text-ink hover:text-primary">{t.label}</Link>
+                  <Link href={t.href} prefetch={linkPrefetch(t.href)}className="text-base font-semibold text-ink hover:text-primary">{t.label}</Link>
                   <p className="text-sm text-ink-muted">{t.note}</p>
                 </li>
               ))}
@@ -174,7 +175,7 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
             <ul className="mt-4 divide-y divide-line">
               {plan.guides.map((g) => (
                 <li key={g.href} className="py-3">
-                  <Link href={g.href} className="text-base font-semibold text-ink hover:text-primary">{g.label}</Link>
+                  <Link href={g.href} prefetch={linkPrefetch(g.href)}className="text-base font-semibold text-ink hover:text-primary">{g.label}</Link>
                   <p className="text-sm text-ink-muted">{g.note}</p>
                 </li>
               ))}
@@ -190,7 +191,7 @@ export default async function PlanResultPage({ searchParams }: { searchParams: P
             <h2 className="font-display text-[24px] leading-snug tracking-[-0.03em] text-ink">{plan.help.headline}</h2>
             <p className="mt-2 text-[15px] text-ink-muted leading-relaxed">{plan.help.body}</p>
             {plan.help.cta && (
-              <Link href={plan.help.cta.href} className={`mt-5 ${plan.help.level === "offer" ? BUTTON_PRIMARY : BUTTON_SECONDARY}`}>
+              <Link href={plan.help.cta.href} prefetch={linkPrefetch(plan.help.cta.href)}className={`mt-5 ${plan.help.level === "offer" ? BUTTON_PRIMARY : BUTTON_SECONDARY}`}>
                 {plan.help.cta.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             )}

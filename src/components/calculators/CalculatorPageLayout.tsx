@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { BookCover } from "@/components/brand/BookCover";
 import { GUIDE_BOOKS } from "@/lib/guide-books";
 import { ArrowRight } from "lucide-react";
@@ -113,7 +114,7 @@ export function CalculatorPageLayout({
               <GuideStartInline from={frontmatter.slug} className="mt-8" />
               <p className="mt-3 text-sm text-ink-muted">
                 Rather talk to someone who sells in your suburb?{" "}
-                <Link href={`/get-help?service=selling-agent&from=${frontmatter.slug}`} className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
+                <Link href={`/get-help?service=selling-agent&from=${frontmatter.slug}`} prefetch={false} className="font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink">
                   Ask for an appraisal introduction
                 </Link>
               </p>
@@ -129,7 +130,7 @@ export function CalculatorPageLayout({
                   Your budget, the 2026 schemes state by state, how homes are sold and how to make an offer. A free guide, with a PDF for where you’re up to.
                 </p>
               </div>
-              <Link href={funnelHref} className={`col-span-2 shrink-0 justify-center sm:col-span-1 ${BUTTON_PRIMARY}`}>
+              <Link href={funnelHref} prefetch={linkPrefetch(funnelHref)} className={`col-span-2 shrink-0 justify-center sm:col-span-1 ${BUTTON_PRIMARY}`}>
                 Get the free guide <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
             </aside>
@@ -278,7 +279,7 @@ function NextStepRail({
       <ul className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-x-8 border-t border-line">
         {steps.map((s) => (
           <li key={s.href} className="border-b border-line">
-            <Link href={s.href} className="group flex items-start justify-between gap-3 py-4">
+            <Link href={s.href} prefetch={linkPrefetch(s.href)} className="group flex items-start justify-between gap-3 py-4">
               <span className="min-w-0">
                 <span className="block font-semibold text-ink group-hover:underline underline-offset-4">{s.label}</span>
                 <span className="block mt-0.5 text-sm text-ink-muted leading-snug">{s.description}</span>

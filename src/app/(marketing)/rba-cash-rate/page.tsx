@@ -357,6 +357,7 @@ export default function RBACashRatePage() {
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
             <Link
               href="/find-an-expert?intent=refinancing"
+              prefetch={false}
               className={BUTTON_PRIMARY}
             >
               Talk to a mortgage broker about your rate

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight } from "lucide-react";
 import { GUIDE_BOOKS } from "@/lib/guide-books";
 
@@ -62,6 +63,7 @@ export function ExpertCTA({
           </div>
           <Link
             href={href}
+            prefetch={linkPrefetch(href)}
             className="shrink-0 inline-flex items-center justify-center gap-2 rounded-lg border border-line-strong text-ink hover:bg-surface-raised hover:border-ink font-medium px-5 py-2.5 transition-colors"
           >
             {ctaLabel} <ArrowRight className="w-4 h-4" />
@@ -79,6 +81,7 @@ export function ExpertCTA({
           <p className="font-sans text-base text-ink-muted leading-relaxed mb-6 max-w-xl mx-auto">{body}</p>
           <Link
             href={href}
+            prefetch={linkPrefetch(href)}
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-line-strong text-ink hover:bg-surface-raised hover:border-ink font-medium px-6 py-3 transition-colors"
           >
             {ctaLabel} <ArrowRight className="w-4 h-4" />

@@ -48,6 +48,7 @@ export default async function ListingsPage() {
         {isAdmin && (
           <Link
             href="/dashboard/listings/new"
+            prefetch={false}
             className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors"
           >
             <PlusIcon className="w-4 h-4" />
@@ -62,6 +63,7 @@ export default async function ListingsPage() {
           {isAdmin && (
             <Link
               href="/dashboard/listings/new"
+              prefetch={false}
               className="mt-4 inline-block px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90"
             >
               Create your first listing
@@ -98,6 +100,7 @@ export default async function ListingsPage() {
                   <td className="px-4 py-3 text-right">
                     <Link
                       href={`/dashboard/listings/${p.id}`}
+                      prefetch={false}
                       className="px-3 py-1.5 rounded-lg border border-gray-300 text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       Edit

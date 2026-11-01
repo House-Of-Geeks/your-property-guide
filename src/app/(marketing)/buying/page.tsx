@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight } from "lucide-react";
 import { Band, BUTTON_PRIMARY, BUTTON_SECONDARY, HeroLead, HeroTitle, LinkRows, PhotoHero, SectionHeading } from "@/components/premium";
 import { HelpBand } from "@/components/journeys/ServiceSections";
@@ -131,7 +132,7 @@ export default function BuyingHubPage() {
               <ul className="mt-4 space-y-2">
                 {st.links.map((l) => (
                   <li key={l.href}>
-                    <Link href={l.href} className="text-base text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">{l.label}</Link>
+                    <Link href={l.href} prefetch={linkPrefetch(l.href)} className="text-base text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink">{l.label}</Link>
                   </li>
                 ))}
               </ul>

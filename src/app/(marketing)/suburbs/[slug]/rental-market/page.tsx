@@ -42,7 +42,7 @@ interface RentalMarketPageProps {
 // was a large part of the crawl-burst connection exhaustion in July 2026
 // (fix item 4a). Stats refresh via the quarterly sync, which now revalidates
 // changed suburbs' paths on demand (scripts/sync/revalidate-paths.ts).
-export const revalidate = 604800;
+export const revalidate = 2592000;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 

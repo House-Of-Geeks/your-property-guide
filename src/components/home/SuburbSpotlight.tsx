@@ -33,6 +33,7 @@ export async function SuburbSpotlight() {
           <div className="lg:col-span-4 lg:col-start-9 flex items-end justify-end">
             <Link
               href="/suburbs"
+              prefetch={false}
               className="inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-primary transition-colors border-b border-line-strong hover:border-primary pb-0.5"
             >
               All suburbs <ArrowRight className="w-4 h-4" />
