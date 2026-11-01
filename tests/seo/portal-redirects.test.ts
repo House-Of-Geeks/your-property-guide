@@ -20,6 +20,7 @@ import pagesSitemap from "@/app/pages/sitemap";
 import { GET as sitemapIndex } from "@/app/sitemap.xml/route";
 import { SUBPAGE_TYPES } from "@/app/(marketing)/suburbs/subpages/sitemap";
 import { listingCardHref } from "@/components/property/PropertyCard";
+import { RETIRED_SITEMAP_SECTIONS } from "@/lib/retired-sitemap";
 
 type Redirect = Awaited<ReturnType<NonNullable<typeof nextConfig.redirects>>>[number];
 
@@ -125,6 +126,45 @@ describe("the consolidated routes redirect permanently, in one hop", () => {
   it("a trailing path under a retired listing route still lands on its target", async () => {
     expect(await resolve("/buy/a/b")).toEqual({ status: 308, location: "/buying" });
     expect(await resolve("/house-and-land/a/b")).toEqual({ status: 308, location: "/buying" });
+  });
+});
+
+describe("the retired child sitemaps answer valid XML, not a redirect", () => {
+  // Search Console reported "1 error" on /sold/sitemap.xml (2 Nov 2026 crawl):
+  // it was submitted on its own and 308ed to the /suburbs HTML page.
+  const SECTIONS = Object.keys(RETIRED_SITEMAP_SECTIONS) as (keyof typeof RETIRED_SITEMAP_SECTIONS)[];
+
+  it("covers every retired section that had a child sitemap", () => {
+    expect([...SECTIONS].sort()).toEqual(["best-deals", "buy", "house-and-land", "rent", "sold"]);
+  });
+
+  for (const section of SECTIONS) {
+    it(`/${section}/sitemap.xml is served by its route and lists only its hub`, async () => {
+      expect(await resolve(`/${section}/sitemap.xml`)).toBeNull();
+      const file = path.join(ROOT, "src/app/(retired-sitemaps)", section, "sitemap.xml/route.ts");
+      expect(fs.existsSync(file), file).toBe(true);
+      const { GET } = await import(file);
+      const res: Response = await GET();
+      expect(res.status).toBe(200);
+      expect(res.headers.get("content-type")).toContain("application/xml");
+      const xml = await res.text();
+      expect(xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>')).toBe(true);
+      expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+      const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+      const hub = CONSOLIDATED[`/${section}`];
+      expect(locs).toEqual([`https://www.yourpropertyguide.com.au${hub}`]);
+      // The hub is served where it is, not redirected again.
+      expect(await resolve(hub)).toBeNull();
+    });
+  }
+
+  it("everything else under those sections still redirects", async () => {
+    for (const section of SECTIONS) {
+      const to = CONSOLIDATED[`/${section}`];
+      for (const p of [`/${section}`, `/${section}/x`, `/${section}/a/b`, `/${section}/sitemap.xml.bak`, `/${section}/x/sitemap.xml`]) {
+        expect(await resolve(p), p).toEqual({ status: 308, location: to });
+      }
+    }
   });
 });
 
