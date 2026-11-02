@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Search, Phone, ArrowRight } from "lucide-react";
@@ -196,13 +197,13 @@ export function Header() {
                     )}
                   </div>
                 ) : (
-                  <Link key={link.href} href={link.href} className="py-2 text-[14px] whitespace-nowrap text-ink hover:text-primary transition-colors">
+                  <Link key={link.href} href={link.href} prefetch={linkPrefetch(link.href)} className="py-2 text-[14px] whitespace-nowrap text-ink hover:text-primary transition-colors">
                     {link.label}
                   </Link>
                 ),
               )}
             </nav>
-            <Link href="/search" aria-label="Search the site" className="p-1 text-ink-muted hover:text-primary transition-colors">
+            <Link href="/search" prefetch={false} aria-label="Search the site" className="p-1 text-ink-muted hover:text-primary transition-colors">
               <Search className="h-[18px] w-[18px]" aria-hidden="true" />
             </Link>
             {/* Not on the planner itself, where it would only start again. */}
@@ -249,6 +250,7 @@ export function Header() {
               </Link>
               <Link
                 href={helpHref}
+                prefetch={linkPrefetch(helpHref)}
                 onClick={() => setMobileOpen(false)}
                 className="flex min-h-12 items-center justify-between gap-2 border-b border-line px-1 py-3 text-[16px] font-medium text-ink"
               >
@@ -276,6 +278,7 @@ export function Header() {
                         <li key={`${child.href}-${child.label}`}>
                           <Link
                             href={child.href}
+                            prefetch={linkPrefetch(child.href)}
                             onClick={() => setMobileOpen(false)}
                             className="block px-1 py-2.5 text-[16px] text-ink hover:text-primary"
                           >
@@ -292,6 +295,7 @@ export function Header() {
             <div className="mt-5 grid grid-cols-2 gap-2.5">
               <Link
                 href="/search"
+                prefetch={false}
                 onClick={() => setMobileOpen(false)}
                 className="flex min-h-11 items-center justify-center gap-2 rounded-[4px] border border-line-strong px-3 py-2.5 text-[14px] font-medium text-ink"
               >
@@ -335,6 +339,7 @@ function GroupedMenu({ link, open, onClose }: MenuProps) {
                 <Link
                   key={child.href}
                   href={child.href}
+                  prefetch={linkPrefetch(child.href)}
                   onClick={onClose}
                   className="block py-1.5 text-[14px] text-ink hover:text-primary"
                 >
@@ -358,6 +363,7 @@ function ListMenu({ link, open, onClose }: MenuProps) {
         <Link
           key={`${child.href}-${child.label}`}
           href={child.href}
+          prefetch={linkPrefetch(child.href)}
           onClick={onClose}
           className="block py-1.5 text-[14px] text-ink hover:text-primary"
         >

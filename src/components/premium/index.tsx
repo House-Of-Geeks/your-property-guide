@@ -1,6 +1,7 @@
 import type { ComponentType, HTMLAttributes, ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { BookCover } from "@/components/brand/BookCover";
@@ -305,7 +306,7 @@ export function LinkRows({ items, columns = 3, className = "mt-6" }: { items: re
     <ul className={`grid border-t border-line md:gap-x-10 ${columns === 3 ? "md:grid-cols-2 lg:grid-cols-3" : "md:grid-cols-2"} ${className}`}>
       {items.map((it) => (
         <li key={it.href} className="border-b border-line">
-          <Link href={it.href} className="group flex h-full items-start justify-between gap-4 py-5">
+          <Link href={it.href} prefetch={linkPrefetch(it.href)} className="group flex h-full items-start justify-between gap-4 py-5">
             <span className="min-w-0">
               <span className="block font-display text-[22px] leading-snug tracking-[-0.025em] text-ink group-hover:text-primary">{it.label}</span>
               {it.note && <span className="mt-1.5 block text-[15px] leading-relaxed text-ink-muted">{it.note}</span>}

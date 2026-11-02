@@ -55,7 +55,7 @@ interface RegionPageProps {
 }
 
 export const dynamicParams = true; // allow slugs not in generateStaticParams to SSR
-export const revalidate = 604800; // cache as ISR for 7d, regen on demand (synced data)
+export const revalidate = 2592000; // cache as ISR for 30d, regen on demand (synced data)
 
 export async function generateStaticParams() {
   // Skip prerender at build time, DB isn't reachable during `next build`.

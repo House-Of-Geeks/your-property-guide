@@ -292,7 +292,7 @@ export default function FirstHomeBuyerWAPage() {
         <li><strong>Regional WA:</strong> Bunbury, Geraldton, Kalgoorlie, house medians $350K to $500K, Bunbury seeing strong growth</li>
       </ul>
       <p>
-        Explore <Link href="/suburbs">WA suburb profiles</Link> for current data.
+        Explore <Link href="/suburbs" prefetch={false}>WA suburb profiles</Link> for current data.
       </p>
 
       <h2 id="buying-process">The WA buying process</h2>

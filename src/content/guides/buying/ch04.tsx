@@ -61,7 +61,7 @@ function Body() {
         </li>
       </ul>
       <p>
-        All four are free on the portals’ suburb pages, and our <Link href="/suburbs">suburb profiles</Link> and{" "}
+        All four are free on the portals’ suburb pages, and our <Link href="/suburbs" prefetch={false}>suburb profiles</Link> and{" "}
         <Link href="/compare">suburb comparison</Link> put the rest side by side. An hour with them tells you more than a month of weekend drive-bys.
       </p>
 

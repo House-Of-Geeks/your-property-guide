@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 
 interface PropertyMobileCTAProps {
   appraisalHref: string;
@@ -15,6 +16,7 @@ export function PropertyMobileCTA({ appraisalHref }: PropertyMobileCTAProps) {
       </a>
       <Link
         href={appraisalHref}
+        prefetch={linkPrefetch(appraisalHref)}
         className="flex-1 inline-flex items-center justify-center px-4 py-2.5 rounded-md border-2 border-primary text-primary text-sm font-semibold hover:bg-primary/5 transition-colors"
       >
         Free appraisal

@@ -20,8 +20,8 @@ interface SuburbSchoolsPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// 7d ISR. See /suburbs/[slug]/page.tsx.
-export const revalidate = 604800;
+// 30d ISR. See /suburbs/[slug]/page.tsx.
+export const revalidate = 2592000;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 

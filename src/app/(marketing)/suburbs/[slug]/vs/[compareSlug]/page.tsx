@@ -30,10 +30,10 @@ interface ComparePageProps {
 }
 
 export const dynamicParams = true;
-// 7d ISR — the comparison narrative is generated from suburb data
-// that refreshes weekly via the sync worker. 24h was overkill and
+// 30d ISR, the comparison narrative is generated from suburb data
+// that refreshes through the sync worker. 24h was overkill and
 // burned function invocations on a ~50,000-URL compare surface.
-export const revalidate = 604800;
+export const revalidate = 2592000;
 
 const POPULAR_COMPARISONS = POPULAR_COMPARE_PAIRS.map((p) => ({ slug: p.aSlug, compareSlug: p.bSlug }));
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 
 export interface NextStepLink {
   href: string;
@@ -34,6 +35,7 @@ export function SubpageNextSteps({ title, groups, id }: { title: string; groups:
                 <li key={l.href} className="border-b border-line">
                   <Link
                     href={l.href}
+                    prefetch={linkPrefetch(l.href)}
                     className="flex items-baseline justify-between gap-4 py-2.5 font-sans text-[15px] text-ink hover:text-primary transition-colors"
                   >
                     <span>{l.label}</span>

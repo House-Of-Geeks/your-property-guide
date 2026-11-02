@@ -1,6 +1,7 @@
 import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { BreadcrumbJsonLd } from "@/components/seo";
 import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
@@ -202,6 +203,7 @@ export default async function DataPage() {
               <Link
                 key={s.label}
                 href={s.href}
+                prefetch={linkPrefetch(s.href)}
                 className="group flex flex-col rounded-xl border border-line bg-surface-raised p-6 hover:border-ink transition-colors"
               >
                 {inner}
@@ -247,6 +249,7 @@ export default async function DataPage() {
                         {r.href ? (
                           <Link
                             href={r.href}
+                            prefetch={linkPrefetch(r.href)}
                             className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
                           >
                             {r.label}

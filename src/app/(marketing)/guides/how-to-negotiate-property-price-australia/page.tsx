@@ -221,7 +221,7 @@ export default function HowToNegotiatePropertyPricePage() {
         If recent comparables sit between $820,000 and $860,000, the asking
         price of $900,000 is a hopeful number, not a negotiated one. You can
         get suburb-level median data and recent-sales summaries from our{" "}
-        <Link href="/suburbs">suburb profiles</Link>.
+        <Link href="/suburbs" prefetch={false}>suburb profiles</Link>.
       </p>
 
       <h3>Unconditional pre-approval</h3>

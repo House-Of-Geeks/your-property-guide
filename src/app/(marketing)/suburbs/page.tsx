@@ -7,9 +7,11 @@ import { BreadcrumbJsonLd, CollectionPageJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { SuburbsResults } from "./Results";
 
-// ISR, page shell caches as static. searchParams reads are isolated to
-// the SuburbsResults Suspense child below so the parent stays in the CDN
-// cache while only the dynamic results chunk re-renders per state/query.
+// Dynamic: passing searchParams to SuburbsResults makes the whole route render
+// per request (Next 16 without cacheComponents), despite the revalidate below.
+// It stays that way on purpose: /suburbs?state=NSW and its "Load More" links are
+// crawlable HTML, and a client fetch could not replace that because robots
+// disallows /api/. Links to this route set prefetch={false} instead.
 export const revalidate = 604800;
 
 export const metadata: Metadata = {

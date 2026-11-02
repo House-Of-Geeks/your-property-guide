@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ChevronRight } from "lucide-react";
 
 interface BreadcrumbItem {
@@ -23,7 +24,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
           <li key={i} className="flex items-center gap-1">
             <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
             {item.href ? (
-              <Link href={item.href} className="hover:text-primary transition-colors">
+              <Link href={item.href} prefetch={linkPrefetch(item.href)} className="hover:text-primary transition-colors">
                 {item.label}
               </Link>
             ) : (

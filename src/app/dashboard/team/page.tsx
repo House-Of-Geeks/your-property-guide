@@ -62,6 +62,7 @@ export default async function TeamPage() {
                   <td className="px-4 py-3 text-right">
                     <Link
                       href={`/dashboard/team/${agent.id}`}
+                      prefetch={false}
                       className="px-3 py-1.5 rounded-lg border border-gray-300 text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       Edit

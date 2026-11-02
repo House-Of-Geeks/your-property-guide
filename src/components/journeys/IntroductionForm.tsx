@@ -98,7 +98,20 @@ const stateFromSlug = (slug: string | null): AustralianState | null => {
 
 const STEPS = ["Who you’d meet", "Your situation", "How to reach you", "Your permission"] as const;
 
-export function IntroductionForm({ defaultService, defaultSuburb, defaultState, defaultTimeframe, source = "get-help", compact = false }: Props) {
+interface CoreProps extends Props {
+  /** The page URL's ?suburb= and ?type=, which the form takes up when they change. */
+  urlSuburb?: string | null;
+  urlType?: string | null;
+}
+
+export function IntroductionForm(props: Props) {
+  const params = useSearchParams();
+  return <IntroductionFormCore {...props} urlSuburb={params.get("suburb")} urlType={params.get("type")} />;
+}
+
+// The form without useSearchParams, so it renders on the server on a static
+// page (see IntroductionFormFromUrl.tsx). IntroductionForm suspends there.
+export function IntroductionFormCore({ defaultService, defaultSuburb, defaultState, defaultTimeframe, source = "get-help", compact = false, urlSuburb = null, urlType = null }: CoreProps) {
   const requestKey = useRequestKey();
   const [step, setStep] = useState(defaultService ? 1 : 0);
   const [choice, setChoice] = useState<ServiceChoice | null>(defaultService ?? null);
@@ -122,19 +135,18 @@ export function IntroductionForm({ defaultService, defaultSuburb, defaultState, 
   // The instant price range on /appraisal and /property-valuation writes
   // ?suburb= and ?type= into the page URL (src/lib/appraisal-prefill.ts);
   // take them up when they change, as the old appraisal form did.
-  const params = useSearchParams();
-  const urlPrefill = `${params.get("suburb") ?? ""}|${params.get("type") ?? ""}`;
+  const urlPrefill = `${urlSuburb ?? ""}|${urlType ?? ""}`;
   const [seenPrefill, setSeenPrefill] = useState("|");
   if (urlPrefill !== seenPrefill) {
     setSeenPrefill(urlPrefill);
-    const slug = params.get("suburb");
+    const slug = urlSuburb;
     if (slug && /^[a-z0-9-]+-[a-z]{2,3}-\d{4}$/.test(slug)) {
       setSuburb(slug);
       const st = stateFromSlug(slug);
       if (st) setStateChoice(st);
       setSuburbKey((k) => k + 1);
     }
-    const t = params.get("type");
+    const t = urlType;
     const mapped = t === "house" ? "house" : t === "townhouse" || t === "villa" ? "townhouse" : t === "unit" || t === "apartment" ? "unit" : t === "land" || t === "acreage" ? "land" : null;
     if (mapped) setPropertyType(mapped);
   }
@@ -375,7 +387,7 @@ export function IntroductionForm({ defaultService, defaultSuburb, defaultState, 
                   </div>
                 ))}
                 <p className="text-sm text-ink-muted">
-                  We match on the suburb, the type of property and your timing, and introduce one participating agent for each job. <Link href="/get-help#how-we-choose" className="underline underline-offset-4">How we choose agents</Link>
+                  We match on the suburb, the type of property and your timing, and introduce one participating agent for each job. <Link href="/get-help#how-we-choose" prefetch={false} className="underline underline-offset-4">How we choose agents</Link>
                 </p>
                 {coverage}
               </div>

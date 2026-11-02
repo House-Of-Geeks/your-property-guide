@@ -70,7 +70,10 @@ interface SuburbDetailPageProps {
 // the primary driver of function-invocation cost on first crawl +
 // revalidation. 7d cuts re-revalidations by ~85% with no content
 // freshness impact.
-export const revalidate = 604800;
+// 30d since Nov 2026: revalidate-paths.ts refreshes these pages after each
+// sync, so time is only a safety net. Anything this page reads through
+// unstable_cache must not have a shorter window: it would lower this one.
+export const revalidate = 2592000;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 

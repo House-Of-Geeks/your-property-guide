@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { unstable_cache } from "next/cache";
+import { SYNC_FED_REVALIDATE_SECONDS } from "@/lib/constants";
 import { db } from "@/lib/db";
 import { LOCALITIES_ONLY, NON_LOCALITY_SLUGS, NOT_PLACES_VERSION, isNonLocalitySlug } from "@/lib/non-localities";
 import { PUBLISHED_GROWTH, PUBLISHED_HOUSE_MEDIAN, publishedSales } from "@/lib/published-medians";
@@ -286,7 +287,8 @@ export interface IndexableCityEdition {
  * The city editions with ten suburbs to show: the one list the city sitemap
  * submits and the state pages, the category pages and the editions link to.
  * The same query and the same predicate (hasCityEdition) as the page's own
- * robots decision, cached for a day like the other sitemap lists.
+ * robots decision. The best-suburbs pages read it while rendering, so its
+ * window stays at theirs: a shorter one would lower theirs.
  */
 export const getIndexableCityEditions = unstable_cache(
   async (): Promise<IndexableCityEdition[]> => {
@@ -302,7 +304,7 @@ export const getIndexableCityEditions = unstable_cache(
     return out;
   },
   ["best-suburbs-city-editions:v1", NOT_PLACES_VERSION],
-  { revalidate: 86400, tags: ["sitemap-best-suburbs-cities"] },
+  { revalidate: SYNC_FED_REVALIDATE_SECONDS, tags: ["sitemap-best-suburbs-cities"] },
 );
 
 /** The list for a page's link block: a failed read leaves the block empty rather than the page down, and is not cached. */

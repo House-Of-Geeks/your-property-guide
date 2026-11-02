@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import Image from "next/image";
 import { Bed, Bath, Car, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui";
@@ -30,7 +31,7 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
 
   if (variant === "list") {
     return (
-      <Link href={href} className="block">
+      <Link href={href} prefetch={linkPrefetch(href)} className="block">
         <div className="flex gap-4 rounded-xl bg-surface-raised overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200">
           <div className="group relative w-72 flex-shrink-0 overflow-hidden">
             <Image
@@ -60,7 +61,7 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
 
   if (variant === "featured") {
     return (
-      <Link href={href} className="block">
+      <Link href={href} prefetch={linkPrefetch(href)} className="block">
         <div className="rounded-2xl bg-surface-raised border border-line overflow-hidden hover:border-ink hover:shadow-card-hover transition-all duration-200">
           <div className="group relative aspect-[4/3] overflow-hidden">
             <Image
@@ -92,7 +93,7 @@ export function PropertyCard({ property, variant = "grid" }: PropertyCardProps) 
 
   // Grid variant (default)
   return (
-    <Link href={href} className="block">
+    <Link href={href} prefetch={linkPrefetch(href)} className="block">
       <div className="rounded-2xl bg-surface-raised overflow-hidden border border-line hover:border-ink hover:shadow-card-hover transition-all duration-200 flex flex-col h-full">
         {/* Image with suburb overlay */}
         <div className="group relative aspect-[4/3] overflow-hidden">

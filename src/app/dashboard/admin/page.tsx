@@ -74,7 +74,7 @@ export default async function AdminOverviewPage() {
               </div>
             ))}
           </div>
-          <Link href="/dashboard/admin/users" className="block mt-4 text-xs text-primary hover:underline">
+          <Link href="/dashboard/admin/users" prefetch={false} className="block mt-4 text-xs text-primary hover:underline">
             Manage all users →
           </Link>
         </div>
@@ -85,7 +85,7 @@ export default async function AdminOverviewPage() {
 
 function StatCard({ icon, label, value, href }: { icon: React.ReactNode; label: string; value: number; href: string }) {
   return (
-    <Link href={href} className="rounded-xl bg-white shadow-card border border-gray-100 p-5 flex items-center gap-3 hover:shadow-card-hover transition-shadow">
+    <Link href={href} prefetch={false} className="rounded-xl bg-white shadow-card border border-gray-100 p-5 flex items-center gap-3 hover:shadow-card-hover transition-shadow">
       {icon}
       <div>
         <p className="text-2xl font-bold text-gray-900">{value}</p>

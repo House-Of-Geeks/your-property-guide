@@ -154,7 +154,7 @@ export default function RefinancingCalculatorPage() {
           <p>
             For a full refinancing analysis on your specific loan, a mortgage
             broker can compare the actual policies and packages of 30+ lenders.
-            <Link href="/find-an-expert?intent=refinancing">Get connected</Link> if
+            <Link href="/find-an-expert?intent=refinancing" prefetch={false}>Get connected</Link> if
             you want a free intro to one.
           </p>
         </>

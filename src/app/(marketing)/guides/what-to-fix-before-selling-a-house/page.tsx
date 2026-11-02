@@ -445,7 +445,7 @@ export default function WhatToFixBeforeSellingAHousePage() {
         <li>
           <strong>Line up the right people.</strong> A local agent who sells
           in your area (our{" "}
-          <Link href="/find-an-expert">find an expert</Link> service introduces
+          <Link href="/find-an-expert" prefetch={false}>find an expert</Link> service introduces
           one) and trades you can trust, and the{" "}
           <Link href="/guides/cost-of-selling-a-house-australia">cost of selling guide</Link>{" "}
           maps every other fee between here and settlement.

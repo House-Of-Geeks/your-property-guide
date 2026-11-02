@@ -1,4 +1,5 @@
 import { unstable_cache } from "next/cache";
+import { SYNC_FED_REVALIDATE_SECONDS } from "@/lib/constants";
 import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 import {
   getTopComparisonPairsByState,
@@ -54,22 +55,23 @@ export const getCompareSitemapPairs = unstable_cache(
     return byState.flat();
   },
   ["compare-sitemap-pairs:v1", NOT_PLACES_VERSION],
-  { revalidate: 86400, tags: ["sitemap-compare"] },
+  // The suburb and comparison pages read this while rendering, and an
+  // unstable_cache window lowers the window of the page reading it: 86400 here
+  // is what made those pages regenerate daily. Keep it at their revalidate.
+  { revalidate: SYNC_FED_REVALIDATE_SECONDS, tags: ["sitemap-compare"] },
 );
 
-const getAllowedKeys = unstable_cache(
-  async (): Promise<string[]> => {
-    const pairs = await getCompareSitemapPairs();
-    return [
-      ...new Set([
-        ...POPULAR_COMPARE_PAIRS.map((p) => comparePairKey(p.aSlug, p.bSlug)),
-        ...pairs.map((p) => comparePairKey(p.aSlug, p.bSlug)),
-      ]),
-    ];
-  },
-  ["compare-allowed-keys:v1", NOT_PLACES_VERSION],
-  { revalidate: 86400, tags: ["sitemap-compare"] },
-);
+// Read through the one cache entry above, so the pairs the pages allow cannot
+// drift from the pairs the sitemap publishes.
+async function getAllowedKeys(): Promise<string[]> {
+  const pairs = await getCompareSitemapPairs();
+  return [
+    ...new Set([
+      ...POPULAR_COMPARE_PAIRS.map((p) => comparePairKey(p.aSlug, p.bSlug)),
+      ...pairs.map((p) => comparePairKey(p.aSlug, p.bSlug)),
+    ]),
+  ];
+}
 
 async function allowedSet(): Promise<Set<string>> {
   return new Set(await getAllowedKeys());

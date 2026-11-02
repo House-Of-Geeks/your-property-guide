@@ -47,6 +47,7 @@ export async function AgentsResults({ searchParams }: AgentsResultsProps) {
           </Link>
           <Link
             href="/suburbs"
+            prefetch={false}
             className="flex items-center gap-5 p-6 rounded-xl bg-surface-raised border border-line hover:border-ink transition-colors group"
           >
             <Image

@@ -276,7 +276,7 @@ export default function FirstHomeBuyerNSWPage() {
         <li><strong>Regional NSW:</strong> Newcastle, Wollongong and the Central Coast, unit medians from $500,000 to $700,000</li>
       </ul>
       <p>
-        Use our <Link href="/suburbs">suburb profiles</Link> to research current
+        Use our <Link href="/suburbs" prefetch={false}>suburb profiles</Link> to research current
         median prices, rental yields, and market trends in any NSW suburb.
       </p>
 

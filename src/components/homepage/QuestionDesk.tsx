@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { useState } from "react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { DEFAULT_MOVE, useMove } from "@/components/interactive/move-context";
@@ -81,7 +82,7 @@ export function QuestionDesk() {
             <ul className="mt-3 grid gap-1.5">
               {a.links.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="inline-flex items-center gap-2 text-[14px] font-medium text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary">
+                  <Link href={l.href} prefetch={linkPrefetch(l.href)} className="inline-flex items-center gap-2 text-[14px] font-medium text-ink underline decoration-line-strong underline-offset-4 hover:text-primary hover:decoration-primary">
                     {l.label} <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                   </Link>
                 </li>

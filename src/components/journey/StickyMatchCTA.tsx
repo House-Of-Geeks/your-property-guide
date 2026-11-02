@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight, X } from "lucide-react";
 
 interface StickyMatchCTAProps {
@@ -104,6 +105,7 @@ export function StickyMatchCTA({
       >
         <Link
           href={href}
+          prefetch={linkPrefetch(href)}
           className="inline-flex items-center gap-2 pl-5 pr-4 py-3 text-sm font-medium hover:bg-primary-darker transition-colors min-w-0"
         >
           <span className="relative inline-flex w-1.5 h-1.5 shrink-0" aria-hidden="true">

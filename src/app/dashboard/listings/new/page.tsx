@@ -30,6 +30,7 @@ export default async function NewListingPage() {
       <div className="mb-8">
         <Link
           href="/dashboard/listings"
+          prefetch={false}
           className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 mb-2"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Back to Listings

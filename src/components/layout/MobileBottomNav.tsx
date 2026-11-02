@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { usePathname } from "next/navigation";
 import { moveForPath, sitePath } from "@/lib/journey-paths";
 import { PLAN_CTA_BAR } from "@/lib/plans/name";
@@ -95,7 +96,7 @@ export function MobileBottomNav() {
         <Link href={planHref} className="flex min-h-11 items-center justify-center rounded-[4px] bg-cta hover:bg-cta-hover text-cta-ink px-2 py-2.5 text-[15px] font-medium">
           {PLAN_CTA_BAR}
         </Link>
-        <Link href={helpHref} className="flex min-h-11 items-center justify-center rounded-[4px] border border-line-strong text-ink px-2 py-2.5 text-[15px] font-medium">
+        <Link href={helpHref} prefetch={linkPrefetch(helpHref)} className="flex min-h-11 items-center justify-center rounded-[4px] border border-line-strong text-ink px-2 py-2.5 text-[15px] font-medium">
           {help.label}
         </Link>
       </div>

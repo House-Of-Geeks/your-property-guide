@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight } from "lucide-react";
 import { CALLOUT_TITLE, CHAPTER_DISCLAIMER, CHECKLIST_TITLE, type ChapterEntry } from "@/content/guides";
 
@@ -41,6 +42,7 @@ export function ChapterContent({ chapter, print = false }: { chapter: ChapterEnt
         ) : (
           <Link
             href={cta.href}
+            prefetch={linkPrefetch(cta.href)}
             className="mt-5 inline-flex min-h-12 shrink-0 items-center gap-3 rounded-[4px] bg-cta px-5 text-[15px] font-medium text-cta-ink transition-colors hover:bg-cta-hover sm:mt-0"
           >
             {cta.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />

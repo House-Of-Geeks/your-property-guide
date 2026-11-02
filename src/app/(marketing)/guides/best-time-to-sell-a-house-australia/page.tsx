@@ -237,7 +237,7 @@ export default function BestTimeToSellAHouseAustraliaPage() {
       </ul>
       <p>
         Check the conditions where you actually live. Our{" "}
-        <Link href="/suburbs">suburb profiles</Link> show local medians and
+        <Link href="/suburbs" prefetch={false}>suburb profiles</Link> show local medians and
         market activity so you can judge your own market rather than the national
         average.
       </p>

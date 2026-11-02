@@ -3,12 +3,14 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { FaqAccordion } from "@/components/guide";
-import { IntroductionForm, type ServiceChoice } from "@/components/journeys/IntroductionForm";
+import { IntroductionFormCore, type ServiceChoice } from "@/components/journeys/IntroductionForm";
+import { FindAnExpertForm } from "@/components/journeys/IntroductionFormFromUrl";
 import { HowIntroductionsWork } from "@/components/journeys/ServiceSections";
 import { availabilityNote } from "@/lib/introductions/rules";
 import { RESPONSE_WINDOW } from "@/lib/service-model";
 import { BreadcrumbJsonLd, FAQPageJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 
 // The canonical matters here more than on most pages: every suburb and
@@ -140,19 +142,9 @@ const AGENT_GUIDES: [string, string][] = [
 
 const textLink = "font-medium text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink";
 
-const SERVICE_PARAM: Record<string, ServiceChoice> = {
-  "selling-agent": "selling-agent",
-  "buyers-agent": "buyers-agent",
-  both: "both",
-  // ?intent= from older links (suburb and rental pages).
-  selling: "selling-agent",
-  buying: "buyers-agent",
-};
-
-export default async function FindAnExpertPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
-  const sp = await searchParams;
-  const raw = typeof sp.service === "string" ? sp.service : typeof sp.intent === "string" ? sp.intent : "";
-  const service: ServiceChoice | null = SERVICE_PARAM[raw] ?? null;
+// Static: the form reads ?service= and ?intent= in the browser (FindAnExpertForm)
+// and the HTML holds the form with no pre-fill.
+export default function FindAnExpertPage() {
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Find an expert", url: "/find-an-expert" }]} />
@@ -166,8 +158,8 @@ export default async function FindAnExpertPage({ searchParams }: { searchParams:
         breadcrumbs={[{ label: "Find an expert" }]}
         aside={
           <div id="intro-form" className="scroll-mt-24">
-            <Suspense fallback={<div className="h-80" aria-busy="true" />}>
-              <IntroductionForm defaultService={service} source="find-an-expert" compact />
+            <Suspense fallback={<IntroductionFormCore source="find-an-expert" compact />}>
+              <FindAnExpertForm />
             </Suspense>
           </div>
         }
@@ -208,7 +200,7 @@ export default async function FindAnExpertPage({ searchParams }: { searchParams:
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-              <Link href={lane.href} className={`inline-flex items-center gap-1.5 text-sm ${textLink}`}>
+              <Link href={lane.href} prefetch={linkPrefetch(lane.href)} className={`inline-flex items-center gap-1.5 text-sm ${textLink}`}>
                 {lane.cta} <ArrowRight className="w-4 h-4" aria-hidden="true" />
               </Link>
             </div>
