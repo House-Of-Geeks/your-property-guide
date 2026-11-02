@@ -93,8 +93,14 @@ destination is itself redirected.
   take 290 extra rules to fix, and none of these URLs is in the search data.
 - The old child sitemap URLs `/buy/sitemap.xml`, `/rent/sitemap.xml`,
   `/sold/sitemap.xml`, `/house-and-land/sitemap.xml` and
-  `/best-deals/sitemap.xml` now fall under the same rules and redirect to the
-  hubs. `/suburbs/subpages/sitemap/{buy,rent,houses,units,townhouses,land}.xml`
+  `/best-deals/sitemap.xml` at first fell under the same rules and redirected
+  to the hubs. `/sold/sitemap.xml` had been submitted to Search Console on its
+  own, and the 308 to the `/suburbs` HTML page showed there as a sitemap error
+  (2 Nov 2026 crawl). Since then the redirect skips these five files and
+  `src/app/(retired-sitemaps)` answers each `410 Gone` with a plain text
+  body, like the removed street pages (`src/lib/retired-sitemap.ts`). Every
+  other path under those sections still redirects in one hop.
+  `/suburbs/subpages/sitemap/{buy,rent,houses,units,townhouses,land}.xml`
   answer 404. If any of these were submitted to Search Console or Bing on
   their own, remove them there; the index at `/sitemap.xml` no longer lists
   them.
