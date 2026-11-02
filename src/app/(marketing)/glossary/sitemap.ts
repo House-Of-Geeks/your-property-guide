@@ -4,17 +4,27 @@ import { SITE_URL } from "@/lib/constants";
 
 // No lastModified: it used to be `new Date()` on every request, which makes
 // lastmod meaningless to crawlers, and glossary terms carry no content date.
-export default function sitemap(): MetadataRoute.Sitemap {
+
+export type GlossarySitemapLink = { url: string; title: string };
+
+export function getGlossarySitemapLinks(): GlossarySitemapLink[] {
   return [
     {
       url: `${SITE_URL}/glossary`,
-      changeFrequency: "monthly",
-      priority: 0.6,
+      title: "Property Glossary: A-Z of Australian Real Estate Terms",
     },
-    ...GLOSSARY_TERMS.map((t) => ({
-      url: `${SITE_URL}/glossary/${t.slug}`,
-      changeFrequency: "yearly" as const,
-      priority: 0.5,
+    ...GLOSSARY_TERMS.map((term) => ({
+      url: `${SITE_URL}/glossary/${term.slug}`,
+      title: `${term.term}, Australian Property Glossary`,
     })),
   ];
+}
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const hub = `${SITE_URL}/glossary`;
+  return getGlossarySitemapLinks().map(({ url }) => ({
+    url,
+    changeFrequency: url === hub ? ("monthly" as const) : ("yearly" as const),
+    priority: url === hub ? 0.6 : 0.5,
+  }));
 }

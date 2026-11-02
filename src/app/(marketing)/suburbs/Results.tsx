@@ -80,6 +80,7 @@ export async function SuburbsResults({ searchParams }: SuburbsResultsProps) {
           </p>
           <Link
             href="/suburbs"
+            prefetch={false}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink underline decoration-line-strong underline-offset-4 hover:decoration-ink"
           >
             Clear filters
@@ -114,7 +115,7 @@ export async function SuburbsResults({ searchParams }: SuburbsResultsProps) {
 
       {hasMore && (
         <div className="text-center mb-12">
-          <Link href={loadMoreUrl()} className={BUTTON_SECONDARY}>
+          <Link href={loadMoreUrl()} prefetch={false} className={BUTTON_SECONDARY}>
             Load More ↓
           </Link>
         </div>
@@ -127,6 +128,7 @@ export async function SuburbsResults({ searchParams }: SuburbsResultsProps) {
             <Link
               key={s.code}
               href={filterUrl(s.code)}
+              prefetch={false}
               className="flex items-center gap-3 p-4 border border-line rounded-xl hover:border-ink transition-colors group"
             >
               <span className="text-sm font-bold text-ink shrink-0 w-9">

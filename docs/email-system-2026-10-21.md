@@ -95,6 +95,8 @@ There is no schedule. The welcome email says "There's no fixed schedule", and no
 
 **Order of deploy (important):**
 1. Apply `scripts/sql/2026-10-21-email-system.sql` to the production database **before** the code deploys. Without the four new tables, every guide, plan and confirmation email fails.
+   - Since #153, merging to main doesn't deploy. Production deploys from the daily Deploy Hook at 16:00 UTC (03:00 AEDT), or when someone triggers the workflow by hand.
+   - So apply the SQL after the merge and before the next 03:00 run, or pause the daily deploy until it's applied.
 2. Deploy.
 3. Then the external steps below.
 

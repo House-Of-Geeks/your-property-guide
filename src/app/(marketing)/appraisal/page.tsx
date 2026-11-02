@@ -219,7 +219,7 @@ export default function AppraisalPage() {
               </dl>
               <p className="mt-4 text-xs text-ink-subtle leading-relaxed">
                 Coverage depends on having a participating agent in your area. Where we don&rsquo;t, we tell you rather than pass your details on.{" "}
-                <Link href="/get-help#how-we-choose" className="underline underline-offset-4">How we choose agents</Link>
+                <Link href="/get-help#how-we-choose" prefetch={false} className="underline underline-offset-4">How we choose agents</Link>
               </p>
             </div>
             <div className="rounded-xl border border-line p-5 sm:p-6">

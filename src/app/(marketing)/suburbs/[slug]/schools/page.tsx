@@ -13,14 +13,15 @@ import { guideFunnelHref } from "@/lib/guide-funnel";
 import { hasReliablePrice } from "@/lib/suburb-data-quality";
 import { makeSchoolSlug } from "@/lib/utils/school";
 import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { suburbPlaceProps } from "@/lib/utils/lga";
 import type { School } from "@/types";
 
 interface SuburbSchoolsPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// 7d ISR. See /suburbs/[slug]/page.tsx.
-export const revalidate = 604800;
+// 30d ISR. See /suburbs/[slug]/page.tsx.
+export const revalidate = 2592000;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 
@@ -153,6 +154,7 @@ export default async function SuburbSchoolsPage({ params }: SuburbSchoolsPagePro
         addressLocality={suburb.name}
         addressRegion={suburb.state}
         postalCode={suburb.postcode}
+        {...suburbPlaceProps(suburb)}
       />
       {schools.length > 0 && (
         <ItemListJsonLd

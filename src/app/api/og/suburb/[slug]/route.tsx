@@ -7,7 +7,7 @@ import { formatPrice } from "@/lib/utils/format";
 // median price + growth + state. This means it can't run on the edge (Prisma
 // doesn't run there yet) but the static-page layer will revalidate it.
 export const dynamic = "force-static";
-export const revalidate = 86400; // refresh once per day
+export const revalidate = 2592000; // the suburb page's window
 
 export async function GET(
   _req: NextRequest,

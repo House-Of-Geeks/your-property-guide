@@ -21,15 +21,15 @@ interface SuburbInvestmentProps {
   };
 }
 
-function calcYield(rentPerWeek: number, price: number): string {
-  if (!rentPerWeek || !price) return "–";
+function calcYield(rentPerWeek: number, price: number): string | null {
+  if (!rentPerWeek || !price) return null;
   const yld = ((rentPerWeek * 52) / price) * 100;
   return `${yld.toFixed(2)}%`;
 }
 
 interface Row {
   label: string;
-  value: string;
+  value: string | null;
   sub?: string;
   source?: string | null;
   asOf?: Date | string | null;
@@ -41,24 +41,24 @@ export function SuburbInvestment({ suburb }: SuburbInvestmentProps) {
 
   const houseYield = s.medianRentHouse && s.medianHousePrice
     ? calcYield(s.medianRentHouse, s.medianHousePrice)
-    : "–";
+    : null;
 
   const unitYield = s.medianRentUnit && s.medianUnitPrice
     ? calcYield(s.medianRentUnit, s.medianUnitPrice)
-    : "–";
+    : null;
 
   const houseGrowth = s.annualGrowthHouse
     ? `${s.annualGrowthHouse >= 0 ? "+" : ""}${s.annualGrowthHouse.toFixed(1)}%`
-    : "–";
+    : null;
 
   const unitGrowth = s.annualGrowthUnit
     ? `${s.annualGrowthUnit >= 0 ? "+" : ""}${s.annualGrowthUnit.toFixed(1)}%`
-    : "–";
+    : null;
 
   // Owner occupancy sits with the demographics and days on market with the
   // figures at the top of the page, so they are not repeated here. A row
   // with nothing to show is left out rather than printed as a dash.
-  const rows: Row[] = [
+  const candidates: Row[] = [
     {
       label: "Gross yield, houses",
       value: houseYield,
@@ -75,7 +75,8 @@ export function SuburbInvestment({ suburb }: SuburbInvestmentProps) {
     },
     { label: "12-month change, houses", value: houseGrowth, source: f?.salesSource, asOf: f?.salesAsOf },
     { label: "12-month change, units", value: unitGrowth, source: f?.salesSource, asOf: f?.salesAsOf },
-  ].filter((r) => r.value !== "–");
+  ];
+  const rows = candidates.filter((r): r is Row & { value: string } => r.value !== null);
 
   if (rows.length === 0) return null;
 

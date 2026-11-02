@@ -1,6 +1,7 @@
 import { DEFAULT_OG } from "@/lib/og/defaults";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight } from "lucide-react";
 import { Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
 import { BreadcrumbJsonLd } from "@/components/seo";
@@ -74,7 +75,7 @@ export default function ToolsPage() {
           <ul className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 border-t border-line">
             {g.tools.map((t) => (
               <li key={t.href} className="border-b border-line">
-                <Link href={t.href} className="group flex items-start justify-between gap-3 py-4">
+                <Link href={t.href} prefetch={linkPrefetch(t.href)}className="group flex items-start justify-between gap-3 py-4">
                   <span className="min-w-0">
                     <span className="block font-semibold text-ink group-hover:underline underline-offset-4">{t.title}</span>
                     <span className="block mt-0.5 text-sm text-ink-muted leading-snug">{t.description}</span>

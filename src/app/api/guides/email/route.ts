@@ -11,6 +11,7 @@ import { checkRateLimit, ipKeyFromRequest } from "@/lib/rate-limit";
 import { attributionFromRequest, attributionJson, attributionRowsFor } from "@/lib/attribution-server";
 import { GUIDE_BOOKS } from "@/lib/guide-books";
 import { queueAndSendLater, queueAndSendNow } from "@/lib/mail/send";
+import { checkLeadSpam } from "@/lib/hq-leads";
 
 // POST /api/guides/email (21 Oct 2026): "Email me a copy" on the guide
 // pages. Only what's needed: a first name and an email address. Reading
@@ -57,8 +58,11 @@ export async function POST(request: Request) {
   if (!EMAIL_RE.test(input.email)) errors.email = "Please check your email address.";
   if (errors.firstName || errors.email) return NextResponse.json({ ok: false, errors }, { status: 400 });
 
-  // Honeypot: look successful, keep nothing.
-  if (input.website?.trim()) return NextResponse.json({ ok: true, status: "queued", requestId: "ok" });
+  // Honeypot or obvious spam (the shared check /api/leads uses): look
+  // successful, keep nothing, email nothing.
+  if (checkLeadSpam({ honeypot: input.website, name: input.firstName }).spam) {
+    return NextResponse.json({ ok: true, status: "queued", requestId: "ok" });
+  }
 
   try {
     const existing = await db.lead.findUnique({ where: { requestKey: input.requestKey }, select: { id: true } });

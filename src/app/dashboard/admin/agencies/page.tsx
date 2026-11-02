@@ -60,6 +60,7 @@ export default async function AdminAgenciesPage() {
                     </Link>
                     <Link
                       href={`/dashboard/admin/agencies/${a.id}`}
+                      prefetch={false}
                       className="text-xs text-primary hover:underline font-medium"
                     >
                       Manage

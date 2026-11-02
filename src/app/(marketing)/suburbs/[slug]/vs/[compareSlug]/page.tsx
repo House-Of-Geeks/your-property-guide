@@ -11,12 +11,14 @@ import { getSuburbBySlug } from "@/lib/services/suburb-service";
 import { getNearbySubpages } from "@/lib/services/nearby-subpages";
 import { nonLocalityBySlug } from "@/lib/non-localities";
 import { canonicalComparePath } from "@/lib/suburb-indexability";
+import { POPULAR_COMPARE_PAIRS, isAllowedComparePair } from "@/lib/compare-pairs";
 import { publishedGrowthFor } from "@/lib/published-medians";
 import { hasReliablePrice } from "@/lib/suburb-data-quality";
 import { januaryMeanMax } from "@/lib/climate";
 import { guideFunnelHref } from "@/lib/guide-funnel";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL } from "@/lib/constants";
+import { suburbPlaceProps } from "@/lib/utils/lga";
 import {
   buildCompareNarrative,
   buildCompareMetaDescription,
@@ -28,28 +30,12 @@ interface ComparePageProps {
 }
 
 export const dynamicParams = true;
-// 7d ISR — the comparison narrative is generated from suburb data
-// that refreshes weekly via the sync worker. 24h was overkill and
+// 30d ISR, the comparison narrative is generated from suburb data
+// that refreshes through the sync worker. 24h was overkill and
 // burned function invocations on a ~50,000-URL compare surface.
-export const revalidate = 604800;
+export const revalidate = 2592000;
 
-// Pre-render hand-curated popular comparisons at build time so the most-searched
-// suburb-vs-suburb queries ship as static HTML. Other combinations are
-// rendered on-demand and cached.
-const POPULAR_COMPARISONS: { slug: string; compareSlug: string }[] = [
-  // NSW
-  { slug: "bondi-nsw-2026",         compareSlug: "coogee-nsw-2034" },
-  { slug: "newtown-nsw-2042",       compareSlug: "surry-hills-nsw-2010" },
-  { slug: "manly-nsw-2095",         compareSlug: "mosman-nsw-2088" },
-  // VIC
-  { slug: "richmond-vic-3121",      compareSlug: "fitzroy-vic-3065" },
-  { slug: "toorak-vic-3142",        compareSlug: "brighton-vic-3186" },
-  { slug: "carlton-vic-3053",       compareSlug: "south-yarra-vic-3141" },
-  // QLD
-  { slug: "new-farm-qld-4005",      compareSlug: "teneriffe-qld-4005" },
-  { slug: "paddington-qld-4064",    compareSlug: "ashgrove-qld-4060" },
-  { slug: "bulimba-qld-4171",       compareSlug: "hawthorne-qld-4171" },
-];
+const POPULAR_COMPARISONS = POPULAR_COMPARE_PAIRS.map((p) => ({ slug: p.aSlug, compareSlug: p.bSlug }));
 
 export async function generateStaticParams() {
   // On-demand at build (the page queries the DB per comparison; prerendering
@@ -59,8 +45,19 @@ export async function generateStaticParams() {
   return POPULAR_COMPARISONS;
 }
 
+// Only the published pairs render (lib/compare-pairs.ts: the popular list plus
+// the sitemap pairs, about 650 in total, too many to prerender at build, so
+// dynamicParams stays on). Any other pair is a 404 before the first database
+// query. A postal-name slug is let through: the page redirects it to the real
+// suburb, and the redirect target is checked on its own request.
+async function requirePublishedPair(slug: string, compareSlug: string): Promise<void> {
+  if (nonLocalityBySlug(compareSlug)) return;
+  if (!(await isAllowedComparePair(slug, compareSlug))) notFound();
+}
+
 export async function generateMetadata({ params }: ComparePageProps): Promise<Metadata> {
   const { slug, compareSlug } = await params;
+  await requirePublishedPair(slug, compareSlug);
   const [suburbA, suburbB] = await Promise.all([
     getSuburbBySlug(slug),
     getSuburbBySlug(compareSlug),
@@ -176,6 +173,7 @@ function Cell({ side, r }: { side: "a" | "b"; r: Row }) {
 
 export default async function SuburbVsPage({ params }: ComparePageProps) {
   const { slug, compareSlug } = await params;
+  await requirePublishedPair(slug, compareSlug);
 
   // "Morayfield vs Caboolture BC" compared a suburb with a mail centre. The
   // comparison moves to the real suburb, or back to the profile when there is
@@ -361,6 +359,7 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
         addressLocality={suburbA.name}
         addressRegion={suburbA.state}
         postalCode={suburbA.postcode}
+        {...suburbPlaceProps(suburbA)}
       />
       <PlaceJsonLd
         name={suburbB.name}
@@ -368,6 +367,7 @@ export default async function SuburbVsPage({ params }: ComparePageProps) {
         addressLocality={suburbB.name}
         addressRegion={suburbB.state}
         postalCode={suburbB.postcode}
+        {...suburbPlaceProps(suburbB)}
       />
 
       <SuburbSubrouteHeader

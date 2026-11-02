@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { Phone } from "lucide-react";
 import { NewsletterForm as NewsletterFormFooter } from "@/components/newsletter/NewsletterForm";
 import { Logo } from "@/components/brand/Logo";
@@ -90,7 +91,7 @@ function LinkCol({ heading, links }: { heading: string; links: { label: string; 
       <ul className="space-y-2">
         {links.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className="block text-[14px] leading-snug text-ink hover:text-primary transition-colors">
+            <Link href={l.href} prefetch={linkPrefetch(l.href)} className="block text-[14px] leading-snug text-ink hover:text-primary transition-colors">
               {l.label}
             </Link>
           </li>
@@ -118,7 +119,7 @@ function FooterBottom() {
         <div className="flex flex-wrap gap-x-6 gap-y-2">
           <Link href="/privacy" className="text-[13px] text-ink-muted hover:text-ink transition-colors">Privacy</Link>
           <Link href="/contact" className="text-[13px] text-ink-muted hover:text-ink transition-colors">Contact</Link>
-          <Link href="/sitemap.xml" className="text-[13px] text-ink-muted hover:text-ink transition-colors">Sitemap</Link>
+          <Link href="/sitemap" prefetch={false} className="text-[13px] text-ink-muted hover:text-ink transition-colors">Sitemap</Link>
         </div>
       </div>
       <p className="text-[12px] leading-relaxed text-ink-muted">

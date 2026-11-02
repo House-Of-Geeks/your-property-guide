@@ -262,6 +262,7 @@ export function BorrowingPowerCalculator() {
                 {/* Broker intros run through the refinancing lane on /find-an-expert */}
                 <Link
                   href="/find-an-expert?intent=refinancing"
+                  prefetch={false}
                   className="text-primary underline hover:no-underline"
                 >
                   mortgage broker

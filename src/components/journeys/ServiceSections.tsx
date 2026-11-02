@@ -110,7 +110,7 @@ export function HelpBand({ service, from, tone = "quiet" }: { service: IntroServ
             {service === "selling-agent" ? "When you want an appraisal" : "If you want someone on your side"}
           </h2>
           <p className="mt-4 text-lg text-ink-muted leading-relaxed">{s.who}</p>
-          <Link href={href} className={`mt-6 ${BUTTON_PRIMARY_CLASS}`}>
+          <Link href={href} prefetch={false} className={`mt-6 ${BUTTON_PRIMARY_CLASS}`}>
             {service === "selling-agent" ? "Ask for an appraisal introduction" : "Ask about a buyer’s agent"}
           </Link>
         </div>

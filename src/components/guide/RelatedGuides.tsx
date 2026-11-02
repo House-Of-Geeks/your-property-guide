@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight, Calculator } from "lucide-react";
 
 export interface RelatedGuide {
@@ -34,7 +35,7 @@ export function RelatedGuides({ items, title = "Keep reading", id }: RelatedGuid
           const calc = isCalculatorHref(item.href);
           return (
             <li key={item.href} className="border-b border-line">
-              <Link href={item.href} className="group flex items-start gap-4 py-4">
+              <Link href={item.href} prefetch={linkPrefetch(item.href)} className="group flex items-start gap-4 py-4">
                 <span className="min-w-0 flex-1">
                   <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                     <span className="text-base sm:text-[17px] font-semibold text-ink leading-snug group-hover:underline underline-offset-4 decoration-line-strong">

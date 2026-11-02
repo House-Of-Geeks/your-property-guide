@@ -38,16 +38,16 @@ export interface PmSource {
   /** Footnote number printed under the table, in this order. */
   n: number;
   label: string;
-  href: string;
-  /** The publication or last-updated date as the source shows it, or the date we read it. */
-  date: string;
+  /** Link to the source page. Left out for LocalAgentFinder and WhichRealEstateAgent, which are named in plain text and never linked. */
+  href?: string;
+  /** The publication or last-updated date as the source shows it, or the date we read it. Left out when we have not opened the page. */
+  date?: string;
 }
 
 export const PM_FEE_SOURCES: Record<PmSourceKey, PmSource> = {
   laf: {
     n: 1,
     label: "LocalAgentFinder, Property Management Fees Australia: 2026 Guide (state average management and letting fees)",
-    href: "https://www.localagentfinder.com.au/blog/property-management-commission-fees",
     date: "13 March 2026",
   },
   reiq: {
@@ -59,43 +59,36 @@ export const PM_FEE_SOURCES: Record<PmSourceKey, PmSource> = {
   "wra-syd": {
     n: 3,
     label: "WhichRealEstateAgent, Sydney Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/nsw-sydney/",
     date: "updated 19 March 2026",
   },
   "wra-mel": {
     n: 4,
     label: "WhichRealEstateAgent, Melbourne Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/vic-melbourne/",
     date: "2026 edition, read 30 September 2026",
   },
   "wra-bne": {
     n: 5,
     label: "WhichRealEstateAgent, Brisbane Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/qld-brisbane/",
     date: "2026 edition, read 30 September 2026",
   },
   "wra-per": {
     n: 6,
     label: "WhichRealEstateAgent, Perth Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/wa-perth/",
     date: "2026 edition, read 30 September 2026",
   },
   "wra-adl": {
     n: 7,
     label: "WhichRealEstateAgent, Adelaide Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/sa-adelaide/",
     date: "updated 19 March 2026",
   },
   "wra-hba": {
     n: 8,
     label: "WhichRealEstateAgent, Hobart Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/tas-hobart/",
     date: "2026 edition, read 30 September 2026",
   },
   "wra-cbr": {
     n: 9,
     label: "WhichRealEstateAgent, Canberra Property Management Fees 2026 Guide",
-    href: "https://whichrealestateagent.com.au/property-management/fees/act-canberra/",
     date: "2026 edition, read 30 September 2026",
   },
   "nsw-agency": {
@@ -172,9 +165,8 @@ export const PM_FEE_SOURCES: Record<PmSourceKey, PmSource> = {
   },
   ato: {
     n: 22,
-    label: "ATO, Rental properties 2025: rental expenses (property agent's fees and commissions are an immediate deduction)",
-    href: "https://www.ato.gov.au/forms-and-instructions/rental-properties-2025/rental-expenses",
-    date: "June 2025",
+    label: "ATO, Common property expenses (property agent's fees and commission are an immediate deduction)",
+    href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/property-and-land/residential-rental-properties/rental-expenses/common-property-expenses",
   },
 };
 
@@ -182,10 +174,12 @@ export interface PmPctRange {
   /** Published range, percent of rent collected. */
   low: number;
   high: number;
-  /** State average, LocalAgentFinder March 2026 (the figure the AI Overview prints). */
+  /** State average, LocalAgentFinder March 2026. */
   average: number;
   /** Where the capital differs from the state. */
   note?: string;
+  /** Set when the average is a separate measure from the published range, so the two are not read as one series. */
+  averageNote?: string;
   sources: PmSourceKey[];
 }
 
@@ -286,7 +280,7 @@ export const PM_STATE_FEES: Record<StateCode, PmStateFees> = {
     state: "SA",
     name: STATE_NAMES.SA,
     capital: "Adelaide",
-    management: { low: 9, high: 15, average: 7.5, note: "Adelaide agencies mostly 9% to 11%", sources: ["laf", "reiq", "wra-adl"] },
+    management: { low: 9, high: 15, average: 7.5, note: "Adelaide agencies mostly 9% to 11%", averageNote: "a separate statewide measure from LocalAgentFinder, not part of the Adelaide range", sources: ["laf", "reiq", "wra-adl"] },
     letting: { low: 2, high: 2, average: 1.9, sources: ["laf", "wra-adl"] },
     renewal: { low: 1, high: 1, unit: "weeks", note: "often one week's rent", sources: ["wra-adl"] },
     inspection: { low: 50, high: 100, unit: "dollars", note: "each", sources: ["wra-adl"] },
@@ -363,7 +357,8 @@ export function managementCell(s: PmStateFees): PmCell {
   const m = s.management;
   const range = m.low === m.high ? pct(m.low) : `${pct(m.low)} to ${pct(m.high)}`;
   const note = m.note ? ` (${m.note})` : "";
-  return { text: `${range}${note}; state average ${pct(m.average)}`, refs: refs(m.sources) };
+  const avgNote = m.averageNote ? ` (${m.averageNote})` : "";
+  return { text: `${range}${note}; state average ${pct(m.average)}${avgNote}`, refs: refs(m.sources) };
 }
 
 export function lettingCell(s: PmStateFees): PmCell {
@@ -398,7 +393,8 @@ export function stateFeeAnswer(state: StateCode): string {
     .join("; ");
   const range = m.low === m.high ? pct(m.low) : `${pct(m.low)} to ${pct(m.high)}`;
   const detail = m.note ? `${m.note}; ${rangeSources}` : rangeSources;
-  const first = `In ${s.name}, the published management fee is ${range} of rent collected (${detail}), and LocalAgentFinder's March 2026 state average is ${pct(m.average)}.`;
+  const avgClause = m.averageNote ? `, a separate statewide measure that sits below the ${s.capital} range` : "";
+  const first = `In ${s.name}, the published management fee is ${range} of rent collected (${detail}), and LocalAgentFinder's March 2026 state average is ${pct(m.average)}${avgClause}.`;
   const letting =
     l.low === undefined || l.high === undefined
       ? `The letting fee averages ${weeksRent(l.average)} (LocalAgentFinder, March 2026).`
@@ -444,7 +440,7 @@ export const PM_FEES_FAQS: PmFaq[] = [
   {
     question: "What percentage do most property management companies charge?",
     answer:
-      "Most Australian agencies charge between 5% and 12% of the rent they collect, and the national average is about 7.5% (LocalAgentFinder, March 2026). The state averages run from 5.8% in New South Wales and 5.9% in Victoria to 7.1% in the ACT, 7.5% in Queensland and South Australia, 8.5% in the Northern Territory and 8.7% in Western Australia and Tasmania. Regional areas sit at the top of each state's range, and a quote may or may not include GST, so ask.",
+      "The national average is about 7.5% of the rent collected (LocalAgentFinder, March 2026). The state averages run from 5.8% in New South Wales and 5.9% in Victoria to 7.1% in the ACT, 7.5% in Queensland and South Australia, 8.5% in the Northern Territory and 8.7% in Western Australia and Tasmania. The published ranges are wider than the averages, from 5% at the low end in New South Wales, Victoria, Tasmania and the Northern Territory to 15% at the top of South Australia's range (REIQ, December 2023; WhichRealEstateAgent, 2026). South Australia's 7.5% average is a separate statewide measure from its Adelaide range of 9% to 15%.",
   },
   {
     question: "What is the typical property management fee in Western Australia?",
@@ -454,17 +450,17 @@ export const PM_FEES_FAQS: PmFaq[] = [
   {
     question: "What is a reasonable management fee?",
     answer:
-      "A reasonable fee sits inside your state's published range and buys the full service: rent collection, arrears follow-up, routine inspections, maintenance coordination and tribunal work. In Sydney and Melbourne that is about 5% to 8%; in Brisbane, Adelaide, Perth and Hobart it is 7% to 11% (WhichRealEstateAgent city guides, 2026). Compare the all-in annual cost from the calculator on this page rather than the headline rate: a 6% manager who charges for every inspection, statement and renewal can cost more than an 8% manager who includes them.",
+      "A reasonable fee sits inside your state's published range, and the headline rate is only part of the cost. Sydney agencies publish 5% to 8%, Perth agencies 8.5% to 11% and Adelaide agencies mostly 9% to 11% (WhichRealEstateAgent city guides, 2026). Letting, renewal, inspection and statement charges are added on top wherever an agency charges them, so compare the annual total from the calculator on this page rather than the percentage. As an illustration only, a 6% manager who charges separately for every inspection, statement and renewal can cost more over a year than an 8% manager who includes them.",
   },
   {
     question: "What is the average property management fee in Australia?",
     answer:
-      "About 7.5% of weekly rent, with a letting fee averaging 1.4 weeks' rent (LocalAgentFinder, March 2026). New South Wales (5.8%) and Victoria (5.9%) are the cheapest states; Western Australia and Tasmania (8.7%) the dearest. Regional areas run higher than the capitals everywhere, up to about 12% in regional New South Wales and Queensland (REIQ, December 2023). Add the letting fee and the published extras and the all-in cost runs from about 7% of annual rent at New South Wales' figures to about 12% at Western Australia's (the calculator on this page shows each state).",
+      "About 7.5% of weekly rent, with a letting fee averaging 1.4 weeks' rent (LocalAgentFinder, March 2026). New South Wales (5.8%) and Victoria (5.9%) are the cheapest states; Western Australia and Tasmania (8.7%) the dearest. The published range goes up to about 12% in regional New South Wales (REIQ, December 2023). Letting, renewal, inspection and statement charges come on top where an agency charges them. Western Australia and South Australia are the two states where all of the renewal, inspection and statement ranges are published, and the calculator on this page adds the lines up for each state.",
   },
   {
     question: "Is the property management fee tax deductible?",
     answer:
-      "Yes. Property management fees are deductible against rental income in the year you pay them for a property that is rented or genuinely available for rent, and the same applies to letting fees, lease renewal fees, inspection charges and statement fees, because they are costs of earning the rent (ATO, Rental properties 2025: rental expenses, June 2025). Keep the agency's end-of-financial-year statement: it lists every fee for the return.",
+      "Yes. A property agent's fees and commission on a rental property are an immediate deduction (ATO, Common property expenses). The management fee is charged as a percentage of the rent collected, and the national average is 7.5% (LocalAgentFinder, March 2026), so the deduction moves with the rent. Keep the agency's end-of-financial-year statement for your tax return.",
   },
   {
     question: "Can I negotiate the property management fee?",
@@ -474,7 +470,7 @@ export const PM_FEES_FAQS: PmFaq[] = [
   {
     question: "What is a letting fee?",
     answer:
-      "A one-off charge when the agency finds and signs a new tenant, covering advertising, applicant screening, the tenancy agreement and the ingoing condition report. It is usually 1 to 2 weeks' rent, 2 to 3 weeks in Perth and up to 4 weeks in some Melbourne and Hobart agencies (WhichRealEstateAgent, 2026); the national average is 1.4 weeks (LocalAgentFinder, March 2026). You pay it each time the tenant changes, so a property that turns over every year pays twice what one on a two-year tenancy does.",
+      "A one-off charge when the agency signs a new tenant. It runs from 1 to 2 weeks' rent in Sydney, Brisbane and Canberra to 2 to 3 weeks in Perth and up to 4 weeks in Melbourne and Hobart (WhichRealEstateAgent, 2026); the national average is 1.4 weeks (LocalAgentFinder, March 2026). You pay it each time the tenant changes, so a property that turns over every year pays twice what one on a two-year tenancy does.",
   },
   {
     question: "How often should I get routine inspections?",

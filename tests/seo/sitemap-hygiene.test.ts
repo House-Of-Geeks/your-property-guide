@@ -14,6 +14,11 @@ describe("static pages sitemap", () => {
     expect(paths.length).toBeGreaterThan(30);
   });
 
+  it("lists the property management fees calculator, and its page exists", () => {
+    expect(paths).toContain("/property-management-fees-calculator");
+    expect(fs.existsSync(path.join(APP, "(marketing)/property-management-fees-calculator/page.tsx"))).toBe(true);
+  });
+
   for (const p of paths) {
     const file = path.join(APP, "(marketing)", p, "page.tsx");
     if (!fs.existsSync(file)) continue;

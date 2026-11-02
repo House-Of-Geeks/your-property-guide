@@ -4,6 +4,7 @@ import { checkRateLimit, ipKeyFromRequest } from "@/lib/rate-limit";
 import { attributionFromRequest } from "@/lib/attribution-server";
 import { requestContext } from "@/lib/sent247";
 import { normalizePhone } from "@/lib/utils/phone";
+import { checkLeadSpam } from "@/lib/hq-leads";
 import { handleIntroductionRequest } from "@/lib/introductions/server";
 
 // POST /api/introductions: the introduction path (Oct 2026). Someone asks to
@@ -66,8 +67,13 @@ export async function POST(request: Request) {
   }
   const input = parsed.data;
 
-  if (input.website && input.website.trim()) {
-    // Honeypot: look successful, keep nothing.
+  const spam = checkLeadSpam({
+    honeypot: input.website,
+    name: [input.firstName, input.lastName].filter(Boolean).join(" "),
+    message: input.notes,
+  });
+  if (spam.spam) {
+    // Honeypot or obvious spam: look successful, keep nothing.
     return NextResponse.json({ ok: true, groupId: "ok", duplicate: false, items: [] });
   }
   // An introduction needs a yes for at least one service it asks for.

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight } from "lucide-react";
 import type { ArticleChapterRef, CampaignCtaKind } from "@/content/articles";
 import { GUIDE_BOOKS, chapterHref } from "@/lib/guide-books";
@@ -69,6 +70,7 @@ export function CampaignCta({
       <div className="mt-2 text-[16px] leading-relaxed text-ink-muted">{c.body}</div>
       <Link
         href={c.href(from)}
+        prefetch={linkPrefetch(c.href(from))}
         className="mt-5 inline-flex h-11 items-center gap-2 rounded-[4px] border border-ink px-5 text-[15px] font-semibold text-ink transition-colors hover:bg-ink hover:text-ink-inverse"
       >
         {c.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />

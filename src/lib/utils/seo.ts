@@ -5,6 +5,7 @@ import { publishedGrowthFor } from "@/lib/published-medians";
 import { publishesRent, salesProvenanceFor } from "@/lib/suburb-snapshot";
 import { formatPriceFull } from "@/lib/utils/format";
 import { capitalCityFor } from "@/lib/utils/metro";
+import { regionPhrase } from "@/lib/utils/lga";
 
 export function absoluteUrl(path: string): string {
   return `${SITE_URL}${path}`;
@@ -107,7 +108,7 @@ export function suburbBuyDescription(suburb: Suburb): string {
   const price = hasReliablePrice(suburb)
     ? ` Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}.`
     : "";
-  return `Browse all property for sale in ${suburb.name} ${suburb.postcode} — houses, units, townhouses and land.${price} View listings and enquire today.`;
+  return `Browse all property for sale in ${suburb.name} ${suburb.postcode}: houses, units, townhouses and land.${price} View listings and enquire today.`;
 }
 
 export function suburbRentDescription(suburb: Suburb): string {
@@ -201,7 +202,8 @@ export function suburbDescriptionHousePrices(suburb: Suburb): string {
   // postcode cluster in volume; the city name otherwise never appears in
   // the snippet, so metro suburbs carry it.
   const capital = capitalCityFor(suburb.state, suburb.postcode);
-  const where = `${sn}${alias ? ` (also known as ${alias})` : ""}, ${suburb.state} ${suburb.postcode}${capital ? `, in Greater ${capital.name}` : ""}`;
+  const area = regionPhrase(suburb, capital);
+  const where = `${sn}${alias ? ` (also known as ${alias})` : ""}, ${suburb.state} ${suburb.postcode}${area ? `, in ${area}` : ""}`;
   const kept = fitFacts(facts, (f) => `${where}: suburb profile with ${joinAnd(f)}.`);
   return kept.length ? `${where}: suburb profile with ${joinAnd(kept)}.` : `${where}: suburb profile, postcode and location.`;
 }
@@ -229,7 +231,7 @@ export function legacySuburbTitle(suburb: Suburb): string {
   // "{suburb} postcode", "{suburb} suburb profile" and "{suburb} median
   // price". The ` | Your Property Guide` brand suffix is appended by the
   // root title template, so this stays short enough to survive truncation.
-  return `${suburb.name} Postcode ${suburb.postcode} (${suburb.state}) — Suburb Profile & Median Price`;
+  return `${suburb.name} Postcode ${suburb.postcode} (${suburb.state}): Suburb Profile & Median Price`;
 }
 
 export function legacySuburbDescription(suburb: Suburb): string {
@@ -245,7 +247,8 @@ export function legacySuburbDescription(suburb: Suburb): string {
   // postcode cluster in volume; the city name otherwise never appears in
   // the snippet, so metro suburbs carry it right after the postcode answer.
   const capital = capitalCityFor(suburb.state, suburb.postcode);
-  const cityPhrase = capital ? `, in Greater ${capital.name}` : "";
+  const area = regionPhrase(suburb, capital);
+  const cityPhrase = area ? `, in ${area}` : "";
   const lead = `${suburb.name}${aka}, ${suburb.state}'s postcode is ${suburb.postcode}${cityPhrase}.`;
   const reliable = hasReliablePrice(suburb);
   const tail = reliable
@@ -255,7 +258,7 @@ export function legacySuburbDescription(suburb: Suburb): string {
   // ~160 chars is the SERP truncation budget. The alias and city phrase earn
   // their keep more than the trailing feature list does, so when they push
   // the description over budget we shorten the tail rather than drop them.
-  if ((!alias && !capital) || full.length <= 160) return full;
+  if ((!alias && !area) || full.length <= 160) return full;
   const shortTail = reliable
     ? `Median house price ${formatMetaPrice(suburb.stats.medianHousePrice)}, growth, schools and crime. No sign-up.`
     : `Suburb profile: schools, walkability, crime and demographics. No sign-up.`;

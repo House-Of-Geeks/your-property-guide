@@ -1,0 +1,497 @@
+{
+  "affordability-calculator.html": {
+    "enDash": 1
+  },
+  "cgt-calculator.html": {
+    "enDash": 3
+  },
+  "fhss-calculator.html": {
+    "enDash": 14
+  },
+  "first-home-buyers.html": {
+    "emDash": 5
+  },
+  "glossary.html": {
+    "enDash": 15
+  },
+  "glossary/adjustable-rate-mortgage.html": {
+    "enDash": 1
+  },
+  "glossary/appraisal.html": {
+    "enDash": 1
+  },
+  "glossary/appreciation.html": {
+    "enDash": 1
+  },
+  "glossary/auction-clearance-rate.html": {
+    "enDash": 1
+  },
+  "glossary/auction.html": {
+    "enDash": 1
+  },
+  "glossary/balloon-payment.html": {
+    "enDash": 1
+  },
+  "glossary/body-corporate.html": {
+    "enDash": 1
+  },
+  "glossary/bond-rental.html": {
+    "enDash": 1
+  },
+  "glossary/break-fee-lease.html": {
+    "enDash": 1
+  },
+  "glossary/bridging-finance.html": {
+    "enDash": 1
+  },
+  "glossary/building-inspection.html": {
+    "enDash": 3
+  },
+  "glossary/buyer-apos-s-agent.html": {
+    "enDash": 3
+  },
+  "glossary/capital-gain.html": {
+    "enDash": 1
+  },
+  "glossary/capital-gains-tax-cgt.html": {
+    "enDash": 1
+  },
+  "glossary/cash-rate-rba.html": {
+    "enDash": 1
+  },
+  "glossary/caveat.html": {
+    "enDash": 1
+  },
+  "glossary/certificate-of-title.html": {
+    "enDash": 1
+  },
+  "glossary/chattels.html": {
+    "enDash": 1
+  },
+  "glossary/clearance-certificate.html": {
+    "enDash": 1
+  },
+  "glossary/commission-agent.html": {
+    "enDash": 6
+  },
+  "glossary/comparison-rate.html": {
+    "enDash": 1
+  },
+  "glossary/completion.html": {
+    "enDash": 3
+  },
+  "glossary/compulsory-acquisition.html": {
+    "enDash": 1
+  },
+  "glossary/contract-of-sale.html": {
+    "enDash": 1
+  },
+  "glossary/conveyancer-conveyancing.html": {
+    "enDash": 1
+  },
+  "glossary/cooling-off-period.html": {
+    "enDash": 6
+  },
+  "glossary/cross-collateralisation.html": {
+    "enDash": 1
+  },
+  "glossary/debt-to-income-ratio-dti.html": {
+    "enDash": 1
+  },
+  "glossary/deposit-bond.html": {
+    "enDash": 1
+  },
+  "glossary/depreciation-property.html": {
+    "enDash": 1
+  },
+  "glossary/development-application-da.html": {
+    "enDash": 1
+  },
+  "glossary/discharge-fee.html": {
+    "enDash": 6
+  },
+  "glossary/draw-down.html": {
+    "enDash": 1
+  },
+  "glossary/dual-occupancy.html": {
+    "enDash": 1
+  },
+  "glossary/easement.html": {
+    "enDash": 1
+  },
+  "glossary/encumbrance.html": {
+    "enDash": 1
+  },
+  "glossary/equity.html": {
+    "enDash": 1
+  },
+  "glossary/exchange-of-contracts.html": {
+    "enDash": 1
+  },
+  "glossary/exclusive-agency-agreement.html": {
+    "enDash": 6
+  },
+  "glossary/firb-foreign-investment-review-board.html": {
+    "enDash": 1
+  },
+  "glossary/fixed-interest-rate.html": {
+    "enDash": 6
+  },
+  "glossary/fixtures.html": {
+    "enDash": 1
+  },
+  "glossary/freehold.html": {
+    "enDash": 1
+  },
+  "glossary/funds-to-complete.html": {
+    "enDash": 1
+  },
+  "glossary/gazumping.html": {
+    "enDash": 1
+  },
+  "glossary/gearing-positive-negative-neutral.html": {
+    "enDash": 1
+  },
+  "glossary/gross-rental-yield.html": {
+    "enDash": 1
+  },
+  "glossary/gst-on-property.html": {
+    "enDash": 1
+  },
+  "glossary/hem-household-expenditure-measure.html": {
+    "enDash": 1
+  },
+  "glossary/hold-over-tenancy.html": {
+    "enDash": 1
+  },
+  "glossary/icsea.html": {
+    "enDash": 1
+  },
+  "glossary/interest-only-loan.html": {
+    "enDash": 6
+  },
+  "glossary/interest-rate-buffer.html": {
+    "enDash": 1
+  },
+  "glossary/joint-tenants-vs-tenants-in-common.html": {
+    "enDash": 1
+  },
+  "glossary/land-tax.html": {
+    "enDash": 1
+  },
+  "glossary/land-transfer-duty.html": {
+    "enDash": 1
+  },
+  "glossary/lenders-mortgage-insurance-lmi.html": {
+    "enDash": 1
+  },
+  "glossary/lien.html": {
+    "enDash": 1
+  },
+  "glossary/line-of-credit.html": {
+    "enDash": 1
+  },
+  "glossary/loan-to-value-ratio-lvr.html": {
+    "enDash": 1
+  },
+  "glossary/median-price.html": {
+    "enDash": 1
+  },
+  "glossary/mortgage-broker.html": {
+    "enDash": 1
+  },
+  "glossary/mortgage.html": {
+    "enDash": 3
+  },
+  "glossary/mortgagee-in-possession.html": {
+    "enDash": 1
+  },
+  "glossary/negative-gearing.html": {
+    "enDash": 1
+  },
+  "glossary/net-rental-yield.html": {
+    "enDash": 3
+  },
+  "glossary/non-conforming-loan.html": {
+    "enDash": 1
+  },
+  "glossary/offset-account.html": {
+    "enDash": 1
+  },
+  "glossary/open-listing.html": {
+    "enDash": 1
+  },
+  "glossary/option-fee.html": {
+    "enDash": 1
+  },
+  "glossary/pre-approval-conditional-approval.html": {
+    "enDash": 3
+  },
+  "glossary/principal-and-interest.html": {
+    "enDash": 1
+  },
+  "glossary/private-sale.html": {
+    "enDash": 1
+  },
+  "glossary/proportional-ownership.html": {
+    "enDash": 1
+  },
+  "glossary/put-and-call-option.html": {
+    "enDash": 1
+  },
+  "glossary/quantity-surveyor-qs.html": {
+    "enDash": 1
+  },
+  "glossary/redraw-facility.html": {
+    "enDash": 1
+  },
+  "glossary/refinancing.html": {
+    "enDash": 1
+  },
+  "glossary/rentvesting.html": {
+    "enDash": 1
+  },
+  "glossary/restrictive-covenant.html": {
+    "enDash": 1
+  },
+  "glossary/right-of-way.html": {
+    "enDash": 1
+  },
+  "glossary/section-32-vic.html": {
+    "enDash": 1
+  },
+  "glossary/serviceability.html": {
+    "enDash": 1
+  },
+  "glossary/settlement.html": {
+    "enDash": 3
+  },
+  "glossary/stamp-duty-transfer-duty.html": {
+    "enDash": 3
+  },
+  "glossary/strata-title.html": {
+    "enDash": 1
+  },
+  "glossary/subject-to-finance-clause.html": {
+    "enDash": 3
+  },
+  "glossary/tenants-in-common.html": {
+    "enDash": 1
+  },
+  "glossary/title-search.html": {
+    "enDash": 1
+  },
+  "glossary/transfer-duty.html": {
+    "enDash": 1
+  },
+  "glossary/unconditional-contract.html": {
+    "enDash": 1
+  },
+  "glossary/unencumbered.html": {
+    "enDash": 1
+  },
+  "glossary/valuation.html": {
+    "enDash": 1
+  },
+  "glossary/variable-rate.html": {
+    "enDash": 1
+  },
+  "glossary/vendor-apos-s-statement.html": {
+    "enDash": 1
+  },
+  "glossary/vendor-finance.html": {
+    "enDash": 1
+  },
+  "glossary/vendor.html": {
+    "enDash": 1
+  },
+  "glossary/writ.html": {
+    "enDash": 1
+  },
+  "glossary/zoning.html": {
+    "enDash": 1
+  },
+  "guides.html": {
+    "emDash": 2
+  },
+  "guides/auction-vs-private-treaty.html": {
+    "emDash": 2
+  },
+  "guides/best-time-to-buy-property-australia.html": {
+    "enDash": 12
+  },
+  "guides/building-pest-inspection.html": {
+    "enDash": 53
+  },
+  "guides/buying-property-australia.html": {
+    "enDash": 2
+  },
+  "guides/conveyancing-guide.html": {
+    "enDash": 56
+  },
+  "guides/cost-of-selling-a-house-australia.html": {
+    "enDash": 1
+  },
+  "guides/due-diligence-checklist-buying-a-house.html": {
+    "enDash": 32
+  },
+  "guides/first-home-buyer-act.html": {
+    "enDash": 2
+  },
+  "guides/first-home-buyer-guide.html": {
+    "enDash": 6
+  },
+  "guides/first-home-buyer-nsw.html": {
+    "enDash": 6
+  },
+  "guides/first-home-buyer-nt.html": {
+    "enDash": 2
+  },
+  "guides/first-home-buyer-qld.html": {
+    "emDash": 3,
+    "enDash": 2
+  },
+  "guides/first-home-buyer-sa.html": {
+    "enDash": 2
+  },
+  "guides/first-home-buyer-tas.html": {
+    "enDash": 2
+  },
+  "guides/first-home-buyer-vic.html": {
+    "enDash": 2
+  },
+  "guides/first-home-buyer-wa.html": {
+    "enDash": 2
+  },
+  "guides/first-home-guarantee.html": {
+    "enDash": 3
+  },
+  "guides/first-home-owner-grant-australia.html": {
+    "emDash": 2,
+    "enDash": 1
+  },
+  "guides/first-home-super-saver-scheme.html": {
+    "enDash": 15
+  },
+  "guides/granny-flat-guide-nsw.html": {
+    "enDash": 1
+  },
+  "guides/granny-flat-guide-vic.html": {
+    "enDash": 1
+  },
+  "guides/granny-flat-guide-wa.html": {
+    "enDash": 1
+  },
+  "guides/help-to-buy-scheme-australia.html": {
+    "enDash": 13
+  },
+  "guides/help-to-buy-scheme-nsw.html": {
+    "enDash": 18
+  },
+  "guides/help-to-buy-scheme-qld.html": {
+    "enDash": 10
+  },
+  "guides/help-to-buy-scheme-victoria.html": {
+    "enDash": 9
+  },
+  "guides/help-to-buy-scheme-wa.html": {
+    "enDash": 8
+  },
+  "guides/home-loan-pre-approval-australia.html": {
+    "enDash": 6
+  },
+  "guides/home-staging-cost-australia.html": {
+    "enDash": 19
+  },
+  "guides/how-much-deposit-to-buy-a-house.html": {
+    "enDash": 1
+  },
+  "guides/how-to-choose-a-mortgage-broker.html": {
+    "enDash": 5
+  },
+  "guides/how-to-find-a-builder-australia.html": {
+    "enDash": 31
+  },
+  "guides/how-to-sell-a-house-australia.html": {
+    "enDash": 1
+  },
+  "guides/negative-gearing-australia.html": {
+    "enDash": 16
+  },
+  "guides/offset-accounts-explained-australia.html": {
+    "emDash": 1
+  },
+  "guides/property-auction-guide.html": {
+    "enDash": 1
+  },
+  "guides/questions-to-ask-a-real-estate-agent.html": {
+    "emDash": 5
+  },
+  "guides/real-estate-agent-fees-australia.html": {
+    "enDash": 1
+  },
+  "guides/real-estate-commission-qld.html": {
+    "enDash": 1
+  },
+  "guides/real-estate-commission-sa.html": {
+    "enDash": 1
+  },
+  "guides/real-estate-commission-vic.html": {
+    "enDash": 1
+  },
+  "guides/renovation-cost-australia-2026.html": {
+    "enDash": 98
+  },
+  "guides/rentvesting-australia.html": {
+    "enDash": 30
+  },
+  "guides/smsf-property-guide.html": {
+    "enDash": 1
+  },
+  "guides/use-super-to-buy-a-house.html": {
+    "enDash": 3
+  },
+  "guides/what-to-fix-before-selling-a-house.html": {
+    "enDash": 1
+  },
+  "help-to-buy-calculator.html": {
+    "enDash": 10
+  },
+  "investing.html": {
+    "emDash": 5
+  },
+  "lmi-calculator.html": {
+    "enDash": 2
+  },
+  "methodology.html": {
+    "emDash": 1,
+    "enDash": 2
+  },
+  "negative-gearing-calculator.html": {
+    "enDash": 16
+  },
+  "rba-cash-rate.html": {
+    "enDash": 3
+  },
+  "renovating.html": {
+    "emDash": 7
+  },
+  "rental-yield-calculator.html": {
+    "enDash": 1
+  },
+  "selling.html": {
+    "emDash": 4
+  },
+  "site-map.html": {
+    "enDash": 1
+  },
+  "stamp-duty-calculator.html": {
+    "enDash": 1
+  },
+  "tools.html": {
+    "enDash": 1
+  },
+  "upgrading.html": {
+    "emDash": 6
+  }
+}

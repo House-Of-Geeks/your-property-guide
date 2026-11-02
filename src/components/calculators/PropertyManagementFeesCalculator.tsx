@@ -17,6 +17,16 @@ import { NumberInput } from "./CommissionCalculator";
 type DefaultedKey = "managementPct" | "lettingWeeks" | "renewalFee" | "inspectionFee" | "inspectionsPerYear" | "adminFeePerYear";
 const DEFAULTED: DefaultedKey[] = ["managementPct", "lettingWeeks", "renewalFee", "inspectionFee", "inspectionsPerYear", "adminFeePerYear"];
 
+// States with no published renewal, inspection or admin range, in table order.
+const UNPUBLISHED_STATES = PM_STATE_ORDER.filter((s) => {
+  const f = PM_STATE_FEES[s];
+  return f.renewal === null && f.inspection === null && f.admin === null;
+});
+const UNPUBLISHED_LIST =
+  UNPUBLISHED_STATES.length > 1
+    ? `${UNPUBLISHED_STATES.slice(0, -1).join(", ")} and ${UNPUBLISHED_STATES[UNPUBLISHED_STATES.length - 1]}`
+    : UNPUBLISHED_STATES.join("");
+
 export interface PropertyManagementFeesCalculatorProps {
   initialState?: StateCode;
   initialRent?: number;
@@ -88,7 +98,7 @@ export function PropertyManagementFeesCalculator({
               onChange={(e) => set("managementPct", Number(e.target.value) || 0)}
               className={field}
             />
-            <p className="text-xs text-gray-500 mt-1">{published(managementCell(fees).text)} The average is the starting figure.</p>
+            <p className="text-xs text-gray-500 mt-1">{published(managementCell(fees).text)} {fees.management.averageNote ? "The statewide average is the starting figure." : "The average is the starting figure."}</p>
           </div>
           <div>
             <label htmlFor="pm-letting" className="block text-sm font-medium text-gray-700 mb-1">Letting fee (weeks of rent)</label>
@@ -168,10 +178,17 @@ export function PropertyManagementFeesCalculator({
           </div>
         </dl>
         <p className="text-xs text-gray-500 mt-4">
-          Indicative only. The starting figures are each state&rsquo;s published averages and ranges as at {PM_FEES_AS_AT} (sources under the
-          table above); every line is negotiable and quoted individually. Where a state has no published range the line starts empty.
-          Management fees are deductible against rental income.
+          Indicative only: this is an estimate, not a quote, and not financial, tax or legal advice. The starting figures are each
+          state&rsquo;s published averages and ranges, and the fee figures are as at {PM_FEES_AS_AT} (sources are listed with the state fee table); every
+          line is negotiable and quoted individually. Management fees are deductible against rental income.
         </p>
+        {UNPUBLISHED_STATES.includes(state) && (
+          <p className="text-xs text-gray-500 mt-2" data-testid="pm-fees-unpublished-note">
+            {UNPUBLISHED_LIST}{" "}
+            have no renewal, inspection or admin ranges in the sources we use, so those lines start at zero and the starting total
+            may understate the cost for those states. Enter the amounts in your agency&rsquo;s fee schedule.
+          </p>
+        )}
       </div>
     </div>
   );

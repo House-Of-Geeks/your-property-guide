@@ -12,7 +12,7 @@ export const REFORM_START = "1 July 2027";
 export const NEGATIVE_GEARING_CUTOFF = "7:30pm AEST on 12 May 2026";
 
 export const ATO_REFORM_SOURCE = {
-  label: "ATO: Tax reform – Boosting home ownership – Reforming negative gearing and capital gains tax",
+  label: "ATO: Boosting home ownership, reforming negative gearing and capital gains tax",
   href: BUDGET_SOURCE.url,
   note: "Last updated 29 June 2026, read 1 October 2026. The measures are law and apply from 1 July 2027; properties held at 7:30pm AEST on 12 May 2026 are exempt from the negative gearing change; the CGT change applies only to gains that accrue after 1 July 2027.",
 } as const satisfies SourceItem;

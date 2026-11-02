@@ -12,6 +12,7 @@ import {
 } from "@/lib/services/suburb-rankings-service";
 import { NOT_PLACES_VERSION } from "@/lib/non-localities";
 import { SITE_URL } from "@/lib/constants";
+import { POPULAR_COMPARE_PAIRS, allowedComparePairKeys } from "@/lib/compare-pairs";
 import { CompareForm } from "./CompareForm";
 import { Band, HeroLead, HeroTitle, PhotoHero, RuleGrid, RuleItem, SectionHeading } from "@/components/premium";
 
@@ -37,24 +38,6 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
 };
-
-// Hand-curated city-vs-city pairings. We seed these because they're the queries
-// most users type ("Bondi vs Coogee", "Toorak vs Brighton") and they give the
-// page real internal-link density before users supply their own pairs.
-const POPULAR_PAIRS: { aSlug: string; bSlug: string; aName: string; bName: string; subtitle: string }[] = [
-  // NSW
-  { aSlug: "bondi-nsw-2026",         bSlug: "coogee-nsw-2034",        aName: "Bondi",       bName: "Coogee",        subtitle: "Eastern beaches" },
-  { aSlug: "newtown-nsw-2042",       bSlug: "surry-hills-nsw-2010",   aName: "Newtown",     bName: "Surry Hills",   subtitle: "Inner west vs inner east" },
-  { aSlug: "manly-nsw-2095",         bSlug: "mosman-nsw-2088",        aName: "Manly",       bName: "Mosman",        subtitle: "Northern beaches" },
-  // VIC
-  { aSlug: "richmond-vic-3121",      bSlug: "fitzroy-vic-3065",       aName: "Richmond",    bName: "Fitzroy",       subtitle: "Inner Melbourne" },
-  { aSlug: "toorak-vic-3142",        bSlug: "brighton-vic-3186",      aName: "Toorak",      bName: "Brighton",      subtitle: "Prestige" },
-  { aSlug: "carlton-vic-3053",       bSlug: "south-yarra-vic-3141",   aName: "Carlton",     bName: "South Yarra",   subtitle: "Inner-city living" },
-  // QLD
-  { aSlug: "new-farm-qld-4005",      bSlug: "teneriffe-qld-4005",     aName: "New Farm",    bName: "Teneriffe",     subtitle: "Inner Brisbane" },
-  { aSlug: "paddington-qld-4064",    bSlug: "ashgrove-qld-4060",      aName: "Paddington",  bName: "Ashgrove",      subtitle: "Inner-west character" },
-  { aSlug: "bulimba-qld-4171",       bSlug: "hawthorne-qld-4171",     aName: "Bulimba",     bName: "Hawthorne",     subtitle: "Brisbane riverside" },
-];
 
 const ALL_STATES = ["NSW", "VIC", "QLD", "WA", "SA", "TAS", "NT", "ACT"];
 
@@ -89,6 +72,7 @@ const getCachedRails = unstable_cache(
 
 export default async function ComparePage() {
   const { topNSW, topVIC, topQLD, pairsByState } = await getCachedRails();
+  const allowedPairKeys = await allowedComparePairKeys();
   const pairsWithData = pairsByState.filter((s) => s.pairs.length > 0);
 
   return (
@@ -121,7 +105,7 @@ export default async function ComparePage() {
       {/* Picker: the page's job, directly under the hero */}
       <Band tone="quiet" spacing="compact">
         <div className="rounded-xl border border-line bg-surface-raised p-6 sm:p-8 max-w-4xl">
-          <CompareForm />
+          <CompareForm allowedPairKeys={allowedPairKeys} />
         </div>
       </Band>
 
@@ -135,7 +119,7 @@ export default async function ComparePage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {POPULAR_PAIRS.map(({ aSlug, bSlug, aName, bName, subtitle }) => (
+          {POPULAR_COMPARE_PAIRS.map(({ aSlug, bSlug, aName, bName, subtitle }) => (
             <Link
               key={`${aSlug}-${bSlug}`}
               href={`/suburbs/${aSlug}/vs/${bSlug}`}

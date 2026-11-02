@@ -1,11 +1,15 @@
 /**
  * On-demand ISR revalidation for freshly-synced suburbs.
  *
- * The suburb profile and its sub-pages are 7-day ISR routes. After a sync
- * writes new stats, this asks production to invalidate the cached HTML of
- * every suburb touched in the window (profile, rental-market, schools
- * sub-page) and every postcode page those suburbs belong to, so the next
- * visitor or crawler sees the new numbers instead of a week-old page.
+ * The suburb-family pages and best-suburbs pages use a 30 day ISR window
+ * (SYNC_FED_REVALIDATE_SECONDS), and the "sitemap-compare" and
+ * "sitemap-best-suburbs-cities" unstable_cache entries are 30 days too, so
+ * this script is the freshness mechanism after each sync. It asks production
+ * to invalidate the cached HTML of every suburb touched in the window
+ * (profile, rental-market, schools, agents sub-pages) and every postcode page
+ * those suburbs belong to, then the aggregate route patterns and the two
+ * sitemap cache tags, so the next visitor or crawler sees the new numbers
+ * instead of a month-old page.
  * Invalidation is lazy (regenerated on next request), so a big batch does
  * not cause a render storm. Runs before indexnow-ping in the cron scripts.
  *
@@ -21,6 +25,18 @@ import { prisma } from "./db";
 
 const BASE = (process.env.REVALIDATE_TARGET_URL ?? "https://www.yourpropertyguide.com.au").replace(/\/$/, "");
 const CHUNK = 500; // /api/revalidate accepts up to 1000 per call
+const SUBURB_AGGREGATE_PATTERNS = [
+  "/regions/[slug]",
+  "/states/[state]",
+  "/property-market/[city]",
+  "/best-suburbs/[category]",
+  "/best-suburbs/[category]/[state]",
+  "/suburbs/[slug]/vs/[compareSlug]",
+  "/suburbs/[slug]/agents",
+  "/api/og/suburb/[slug]",
+];
+// unstable_cache tags that back the sitemaps; /api/revalidate takes one tag per call.
+const SITEMAP_TAGS = ["sitemap-compare", "sitemap-best-suburbs-cities"];
 
 async function post(body: Record<string, unknown>): Promise<void> {
   const res = await fetch(`${BASE}/api/revalidate`, {
@@ -70,6 +86,24 @@ async function main(): Promise<void> {
     sent += chunk.length;
   }
   console.log(`revalidate-paths: invalidated ${sent} paths (${changed.length} suburbs updated in last ${windowHours}h, ${postcodes.size} postcodes)`);
+
+  // Aggregate pages built from suburb stats are 30 day ISR too. Invalidate
+  // their route patterns (lazy, regenerated on next request) so they pick
+  // up the new numbers without waiting out the window.
+  await post({ paths: SUBURB_AGGREGATE_PATTERNS, type: "page" });
+  console.log(`revalidate-paths: invalidated route patterns ${SUBURB_AGGREGATE_PATTERNS.join(", ")}`);
+
+  // The sitemap caches are 30 day unstable_cache entries; expire them by tag.
+  // Each tag is its own call and its own try/catch so one failure is non-fatal
+  // and does not skip the other.
+  for (const tag of SITEMAP_TAGS) {
+    try {
+      await post({ tag });
+      console.log(`revalidate-paths: invalidated cache tag ${tag}`);
+    } catch (err) {
+      console.error(`revalidate-paths: tag ${tag} failed (non-fatal):`, err);
+    }
+  }
 }
 
 main()

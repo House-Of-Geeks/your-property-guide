@@ -256,7 +256,7 @@ export default function FirstHomeBuyerVICPage() {
         <li><strong>Regional Victoria:</strong> Geelong (houses $700K to $800K), Ballarat ($500K to $600K), Bendigo ($450K to $550K), all highly affordable versus Melbourne</li>
       </ul>
       <p>
-        Browse our <Link href="/suburbs">suburb profiles</Link> for current market
+        Browse our <Link href="/suburbs" prefetch={false}>suburb profiles</Link> for current market
         data on any Victorian suburb.
       </p>
 

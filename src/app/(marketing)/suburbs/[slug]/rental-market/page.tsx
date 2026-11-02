@@ -29,6 +29,7 @@ import { hasReliablePrice } from "@/lib/suburb-data-quality";
 import { Faq } from "@/components/guide/Faq";
 import { formatPriceFull } from "@/lib/utils/format";
 import { SITE_URL, SITE_NAME } from "@/lib/constants";
+import { suburbPlaceProps } from "@/lib/utils/lga";
 
 interface RentalMarketPageProps {
   params: Promise<{ slug: string }>;
@@ -41,7 +42,7 @@ interface RentalMarketPageProps {
 // was a large part of the crawl-burst connection exhaustion in July 2026
 // (fix item 4a). Stats refresh via the quarterly sync, which now revalidates
 // changed suburbs' paths on demand (scripts/sync/revalidate-paths.ts).
-export const revalidate = 604800;
+export const revalidate = 2592000;
 export const dynamicParams = true;
 export function generateStaticParams() { return []; }
 
@@ -288,6 +289,7 @@ export default async function SuburbRentalMarketPage({ params }: RentalMarketPag
         addressLocality={suburb.name}
         addressRegion={suburb.state}
         postalCode={suburb.postcode}
+        {...suburbPlaceProps(suburb)}
       />
       <GuideArticleJsonLd
         title={`${model?.title ?? `${suburb.name} Rental Market | Rent Prices & Trends`} | ${SITE_NAME}`}

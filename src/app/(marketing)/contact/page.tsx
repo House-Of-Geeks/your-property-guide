@@ -109,7 +109,7 @@ export default function ContactPage() {
                 free-form message.
               </p>
             </div>
-            <Link href="/find-an-expert" className={`${BUTTON_SECONDARY} shrink-0 justify-center whitespace-nowrap`}>
+            <Link href="/find-an-expert" prefetch={false} className={`${BUTTON_SECONDARY} shrink-0 justify-center whitespace-nowrap`}>
               Get connected <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

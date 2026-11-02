@@ -8,9 +8,11 @@
   "scripts": {
     "dev": "next dev",
     "postinstall": "prisma generate",
-    "build": "next build",
+    "build": "next build && node scripts/check-rendered.mjs",
     "start": "next start",
     "lint": "eslint",
+    "check:rendered": "node scripts/check-rendered.mjs",
+    "check:rendered:urls": "node scripts/check-rendered.mjs --base http://localhost:3000 --paths @scripts/check-rendered-paths.txt",
     "test": "vitest run",
     "test:watch": "vitest",
     "db:generate": "prisma generate",

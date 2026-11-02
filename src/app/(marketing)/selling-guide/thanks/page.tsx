@@ -151,7 +151,7 @@ export default async function SellingGuideThanksPage({ searchParams }: PageProps
                   {FEE_DISCLOSURE}{" "}
                   <Link href={HOW_WE_ARE_PAID_HREF} className="underline underline-offset-4">How we’re paid</Link>
                 </p>
-                <Link href={`/get-help?${helpQs.toString()}`} className={`mt-5 ${BUTTON_SECONDARY}`}>
+                <Link href={`/get-help?${helpQs.toString()}`} prefetch={false} className={`mt-5 ${BUTTON_SECONDARY}`}>
                   Ask for an appraisal introduction
                 </Link>
               </div>

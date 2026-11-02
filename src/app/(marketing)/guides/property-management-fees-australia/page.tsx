@@ -30,23 +30,24 @@ import { computePmFees, defaultPmFeesInput } from "@/lib/property-management-fee
 import { formatPriceFull } from "@/lib/utils/format";
 
 const FRONTMATTER: GuideFrontmatter = {
-  title: "Property Management Fees in Australia 2026: Rates by State, With Calculator",
+  title: "Property Management Fees in Australia 2026: Rates by State",
   description:
-    "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), letting fees in weeks, renewal, inspection and statement charges, sourced and dated, with an annual cost calculator.",
+    "Management fees by state for 2026 (5.8% NSW to 8.7% WA and Tasmania), letting fees, and renewal, inspection and statement charges where published.",
   slug: "property-management-fees-australia",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-16",
+  updatedAt: "2026-10-28",
   readingTimeMinutes: 12,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
   persona: "investing",
 };
 
-// The <title> is shorter than the H1: the root layout appends
-// " | Your Property Guide", and 60 characters before that suffix is the SERP
-// budget (tests/seo/titles.test.ts). The long form stays the H1 and the
-// Article headline, which read FRONTMATTER.title.
-const SEO_TITLE = "Property Management Fees 2026: Rates by State & Calculator";
+// The <title> is shorter than the H1. The root layout appends
+// " | Your Property Guide" (22 characters) and the rendered title stays at 60
+// characters including it, so this string is 38 or fewer
+// (tests/seo/calculator-pages.test.ts measures the rendered form). The long
+// form stays the H1 and the Article headline, which read FRONTMATTER.title.
+const SEO_TITLE = "Property Management Fees by State 2026";
 
 export const metadata: Metadata = {
   title: SEO_TITLE,
@@ -103,6 +104,7 @@ const TOC: GuideTOCEntry[] = [
 ];
 
 const RELATED: RelatedGuide[] = [
+  { title: "Property management fees calculator", href: "/property-management-fees-calculator", description: "The annual cost of managing a rental in your state, on its own page." },
   { title: "Rental Yield Calculator", href: "/rental-yield-calculator", description: "Calculate gross and net rental yield with management fees factored in." },
   { title: "Negative Gearing in Australia", href: "/guides/negative-gearing-australia", description: "How property management fees flow through to your tax return." },
   { title: "Property Depreciation Guide", href: "/guides/property-depreciation-guide", description: "The other big deduction on your investment property." },
@@ -213,9 +215,8 @@ export default function PropertyManagementFeesGuide() {
       <p>
         <small>
           Sources for the table, with dates. The state averages are
-          LocalAgentFinder&rsquo;s, the same figures Google&rsquo;s AI Overview
-          prints for this search; the ranges are REIQ&rsquo;s table (sourced to
-          realestate.com.au) and WhichRealEstateAgent&rsquo;s city guides. A
+          LocalAgentFinder&rsquo;s; the ranges are REIQ&rsquo;s table (sourced
+          to realestate.com.au) and WhichRealEstateAgent&rsquo;s city guides. A
           &ldquo;no published range&rdquo; cell means none of these names a
           figure for that state, not that the charge does not exist.
         </small>
@@ -225,10 +226,14 @@ export default function PropertyManagementFeesGuide() {
           <li key={s.n}>
             <small>
               [{s.n}]{" "}
-              <a href={s.href} target="_blank" rel="nofollow noopener">
-                {s.label}
-              </a>
-              , {s.date}.
+              {s.href ? (
+                <a href={s.href} target="_blank" rel="nofollow noopener">
+                  {s.label}
+                </a>
+              ) : (
+                s.label
+              )}
+              {s.date ? `, ${s.date}` : ""}.
             </small>
           </li>
         ))}
@@ -249,7 +254,8 @@ export default function PropertyManagementFeesGuide() {
         annual cost of management and its share of the rent, which is the
         figure to put into the{" "}
         <a href="/rental-yield-calculator">rental yield calculator</a> as your
-        management cost.
+        management cost. The same calculator is also available on{" "}
+        <a href="/property-management-fees-calculator">its own page</a>.
       </p>
       <div className="not-prose my-6">
         <PropertyManagementFeesCalculator initialState="NSW" initialRent={EXAMPLE_RENT} headingLevel="h3" />
@@ -267,9 +273,10 @@ export default function PropertyManagementFeesGuide() {
       <h3>1. Management fee</h3>
       <p>
         The headline percentage, calculated on rent <em>collected</em>, not
-        rent owed, so a vacancy costs no fee. About 5% to 8% in Sydney and
-        Melbourne, 7% to 12% in Brisbane, Perth and Adelaide and in regional
-        areas; the table above has each state.
+        rent owed, so a vacancy costs no fee. Published ranges run from 5% to 8% in
+        Sydney, 5% to 10% in Victoria, 7% to 12% in Queensland, 8.5% to 11% in
+        Perth and 9% to 15% in South Australia; the table above has each state,
+        including the regional figures.
       </p>
 
       <h3>2. Letting fee</h3>
@@ -417,21 +424,21 @@ export default function PropertyManagementFeesGuide() {
         conversations.
       </p>
       <p>
-        For most investors, the time and risk reduction is worth the 6% to 12%.
+        For most investors, the time and risk reduction is worth the fee, which averages between 5.8% and 8.7% by state.
       </p>
 
       <h2 id="next-steps">Next steps</h2>
       <ol>
         <li>
           Get three written fee schedules from local managers. Compare the
-          all-in annual number from the calculator, not the headline
+          annual total from the calculator, not the headline
           percentage.
         </li>
         <li>
           Ask each candidate for their average vacancy days and arrears rate.
         </li>
         <li>
-          Put the all-in cost, not just the management percentage, into the{" "}
+          Put the total annual cost, not just the management percentage, into the{" "}
           <a href="/rental-yield-calculator">rental yield calculator</a> to
           see your true net yield.
         </li>

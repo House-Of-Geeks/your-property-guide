@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 // post offices (src/lib/non-localities.ts). Relative import: the config is
 // loaded outside the app's path aliases.
 import nonLocalities from "./src/lib/data/non-localities.json";
+import { RETIRED_SITEMAP_SECTIONS } from "./src/lib/retired-sitemap";
 
 const NON_LOCALITY_REDIRECTS = nonLocalities.entries.flatMap((e) => {
   const target = e.parent ? `/suburbs/${e.parent}` : `/postcodes/${e.postcode}`;
@@ -11,6 +12,20 @@ const NON_LOCALITY_REDIRECTS = nonLocalities.entries.flatMap((e) => {
     { source: `/suburbs/${e.slug}/:path*`, destination: e.parent ? `${target}/:path*` : target, permanent: true },
   ];
 });
+
+// The listing sections retired on 14 Oct 2026 that had a child sitemap at
+// /{section}/sitemap.xml: the redirect skips that one file, and
+// src/app/(retired-sitemaps) answers it 410 Gone instead of a 308 to an HTML
+// hub, which Search Console reports as a sitemap error.
+function retiredSection(section: string, destination: string) {
+  if (!(section in RETIRED_SITEMAP_SECTIONS)) {
+    return [{ source: `/${section}/:path*`, destination, permanent: true }];
+  }
+  return [
+    { source: `/${section}`, destination, permanent: true },
+    { source: `/${section}/:path((?!sitemap\\.xml$).*)`, destination, permanent: true },
+  ];
+}
 
 const nextConfig: NextConfig = {
   // Edge-cache static blog covers aggressively. They live in /public so are
@@ -28,6 +43,10 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // The HTML sitemap moved from /site-map to /sitemap. /sitemap.xml stays
+      // the XML index; these two old HTML addresses fold into the new page.
+      { source: "/site-map", destination: "/sitemap", statusCode: 301 },
+      { source: "/sitemap.html", destination: "/sitemap", statusCode: 301 },
       // Old agency URLs. While the directory is off (below) they go straight
       // to the introduction form; when it returns, point them back at
       // /real-estate-agencies and /real-estate-agencies/:slug* (permanent).
@@ -63,15 +82,15 @@ const nextConfig: NextConfig = {
       // redirects (property slug migration) are folded into the /buy rule:
       // they land on /buying in one hop instead of hopping through a /buy
       // listing that no longer exists.
-      { source: "/buy/:path*",            destination: "/buying",  permanent: true },
+      ...retiredSection("buy", "/buying"),
       // No renting category exists under /guides/category; the renters'
       // rights and rentvesting guides are on the guides hub.
-      { source: "/rent/:path*",           destination: "/guides",  permanent: true },
+      ...retiredSection("rent", "/guides"),
       // Sale prices live on the suburb profiles.
-      { source: "/sold/:path*",           destination: "/suburbs", permanent: true },
-      { source: "/off-market/:path*",     destination: "/selling", permanent: true },
-      { source: "/house-and-land/:path*", destination: "/buying",  permanent: true },
-      { source: "/best-deals/:path*",     destination: "/buying",  permanent: true },
+      ...retiredSection("sold", "/suburbs"),
+      ...retiredSection("off-market", "/selling"),
+      ...retiredSection("house-and-land", "/buying"),
+      ...retiredSection("best-deals", "/buying"),
       // A suburb's six listing sub-pages go to its profile. The segment is
       // matched whole against these six words only, so /rental-market,
       // /schools, /agents, /vs/... and street pages (410) are not caught.

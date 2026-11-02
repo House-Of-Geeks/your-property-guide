@@ -163,7 +163,7 @@ export default function AboutPage() {
                 </div>
                 <div className="py-3">
                   <dt className="font-medium text-ink">Who owns it</dt>
-                  <dd className="mt-0.5 text-ink-muted">Profit Geeks Pty Ltd, an Australian-registered private company.</dd>
+                  <dd className="mt-0.5 text-ink-muted">AM Marketing Group Pty Ltd trading as Your Property Guide Australia, an Australian-registered private company.</dd>
                 </div>
                 <div className="py-3 last:pb-0">
                   <dt className="font-medium text-ink">Contact</dt>
@@ -209,8 +209,8 @@ export default function AboutPage() {
           <h3 className={`${h3} mt-10 mb-3`}>Who owns Your Property Guide</h3>
           <div className="space-y-4 text-base text-ink-muted leading-relaxed">
             <p>
-              Your Property Guide is owned and operated by Profit Geeks
-              Pty Ltd, an Australian-registered private company. We&rsquo;re
+              Your Property Guide is owned and operated by AM Marketing Group Pty Ltd trading as Your Property Guide
+              Australia, an Australian-registered private company. We&rsquo;re
               independently funded. No venture capital, no media-group
               ownership, no real estate franchise or aggregator behind the
               scenes.

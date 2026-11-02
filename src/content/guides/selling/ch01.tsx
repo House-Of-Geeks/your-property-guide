@@ -68,7 +68,7 @@ function Body() {
       </ul>
       <p>
         You can pull all four from the big portals’ suburb profile pages, your state’s valuer-general data, our{" "}
-        <Link href="/suburbs">suburb profiles</Link>, or by watching what sells near you for six weeks. If an agent quotes
+        <Link href="/suburbs" prefetch={false}>suburb profiles</Link>, or by watching what sells near you for six weeks. If an agent quotes
         these numbers without being asked, that’s a point in their favour.
       </p>
 

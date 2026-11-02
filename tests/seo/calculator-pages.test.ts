@@ -73,6 +73,39 @@ describe("/rental-yield-calculator", () => {
   });
 });
 
+describe("/property-management-fees-calculator", () => {
+  const src = read(path.join(APP, "property-management-fees-calculator/page.tsx"));
+  const widget = read(path.resolve(__dirname, "../../src/components/calculators/PropertyManagementFeesCalculator.tsx")).replace(/\s+/g, " ");
+  const guide = read(path.join(APP, "guides/property-management-fees-australia/page.tsx"));
+  it("names the tool first in the title, inside the budget, with the slug and schema name set", () => {
+    const title = metaTitle(src);
+    expect(title.startsWith("Property Management Fees Calculator")).toBe(true);
+    expect(title.length).toBeLessThanOrEqual(TITLE_BUDGET);
+    expect(src).toContain('slug: "property-management-fees-calculator"');
+    expect(src).toContain('schemaName: "Property Management Fees Calculator"');
+  });
+  it("is ISR, renders the calculator and works its example from the engine", () => {
+    expect(src).toMatch(/export const revalidate = \d+/);
+    expect(src).toContain("<PropertyManagementFeesCalculator");
+    expect(src).toContain("computePmFees");
+  });
+  it("tells the reader which states have no published renewal, inspection or admin ranges", () => {
+    expect(widget).toContain('data-testid="pm-fees-unpublished-note"');
+    expect(widget).toContain("have no renewal, inspection or admin ranges in the sources we use");
+    expect(widget).toContain("may understate");
+    expect(widget).not.toContain("understates");
+    expect(widget).toContain("UNPUBLISHED_STATES.includes(state)");
+    expect(widget).not.toContain("sources under the table above");
+  });
+  it("leaves the word calculator to this page: the fees guide drops it from its title and links here", () => {
+    const frontmatterTitle = /title: "([^"]+)",\s*description:/.exec(guide)![1];
+    const seoTitle = /const SEO_TITLE = "([^"]+)"/.exec(guide)![1];
+    expect(frontmatterTitle).not.toContain("Calculator");
+    expect(seoTitle).not.toContain("Calculator");
+    expect(guide).toContain('href="/property-management-fees-calculator"');
+  });
+});
+
 describe("header", () => {
   const src = read(path.resolve(__dirname, "../../src/components/layout/Header.tsx"));
   it("links all calculators and renders every dropdown panel in the HTML, hidden until opened", () => {

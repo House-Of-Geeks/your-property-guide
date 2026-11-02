@@ -116,6 +116,14 @@ describe.skipIf(!URL_)("POST /api/guides/email on Postgres", () => {
     expect(g.attempts).toBe(1);
   });
 
+  it("treats obvious spam (a link for a name) like the honeypot: success, nothing kept or sent", async () => {
+    const res = await POST(req({ ...valid, firstName: "Cheap SEO https://spam.example" }));
+    await settle();
+    expect(await res.json()).toMatchObject({ ok: true, requestId: "ok" });
+    expect(await db.lead.count()).toBe(0);
+    expect(m.sendMail).not.toHaveBeenCalled();
+  });
+
   it("asks for a name and a valid address, and nothing else", async () => {
     const res = await POST(req({ ...valid, firstName: "", email: "nope" }));
     expect(res.status).toBe(400);

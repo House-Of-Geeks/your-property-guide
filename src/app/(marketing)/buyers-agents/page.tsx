@@ -122,7 +122,7 @@ export default function BuyersAgentsPage() {
         <HeroTitle>Buyer’s agents: what they do, what they cost, and whether you need one</HeroTitle>
         <HeroLead>{BA.who}</HeroLead>
         <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-3">
-          <Link href={HELP_HREF} className={`${BUTTON_PRIMARY} justify-center`}>
+          <Link href={HELP_HREF} prefetch={false} className={`${BUTTON_PRIMARY} justify-center`}>
             Ask about a buyer’s agent
           </Link>
           <Link href={PLAN_HREF} className={`${BUTTON_SECONDARY} justify-center`}>
@@ -273,7 +273,7 @@ export default function BuyersAgentsPage() {
               ]}
             />
             <div className="mt-10 flex flex-col sm:flex-row gap-3">
-              <Link href={HELP_HREF} className={`${BUTTON_PRIMARY} justify-center`}>
+              <Link href={HELP_HREF} prefetch={false} className={`${BUTTON_PRIMARY} justify-center`}>
                 Ask about a buyer’s agent <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
               <Link href={PLAN_HREF} className={`${BUTTON_SECONDARY} justify-center`}>

@@ -97,7 +97,7 @@ export function climateSourceLabel(c: { bomStationId?: string | null } | null | 
 
 /** The source line under the climate figures. */
 export function climateSourceNote(c: Pick<StationClimate, "bomStationId" | "bomStationName" | "distanceKm">): string {
-  if (isGridClimate(c)) return `Our 1991–2020 averages of ${SILO_CREDIT} for this location.`;
+  if (isGridClimate(c)) return `Our 1991 to 2020 averages of ${SILO_CREDIT} for this location.`;
   return `Bureau of Meteorology station ${c.bomStationName}, ${formatStationDistance(c.distanceKm)} away; long-term averages.`;
 }
 

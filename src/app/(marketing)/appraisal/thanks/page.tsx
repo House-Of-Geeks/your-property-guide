@@ -78,6 +78,7 @@ export default async function AppraisalThanksPage({ searchParams }: PageProps) {
           </p>
           <Link
             href={suburb ? `/suburbs/${suburb}` : "/suburbs"}
+            prefetch={suburb ? undefined : false}
             className={`${BUTTON_SECONDARY} shrink-0 justify-center`}
           >
             {suburbLabel ? `See ${suburbLabel} listings` : "Explore suburbs"}

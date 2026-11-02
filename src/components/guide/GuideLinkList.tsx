@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowRight } from "lucide-react";
 import type { GuideLinkGroup } from "@/lib/guides/hub-guides";
 
@@ -26,7 +27,7 @@ export function GuideLinkList({ groups, showDescriptions = false, columns = 3 }:
           {group.label && (
             <h3 className="font-sans text-[13px] text-ink-subtle mb-3">
               {group.href ? (
-                <Link href={group.href} className="text-ink hover:text-primary transition-colors">
+                <Link href={group.href} prefetch={linkPrefetch(group.href)} className="text-ink hover:text-primary transition-colors">
                   {group.label}
                 </Link>
               ) : (
@@ -37,7 +38,7 @@ export function GuideLinkList({ groups, showDescriptions = false, columns = 3 }:
           <ul className={`grid grid-cols-1 ${grid} gap-x-8 border-t border-line`}>
             {group.links.map((link) => (
               <li key={link.href} className="border-b border-line">
-                <Link href={link.href} className="group flex items-start justify-between gap-3 py-3">
+                <Link href={link.href} prefetch={linkPrefetch(link.href)} className="group flex items-start justify-between gap-3 py-3">
                   <span className="min-w-0">
                     <span className="block font-display text-base text-ink group-hover:text-primary transition-colors leading-snug">
                       {link.title}

@@ -257,7 +257,7 @@ export default function SydneyVsMelbourneGuide() {
         <li>
           Pull comparable sales on three or four target suburbs in each city
           using the sale prices on our{" "}
-          <Link href="/suburbs">suburb pages</Link>.
+          <Link href="/suburbs" prefetch={false}>suburb pages</Link>.
         </li>
         <li>
           Cross-reference yield with our{" "}

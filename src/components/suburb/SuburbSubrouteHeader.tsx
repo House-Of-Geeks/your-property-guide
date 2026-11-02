@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { linkPrefetch } from "@/lib/link-prefetch";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { BUTTON_PRIMARY, HeroTitle, PhotoHero } from "@/components/premium";
 import { guideFunnelHref } from "@/lib/guide-funnel";
@@ -79,7 +80,7 @@ export function SuburbSubrouteHeader({
         href={guideFunnelHref("selling", { suburb: suburb.slug, from })}
         className={`${BUTTON_PRIMARY} w-full sm:w-auto justify-center`}
       >
-        Selling in {suburb.name}? Get the free guide
+        {`Selling in ${suburb.name}? Get the free guide`}
         <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
       </Link>
     ) : null;
@@ -124,6 +125,7 @@ export function SuburbSubrouteHeader({
                   <li key={tab.href}>
                     <Link
                       href={tab.href}
+                      prefetch={linkPrefetch(tab.href)}
                       aria-current={isActive ? "page" : undefined}
                       className={`inline-flex py-3 border-b-2 transition-colors ${
                         isActive
@@ -160,7 +162,7 @@ export function SubrouteActionCard({ heading, body, href, cta, children, note }:
     <div className="tone-light rounded-xl border border-line bg-white p-5 sm:p-6">
       <h2 className="font-display text-lg sm:text-xl font-normal text-ink leading-snug tracking-[-0.03em]">{heading}</h2>
       {body && <div className="mt-1.5 font-sans text-sm sm:text-[15px] text-ink-muted leading-relaxed">{body}</div>}
-      <Link href={href} className={`mt-4 ${BUTTON_PRIMARY} w-full sm:w-auto justify-center`}>
+      <Link href={href} prefetch={linkPrefetch(href)} className={`mt-4${BUTTON_PRIMARY} w-full sm:w-auto justify-center`}>
         {cta}
         <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
       </Link>

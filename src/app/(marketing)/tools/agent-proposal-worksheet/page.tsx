@@ -124,7 +124,7 @@ export default function AgentProposalWorksheetPage() {
             <SectionHeading size="md" title={plan.help.headline} />
             <p className="mt-5 text-lg text-ink-muted leading-relaxed">{plan.help.body}</p>
             <div className="mt-8">
-              <Link href="/get-help?service=selling-agent&from=proposal-worksheet" className={`${BUTTON_PRIMARY} justify-center`}>
+              <Link href="/get-help?service=selling-agent&from=proposal-worksheet" prefetch={false} className={`${BUTTON_PRIMARY} justify-center`}>
                 Ask for an introduction <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </div>

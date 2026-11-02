@@ -11,4 +11,5 @@ export { NegativeGearingCalculator } from "./NegativeGearingCalculator";
 export { BridgingLoanCalculator } from "./BridgingLoanCalculator";
 export { HelpToBuyCalculator } from "./HelpToBuyCalculator";
 export { FhssCalculator } from "./FhssCalculator";
+export { PropertyManagementFeesCalculator } from "./PropertyManagementFeesCalculator";
 export { CalculatorPageLayout, type CalculatorPageFrontmatter } from "./CalculatorPageLayout";

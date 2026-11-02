@@ -264,7 +264,7 @@ export default function RentalYieldCalculatorPage() {
           </ul>
           <p>
             For a complete investment analysis, browse{" "}
-            <Link href="/suburbs">suburb data</Link> with median rent and growth
+            <Link href="/suburbs" prefetch={false}>suburb data</Link> with median rent and growth
             history, then run the calculator on shortlisted properties.
           </p>
         </>

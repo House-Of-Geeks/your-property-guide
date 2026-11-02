@@ -61,6 +61,11 @@ export interface Suburb {
   amenities: string[];
   transportLinks: string[];
   nearbySuburbs: string[];
+  /** Suburb centroid; null when the row has no coordinates. */
+  lat?: number | null;
+  lng?: number | null;
+  /** Latest per-type feed refresh (suburbDataUpdatedAt); null when none is recorded. */
+  dataUpdatedAt?: Date | null;
   dataFreshness?: SuburbDataFreshness;
   hazard?: {
     floodClass: string | null;

@@ -57,6 +57,7 @@ export function IntroductionsBand() {
               <p className="mt-2 text-[14px] leading-[1.65] text-ink-muted">{preview.body}</p>
               <Link
                 href={`/get-help?service=${SERVICE[move]}&from=home-intro`}
+                prefetch={false}
                 className="mt-4 inline-flex items-center gap-3 border-b border-line-strong py-1.5 text-[14px] font-medium text-ink hover:border-ink"
               >
                 Ask about an introduction <ArrowRight className="h-4 w-4" aria-hidden="true" />

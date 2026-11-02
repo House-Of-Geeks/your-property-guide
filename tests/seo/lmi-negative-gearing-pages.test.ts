@@ -68,7 +68,9 @@ describe.each(NEW_PAGES)("/$slug", ({ slug, h1, questions, linkedFrom }) => {
     const href = `href: "/${slug}"`;
     // The /tools page renders the list in src/lib/tools.ts (moved 15 Oct 2026).
     expect(read(__dirname, "../../src/lib/tools.ts")).toContain(href);
-    expect(read(MARKETING, "site-map/page.tsx")).toContain(href);
+    // The HTML sitemap renders the pages sitemap, which submits the calculator.
+    expect(read(APP, "pages/sitemap.ts")).toContain("`${SITE_URL}/" + slug + "`");
+    expect(read(__dirname, "../../src/lib/html-sitemap.ts")).toContain("getPageSitemapEntries");
     expect(read(__dirname, "../../src/components/layout/Footer.tsx")).toContain(href);
     for (const f of linkedFrom) expect(read(MARKETING, f)).toContain(`/${slug}`);
   });

@@ -331,7 +331,7 @@ export default function BestTimeToBuyGuide() {
         </li>
         <li>
           Track the sale prices on the{" "}
-          <Link href="/suburbs">suburb page</Link> you want for 4 to 6 weeks to
+          <Link href="/suburbs" prefetch={false}>suburb page</Link> you want for 4 to 6 weeks to
           learn what properties actually fetch (vs the asking price).
         </li>
         <li>

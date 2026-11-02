@@ -528,7 +528,7 @@ export default function AuctionVsPrivateTreatyPage() {
       <Callout variant="info" title="Want a second opinion on method?">
         <p>
           A vetted local agent can benchmark both methods against recent sales
-          of homes like yours. <Link href="/find-an-expert">Find an Expert</Link>{" "}
+          of homes like yours. <Link href="/find-an-expert" prefetch={false}>Find an Expert</Link>{" "}
           introduces one agent we&rsquo;ve screened, or start with a{" "}
           <Link href="/appraisal">free property appraisal</Link>, no
           commitment to list.

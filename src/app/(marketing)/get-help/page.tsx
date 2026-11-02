@@ -2,17 +2,18 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import Image from "next/image";
 import { PhotoHero, HeroTitle, HeroLead } from "@/components/premium";
-import { IntroductionForm, type ServiceChoice } from "@/components/journeys/IntroductionForm";
+import { IntroductionFormCore } from "@/components/journeys/IntroductionForm";
+import { GetHelpForm } from "@/components/journeys/IntroductionFormFromUrl";
 import { HowIntroductionsWork, HowWeChooseAgents } from "@/components/journeys/ServiceSections";
 import { SITE_URL } from "@/lib/constants";
 import { RESPONSE_WINDOW } from "@/lib/service-model";
-import type { AustralianState } from "@/lib/utils/stamp-duty";
-import type { Timeframe } from "@/lib/introductions/rules";
 
 // /get-help: the introduction path (Oct 2026). One form for asking to be
 // introduced to a selling agent, a buyer's agent, or one of each, with a
 // separate permission for each. Pre-filled from plans and guides by query
 // string (service, state, timeframe, suburb); nothing personal in the URL.
+// The page is static: the form reads the query string in the browser
+// (GetHelpForm), and the HTML holds the form with no pre-fill.
 
 export const metadata: Metadata = {
   title: "Get personal help: an introduction to a local agent",
@@ -21,33 +22,15 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/get-help` },
 };
 
-const SERVICES = new Set(["selling-agent", "buyers-agent", "both"]);
-const STATES = new Set(["NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"]);
-const TIMEFRAMES = new Set(["0-3-months", "3-6-months", "6-12-months", "12-plus-months", "researching"]);
-
-export default async function GetHelpPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
-  const sp = await searchParams;
-  const one = (k: string) => (typeof sp[k] === "string" ? (sp[k] as string) : undefined);
-  const service = one("service");
-  const state = one("state")?.toUpperCase();
-  const timeframe = one("timeframe");
-  const suburb = one("suburb");
-  const from = one("from");
-
+export default function GetHelpPage() {
   return (
     <>
       <PhotoHero
         photo="kitchen"
         breadcrumbs={[{ label: "Get personal help" }]}
         aside={
-          <Suspense fallback={null}>
-            <IntroductionForm
-              defaultService={service && SERVICES.has(service) ? (service as ServiceChoice) : null}
-              defaultState={state && STATES.has(state) ? (state as AustralianState) : null}
-              defaultTimeframe={timeframe && TIMEFRAMES.has(timeframe) ? (timeframe as Timeframe) : null}
-              defaultSuburb={suburb && /^[a-z0-9-]+-[a-z]{2,3}-\d{4}$/.test(suburb) ? suburb : null}
-              source={from ? `get-help-${from}`.slice(0, 100) : "get-help"}
-            />
+          <Suspense fallback={<IntroductionFormCore />}>
+            <GetHelpForm />
           </Suspense>
         }
       >

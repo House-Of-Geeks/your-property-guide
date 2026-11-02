@@ -465,7 +465,7 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
         The order of operations matters: shortlist agents on suburb track
         record, days on market and sale-versus-quote results first, then
         negotiate hard with your preferred one or two. Our{" "}
-        <Link href="/find-an-expert">find an expert</Link> service matches
+        <Link href="/find-an-expert" prefetch={false}>find an expert</Link> service matches
         you with one vetted local agent, so at least one name on your
         shortlist starts from performance, not from whoever letterbox-dropped
         you last week.
@@ -530,7 +530,7 @@ export default function HowToNegotiateRealEstateAgentCommissionPage() {
           <strong>Shortlist on performance.</strong> Use the{" "}
           <Link href="/guides/how-to-choose-a-selling-agent">choosing an agent guide</Link>{" "}
           or get matched with one vetted local agent via{" "}
-          <Link href="/find-an-expert">find an expert</Link>.
+          <Link href="/find-an-expert" prefetch={false}>find an expert</Link>.
         </li>
         <li>
           <strong>Get a baseline appraisal.</strong> A{" "}
