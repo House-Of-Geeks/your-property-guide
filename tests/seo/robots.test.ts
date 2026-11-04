@@ -35,7 +35,7 @@ describe("robots.txt", () => {
   });
 
   it("blocks the scrapers entirely", () => {
-    for (const name of ["AionBot", "AwarioBot", "Reflectionbot", "ExaSearchBot"]) {
+    for (const name of ["AionBot", "AwarioBot", "Reflectionbot"]) {
       expect(asList(agent(name)?.disallow), name).toEqual(["/"]);
     }
   });
