@@ -68,7 +68,6 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "AionBot",         disallow: "/" },
       { userAgent: "AwarioBot",       disallow: "/" },
       { userAgent: "Reflectionbot",   disallow: "/" },
-      { userAgent: "ExaSearchBot",    disallow: "/" },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
   };
