@@ -44,7 +44,7 @@ export const post: BlogPost = {
 <li><strong>Get the release in writing</strong>, signed by the licensee, before you speak to another agent about listing. A phone assurance is not a release.</li>
 <li><strong>Interview the next agent properly.</strong> The reasons the first campaign failed should shape the second: a different price strategy, a different method of sale, a different buyer database. Our guide to <a href="/guides/how-to-choose-a-selling-agent">choosing a selling agent</a> and the <a href="/guides/questions-to-ask-a-real-estate-agent">questions to ask</a> apply with more force the second time.</li>
 <li><strong>Give the new agent the introduced-buyers list</strong> and agree in writing what happens if one of them buys.</li>
-<li><strong>Reset the campaign.</strong> Take the listing down for at least two weeks if you can, refresh the photography, and relaunch with a guide that reflects the feedback. A property that reappears with the same photos and a slightly lower price tells buyers it has been sitting; one that reappears looking new does not.</li>
+<li><strong>Reset the campaign.</strong> Refresh the photography and relaunch with a guide that reflects the feedback. A short break doesn't make it a new listing: realestate.com.au counts a property as new only after 60 days off the site, so the buyers who saw it the first time will see its history. Refresh the photos and the price for them.</li>
 </ol>
 
 <h2>The state rules in one place</h2>

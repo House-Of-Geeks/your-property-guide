@@ -1,3 +1,12 @@
+> **Retired 21 Oct 2026.** Andy chose SendGrid instead of ActiveCampaign. The application now owns every email (templates, consent, audiences, schedules, history) and SendGrid delivers it; see `docs/email-system-2026-10-21.md`. The ActiveCampaign code, templates (`emails/activecampaign/`, `public/ac-templates/`) and scripts are removed. Nothing in the site has called ActiveCampaign since 9 Oct 2026 (#111).
+>
+> **Still to do inside the ActiveCampaign account (not verified from here; the AC keys are only in Vercel):**
+> 1. Set automations 5, 6, 7, 10, 11 and 12 to **Inactive**, so contacts synced before 9 Oct stop receiving them. Leave the drafts (55, 61) unsent.
+> 2. Export unsubscribed and bounced contacts (Contacts → filter by status), then import them into the site's suppression list: `npx tsx scripts/mail/import-suppressions.ts <file.csv> --source=activecampaign` (marketing scope for unsubscribes, all for bounces).
+> 3. Keep the account (and its exports) until Andy decides to close it; the consent and sending history it holds is the record for 10 Jun–9 Oct 2026.
+>
+> The rest of this document describes the account as it was configured in June 2026.
+
 # ActiveCampaign — YPG Seller Automations
 
 **BUILD STATUS (2026-06-12, built live in the AC UI):**

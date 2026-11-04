@@ -23,7 +23,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "When to sell a house in Australia: why spring and early autumn draw the most buyers, the case for selling in winter, why your suburb matters more than the month, and how interest rates and preparation beat timing the calendar.",
   slug: "best-time-to-sell-a-house-australia",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-06-14",
+  updatedAt: "2026-10-20",
   readingTimeMinutes: 8,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -55,7 +55,7 @@ const TLDR = [
   "Summer over the Christmas holidays (late December to January) and the depths of winter are the quietest stretches, fewer buyers, but also fewer competing listings.",
   "More buyers in peak season also means more competing homes, so a busy market is not automatically the best market for your property.",
   "Your suburb matters more than the month. Local days on market and auction clearance rates tell you far more about timing than the season does.",
-  "The interest rate cycle moves buyer borrowing power, and that shifts demand more than any season. A rate cut can do more for your sale than waiting for spring.",
+  "The interest rate cycle moves buyer borrowing power, and that can shift demand more than the season. In October 2026 the cash rate is 4.60% after a rise on 29 September, and capital-city homes were taking a median 39 days to sell, up from 23 a year earlier (RBA; Cotality).",
   "Getting ready beats getting lucky. Presentation, the right agent and accurate pricing decide your result more than the date you list.",
 ];
 
@@ -86,7 +86,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Does the time of year affect my sale price?",
     answer:
-      "Season can influence how quickly you sell and how much competition you face, but it is rarely the main driver of price. Price is set by buyer demand, recent comparable sales and how well your home is presented and marketed, and those factors swing far more than the month does. A strong campaign in a quiet season can beat a rushed one in peak season. Treat timing as one input among several, not the lever that sets your result.",
+      "Season can influence how quickly you sell and how much competition you face, but it is rarely the main driver of price. A study of Australian residential prices found no month that reliably delivered better or worse returns than any other once the mix of homes sold is accounted for (Wright, Frino and Peat, 2009). Price is set by buyer demand, recent comparable sales and how well your home is presented and marketed, and those factors swing far more than the month does. A strong campaign in a quiet season can beat a rushed one in peak season. Treat timing as one input among several, not the lever that sets your result.",
   },
   {
     question: "Is it better to sell before or after interest rate changes?",
@@ -161,6 +161,21 @@ export default function BestTimeToSellAHouseAustraliaPage() {
         label="Spring (Sep to Nov) and early autumn (Feb to Mar) are the traditional high points of the Australian selling year."
         context="More buyers, but also more competing listings"
       />
+
+      <Callout variant="info" title="Where the market sits, October 2026">
+        <p>
+          This spring is a slower one. Cotality’s national home value index
+          fell 1.1% in September, its sixth monthly fall in a row, and
+          capital-city homes took a median of 39 days to sell, against 23 days
+          a year earlier, with total listings 23.1% higher (Cotality, 1 October
+          2026). Auctions are clearing less often: the combined capital-city
+          clearance rate was 45.4% in the week ending 4 October, against 67.4%
+          a year earlier (Cotality, 8 October 2026). The Reserve Bank raised
+          the cash rate to 4.60% on 29 September. In a market like this, the
+          season matters less than a price backed by recent sales and a home
+          that’s ready on day one.
+        </p>
+      </Callout>
 
       <h2 id="by-season">Spring vs autumn vs winter</h2>
       <p>
@@ -261,8 +276,12 @@ export default function BestTimeToSellAHouseAustraliaPage() {
         When rates fall, buyers can service larger loans, budgets stretch further
         and competition tends to build, which supports prices. When rates rise,
         borrowing power tightens, buyers pull back and demand can soften, even in
-        the middle of a traditional peak season. A rate cut can do more for your
-        sale than waiting for spring ever would.
+        the middle of a traditional peak season. Spring 2026 shows it: after the
+        Reserve Bank’s rise to 4.60% on 29 September, the season’s extra buyers
+        haven’t stopped capital-city homes taking longer to sell than a year
+        ago. Our{" "}
+        <Link href="/rba-cash-rate">cash rate tracker</Link> has every decision
+        and the next meeting date.
       </p>
       <p>
         That is why the buyer side of the market is worth understanding before you
@@ -337,7 +356,9 @@ export default function BestTimeToSellAHouseAustraliaPage() {
 }
 
 const BEST_TIME_TO_SELL_SOURCES: readonly SourceItem[] = [
-  { label: "CoreLogic Australia: Home Value Index and market conditions", href: "https://www.corelogic.com.au/our-data/corelogic-indices", note: "Seasonal listing patterns, days on market and auction clearance data" },
-  { label: "Reserve Bank of Australia: Cash rate and monetary policy", href: "https://www.rba.gov.au/", note: "How the rate cycle moves borrowing power and housing demand" },
+  { label: "Cotality (formerly CoreLogic): Australian housing values down for sixth straight month in September", href: "https://www.cotality.com/au/insights/articles/australian-housing-values-down-for-sixth-straight-month-in-september", note: "1 October 2026. National values, capital-city median days on market and listings." },
+  { label: "Cotality: Final clearance rates, week ending 4 October 2026", href: "https://www.cotality.com/au/press-releases/final-clearance-rates-week-ending-4-october-2026", note: "8 October 2026. Combined capital-city final clearance rate 45.4%, 67.4% a year earlier." },
+  { label: "Reserve Bank of Australia: Cash rate target", href: "https://www.rba.gov.au/statistics/cash-rate/", note: "4.60% from the 29 September 2026 decision. Read 20 October 2026." },
+  { label: "Wright, Frino and Peat: Seasonality in Australian residential real estate prices", href: "https://doi.org/10.2139/ssrn.1459871", note: "Working paper, 2009. No month shows reliably better returns once the mix of homes sold is accounted for." },
   { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on preparing, pricing and selling a home" },
 ];

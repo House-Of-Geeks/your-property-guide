@@ -5,6 +5,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "@/lib/db";
 import { authConfig } from "./auth.config";
 import bcrypt from "bcryptjs";
+import { sendSignInEmail } from "@/lib/mail/sign-in";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -22,6 +23,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         },
       },
       from: process.env.EMAIL_FROM ?? "noreply@yourpropertyguide.com.au",
+      // Branded, and sent with click tracking off so the link isn't rewritten.
+      sendVerificationRequest: sendSignInEmail,
     }),
     Credentials({
       credentials: {

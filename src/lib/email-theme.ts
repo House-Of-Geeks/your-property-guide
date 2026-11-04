@@ -130,6 +130,13 @@ export function emailLayout({
 <meta name="color-scheme" content="light">
 <meta name="supported-color-schemes" content="light">
 <title>${title ?? "Your Property Guide"}</title>
+<style>
+  /* Phones: a little less padding so the text column stays comfortable. */
+  @media only screen and (max-width: 480px) {
+    .ypg-pad { padding-left: 20px !important; padding-right: 20px !important; }
+    .ypg-hero-img { height: auto !important; }
+  }
+</style>
 </head>
 <body style="margin:0;padding:0;background:${C.cream};">
   ${preheaderHtml}
@@ -157,6 +164,31 @@ export function emailLayout({
   </table>
 </body>
 </html>`;
+}
+
+/**
+ * The window-detail photograph (illustrative brand imagery) across the top
+ * of a welcome, series or newsletter email. Never on a confirmation: those
+ * must read fully with images off. The file is a 2:1 crop (1200 x 600) to
+ * match the tag's 600 x 300, which Outlook on Windows draws as given; the
+ * site's 3:2 panels use window-detail.jpg.
+ */
+export const EMAIL_WINDOW_IMAGE = {
+  url: "https://www.yourpropertyguide.com.au/images/brand/email-window-detail.jpg",
+  alt: "A sunlit window with sage timber frames, linen and a terracotta vase holding eucalyptus",
+} as const;
+
+export function emailHeroImage(image: { url: string; alt: string } = EMAIL_WINDOW_IMAGE): string {
+  return `<img class="ypg-hero-img" src="${escapeHtml(image.url)}" width="600" height="300" alt="${escapeHtml(image.alt)}" style="display:block;width:100%;max-width:600px;height:auto;border:0;background:${C.sand};color:${C.inkMuted};font-family:${FONT_SANS};font-size:13px;" />`;
+}
+
+/**
+ * The footer for marketing email: why they're getting it, and the
+ * unsubscribe link (to a page that asks first; the one-click header goes
+ * with it, src/lib/mail/unsubscribe.ts).
+ */
+export function marketingFooter(reason: string, unsubscribeUrl: string): string {
+  return `${escapeHtml(reason)} <a href="${escapeHtml(unsubscribeUrl)}" style="color:${C.copper};">Unsubscribe</a>. Your Property Guide · Published from Brisbane · <a href="https://www.yourpropertyguide.com.au" style="color:${C.copper};">yourpropertyguide.com.au</a>`;
 }
 
 /** The one button: forest green, cream text, 4px corners. Table-wrapped so it holds shape in Outlook. */

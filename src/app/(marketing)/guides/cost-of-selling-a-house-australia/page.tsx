@@ -17,7 +17,34 @@ import {
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
 import { COST_OF_SELLING_STATE, COST_OF_SELLING_STATES } from "@/lib/data/cost-of-selling-state";
-import { money, sellingCostTable } from "@/lib/data/selling-costs";
+import { STATE_RATES } from "@/lib/data/commission-rates";
+import { SELLING_COSTS_AS_AT, money, sellingCostTable } from "@/lib/data/selling-costs";
+import { ATO_REFORM_SOURCE, REFORM_START } from "@/lib/data/tax-reform-2027";
+
+// The national answer at one sale price, worked from the same tables as the
+// state guides and the selling costs calculator (commission-rates.ts and
+// selling-costs.ts), so the figure can't drift from them (search and
+// conversion baseline, 20 Oct 2026). Low: private treaty, no loan, every line
+// at the bottom of its range. High: auction with a loan, every line at the top.
+const PRICE = 800_000;
+const COST_LINES = sellingCostTable("NSW").lines;
+const costLine = (key: string) => COST_LINES.find((l) => l.key === key)!;
+const MARKETING = costLine("marketing");
+const CONVEYANCING = costLine("conveyancing");
+const AUCTIONEER = costLine("auctioneer");
+const DISCHARGE = costLine("discharge");
+const lowFor = (s: (typeof COST_OF_SELLING_STATES)[number]) =>
+  Math.round((PRICE * STATE_RATES[s].low) / 100) + MARKETING.low + CONVEYANCING.low + sellingCostTable(s).documents.low;
+const highFor = (s: (typeof COST_OF_SELLING_STATES)[number]) =>
+  Math.round((PRICE * STATE_RATES[s].high) / 100) + MARKETING.high + CONVEYANCING.high + sellingCostTable(s).documents.high + AUCTIONEER.high + DISCHARGE.high;
+const TOTAL_LOW = Math.min(...COST_OF_SELLING_STATES.map(lowFor));
+const TOTAL_HIGH = Math.max(...COST_OF_SELLING_STATES.map(highFor));
+const pctOf = (n: number) => `${Math.round((n / PRICE) * 1000) / 10}%`;
+const COMMISSION_LOW = Math.min(...COST_OF_SELLING_STATES.map((s) => STATE_RATES[s].low));
+const COMMISSION_HIGH = Math.max(...COST_OF_SELLING_STATES.map((s) => STATE_RATES[s].high));
+const DOCS_LOW = Math.min(...COST_OF_SELLING_STATES.map((s) => sellingCostTable(s).documents.low));
+const DOCS_HIGH = Math.max(...COST_OF_SELLING_STATES.map((s) => sellingCostTable(s).documents.high));
+const ANSWER = `Selling an ${money(PRICE)} home in Australia typically costs about ${money(TOTAL_LOW)} to ${money(TOTAL_HIGH)} (${pctOf(TOTAL_LOW)} to ${pctOf(TOTAL_HIGH)} of the price) before GST on the commission, depending on the state, the agent's rate, whether you auction and whether you have a loan to pay out. Commission is most of it.`;
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "The Cost of Selling a House in Australia (2026): Every Fee Explained",
@@ -25,7 +52,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Every cost of selling a house in Australia: agent commission, marketing, conveyancing, styling, repairs, auction and discharge fees, plus capital gains tax on an investment. With a worked example and where you can negotiate.",
   slug: "cost-of-selling-a-house-australia",
   publishedAt: "2026-06-14",
-  updatedAt: "2026-09-20",
+  updatedAt: "2026-10-20",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -53,11 +80,11 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Agent commission is the largest cost of selling and the one most people overpay. It is a percentage of the sale price, varies by state and market, and is negotiable.",
+  "Agent commission is the largest cost of selling and the one most open to negotiation. It is a percentage of the sale price, varies by state and market, and no state sets it.",
   "On top of commission you pay for marketing and professional photography, conveyancing or legal work, and usually some styling, repairs and presentation before listing.",
   "Smaller line items include auctioneer fees if you go to auction and your mortgage discharge fee if you have a loan to pay out.",
   "If the property is an investment rather than your main home, capital gains tax can be the biggest cost of all. Your family home is generally exempt.",
-  "As a rough guide, total selling costs often land somewhere around 2 to 4 per cent of the sale price before any tax, but the figure swings widely with commission, marketing and how much presentation work the home needs.",
+  `On an ${money(PRICE)} sale the bill runs from about ${money(TOTAL_LOW)} to ${money(TOTAL_HIGH)} (${pctOf(TOTAL_LOW)} to ${pctOf(TOTAL_HIGH)}) before GST on the commission and before any tax or styling, worked from our state figures (${SELLING_COSTS_AS_AT}). Commission and marketing swing it most.`,
   "Get the commission rate in writing, compare two or three agents, and treat the rate as a starting point for negotiation, not a fixed fee.",
 ];
 
@@ -79,17 +106,17 @@ const FAQS: FaqItem[] = [
   {
     question: "How much does it cost to sell a house in Australia?",
     answer:
-      "Total selling costs commonly land around 2 to 4 per cent of the sale price before any tax, but the range is wide. Agent commission is the largest part, followed by marketing and photography, then conveyancing, styling and any repairs. If you have a loan there is also a small mortgage discharge fee, and if you sell at auction you pay an auctioneer. The biggest variable is commission, which is negotiable, so two sellers on the same street can pay very different amounts. Use the commission calculator to estimate the largest line item for your price and state.",
+      `${ANSWER} Agent commission is the largest part, followed by marketing and photography, then conveyancing and the legal documents your state requires. If you have a loan there is also a small mortgage discharge fee, and if you sell at auction you pay an auctioneer. Styling, repairs and any capital gains tax on an investment are on top. Commission is negotiable, so two sellers on the same street can pay very different amounts. The selling costs calculator works out every line for your price and state.`,
   },
   {
     question: "What is the average real estate commission in Australia?",
     answer:
-      "Commission is charged as a percentage of the sale price and varies by state and by market. Rates tend to be lower in larger capital cities with high property values and higher in regional areas where sale prices are smaller. Some agents charge a flat fee instead, and some add a performance incentive above a target price. Rather than relying on a single national average, get written quotes from two or three local agents and compare the rate, the inclusions and the marketing budget side by side.",
+      `There's no official national average: commission is negotiable and no state sets it. Our compiled state figures (${SELLING_COSTS_AS_AT}) put typical rates between ${COMMISSION_LOW}% and ${COMMISSION_HIGH}% of the sale price, depending on the state. Some agents charge a flat fee instead, and some add a performance incentive above a target price. Get written quotes from two or three local agents and compare the rate, the inclusions and the marketing budget side by side, at the same expected sale price.`,
   },
   {
     question: "Is real estate commission negotiable?",
     answer:
-      "Yes. Commission is the line most sellers overpay and the one most open to negotiation. Agents set their own rates, so the percentage you are first quoted is a starting point, not a fixed price. The way to negotiate well is to get two or three appraisals, compare the rate against the service and marketing on offer, and ask each agent to justify their number. Pushing the rate down by even half a per cent on a typical sale price is real money, so it is worth the conversation.",
+      "Yes. Commission is the line most open to negotiation. Agents set their own rates, so the percentage you are first quoted is a starting point, not a fixed price. The way to negotiate well is to get two or three appraisals, compare the rate against the service and marketing on offer, and ask each agent to justify their number. Pushing the rate down by even half a per cent on a typical sale price is real money, so it is worth the conversation.",
   },
   {
     question: "Do you pay stamp duty when you sell a house?",
@@ -104,7 +131,7 @@ const FAQS: FaqItem[] = [
   {
     question: "How can I reduce the cost of selling my house?",
     answer:
-      "Start with the biggest line, commission, because that is where most sellers overpay. Compare two or three local agents, get the rate in writing, and negotiate. Keep the marketing budget proportionate to your price rather than agreeing to a large package by default, and spend on presentation only where it pays for itself. The free selling guide covers the questions that catch over-priced agents out and benchmarks fees for your state, so you go into the conversation knowing what is fair.",
+      "Start with the biggest line, commission, because that is where a negotiation moves the most money. Compare two or three local agents, get the rate in writing, and negotiate. Keep the marketing budget proportionate to your price rather than agreeing to a large package by default, and spend on presentation only where it pays for itself. The free selling guide covers the questions that catch over-priced agents out and benchmarks fees for your state, so you go into the conversation knowing what is fair.",
   },
 ];
 
@@ -153,12 +180,14 @@ export default function CostOfSellingAHouseAustraliaPage() {
       </EditorNote>
 
       <h2 id="overview">What it costs to sell a house</h2>
-      <p className="lead">
-        Selling a house in Australia comes with a stack of costs, most of which
-        come out of your sale proceeds at settlement. Commission is the largest
-        by a wide margin. The rest are smaller but they add up, and one of them,
-        capital gains tax, only applies if the property is an investment rather
-        than your home.
+      <p className="lead">{ANSWER}</p>
+      <p>
+        Most of these costs come out of your sale proceeds at settlement.
+        Commission is the largest by a wide margin. The rest are smaller but
+        they add up, and one of them, capital gains tax, only applies if the
+        property is an investment rather than your home. To work out your own
+        bill, with GST and your loan payout, use the{" "}
+        <Link href="/selling-costs-calculator">selling costs calculator</Link>.
       </p>
       <p>Here is the full list a seller usually faces:</p>
       <ul>
@@ -172,15 +201,15 @@ export default function CostOfSellingAHouseAustraliaPage() {
       </ul>
 
       <KeyFigure
-        value="2–4%"
-        label="A rough guide to total selling costs as a share of the sale price, before any capital gains tax."
-        context="Indicative only, commission is the main swing factor"
+        value={`${pctOf(TOTAL_LOW)}–${pctOf(TOTAL_HIGH)}`}
+        label={`Total selling costs on an ${money(PRICE)} sale as a share of the price, before GST on the commission, styling and any capital gains tax.`}
+        context={`Worked from our state figures, ${SELLING_COSTS_AS_AT}. Indicative: commission is the main swing factor`}
       />
 
       <h2 id="commission">Agent commission (the big one)</h2>
       <p>
         Agent commission is the single largest cost of selling and the one most
-        sellers overpay. It is charged as a percentage of the final sale price,
+        open to negotiation. It is charged as a percentage of the final sale price,
         so a higher sale price means a higher fee in dollar terms even at the
         same rate. Some agents charge a flat fee instead, and some add a
         performance incentive on the amount above an agreed target.
@@ -314,6 +343,24 @@ export default function CostOfSellingAHouseAustraliaPage() {
         stamp duty you originally paid, generally form part of the calculation
         and reduce the taxable gain.
       </p>
+      <p>
+        The rules are changing. From {REFORM_START}, the 50% discount gives
+        way to cost base indexation and a 30% minimum tax for individuals, on
+        gains that accrue from that date, including on property you already
+        own. Our guide to the{" "}
+        <Link href="/guides/cgt-changes-2026-budget">2026 CGT changes</Link>{" "}
+        works through examples, and the{" "}
+        <Link href="/cgt-calculator">CGT calculator</Link> estimates the tax
+        on your gain.
+      </p>
+      <p>
+        Whatever the property, you need an ATO clearance certificate before
+        settlement. Since 1 January 2025, if you don’t provide one, the buyer
+        must withhold 15% of the price and pay it to the ATO, whatever the
+        price; you get it back through your tax return. The certificate is free
+        and applied for online, so ask your conveyancer to lodge it when you
+        list.
+      </p>
 
       <Callout variant="warning" title="CGT is detailed, get advice on your own numbers">
         <p>
@@ -350,36 +397,44 @@ export default function CostOfSellingAHouseAustraliaPage() {
 
       <h2 id="worked-example">A worked example</h2>
       <p>
-        Here is an illustrative breakdown for a family home (not an investment,
-        so no CGT) selling for $800,000. The figures are indicative only and
-        every number swings with your agent, state and market.
+        Here is the breakdown for a family home (not an investment, so no CGT)
+        selling for {money(PRICE)}, worked from the same figures as our state
+        guides and calculators ({SELLING_COSTS_AS_AT}). Commission is our
+        compiled market range; the other lines are indicative ranges that agents,
+        conveyancers and lenders quote individually, so treat them as a budget.
       </p>
 
       <table>
         <thead>
           <tr>
             <th>Cost</th>
-            <th>Indicative amount</th>
+            <th>Indicative amount on {money(PRICE)}</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Agent commission</td><td>The largest cost, set as a percentage of the sale price (negotiable)</td></tr>
-          <tr><td>Marketing and photography</td><td>A few thousand dollars, depending on the campaign</td></tr>
-          <tr><td>Conveyancing or legal</td><td>A fixed fee plus searches and disbursements</td></tr>
-          <tr><td>Styling, staging and repairs</td><td>Discretionary, from a few hundred to several thousand</td></tr>
-          <tr><td>Auctioneer fee (if applicable)</td><td>A small one-off cost on auction day</td></tr>
-          <tr><td>Mortgage discharge fee</td><td>A small fixed lender charge</td></tr>
+          <tr><td>Agent commission ({COMMISSION_LOW}% to {COMMISSION_HIGH}%, before GST)</td><td>{money(Math.round((PRICE * COMMISSION_LOW) / 100))} to {money(Math.round((PRICE * COMMISSION_HIGH) / 100))}</td></tr>
+          <tr><td>Marketing and photography</td><td>{money(MARKETING.low)} to {money(MARKETING.high)}</td></tr>
+          <tr><td>Conveyancing or legal</td><td>{money(CONVEYANCING.low)} to {money(CONVEYANCING.high)}</td></tr>
+          <tr><td>Your state’s legal documents</td><td>{money(DOCS_LOW)} to {money(DOCS_HIGH)}</td></tr>
+          <tr><td>Auctioneer fee (if you auction)</td><td>{money(AUCTIONEER.low)} to {money(AUCTIONEER.high)}</td></tr>
+          <tr><td>Mortgage discharge fee (if you have a loan)</td><td>{money(DISCHARGE.low)} to {money(DISCHARGE.high)}</td></tr>
+          <tr><td>Styling, staging and repairs</td><td>Discretionary: from nothing to several thousand dollars</td></tr>
           <tr><td>Capital gains tax</td><td>$0 on a main home; can be the largest cost on an investment</td></tr>
+          <tr><td><strong>Total, worked state by state</strong></td><td><strong>{money(TOTAL_LOW)} to {money(TOTAL_HIGH)}</strong> before GST, styling and tax</td></tr>
         </tbody>
       </table>
 
       <p>
-        Add it up and total selling costs on a sale like this often land somewhere
-        around 2 to 4 per cent of the price before tax, with commission driving
-        most of the figure. That is exactly why the commission line is worth the
-        most attention. Run your own price through the{" "}
+        The total is worked state by state, so it is narrower than adding up
+        every line’s extremes: the low end is private treaty with no loan and
+        every line at the bottom of its range in the cheapest state, the high
+        end an auction with a loan and every line at the top in the dearest.
+        Commission drives most of it, which is why it deserves the most
+        attention. Run your own price through the{" "}
+        <Link href="/selling-costs-calculator">selling costs calculator</Link>{" "}
+        for the full bill with GST and your net proceeds, or the{" "}
         <Link href="/real-estate-commission-calculator">commission calculator</Link>{" "}
-        to size the biggest cost first.
+        for the agent’s fee on its own.
       </p>
 
       <h2 id="next-steps">Where to start</h2>
@@ -401,7 +456,10 @@ export default function CostOfSellingAHouseAustraliaPage() {
         <li>
           <strong>Choose the right agent.</strong> Our{" "}
           <Link href="/guides/how-to-choose-a-selling-agent">guide to choosing a selling agent</Link>{" "}
-          covers the interview, the over-quote trap and what to negotiate.
+          covers the interview, the over-quote trap and what to negotiate, and
+          the{" "}
+          <Link href="/tools/agent-proposal-worksheet">agent proposal worksheet</Link>{" "}
+          compares up to three quotes at the same expected sale price.
         </li>
         <li>
           <strong>Read the full process.</strong> The{" "}
@@ -416,6 +474,9 @@ export default function CostOfSellingAHouseAustraliaPage() {
 }
 
 const SELLING_COST_SOURCES: readonly SourceItem[] = [
+  `Commission ranges are Your Property Guide's compiled market figures (${SELLING_COSTS_AS_AT}), the same table as the state guides and calculators. Marketing, conveyancing, document, auctioneer and discharge figures are indicative ranges quoted individually by suppliers; no state publishes a survey, so treat them as a budget.`,
+  { label: "ATO: Foreign resident capital gains withholding and clearance certificates", href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax/foreign-residents-and-capital-gains-tax/foreign-resident-capital-gains-withholding", note: "Australian sellers need a clearance certificate to avoid withholding; 15% on every sale without one, from 1 January 2025. Read 20 October 2026." },
+  ATO_REFORM_SOURCE,
   { label: "ASIC MoneySmart: Selling a property", href: "https://moneysmart.gov.au/", note: "Consumer guidance on agent fees, marketing and selling costs" },
   { label: "Australian Taxation Office: Capital gains tax", href: "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax", note: "Main residence exemption and CGT cost base on investment property" },
   { label: "Australian Taxation Office: Property and capital gains tax", href: "https://www.ato.gov.au", note: "How selling and purchase costs factor into the CGT calculation" },

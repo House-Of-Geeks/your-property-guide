@@ -22,6 +22,7 @@ vi.mock("@/lib/email", () => ({
   transporter: {},
   DEFAULT_FROM: "test-from",
 }));
+vi.mock("@/lib/mail/send", () => import("../helpers/mail-send-passthrough"));
 
 import { POST } from "@/app/api/leads/enrich/route";
 

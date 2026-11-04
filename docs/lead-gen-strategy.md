@@ -67,7 +67,9 @@ Round 2 (same week):
 - Selling persona hub and both selling guides now link the funnel + commission calculator; llms.txt lists the guide and calculator.
 - 12 new tests covering scoring bands, consent serialisation, subject prefixes and email branding (25 total, all passing).
 
-### ActiveCampaign (LIVE as of 2026-06-10)
+### ActiveCampaign (retired 21 Oct 2026)
+> Superseded: the app sends every email through SendGrid and keeps its own consent, suppression and history. The AC code was removed; see `docs/email-system-2026-10-21.md` for the cutover. What follows is the June record.
+
 The sync is built and verified end to end: every guide-download lead is upserted into the House of Geeks AC account (`src/lib/activecampaign.ts`, hook in `/api/leads` after `db.lead.create`, best-effort). List "YPG Property Sellers" + nine YPG custom fields created via `scripts/setup-activecampaign.ts`; tags `ypg-seller`/`ypg-score-*`/`ypg-timeframe-*`/`ypg-agent-*`/`ypg-consented`. List subscription is gated on the marketing-consent checkbox; DO-NOT-CONTACT vendors get a CRM record only. Env vars are in the project `.env` and Vercel production. The four nurture automations (with full email copy) are blueprinted in `docs/activecampaign-automations.md` and need assembling in the AC UI; DKIM on Cloudflare is the blocking step before any marketing send.
 
 ### Buying guide (LIVE as of 2026-06-11)

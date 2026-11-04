@@ -264,7 +264,7 @@ describe("sendMail click tracking", () => {
     vi.restoreAllMocks();
   });
 
-  it("sends X-SMTPAPI with click tracking disabled and keeps caller headers", async () => {
+  it("sends X-SMTPAPI with click and open tracking disabled and keeps caller headers", async () => {
     const spy = vi.spyOn(transporter, "sendMail").mockResolvedValue({} as never);
     await sendMail({
       to: "mary@example.com",
@@ -285,7 +285,18 @@ describe("sendMail click tracking", () => {
       filters?: { clicktrack?: { settings?: { enable?: number; enable_text?: number } }; opentrack?: { settings?: { enable?: number } } };
     };
     expect(smtp.filters?.clicktrack?.settings).toEqual({ enable: 0, enable_text: 0 });
-    expect(smtp.filters?.opentrack?.settings?.enable).toBe(1);
+    // Open tracking is always off for our mail (21 Oct 2026): delivery is
+    // reported from the Event Webhook, not a tracking pixel.
+    expect(smtp.filters?.opentrack?.settings?.enable).toBe(0);
     expect(smtp.unique_args?.lead).toBe("1");
+  });
+
+  it("adds the queue's opaque id as a SendGrid custom argument, and returns the queue id", async () => {
+    const spy = vi.spyOn(transporter, "sendMail").mockResolvedValue({ response: "250 Ok: queued as AbC-123.x" } as never);
+    const result = await sendMail({ to: "mary@example.com", subject: "Hi", html: "<p>Hi</p>", customArgs: { ypg_mid: "cmabc123" }, categories: ["ypg", "plan"] });
+    const smtp = JSON.parse((spy.mock.calls[0][0] as { headers: Record<string, string> }).headers["X-SMTPAPI"]) as { unique_args?: Record<string, string>; category?: string[] };
+    expect(smtp.unique_args).toEqual({ ypg_mid: "cmabc123" });
+    expect(smtp.category).toEqual(["ypg", "plan"]);
+    expect(result).toEqual({ response: "250 Ok: queued as AbC-123.x", providerMessageId: "AbC-123.x", logged: false });
   });
 });

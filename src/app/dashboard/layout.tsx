@@ -3,7 +3,7 @@ import Link from "next/link";
 import { linkPrefetch } from "@/lib/link-prefetch";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { Home, User, Building2, LogOut, List, Users, ShieldCheck } from "lucide-react";
+import { Home, User, Building2, LogOut, List, Users, ShieldCheck, Mail, Newspaper } from "lucide-react";
 import { signOut } from "@/auth";
 
 export const metadata: Metadata = {
@@ -67,6 +67,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
               <NavLink href="/dashboard/admin/agencies" icon={<Building2 className="w-4 h-4" />} label="All Agencies" />
               <NavLink href="/dashboard/admin/users" icon={<Users className="w-4 h-4" />} label="Users & Roles" />
               <NavLink href="/dashboard/admin/leads" icon={<List className="w-4 h-4" />} label="Leads and outcomes" />
+              <NavLink href="/dashboard/admin/email" icon={<Mail className="w-4 h-4" />} label="Email" />
+              <NavLink href="/dashboard/admin/newsletter" icon={<Newspaper className="w-4 h-4" />} label="Newsletter" />
             </div>
           )}
           <NavLink href="/" icon={<Home className="w-4 h-4" />} label="View Site" />

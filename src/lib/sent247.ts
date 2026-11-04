@@ -2,30 +2,29 @@ import {
   scoreGuideLead,
   TIMEFRAME_LABELS,
   AGENT_STATUS_LABELS,
-  GUIDE_PDF_URL,
-  BUYING_GUIDE_PDF_URL,
   type LeadEmailData,
 } from "@/lib/lead-emails";
 import type { LeadAttribution } from "@/lib/attribution-server";
 import { normalizePhone } from "@/lib/utils/phone";
-import { GUIDE_BOOKS } from "@/lib/guide-books";
 
 // Sent 24/7 (sent247.com), the way Why Solar uses it (House-Of-Geeks/Why-Solar:
 // lib/sent247.ts for leads, lib/battery-guide/sent247.ts for its ebook).
 //
-// Guide downloads are lead magnets: POST /api/v1/lead-magnets with the guide's
-// slug and PDF link. Sent 24/7 keeps them apart from leads (never validated,
-// sold or distributed) and sends every email to the reader: the guide itself
-// and the follow-ups, from a "lead magnet" sequence on the campaign. Switched
-// on only when LEAD_MAGNET_TO_SENT247 is exactly "true"; until then YPG sends
-// its own guide email.
+// Guide downloads are NOT sent to Sent 24/7 (21 Oct 2026). Its lead-magnet
+// delivery (the guide plus a follow-up series, switched on by
+// LEAD_MAGNET_TO_SENT247) is retired: guides and learning follow-ups are
+// emailed by the application through SendGrid (src/lib/mail/), with the
+// reader's own consent choices. The lead-magnet code is removed, so one
+// guide request can never produce a second, external delivery; the
+// LEAD_MAGNET_TO_SENT247 variable now does nothing.
 //
 // A call request from a seller YPG may sell is a lead: POST /api/v1/leads to
 // the vendor campaign, which hands it to one agent. Any lead with an email and
 // a phone also stops that address's guide series in Sent 24/7. A download's
 // mobile (optional on the email step since 14 Oct 2026) is for the YPG team
-// only: the lead magnet body never carries it, and /api/leads posts a lead
-// only for an explicit call request (call: true from the thanks page).
+// only, and /api/leads posts a lead only for an explicit call request
+// (call: true from the thanks page). Introductions (/api/introductions) use
+// the same lead endpoint.
 //
 // Both need SENT247_API_KEY (a seller key in the YPG tenant) and
 // SENT247_VENDOR_CAMPAIGN_ID. Only leads YPG may sell are ever posted as
@@ -36,33 +35,8 @@ import { GUIDE_BOOKS } from "@/lib/guide-books";
 // intake (never set in production).
 export const SENT247_BASE_URL = process.env.SENT247_BASE_URL?.trim() || "https://api.sent247.com";
 const LEADS_URL = `${SENT247_BASE_URL}/api/v1/leads`;
-const LEAD_MAGNETS_URL = `${SENT247_BASE_URL}/api/v1/lead-magnets`;
 const TIMEOUT_MS = 8_000;
-const MAGNET_TIMEOUT_MS = 5_000;
 
-/** The two guides as Sent 24/7 lead magnets. Never change a slug once live: it picks the email series. */
-export const LEAD_MAGNETS = {
-  selling: {
-    slug: "selling-guide",
-    name: GUIDE_BOOKS.selling.title,
-    downloadUrl: GUIDE_PDF_URL,
-  },
-  buying: {
-    slug: "buying-guide",
-    name: GUIDE_BOOKS.buying.title,
-    downloadUrl: BUYING_GUIDE_PDF_URL,
-  },
-} as const;
-
-/** Exactly "true", as on Why Solar, so a half-made config change can't switch delivery on. */
-export function leadMagnetDeliveryEnabled(): boolean {
-  return process.env.LEAD_MAGNET_TO_SENT247 === "true" && sent247Config() !== null;
-}
-
-/**
- * The buyer's agent campaign, when one exists (SENT247_BUYER_CAMPAIGN_ID).
- * Until it does, buyer's agent introductions are reviewed by the team.
- */
 export function sent247BuyerCampaignId(): string | null {
   return process.env.SENT247_BUYER_CAMPAIGN_ID?.trim() || null;
 }
@@ -210,111 +184,6 @@ export function buildSent247LeadBody(i: Sent247LeadInput) {
       consent_text: i.consentText,
     },
   };
-}
-
-export interface Sent247LeadMagnetInput {
-  lead: LeadEmailData;
-  campaignId: string;
-  /** Our Lead.id for the download, as a custom field. */
-  referenceId: string;
-  consentText: string;
-  attribution: LeadAttribution | null;
-  ctx: RequestContext;
-}
-
-export function buildSent247LeadMagnetBody(i: Sent247LeadMagnetInput) {
-  const magnet = i.lead.guideType === "buying" ? LEAD_MAGNETS.buying : LEAD_MAGNETS.selling;
-  const address = addressFromSuburbSlug(i.lead.suburb);
-  return {
-    campaign_id: i.campaignId,
-    magnet: { slug: magnet.slug, name: magnet.name, download_url: magnet.downloadUrl },
-    lead: {
-      email: i.lead.email,
-      first_name: i.lead.firstName,
-      last_name: i.lead.lastName || undefined,
-      postcode: address?.zip,
-      state: address?.state,
-    },
-    // email_consent: the email step's statement covers the guide and tips
-    // emails. Without it Sent 24/7 records the download and emails nothing.
-    consent: {
-      email_consent: true,
-      consent_text: i.consentText,
-      consent_timestamp: new Date().toISOString(),
-      consent_ip: i.ctx.ip,
-    },
-    attribution: sent247Attribution(i.attribution, i.ctx),
-    custom_fields: { ...guideCustomFields(i.lead), reference_id: i.referenceId },
-  };
-}
-
-export type Sent247LeadMagnetOutcome =
-  | { kind: "sent"; signupId: string | null; status: string | null; emails: string | null; emailsReason: string | null }
-  | { kind: "rejected"; reason: string }
-  | { kind: "failed"; reason: string; retryable: true };
-
-async function postLeadMagnet(apiKey: string, body: unknown, timeoutMs: number): Promise<Sent247LeadMagnetOutcome> {
-  try {
-    const res = await fetch(LEAD_MAGNETS_URL, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-      signal: AbortSignal.timeout(timeoutMs),
-    });
-    const json = (await res.json().catch(() => null)) as {
-      signup_id?: string;
-      status?: string;
-      emails?: string;
-      emails_reason?: string;
-      error?: { code?: string; message?: string };
-    } | null;
-    if (res.status === 429 || res.status >= 500) {
-      return { kind: "failed", reason: `HTTP ${res.status}`, retryable: true };
-    }
-    if (!res.ok) {
-      return { kind: "rejected", reason: `HTTP ${res.status}${json?.error?.code ? ` ${json.error.code}` : ""}` };
-    }
-    return {
-      kind: "sent",
-      signupId: json?.signup_id ?? null,
-      status: json?.status ?? null,
-      emails: json?.emails ?? null,
-      emailsReason: json?.emails_reason ?? null,
-    };
-  } catch (err) {
-    return { kind: "failed", reason: err instanceof Error ? err.message : String(err), retryable: true };
-  }
-}
-
-/**
- * Record a guide download in Sent 24/7, which then emails the guide. Never
- * throws. A network error, 429 or 5xx is retried in the background (3 s,
- * then 10 s later) through `defer` (after() in the route), as Why Solar does;
- * the reader already has the download on the thanks page.
- */
-export async function sendSent247LeadMagnet(
-  apiKey: string,
-  input: Sent247LeadMagnetInput,
-  defer: (task: () => Promise<unknown>) => void,
-): Promise<Sent247LeadMagnetOutcome> {
-  const body = buildSent247LeadMagnetBody(input);
-  const first = await postLeadMagnet(apiKey, body, MAGNET_TIMEOUT_MS);
-  if (first.kind === "failed") {
-    defer(async () => {
-      for (const waitMs of [3_000, 10_000]) {
-        await new Promise((r) => setTimeout(r, waitMs));
-        const retry = await postLeadMagnet(apiKey, body, TIMEOUT_MS);
-        if (retry.kind !== "failed") {
-          if (retry.kind === "rejected") console.error("Sent 24/7 lead magnet rejected on retry:", retry.reason);
-          return;
-        }
-      }
-      console.error("Sent 24/7 lead magnet failed after retries (download saved to DB):", input.referenceId);
-    });
-  } else if (first.kind === "rejected") {
-    console.error("Sent 24/7 lead magnet rejected:", first.reason, input.referenceId);
-  }
-  return first;
 }
 
 export type Sent247Outcome =

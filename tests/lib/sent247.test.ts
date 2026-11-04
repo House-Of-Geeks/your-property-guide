@@ -1,15 +1,13 @@
-import { describe, it, expect, afterEach, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import {
   addressFromSuburbSlug,
   buildSent247LeadBody,
-  buildSent247LeadMagnetBody,
   describeSent247,
   guideCustomFields,
-  leadMagnetDeliveryEnabled,
   sent247HoldReason,
   toE164AU,
 } from "@/lib/sent247";
-import { AGENT_CALL_CONSENT, SELLING_EMAIL_CONSENT, guideCallKind } from "@/lib/guide-consent";
+import { AGENT_CALL_CONSENT, guideCallKind } from "@/lib/guide-consent";
 
 const seller = {
   type: "guide-download",
@@ -96,35 +94,14 @@ describe("buildSent247LeadBody", () => {
   });
 });
 
-describe("buildSent247LeadMagnetBody", () => {
-  it("records the guide download with email consent and no phone", () => {
-    const body = buildSent247LeadMagnetBody({
-      lead: { ...seller, lastName: "Lee" },
-      campaignId: "camp-1",
-      referenceId: "lead_9",
-      consentText: SELLING_EMAIL_CONSENT,
-      attribution: null,
-      ctx: { ip: "203.0.113.9" },
-    });
-    expect(body.magnet.slug).toBe("selling-guide");
-    expect(body.magnet.download_url).toMatch(/^https:\/\/www\.yourpropertyguide\.com\.au\/downloads\/.+\.pdf$/);
-    expect(body.lead).toEqual({ email: "sarah@example.com", first_name: "Sarah", last_name: "Lee", postcode: "4505", state: "QLD" });
-    expect(body.consent).toMatchObject({ email_consent: true, consent_text: SELLING_EMAIL_CONSENT, consent_ip: "203.0.113.9" });
-    expect(body.custom_fields.reference_id).toBe("lead_9");
-  });
-});
-
-describe("leadMagnetDeliveryEnabled", () => {
-  afterEach(() => vi.unstubAllEnvs());
-  it("needs the flag to be exactly \"true\" and the key and campaign set", () => {
-    vi.stubEnv("SENT247_API_KEY", "sk_live_x");
-    vi.stubEnv("SENT247_VENDOR_CAMPAIGN_ID", "camp");
-    vi.stubEnv("LEAD_MAGNET_TO_SENT247", "1");
-    expect(leadMagnetDeliveryEnabled()).toBe(false);
-    vi.stubEnv("LEAD_MAGNET_TO_SENT247", "true");
-    expect(leadMagnetDeliveryEnabled()).toBe(true);
-    vi.stubEnv("SENT247_API_KEY", "");
-    expect(leadMagnetDeliveryEnabled()).toBe(false);
+// Guide fulfilment by Sent 24/7 (the lead-magnet endpoint) was retired on
+// 21 Oct 2026: guides are emailed by the application through SendGrid.
+describe("no Sent 24/7 guide delivery", () => {
+  it("has no lead-magnet code left to call", async () => {
+    const mod = (await import("@/lib/sent247")) as Record<string, unknown>;
+    expect(mod.sendSent247LeadMagnet).toBeUndefined();
+    expect(mod.leadMagnetDeliveryEnabled).toBeUndefined();
+    expect(mod.LEAD_MAGNETS).toBeUndefined();
   });
 });
 
