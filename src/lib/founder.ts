@@ -29,3 +29,9 @@ export const FOUNDER = {
   /** Why the guides exist, in Andy's words. */
   aim: "The aim is simple: help you understand your options, so you can work out what matters for your move.",
 } as const;
+
+/** Andy McMaster's own public profiles, for Person schema `sameAs`. */
+export const FOUNDER_SAME_AS = [
+  "https://www.linkedin.com/in/theandymcmaster",
+  "https://www.facebook.com/theandymcm",
+] as const;

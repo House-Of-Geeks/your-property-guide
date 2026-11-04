@@ -6,7 +6,7 @@ import { BreadcrumbJsonLd, PersonJsonLd } from "@/components/seo";
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs";
 import { CONTACT_PHONE_DISPLAY, CONTACT_PHONE_E164, SITE_NAME, SITE_URL } from "@/lib/constants";
 import { Band, RuleGrid, RuleItem, SectionHeading } from "@/components/premium";
-import { FOUNDER } from "@/lib/founder";
+import { FOUNDER, FOUNDER_SAME_AS } from "@/lib/founder";
 import { AGREEMENT_CHECK, LICENCE_REGISTERS, PARTNER_CHECKS } from "@/lib/service-model";
 
 export const metadata: Metadata = {
@@ -79,7 +79,7 @@ export default function AboutPage() {
         jobTitle="Founder and editor"
         bio={FOUNDER.facts.join(" ")}
         image={FOUNDER.photo}
-        sameAs={["https://www.linkedin.com/in/andymcmaster"]}
+        sameAs={[...FOUNDER_SAME_AS]}
       />
 
       {/* The opening: what the site is for, the page's own contents, and
