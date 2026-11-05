@@ -7,6 +7,7 @@ import { Tldr } from "./Tldr";
 import { Faq, type FaqItem } from "./Faq";
 import { RelatedGuides, isCalculatorHref, type RelatedGuide } from "./RelatedGuides";
 import { AuthorBylineCard } from "./AuthorBylineCard";
+import { FollowOnGoogle } from "@/components/FollowOnGoogle";
 import { GuideByline } from "./GuideByline";
 import { GuideNextStep } from "./GuideNextStep";
 import { NextStepCard } from "@/components/journeys/NextStepCard";
@@ -250,6 +251,8 @@ export function GuideArticleLayout({
               reviewerRole={frontmatter.reviewedBy?.role}
               lastReviewed={updatedAt}
             />
+
+            <FollowOnGoogle variant="block" className="mt-8" />
           </article>
 
           {/* Desktop rail: the contents, marking the section in view, and
