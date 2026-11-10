@@ -62,6 +62,10 @@ export const batch9: ArticleCampaignBatch = {
     hook: "In a falling market, recent sales matter more than last year’s peak. With values down six months running and stock building, a seller needs a number from recent sales and marketing that reaches the buyers still active, and a buyer has room to negotiate.",
     cta: "selling-plan",
   },
+  "cotality-october-2026-housing-downturn-seventh-month": {
+    hook: "A seventh monthly fall and faster capital-city declines are real, but they are not the same as every suburb crashing at once. Check your city and suburb before you buy or sell on a headline.",
+    cta: "buying-plan",
+  },
   "best-value-regional-towns-family-home-under-500000-australia-2026": {
     hook: "A cheap town still needs checking. The selling agent acts for the seller, so check the schools, hospital and local jobs first, then compare recent sales before you make an offer.",
     cta: "buying-plan",

@@ -5,8 +5,13 @@ export const post: BlogPost = {
   slug: "brisbane-property-market-2026",
   title: "Brisbane Property Market 2026: Still Running, But Less of a Sprint",
   excerpt:
-    "Brisbane's market has been Australia's standout performer for four years running. In 2026, growth is moderating but still positive. Here's where prices are, where they're heading, and the suburbs still offering value.",
-  content: `<p>Brisbane has been the standout capital city market in Australia from 2021 through 2025, and 2026 sees that pace moderate without reversing. The combination of population inflows from interstate, infrastructure investment ahead of the 2032 Olympics, and historically lower price points relative to Sydney and Melbourne continues to support the market. The pace is slower than the boom years, but the trajectory is still upward.</p>
+    "Brisbane led the capitals with a 2.0% fall in October 2026. After years of outperformance, the market is in a broad correction, not a uniform crash. Here is what the Cotality data means for buyers and sellers.",
+  content: `<p>Brisbane has been the standout capital city market in Australia from 2021 through 2025. In late 2026 the cycle has turned: values are falling month after month along with the other capitals, even though many owners still hold large equity buffers from the long upswing. Infrastructure ahead of the 2032 Olympics and interstate migration remain structural supports, but buyers and sellers should plan around today's prices, not last year's pace.</p>
+
+<h2>Cotality update: October 2026</h2>
+<p>Cotality recorded Brisbane dwelling values down <strong>2.0% in October 2026</strong>, the steepest monthly fall among the capital cities. Over the rolling quarter, Brisbane values were down <strong>6.1%</strong>. Perth was next at 1.7% for the month, then Sydney at 1.6%. Cotality research director Tim Lawless notes that virtually every Brisbane suburb recorded a decline over the past three months.</p>
+<p>That breadth can sound like "prices crashing everywhere", but Cotality's comparison to past forty-year downturns refers to how quickly combined capital city values are falling, not a claim that every owner has lost years of gains. A 20% fall from Brisbane's peak would still leave many homes above mid-2025 levels, according to Cotality's commentary.</p>
+<p><em>Source: <a href="https://www.cotality.com/au/insights/articles/housing-downturn-broadens-as-brisbane-and-perth-lead-the-decline" rel="noopener noreferrer">Cotality, Housing downturn broadens as Brisbane and Perth lead the decline</a>, published 2 November 2026.</em></p>
 
 <h2>Headline numbers</h2>
 <p>Greater Brisbane's median house price has reached around $980K in mid-2026, up roughly 5.4% year-on-year, with units at around $580K. Days on market sit around 24 to 32, lower than Melbourne and competitive with Sydney's middle ring. Auction clearance rates aren't as widely reported in Brisbane as in southern capitals, but private treaty performance remains strong with most well-presented properties under offer within 4 weeks.</p>
@@ -38,5 +43,6 @@ export const post: BlogPost = {
   category: "Market Update",
   tags: ["brisbane", "queensland", "market update", "2026", "olympics"],
   publishedAt: "2026-05-06",
+  updatedAt: "2026-11-10",
   readingTime: 8,
 };

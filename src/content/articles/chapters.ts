@@ -156,6 +156,7 @@ const BUYING: Readonly<Record<string, number>> = {
   "sydney-property-market-2026": 4,
   "sydney-vs-melbourne-property-market": 4,
   "top-5-suburbs-families-moreton-bay": 4,
+  "cotality-october-2026-housing-downturn-seventh-month": 4,
   "building-pest-inspection": 5,
   "due-diligence-checklist-buying-a-house": 5,
   "house-and-land-packages-are-they-worth-it": 5,
