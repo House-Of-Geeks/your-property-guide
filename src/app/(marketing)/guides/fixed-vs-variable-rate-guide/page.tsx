@@ -20,7 +20,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "Pros and cons of fixed and variable rate home loans in Australia. Split loans explained, break costs that surprise borrowers, the RBA rate context for 2026, and the questions to ask before fixing.",
   slug: "fixed-vs-variable-rate-guide",
   publishedAt: "2026-04-01",
-  updatedAt: "2026-10-16",
+  updatedAt: "2026-11-10",
   readingTimeMinutes: 6,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -265,10 +265,10 @@ export default function FixedVsVariableRateGuidePage() {
         After a significant rate hiking cycle (2022 to 2023), the RBA cut the
         cash rate three times in 2025, to 3.60%, then began raising it again.
         It lifted the rate in February, March and May 2026, held in June and
-        August, and raised it again on 29 September 2026, to 4.60%. Variable
-        borrowers have absorbed each of those rises, while borrowers who fixed
-        before February 2026 are shielded from them until their fixed term
-        ends.
+        August, raised it on 29 September 2026 to 4.60%, and raised it again on
+        3 November 2026 to 4.85%. Variable borrowers have absorbed each of those
+        rises, while borrowers who fixed before February 2026 are shielded from
+        them until their fixed term ends.
       </p>
       <p>
         The key question now is whether rates are near their peak. If rates

@@ -38,6 +38,7 @@ interface RateEntry {
 }
 
 const rateHistory: RateEntry[] = [
+  { date: "2026-11-03", rate: 4.85, change: 0.25,  note: "Hike" },
   { date: "2026-09-29", rate: 4.60, change: 0.25,  note: "Hike" },
   { date: "2026-08-11", rate: 4.35, change: 0,     note: "Hold" },
   { date: "2026-06-16", rate: 4.35, change: 0,     note: "Hold" },
@@ -81,10 +82,7 @@ const rateHistory: RateEntry[] = [
   { date: "2020-03-03", rate: 0.50, change: -0.25, note: "Emergency Cut" },
 ];
 
-const upcomingMeetings2026 = [
-  { dates: "2–3 November",    decision: "Nov 3" },
-  { dates: "7–8 December",    decision: "Dec 8" },
-];
+const upcomingMeetings2026 = [{ dates: "7 and 8 December", decision: "Dec 8" }];
 
 function formatRateDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("en-AU", {
@@ -145,7 +143,7 @@ export default function RBACashRatePage() {
         description="Track the RBA cash rate history and understand how interest rate changes affect Australian property prices. Updated with each RBA decision."
         url="/rba-cash-rate"
         datePublished="2026-01-01"
-        dateModified="2026-06-16"
+        dateModified="2026-11-10"
       />
 
       {/* Hero: the current rate sits beside the H1 on the first screen. */}
@@ -163,14 +161,13 @@ export default function RBACashRatePage() {
             </p>
             <p className="mt-5 flex items-start gap-2 border-t border-line pt-5 text-sm text-ink-muted">
               <TrendingUp className="w-4 h-4 mt-0.5 shrink-0" aria-hidden="true" />
-              Raised to 4.60% on 29 September 2026, the fourth rise this year, after holds in June and August
+              Raised to 4.85% on 3 November 2026 (effective 4 November), the fifth rise this year, six votes to three
             </p>
-            {/* Link to latest decision analysis */}
             <Link
-              href="/guides/rba-cash-rate-june-2026-what-it-means-for-buyers"
+              href="#november-2026-decision"
               className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
             >
-              Read our full analysis of the June 2026 decision
+              Read the November 2026 decision summary
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </div>
@@ -234,6 +231,48 @@ export default function RBACashRatePage() {
               Showing {recentHistory.length} most recent decisions. Data sourced from the Reserve Bank of Australia.
             </div>
           </div>
+        </div>
+      </Band>
+
+      <Band tone="quiet" spacing="compact">
+        <div className="max-w-3xl" id="november-2026-decision">
+          <SectionHeading size="md" title="November 2026 decision summary" />
+          <p className="mt-6 text-base text-ink-muted leading-relaxed">
+            On <strong>3 November 2026</strong>, the Reserve Bank lifted the cash rate target by 25 basis points to{" "}
+            <strong>4.85%</strong>, effective <strong>4 November 2026</strong>. Six Board members voted to hike; three
+            voted to hold at 4.60%. Inflation is forecast to remain above 3% for the coming year and to reach the top of
+            the 2 to 3% target band only in late 2027, about three quarters later than previously expected. The Board left
+            the door open to further tightening if needed.
+          </p>
+          <p className="mt-4 text-base text-ink-muted leading-relaxed">
+            Major lenders are passing on the hike. CBA, NAB, Westpac, ANZ and ING are among those lifting standard
+            variable home loan rates by 0.25 percentage points from <strong>Friday 13 November 2026</strong>, according
+            to reporting on lender responses after the decision.
+          </p>
+          <ul className="mt-6 space-y-2 list-disc pl-5 text-base text-ink-muted marker:text-ink-subtle">
+            <li>
+              <a
+                href="https://www.rba.gov.au/media-releases/2026/mr-26-30.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+              >
+                RBA media release, 3 November 2026
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.savings.com.au/news/rba-hikes-again-here-s-how-the-big-four-responded"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-ink underline underline-offset-4 decoration-line-strong hover:decoration-ink"
+              >
+                savings.com.au: how the big four responded
+              </a>{" "}
+              (updated 5 November 2026)
+            </li>
+          </ul>
+          <p className="mt-8 text-sm text-ink-subtle">Last updated 10 November 2026.</p>
         </div>
       </Band>
 

@@ -21,6 +21,22 @@ export interface DataUpdate {
 
 export const DATA_UPDATES: DataUpdate[] = [
   {
+    date: "2026-11-10",
+    kind: "data",
+    title: "Cash rate tracker: 4.85% after the November hike",
+    description:
+      "The RBA raised the cash rate target to 4.85% on 3 November 2026 (effective 4 November), six votes to three. The tracker includes the decision summary and big-four pass-through timing from 13 November.",
+    href: "/rba-cash-rate",
+  },
+  {
+    date: "2026-11-10",
+    kind: "guide",
+    title: "Cotality October 2026 home values and city market refreshes",
+    description:
+      "National values fell 1.2% in October, the seventh straight monthly decline. New market update article plus Brisbane, Perth and Sydney guides refreshed with October monthly changes.",
+    href: "/guides/cotality-october-2026-housing-downturn-seventh-month",
+  },
+  {
     date: "2026-10-16",
     kind: "data",
     title: "Cash rate tracker updated: 4.60% after the September rise",

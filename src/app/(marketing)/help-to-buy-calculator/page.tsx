@@ -28,7 +28,7 @@ const FRONTMATTER: CalculatorPageFrontmatter = {
   schemaName: "Help to Buy Calculator",
   schemaDescription:
     "Estimate the Australian Government Help to Buy shared equity scheme: eligibility against income limits and price caps, the government's equity share, the home loan, monthly repayments, and the comparison with the 5% Deposit Scheme.",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-11-10",
   persona: "first-home",
 };
 
@@ -103,6 +103,23 @@ export default function HelpToBuyCalculatorPage() {
       intent="buying"
       explainer={
         <>
+          <Callout variant="info" title="Policy watch">
+            <p>
+              On 26 October 2026 the Coalition outlined a savings package that
+              included scrapping Help to Buy. That is an opposition proposal
+              only. The federal Help to Buy scheme is unchanged as at 10 November
+              2026. Source:{" "}
+              <a
+                href="https://www.abc.net.au/news/2026-10-26/coalition-says-cuts-to-save-budget-31-billion/107310512"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                ABC News
+              </a>
+              .
+            </p>
+          </Callout>
+
           <h2>Help to Buy price caps by state</h2>
           <p>
             The home must cost no more than the cap for its area. The capital-city cap also applies in the regional

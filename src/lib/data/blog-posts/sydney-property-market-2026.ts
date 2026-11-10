@@ -6,8 +6,13 @@ export const post: BlogPost = {
   slug: "sydney-property-market-2026",
   title: "Sydney Property Market 2026: Where Prices, Yields and Demand Are Heading",
   excerpt:
-    "An honest look at Sydney's property market in 2026. Where prices are heading, which suburbs are running hot, where the value plays sit, and what buyers and sellers should expect through the rest of the year.",
-  content: `<p>Sydney remains Australia's most expensive property market in 2026, and the dynamics shaping prices this year are markedly different from the post-COVID rebound that defined 2021 and 2022. Population growth, constrained supply, and a sharp drop in rental vacancy are the structural forces in play. Interest rates have stabilised but borrowing capacity hasn't fully recovered, which keeps a lid on the top end of the market while the middle and lower segments continue to firm. Here's where Sydney sits as we move through 2026.</p>
+    "Sydney values fell 1.6% in October 2026, the seventh month of the national downturn. Here is how the correction is playing out in Sydney, and what buyers and sellers should weigh before they act on a headline.",
+  content: `<p>Sydney remains Australia's most expensive property market in 2026, but the dynamics have shifted sharply since the national peak in March. Higher mortgage rates, thinner buyer demand and rising stock are pulling values down month after month. That is painful if you need to sell quickly, and it is not the same as a disorderly crash. Here's where Sydney sits after Cotality's October 2026 release.</p>
+
+<h2>Cotality update: October 2026</h2>
+<p>Cotality's Home Value Index shows Sydney dwelling values down <strong>1.6% in October 2026</strong> and <strong>4.7% over the rolling quarter</strong>. Nationally, values fell 1.2% in the month, the seventh straight decline, and the combined capitals are down 8.1% over seven months. Cotality notes that pace is faster than earlier downturns when measured over the same number of months, but that compares <strong>speed</strong>, not an equal fall in every suburb.</p>
+<p>Buyers have more listings to choose from and more room to negotiate, with vendor discounting at 4.7% nationally and median time on market at 39 days. Sales over the past three months are about 23% lower than a year ago, which tends to keep price falls gradual rather than panic-driven. For the national picture, see our <a href="/guides/cotality-october-2026-housing-downturn-seventh-month">October 2026 Cotality market update</a>.</p>
+<p><em>Source: <a href="https://www.cotality.com/au/insights/articles/housing-downturn-broadens-as-brisbane-and-perth-lead-the-decline" rel="noopener noreferrer">Cotality, Housing downturn broadens as Brisbane and Perth lead the decline</a>, published 2 November 2026.</em></p>
 
 <h2>Headline numbers</h2>
 <p>Sydney's median house price sits around $1.65M as of mid-2026, up roughly 4.1% year-on-year, with units a few percentage points behind at around $830K. Days on market average 28 to 35 across most of metro Sydney, with the inner-west and northern beaches at the tighter end (under 25 days) and outer-fringe estates in southwest Sydney closer to 45 days. Auction clearance rates have averaged in the high-60s through early 2026, which historically signals a balanced-to-firm seller's market.</p>
@@ -36,6 +41,6 @@ export const post: BlogPost = {
   category: "Market Update",
   tags: ["sydney", "nsw", "market update", "2026", "property prices"],
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-07",
+  updatedAt: "2026-11-10",
   readingTime: 8,
 };
