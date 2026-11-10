@@ -18,6 +18,9 @@
 
 import type { PersonaId } from "@/lib/constants/journey";
 import { HG_DATES, HG_PRICE_CAPS, fmtCap } from "@/lib/data/home-guarantee";
+import { STATE_RATES } from "@/lib/data/commission-rates";
+import { REFORM_START } from "@/lib/data/tax-reform-2027";
+import { LMI_RATE_SOURCE, premiumAt } from "@/lib/lmi-calc";
 import { currentExemptTo, currentConcessionTo, currentGrant, money } from "@/lib/policy/first-home";
 import { calculateStampDuty } from "@/lib/utils/stamp-duty";
 
@@ -25,6 +28,30 @@ import { calculateStampDuty } from "@/lib/utils/stamp-duty";
 const fhGrant = (s: Parameters<typeof currentGrant>[0]) => money(currentGrant(s).amount);
 const fhExempt = (s: Parameters<typeof currentExemptTo>[0]) => money(currentExemptTo(s) ?? 0);
 const fhTo = (s: Parameters<typeof currentConcessionTo>[0]) => money(currentConcessionTo(s) ?? 0);
+
+// LMI on a $700,000 home, from the same premium table as /lmi-calculator
+// (src/lib/lmi-calc.ts), so the hub can't drift from the calculator.
+const LMI_PRICE = 700_000;
+const lmiAt = (depositPct: number) => money(premiumAt(LMI_PRICE, depositPct) ?? 0);
+const LMI_READ_ON = LMI_RATE_SOURCE.readOn;
+
+// The typical commission range across the states, from the one table the
+// calculators and state guides read (src/lib/data/commission-rates.ts, our
+// compiled market figures, September 2026). Derived, not typed, so the hub
+// can't print a sixth national range.
+const COMMISSION_LOW = Math.min(...Object.values(STATE_RATES).map((r) => r.low));
+const COMMISSION_HIGH = Math.max(...Object.values(STATE_RATES).map((r) => r.high));
+
+// Selling claims checked 20 Oct 2026 (CONTENT_FLAGS.md, "Selling hub claims").
+// Auction premium: Cortés, Singh, Solomon and Strahan, "How perception affects
+// house prices: evidence from failed auctions", Review of Finance 30(5),
+// 2026 (doi:10.1093/rof/rfag003), and the University of Sydney summary of
+// 2 July 2026 (0.3% premium; 1.3% discount after a pass-in). Clearance and
+// days on market: Cotality, final clearance rates week ending 4 Oct 2026
+// (released 8 Oct) and the September 2026 Home Value Index (1 Oct 2026).
+// TODO(andy): confirm realestate.com.au's 60-day "new listing" rule on
+// help.realestate.com.au; the page blocked automated checks on 20 Oct 2026
+// and the wording was read from Zenu's copy of it (August 2023).
 
 export interface HubCalculatorCard {
   label: string;
@@ -74,13 +101,13 @@ export interface PersonaHubContent {
 const FIRST_HOME: PersonaHubContent = {
   metaTitle: "First Home Buyer Australia 2026: Grants, Schemes, Deposit & Stamp Duty",
   metaDescription:
-    "Plain-English guide for first home buyers in Australia. Federal grants and schemes, stamp duty concessions by state, deposit math, LMI, and what banks actually approve. Free, no sign-up.",
+    "Plain-English guide for first home buyers in Australia. Federal grants and schemes, stamp duty concessions by state, deposit math, LMI, and how lenders work out what you can borrow. Free, no sign-up.",
   deepDive: {
     eyebrow: "First home buying in Australia, in 2026",
     heading: "The schemes, the deposit, the *stamp duty*.",
     paragraphs: [
       "Buying a first home in Australia is mostly three problems running in parallel: how much deposit you actually need, which federal or state schemes you qualify for, and how much stamp duty you can avoid paying. Get those three right and the rest is paperwork.",
-      `On deposit: most lenders will accept a 5% deposit if you can qualify for the First Home Guarantee (FHBG), which waives Lenders Mortgage Insurance on a 5% deposit. Without the FHBG, expect to need 20% to avoid LMI, or pay LMI of roughly 2-4% of the loan to get in on 5-10%. Since ${HG_DATES.expanded} the FHBG, now the 5% Deposit Scheme, has no income test and no limit on places; what still applies is the price cap for the area you buy in.`,
+      `On deposit: most lenders will accept a 5% deposit if you can qualify for the First Home Guarantee (FHBG), which waives Lenders Mortgage Insurance on a 5% deposit. Without the FHBG, expect to need 20% to avoid LMI, or pay LMI to get in with less: on a $700,000 home that's about ${lmiAt(10)} with a 10% deposit and ${lmiAt(5)} with 5%, before state duty on the premium (one lender's published premium table, read ${LMI_READ_ON}). Since ${HG_DATES.expanded} the FHBG, now the 5% Deposit Scheme, has no income test and no limit on places; what still applies is the price cap for the area you buy in.`,
       `On schemes: the First Home Owner Grant (FHOG) is state-administered and varies by state: ${fhGrant("QLD")} in QLD and ${fhGrant("NSW")} in NSW and VIC, all for new homes only, under each state's price cap (Victoria's $20k regional grant ended in June 2021). The First Home Super Saver Scheme (FHSSS) lets you withdraw up to $50k of voluntary super contributions, plus deemed earnings, for a deposit, a useful top-up that most first home buyers don't know about.`,
       `On stamp duty: this is where the biggest dollar saving usually sits. On an established home, NSW first home buyers pay no stamp duty up to ${fhExempt("NSW")}, with a partial concession below ${fhTo("NSW")}. VIC: no duty up to ${fhExempt("VIC")}, sliding scale to ${fhTo("VIC")}. QLD: none up to ${fhExempt("QLD")}, phasing out to ${fhTo("QLD")}, and nothing on a new home at any price. WA: none up to ${fhExempt("WA")}, a concessional rate to ${fhTo("WA")}. Calculate before you make an offer, not after — the gap between qualifying and not qualifying can be tens of thousands of dollars.`,
       "Pre-approval before you bid. Conditional approval (sometimes called 'pre-approval') tells you what a lender will lend you on your current income and expenses, subject to property valuation. It's not a guarantee, but going to an auction without one is gambling with your deposit.",
@@ -90,7 +117,7 @@ const FIRST_HOME: PersonaHubContent = {
   calculatorsBlurb:
     "The five numbers a first home buyer needs to know before they bid. Free, no sign-up, results in seconds.",
   calculators: [
-    { label: "How much can I borrow?",       href: "/borrowing-power-calculator", blurb: "What a lender will actually approve on your income and expenses." },
+    { label: "How much can I borrow?",       href: "/borrowing-power-calculator", blurb: "An estimate of what a lender may lend on your income and expenses." },
     { label: "Stamp duty calculator",        href: "/stamp-duty-calculator",      blurb: "First home buyer concessions included for every state and territory." },
     { label: "What can I afford?",           href: "/affordability-calculator",   blurb: "Combines deposit, borrowing power, stamp duty and buying costs into a price you can spend." },
     { label: "Mortgage repayment calculator",href: "/mortgage-calculator",        blurb: "Weekly, fortnightly or monthly repayments and total interest over the loan." },
@@ -99,7 +126,7 @@ const FIRST_HOME: PersonaHubContent = {
     {
       question: "How much deposit do I need to buy a first home in Australia?",
       answer:
-        "Most lenders accept a 5% deposit if you qualify for the First Home Guarantee (FHBG), which waives Lenders Mortgage Insurance. Without the FHBG, plan for 20% to avoid LMI, or 5-10% plus LMI of roughly 2-4% of the loan amount. You'll also need 2-5% on top for stamp duty, conveyancing and inspection costs.",
+        `Most lenders accept a 5% deposit if you qualify for the First Home Guarantee (FHBG), which waives Lenders Mortgage Insurance. Without the FHBG, plan for 20% to avoid LMI, or 5-10% plus LMI: on a $700,000 home about ${lmiAt(10)} at 10% and ${lmiAt(5)} at 5%, before state duty on the premium (one lender's published premium table, read ${LMI_READ_ON}). You'll also need money on top for stamp duty (often nothing, or much less, for an eligible first home buyer), conveyancing and inspections.`,
     },
     {
       question: "What is the First Home Owner Grant in 2026?",
@@ -129,7 +156,7 @@ const FIRST_HOME: PersonaHubContent = {
     {
       question: "Should I get pre-approval before house-hunting?",
       answer:
-        "Yes. Conditional approval (often called pre-approval) tells you what a lender will lend you based on your income and expenses, subject to property valuation. It's not legally binding but it shapes what you can credibly bid on and is a prerequisite for most auctions. Most pre-approvals are valid for 3-6 months.",
+        "Yes. Conditional approval (often called pre-approval) tells you what a lender will lend you based on your income and expenses, subject to property valuation. It's not legally binding, but it shapes what you can credibly bid on, and it matters most at auction, where there's no cooling-off period and no finance condition. Most pre-approvals are valid for 3-6 months.",
     },
   ],
   matchIntent: "buying",
@@ -149,10 +176,10 @@ const SELLING: PersonaHubContent = {
     heading: "The appraisal, the agent, the *negotiation*.",
     paragraphs: [
       "Selling a home in Australia is usually framed as a marketing decision (which agency to list with, how big the campaign should be). That's the wrong framing. The number that ends up on the contract is set in the negotiation between buyer and agent, not in the brochure. The right agent is worth more than every glossy flyer combined.",
-      "An appraisal isn't a valuation. An appraisal is an agent's market opinion of what your home should sell for, usually given as a range. A valuation is a formal document prepared by a registered valuer for a bank or court, and costs $300-$600. For most sellers, two or three independent appraisals from agents who actually work your suburb give a more honest range than a single bank valuation.",
-      "Agent fees are usually 1.5-3.5% of the sale price plus a marketing budget you also pay for. In metro Sydney and Melbourne the fee is closer to 1.8-2.2%; in regional areas it can be 3% or more. Some agents will offer a sliding scale (lower base fee, higher bonus if they beat a target price), which aligns their incentive with yours. Always negotiate the fee in writing, not the handshake.",
-      "Auction or private treaty is mostly a question of how competitive your market is. In a hot market, auction creates urgency and can lift the final price by 5-10%. In a flat or buyer's market, auctions clear under 50% nationally and the public 'pass-in' damages buyer confidence. Look at clearance rates in your suburb for the last 90 days, not last year's headlines.",
-      "Days on market matters. A listing that's been live for more than 60 days tells buyers something is wrong with the price. The clean-up move is rare but powerful: withdraw, refresh photos and copy, re-launch four weeks later as 'just listed'. The data resets on the listing sites.",
+      "An appraisal isn't a valuation. An appraisal is an agent's market opinion of what your home should sell for, usually given as a range. A valuation is a formal document prepared by a registered valuer for a bank or court, and typically costs $300 to $600 (Aussie, January 2025; ANZ, read 30 September 2026). For most sellers, two or three independent appraisals from agents who actually work your suburb give a more honest range than a single bank valuation.",
+      `No state sets agent commission: it's whatever you agree in the agency agreement. Our compiled state figures (September 2026) put typical rates between ${COMMISSION_LOW}% and ${COMMISSION_HIGH}% of the sale price depending on the state, plus a marketing budget you pay separately. Some agents offer a sliding scale (a lower base fee, a higher rate above a target price), which can align their incentive with yours. Always negotiate the fee in writing, not the handshake.`,
+      "Auction or private treaty is mostly a question of how much competition your home will draw, and the measured auction premium is smaller than its reputation. A study of NSW and Victorian sales from 2007 to 2019 found auctions earned an average of 0.3% more than a private sale once the risk of the auction failing is counted, and homes that passed in later sold for 1.3% less, an effect that faded over about ten months (Cortés, Singh, Solomon and Strahan, Review of Finance, 2026). Clearance rates show how often auctions are failing right now: Cotality's combined capital-city rate was 45.4% in the week ending 4 October 2026, against 67.4% a year earlier. Look at recent results for homes like yours, not last year's headlines.",
+      "Days on market matters. Capital-city homes took a median of 39 days to sell in September 2026, up from 23 days a year earlier (Cotality, 1 October 2026), so compare your campaign with recent sales like yours in your area. If yours has sat well past them, review the price first. Withdrawing and relisting a few weeks later doesn't make it a new listing: realestate.com.au treats a property as new only if it hasn't been active or under offer on the site in the past 60 days, and that includes a new agency agreement with the same agency.",
     ],
   },
   calculatorsHeading: "Tools sellers actually use",
@@ -160,43 +187,45 @@ const SELLING: PersonaHubContent = {
     "Run the seller-side numbers before you sign anything.",
   calculators: [
     { label: "Free selling guide (PDF)",     href: "/selling-guide",              blurb: "Selling a home, the free 10-chapter guide: costs, agent selection, and a 12-week plan. Personalised to your suburb." },
+    { label: "Selling costs calculator",     href: "/selling-costs-calculator",   blurb: "Every line of the bill by state, from commission and GST to the mortgage payout, and the cash you walk away with." },
     { label: "Commission calculator",        href: "/real-estate-commission-calculator", blurb: "What an agent costs on your sale price, with typical rates by state." },
+    { label: "Agent proposal worksheet",     href: "/tools/agent-proposal-worksheet", blurb: "Compare up to three agents’ proposals side by side, at the same expected sale price." },
     { label: "Property valuation range",     href: "/property-valuation",         blurb: "Appraisal, valuation and online estimate compared, with what homes sell for in your suburb from published medians." },
-    { label: "Free property appraisal",      href: "/appraisal",                  blurb: "Independent estimate from a vetted local agent, free, one business day." },
+    { label: "Free property appraisal",      href: "/appraisal",                  blurb: "An appraisal from one participating local agent, only if you ask. No commitment." },
     { label: "Capital gains tax calculator", href: "/cgt-calculator",             blurb: "Estimate CGT on an investment property sale, including the 50% discount and main residence exemption." },
     { label: "Stamp duty (for your next home)", href: "/stamp-duty-calculator",   blurb: "What you'll pay on the upgrade or downsize, by state." },
-    { label: "Borrowing power for the next move", href: "/borrowing-power-calculator", blurb: "What a lender will let you borrow against your new equity position." },
+    { label: "Borrowing power for the next move", href: "/borrowing-power-calculator", blurb: "An estimate of what a lender may lend for your next home." },
   ],
   faqs: [
     {
       question: "How are real estate agent fees structured in Australia?",
       answer:
-        "Most agents charge a commission of 1.5-3.5% of the sale price plus a marketing budget you pay separately. Metro Sydney and Melbourne usually sit at 1.8-2.2%; regional areas often run 3% or more. Some agents offer tiered or bonus-tied structures — for example, a lower base fee with a bonus if the final price beats an agreed target. Always have the fee in writing in the listing agreement.",
+        `Commission is a percentage of the sale price, agreed in the agency agreement; no state sets it. Our compiled state figures (September 2026) put typical rates between ${COMMISSION_LOW}% and ${COMMISSION_HIGH}% depending on the state, and you pay a marketing budget on top. Some agents offer tiered or bonus-tied structures, for example a lower base fee with a higher rate if the final price beats an agreed target. Always have the fee, and whether it includes GST, in writing in the agreement.`,
     },
     {
       question: "How is an appraisal different from a valuation?",
       answer:
-        "An appraisal is an agent's market opinion of what your home should sell for, usually given as a range. It's free and there's no legal weight to it. A valuation is a formal document prepared by a registered property valuer, costs $300-$600, and is what banks and courts rely on. For most sellers, two or three independent appraisals from local agents give a more useful range than a single bank valuation.",
+        "An appraisal is an agent's market opinion of what your home should sell for, usually given as a range. It's free and there's no legal weight to it. A valuation is a formal document prepared by a registered property valuer, typically costs $300 to $600 (Aussie, January 2025; ANZ, read 30 September 2026), and is what banks and courts rely on. For most sellers, two or three independent appraisals from local agents give a more useful range than a single bank valuation.",
     },
     {
       question: "Should I sell at auction or by private treaty?",
       answer:
-        "Auctions work best in hot, competitive markets — they create urgency and can lift the final price by 5-10%. In flat or buyer's markets, auction clearance rates often fall below 50% nationally and a public pass-in can damage buyer confidence. Look at clearance rates and median days on market in your specific suburb for the last 90 days, not last year's headlines.",
+        "It depends on how much competition your home will draw. Auction can pay off when several buyers want the same home, but the measured premium is small: a study of NSW and Victorian sales found auctions averaged 0.3% more than a private sale once failed auctions are counted, and homes that passed in later sold for 1.3% less (Review of Finance, 2026). Clearance rates show the risk: Cotality's combined capital-city rate was 45.4% in the week ending 4 October 2026, down from 67.4% a year earlier. Ask each agent which method has worked for homes like yours in the last three months, and to show you the sales.",
     },
     {
       question: "Do I pay capital gains tax on my own home?",
       answer:
-        "Usually no. The main residence exemption means CGT does not apply when you sell the home you've actually lived in. Partial CGT applies if you've rented the property out for part of the time you owned it, or if the property is on more than two hectares. The full CGT applies if it was an investment property held in your name (with a 50% discount if held over 12 months).",
+        `Usually no. The main residence exemption means CGT does not apply when you sell the home you've actually lived in. Partial CGT applies if you've rented the property out for part of the time you owned it, or if the property is on more than two hectares. The full CGT applies if it was an investment property held in your name, currently with a 50% discount if held over 12 months. From ${REFORM_START} that discount gives way to cost base indexation and a 30% minimum tax for individuals, on gains that accrue from that date (passed by Parliament on 25 June 2026; ATO).`,
     },
     {
       question: "How long does it take to sell a house in Australia?",
       answer:
-        "The national median is 28-45 days on market, depending on state and market conditions. Hot markets like Perth and Adelaide in 2025-26 are seeing 18-25 days; flatter markets like Melbourne and Hobart often run 50+ days. After contract exchange, settlement takes another 30-90 days depending on what's negotiated and the buyer's finance approval timeline.",
+        "In September 2026 capital-city homes took a median of 39 days to sell, up from 23 days a year earlier as the market slowed (Cotality, 1 October 2026). Your suburb and price point can differ a lot, so ask agents for the days on market of recent sales like yours. After contracts are exchanged, settlement usually takes another 30 to 90 days, depending on what's negotiated and the buyer's finance.",
     },
     {
       question: "Can I sell my house without an agent?",
       answer:
-        "Yes. For-sale-by-owner (FSBO) is legal in every state and saves you the agent commission. The trade-off is that you handle the marketing, the inspections, the negotiation, and the contract management yourself. Most FSBO sales achieve a lower final price than agent-sold equivalents, and the savings on commission often don't make up for it. Worth considering if you have negotiating experience or a buyer already lined up.",
+        "Yes. For-sale-by-owner (FSBO) is legal in every state and saves you the agent commission. The trade-off is that you handle the marketing, the inspections, the negotiation and the contract management yourself, and you still pay for the legal documents your state requires and a conveyancer. Whether the commission saved outweighs any difference in price depends on your market and your negotiating experience. It's worth considering if you've negotiated a sale before or have a buyer already lined up.",
     },
   ],
   matchIntent: "selling",
@@ -228,7 +257,7 @@ const INVESTING: PersonaHubContent = {
   calculators: [
     { label: "Rental yield calculator",       href: "/rental-yield-calculator",    blurb: "Gross and net yield, weekly cash flow, full cost picture." },
     { label: "Capital gains tax calculator",  href: "/cgt-calculator",             blurb: "Estimate CGT on a sale, including the 50% discount and main residence partial exemption." },
-    { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "What an investor loan will actually approve, after the APRA buffer and rental income shading." },
+    { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "An estimate of what a lender may lend for an investment loan, after the APRA buffer." },
     { label: "Best suburbs for investors",    href: "/best-suburbs",               blurb: "Suburbs ranked by yield, growth, demographic demand." },
   ],
   faqs: [
@@ -296,8 +325,8 @@ const UPGRADING: PersonaHubContent = {
   calculators: [
     { label: "Stamp duty (your next home)",   href: "/stamp-duty-calculator",      blurb: "The single biggest line item when moving. By state, with current rates." },
     { label: "Mortgage repayment calculator", href: "/mortgage-calculator",        blurb: "What the new loan will actually cost each month, weekly or fortnightly." },
-    { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "What a lender will approve on your current income and equity position." },
-    { label: "Free property appraisal",       href: "/appraisal",                  blurb: "Independent estimate of your current home from a vetted local agent." },
+    { label: "Borrowing power calculator",    href: "/borrowing-power-calculator", blurb: "An estimate of what a lender may lend on your income and equity position." },
+    { label: "Free property appraisal",       href: "/appraisal",                  blurb: "An appraisal of your current home from one participating local agent, only if you ask." },
   ],
   faqs: [
     {

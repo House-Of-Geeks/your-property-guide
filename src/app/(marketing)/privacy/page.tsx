@@ -49,6 +49,12 @@ export default function PrivacyPage() {
             you give us about the introduction. When you make a next-step plan, your answers stay in the page&rsquo;s
             web address; we only keep them if you ask us to email you the plan.
           </p>
+          <p>
+            When we email you, we keep a record of each email: what it was, when we sent it, and whether our email
+            provider accepted it, delivered it or couldn&rsquo;t deliver it, and whether you unsubscribed or marked it
+            as spam. We use this to stop emailing an address that bounces or asks us to stop. We don&rsquo;t track
+            whether you open our emails, and we don&rsquo;t rewrite the links in them to track clicks.
+          </p>
 
           <h2>2. How We Use Your Information</h2>
           <p>We use your personal information to:</p>
@@ -57,8 +63,8 @@ export default function PrivacyPage() {
             <li>Send property alerts matching your criteria</li>
             <li>
               Email you the guide or plan you asked for. We only send a short series of tips if you tick the separate
-              box for it, and our quarterly newsletter only if you sign up for it. Every one of these emails has an
-              unsubscribe link
+              box for it, and our newsletter only if you sign up for it. The tips and the newsletter each carry an
+              unsubscribe link, and unsubscribing stops them for every sign-up under that email address
             </li>
             <li>Process your property appraisal requests</li>
             <li>Improve our website and services</li>
@@ -108,9 +114,12 @@ export default function PrivacyPage() {
 
           <h2>6. Service Providers and Overseas Disclosure</h2>
           <p>
-            We use service providers to host the site, send email, manage our mailing list, deliver your details to
-            the agent you are matched with, and measure how the site is used. These include Sent 24/7, ActiveCampaign,
-            SendGrid, Microsoft Clarity and Quantcast. When we measure
+            We use service providers to host the site, send our email, deliver an introduction you ask for to the agent
+            you are matched with, and measure how the site is used. Twilio SendGrid sends all our email (guides, plans,
+            confirmations, tips and the newsletter) and tells us whether each one was delivered; our own systems keep
+            the mailing list and your email choices. Sent 24/7 delivers an introduction you ask for to the agent
+            you&rsquo;re matched with, and isn&rsquo;t used for guides, plans, tips or the newsletter. Microsoft Clarity
+            and Quantcast measure how the site is used. When we measure
             advertising, we may send an ad click identifier, and whether it led to an enquiry, an appraisal or a
             listing (with a value we assign to it), to the ad platform that served the ad, such as Google. Some of these providers store information outside Australia,
             including in the United States.

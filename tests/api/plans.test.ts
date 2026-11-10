@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 const m = vi.hoisted(() => ({ findUnique: vi.fn(), create: vi.fn(), eventCreate: vi.fn(), sendMail: vi.fn() }));
 vi.mock("@/lib/db", () => ({ db: { lead: { findUnique: m.findUnique, create: m.create }, leadEvent: { create: m.eventCreate } } }));
 vi.mock("@/lib/email", () => ({ sendMail: m.sendMail, ANDY_EMAIL: "andy@theandylife.com", LEADS_CC_EMAIL: "cc@example.com", transporter: {}, DEFAULT_FROM: "f" }));
+vi.mock("@/lib/mail/send", () => import("../helpers/mail-send-passthrough"));
 
 import { POST } from "@/app/api/plans/route";
 import { PLAN_EMAIL_CONSENT, PLAN_EMAIL_CONSENT_PLAIN } from "@/lib/plans/consent";
@@ -60,7 +61,7 @@ describe("POST /api/plans (the learning path)", () => {
     expect(data.marketingConsent).toBe(true);
     expect(data.consentText).toBe(PLAN_EMAIL_CONSENT);
     expect(data.sequenceNextAt).toBeInstanceOf(Date);
-    expect(m.sendMail.mock.calls[0][0].html).toContain("/api/unsubscribe?t=");
+    expect(m.sendMail.mock.calls[0][0].html).toContain("/unsubscribe?t=");
   });
 
   it("returns the first row for a double submit", async () => {

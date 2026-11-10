@@ -43,8 +43,8 @@ export const PERSONAS: readonly Persona[] = [
     hubLede: "Everything we'd want a first-home buyer in our family to know before they signed anything. Free, ungated, and written so it actually answers the question.",
     illustration: "/images/illustrations/first-home.svg",
     startingPoints: [
-      { label: "Borrowing power calculator", href: "/borrowing-power-calculator", description: "Two minutes, no credit check, honest numbers.", icon: "/images/icons/calculator.svg" },
-      { label: "Stamp duty by state", href: "/stamp-duty-calculator", description: "What you'll actually pay (concessions included).", icon: "/images/icons/median.svg" },
+      { label: "Borrowing power calculator", href: "/borrowing-power-calculator", description: "An estimate in two minutes, with no credit check.", icon: "/images/icons/calculator.svg" },
+      { label: "Stamp duty by state", href: "/stamp-duty-calculator", description: "An estimate of what you'll pay, first home concessions included.", icon: "/images/icons/median.svg" },
       { label: "First home buyer guides", href: "/guides", description: "State-by-state schemes, LMI, FHSS and more.", icon: "/images/icons/guide.svg" },
     ],
   },
@@ -60,7 +60,7 @@ export const PERSONAS: readonly Persona[] = [
     illustration: "/images/illustrations/selling.svg",
     startingPoints: [
       { label: "How to choose a selling agent", href: "/guides/how-to-choose-a-selling-agent", description: "The interview process, the appraisal-price trap, and what to negotiate in the listing agreement.", icon: "/images/icons/broker.svg" },
-      { label: "Free property appraisal", href: "/appraisal", description: "An honest appraisal from a vetted local agent. No commitment.", icon: "/images/icons/median.svg" },
+      { label: "Free property appraisal", href: "/appraisal", description: "An appraisal from one participating local agent, only if you ask. No commitment.", icon: "/images/icons/median.svg" },
       { label: "Real estate agent fees explained", href: "/guides/real-estate-agent-fees-australia", description: "What commissions and marketing look like across Australia.", icon: "/images/icons/calculator.svg" },
     ],
   },

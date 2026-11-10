@@ -13,6 +13,21 @@ import {
 import { HowToJsonLd } from "@/components/seo";
 import { SITE_URL } from "@/lib/constants";
 import { guideOgImages } from "@/lib/og/helpers";
+import { STATE_RATES, type StateCode } from "@/lib/data/commission-rates";
+import { SELLING_COSTS_AS_AT, money, sellingCostTable } from "@/lib/data/selling-costs";
+
+// Commission and cost figures from the same tables as the calculators and the
+// fees guide (commission-rates.ts, selling-costs.ts), replacing four
+// hand-typed versions on this page (CONTENT_FLAGS batch 1; search and
+// conversion baseline, 20 Oct 2026).
+const STATE_ORDER: StateCode[] = ["NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"];
+const RATE_LOW = Math.min(...STATE_ORDER.map((s) => STATE_RATES[s].low));
+const RATE_HIGH = Math.max(...STATE_ORDER.map((s) => STATE_RATES[s].high));
+const COST_LINES = sellingCostTable("NSW").lines;
+const costRange = (key: string) => {
+  const l = COST_LINES.find((c) => c.key === key)!;
+  return `${money(l.low)} to ${money(l.high)}`;
+};
 
 const FRONTMATTER: GuideFrontmatter = {
   title: "How to Choose a Selling Agent in Australia (2026)",
@@ -20,7 +35,7 @@ const FRONTMATTER: GuideFrontmatter = {
     "A practical guide to picking the right real estate agent to sell your home: how to interview, what questions to ask, the appraisal trap, fee structures, and how to negotiate the listing agreement.",
   slug: "how-to-choose-a-selling-agent",
   publishedAt: "2026-05-06",
-  updatedAt: "2026-10-16",
+  updatedAt: "2026-10-20",
   readingTimeMinutes: 9,
   author: { name: "Your Property Guide editorial", role: "Australian property research" },
   reviewedBy: { name: "Andy McMaster", role: "Editor" },
@@ -48,10 +63,10 @@ export const metadata: Metadata = {
 };
 
 const TLDR = [
-  "Interview at least 3 agents who actually sell in your suburb. Local knowledge is the single biggest predictor of result.",
-  "Don't pick the agent who quotes the highest price. The 'high quote then condition you down' play is one of the most common ways sellers get hurt.",
+  "Interview at least 3 agents who actually sell in your suburb. Their recent sales of homes like yours are the best evidence you'll get.",
+  "Don't pick the agent who quotes the highest price. The 'high quote then condition you down' play is a well-known way sellers get hurt.",
   "Demand recent comparable sales (last 90 days, same suburb, similar property type) and challenge the appraisal price against them.",
-  "Standard commission is 1.5 to 3% of sale price plus marketing costs. The lowest commission isn't automatically best, the right agent earns their fee through a higher sale price.",
+  `No state sets commission. Our compiled state figures (${SELLING_COSTS_AS_AT}) put typical rates between ${RATE_LOW}% and ${RATE_HIGH}% of the sale price, plus marketing. The lowest commission isn't automatically best: the right agent earns their fee through a higher sale price.`,
   "Read the listing agreement carefully. Watch for: exclusive period length, marketing budget commitments, sole agency vs general agency, and 'tail clauses' that lock you in even after the agreement ends.",
   "References matter. Ask for 2 or 3 sellers from the last 6 months and call them. Ask the questions the agent didn't volunteer.",
 ];
@@ -78,7 +93,7 @@ const FAQS: FaqItem[] = [
   {
     question: "Should I pick the agent who quotes the highest price?",
     answer:
-      "Almost never. The 'over-quote to win the listing, then condition you down' play is one of the most common ways sellers get hurt. The agent quotes a high appraisal, you sign with them, then over the campaign they progressively lower your expectations until you accept a price closer to (or below) what the more honest agents quoted upfront. Always demand comparable sales evidence and challenge inflated appraisals.",
+      "Almost never. The 'over-quote to win the listing, then condition you down' play is a well-known way sellers get hurt. The agent quotes a high appraisal, you sign with them, then over the campaign they progressively lower your expectations until you accept a price closer to (or below) what the more honest agents quoted upfront. Always demand comparable sales evidence and challenge inflated appraisals.",
   },
   {
     question: "What's a tail clause and why does it matter?",
@@ -93,12 +108,12 @@ const FAQS: FaqItem[] = [
   {
     question: "How much should I spend on marketing?",
     answer:
-      "Typically $3,000 to $10,000 for a residential sale: professional photography, a videography pass, online listing on realestate.com.au and domain.com.au, signboard, and printed brochures. Above $10,000 you're into premium photography, drone, video tour, and broader print spend. Marketing is paid by the seller separately from commission. Be wary of agents who push you toward expensive marketing packages, ask what specific spend will move your sale price.",
+      `We use ${costRange("marketing")} as an indicative budget for a typical home: professional photography, a floor plan, online listings on realestate.com.au and domain.com.au, and a signboard. Premium portal tiers, video, drone footage and styling push it higher, past $10,000 on bigger campaigns. These are indicative ranges agents and suppliers quote individually. Marketing is paid by the seller separately from commission, and usually whether or not the home sells. Be wary of agents who push you toward expensive marketing packages: ask what specific spend will move your sale price.`,
   },
   {
     question: "Can I negotiate the commission rate?",
     answer:
-      "Yes, especially if you're getting a 3% quote. The market range is typically 1.5 to 3% of sale price; below 2% is achievable in most metro areas, particularly for higher-value properties. The trade-off: cutting commission too aggressively can reduce the agent's incentive to push for a higher price. A 0.5pp commission difference on a $1M sale is $5,000, an extra 2% on the sale price is $20,000. Pick the agent who'll get you the higher price, then negotiate the fee.",
+      `Yes. No state sets commission, and our compiled state figures (${SELLING_COSTS_AS_AT}) put typical rates between ${RATE_LOW}% and ${RATE_HIGH}% of the sale price, so compare any quote with your state's range and with the other agents' quotes in dollars. The trade-off: cutting commission too aggressively can reduce the agent's incentive to push for a higher price. A 0.5 percentage point difference on a $1M sale is $5,000; 2% more on the sale price is $20,000. Pick the agent who'll get you the higher price, then negotiate the fee.`,
   },
 ];
 
@@ -123,9 +138,9 @@ export default function HowToChooseSellingAgentPage() {
           { name: "Get three written appraisals", text: "Pick agents who recently sold in your suburb. Compare appraised price ranges, recommended marketing strategy, and commission." },
           { name: "Verify each agent's licence", text: "Each Australian state has a real estate licensing register. Check the licence number is current and the agent has no recent disciplinary actions." },
           { name: "Review their last 6 months of sold listings", text: "Days on market, sale-vs-asking price, and clearance rate tell you more than any sales pitch." },
-          { name: "Negotiate the commission", text: "Standard residential commission is 1.5% to 3% depending on state and price. Higher prices and more straightforward sales attract lower rates." },
+          { name: "Negotiate the commission", text: `No state sets commission; our compiled state figures put typical rates between ${RATE_LOW}% and ${RATE_HIGH}% of the sale price. Compare every quote in dollars at the same expected sale price.` },
           { name: "Read the listing agreement carefully", text: "Exclusive agency vs sole agency vs auction agreement, terms matter. Read the cancellation clause and the marketing budget commitment." },
-          { name: "Agree on a marketing campaign", text: "Photography, copywriting, signboards, online listings, print, brochures. Marketing typically runs $3K to $15K depending on property and strategy." },
+          { name: "Agree on a marketing campaign", text: `Photography, copywriting, signboards, online listings, print, brochures. We use ${costRange("marketing")} as an indicative budget before styling; premium campaigns run higher.` },
           { name: "Set a realistic reserve and start price", text: "The agent's appraisal is a guide, not gospel. Reserve too high = no buyers; reserve too low = leaves money on the table." },
         ]}
       />
@@ -147,11 +162,19 @@ export default function HowToChooseSellingAgentPage() {
 
       <h2 id="why-it-matters">Why agent choice matters</h2>
       <p className="lead">
-        A great selling agent will get you a higher price, faster, with less
-        stress. A mediocre one will list at the wrong price, market lazily, and
-        condition you to accept a result well below market. The fee difference
-        between agents is small; the price difference can be five to ten times
-        the fee.
+        To choose a selling agent, interview at least three who have recently
+        sold homes like yours in your suburb, ask each for the comparable sales
+        behind their price, compare their fees and marketing in dollars at the
+        same expected sale price, and read the agency agreement before you sign.
+      </p>
+      <p>
+        A good agent prices from evidence, markets to the likely buyers and
+        negotiates carefully; a poor one can list at the wrong price and
+        condition you down to a weaker result. Keep the fee in proportion: on an
+        $800,000 sale, a 0.2 percentage point difference in commission is
+        $1,600, while a price just 1% lower is $8,000. The{" "}
+        <Link href="/tools/agent-proposal-worksheet">agent proposal worksheet</Link>{" "}
+        lines the proposals up side by side.
       </p>
       <p>
         Treat this like hiring a contractor for a major renovation. You
@@ -272,19 +295,26 @@ export default function HowToChooseSellingAgentPage() {
 
       <h2 id="fees">Commission and fees</h2>
       <p>
-        Commission is typically <strong>1.5% to 3%</strong> of the final sale
-        price, plus GST. The range is wide, with major variation by region:
+        No state sets commission. Our compiled state figures ({SELLING_COSTS_AS_AT})
+        put typical rates between <strong>{RATE_LOW}% and {RATE_HIGH}%</strong>{" "}
+        of the final sale price, usually quoted before GST. They are the same
+        figures our calculators use, and a starting point for comparing quotes
+        rather than a published survey:
       </p>
       <ul>
-        <li><strong>Sydney metro:</strong> 1.5% to 2.2% on most sales. Higher-value properties (above $2M) often negotiate to 1.5% or below.</li>
-        <li><strong>Melbourne metro:</strong> Similar, 1.5% to 2.2%.</li>
-        <li><strong>Brisbane, Perth, Adelaide metro:</strong> 2% to 2.8% common.</li>
-        <li><strong>Regional areas:</strong> 2.5% to 3% common, sometimes higher in low-volume markets.</li>
+        {STATE_ORDER.map((s) => (
+          <li key={s}>
+            <Link href={`/guides/real-estate-commission-${s.toLowerCase()}`}><strong>{s}:</strong></Link>{" "}
+            {STATE_RATES[s].low}% to {STATE_RATES[s].high}%, typically about {STATE_RATES[s].typical}%
+          </li>
+        ))}
       </ul>
       <p>
         See our{" "}
-        <Link href="/guides/real-estate-agent-fees-australia">Agent Fees guide</Link>{" "}
-        for the full state-by-state breakdown.
+        <Link href="/guides/real-estate-agent-fees-australia">agent fees guide</Link>{" "}
+        for what each rate means in dollars, and use the{" "}
+        <Link href="/tools/agent-proposal-worksheet">agent proposal worksheet</Link>{" "}
+        to compare up to three proposals at the same expected sale price.
       </p>
 
       <h3>Tiered commission structures</h3>
@@ -304,11 +334,16 @@ export default function HowToChooseSellingAgentPage() {
       <h3>What’s not in commission</h3>
       <p>Commission usually doesn’t include:</p>
       <ul>
-        <li>Marketing costs ($3K to $10K typical, paid separately)</li>
-        <li>Auctioneer fee if going to auction ($500 to $1,500)</li>
-        <li>Conveyancing on the sell side ($1K to $2K)</li>
+        <li>Marketing ({costRange("marketing")} in our indicative ranges, paid separately)</li>
+        <li>Auctioneer fee if going to auction ({costRange("auctioneer")})</li>
+        <li>Conveyancing on the sell side ({costRange("conveyancing")})</li>
         <li>Some agencies charge admin/file fees ($300 to $800), worth challenging</li>
       </ul>
+      <p>
+        The{" "}
+        <Link href="/selling-costs-calculator">selling costs calculator</Link>{" "}
+        adds every line for your state, with GST and your loan payout.
+      </p>
 
       <h2 id="marketing">Marketing budget and strategy</h2>
       <p>A standard residential marketing campaign includes:</p>
@@ -321,8 +356,10 @@ export default function HowToChooseSellingAgentPage() {
         <li>Optional: video tour ($500 to $1,500), drone footage ($300 to $700), styling/staging ($2,000 to $8,000)</li>
       </ul>
       <p>
-        Total typical spend: <strong>$3,000 to $10,000</strong> for an
-        unstaged campaign, $5,000 to $15,000 with staging.
+        We use <strong>{costRange("marketing")}</strong> as an indicative
+        budget for an unstaged campaign; styling, video and premium portal
+        tiers push it higher. Agents and suppliers quote these individually and
+        no published survey sets them, so ask for the schedule line by line.
       </p>
       <p>
         The realestate.com.au listing tier is usually the biggest line item

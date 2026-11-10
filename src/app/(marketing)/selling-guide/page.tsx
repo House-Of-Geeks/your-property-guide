@@ -7,10 +7,11 @@ import { FaqAccordion } from "@/components/guide";
 import { SellingGuideFunnel } from "@/components/journey";
 import { BreadcrumbJsonLd, FAQPageJsonLd, JsonLd } from "@/components/seo";
 import { GuideEntryCapture } from "@/components/analytics/GuideEntryCapture";
-import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PhotoHero, SectionHeading } from "@/components/premium";
+import { BUTTON_PRIMARY, Band, HeroLead, HeroTitle, PHOTOS, PhotoHero, PhotoPanel, SectionHeading } from "@/components/premium";
 import { SITE_URL } from "@/lib/constants";
 import { StickyGuideBar } from "./StickyGuideBar";
 import { GuideContents } from "@/components/interactive/GuideContents";
+import { GuideAccess } from "@/components/guide-book/GuideAccess";
 import { GuideIntroNote } from "@/components/guide-book/GuideIntroNote";
 import { GuidePitch as Pitch } from "@/components/guide-book/GuidePitch";
 import { GUIDE_BOOKS, subtitleLine } from "@/lib/guide-books";
@@ -75,7 +76,7 @@ function GuidePitch() {
       ]}
     >
       <p className="mt-6 text-[14px] text-ink-muted">
-        10 chapters · Three quick questions · Download straight away or by email
+        10 chapters · Read online, download or have it emailed
       </p>
       <p className="mt-1 text-[13px] text-ink-subtle">
         General information, not advice. Costs and rules are by state, with sources.
@@ -116,41 +117,20 @@ export default function SellingGuidePage() {
         }}
       />
 
-      {/* Hero, over the selling photo. Phones: headline, the lede, then the
-          funnel, so the form is on the first screen; the cover and the
-          pitch follow it. Desktop: headline, lede and pitch on the left, the
-          funnel beside them on the right. The funnel card is the point of
-          the page. The pitch is set once and placed twice (one per
-          breakpoint) so each layout keeps its order. #get-the-guide wraps
-          the hero for the sticky bar and the anchor-arrival pulse. */}
+      {/* Hero (20 Oct 2026): three plain choices, with nothing asked first:
+          read online, download the PDF, or have it emailed. Phones:
+          headline, lede, the choices, then the cover and the pitch.
+          Desktop: headline, lede and pitch on the left, the choices beside
+          them. The pitch is set once and placed twice (one per breakpoint)
+          so each layout keeps its order. #get-the-guide wraps the hero for
+          the phone bar and the links from the chapters and other pages. */}
       <div id="get-the-guide" className="scroll-mt-16">
         <PhotoHero
-          photo="selling"
           size="lg"
           aside={
             <>
-              {/* relative z-10: the suburb autocomplete's dropdown must
-                  paint over whatever follows the card. */}
-              <div id="guide-funnel" className="relative z-10 scroll-mt-24">
-                <Suspense fallback={<div className="tone-light h-64 rounded-xl border border-line bg-white" aria-busy="true" />}>
-                  <SellingGuideFunnel source="selling-guide-page" />
-                </Suspense>
-              </div>
-
-              <div className="mt-6 px-1">
-                <p className="text-sm font-semibold text-ink mb-2">What happens next</p>
-                <ol className="space-y-1.5 text-sm text-ink-muted leading-snug list-decimal pl-5 marker:text-ink-subtle">
-                  <li>Answer three quick questions about where and when</li>
-                  <li>Download it straight away, or have it emailed</li>
-                  <li>Want an appraisal later? That&rsquo;s a separate request, only if you ask</li>
-                </ol>
-                <p className="mt-3 text-xs text-ink-subtle leading-relaxed">
-                  The guide is free. If you later ask for an agent, they pay us
-                  for the introduction; it doesn&rsquo;t change what you pay them.
-                </p>
-              </div>
-
-              <div className="lg:hidden mt-10">
+              <GuideAccess guide="selling" placement="selling-guide-page" />
+              <div className="lg:hidden mt-12">
                 <GuidePitch />
               </div>
             </>
@@ -165,19 +145,61 @@ export default function SellingGuidePage() {
               {subtitleLine(GUIDE_BOOKS.selling)}
             </span>
           </HeroTitle>
-          {/* Phone-sized lede, as before: the funnel stays on the first screen. */}
+          {/* Phone-sized lede, as before: the choices stay near the first screen. */}
           <HeroLead className="max-sm:mt-4 max-sm:text-base">
             A practical guide to the decisions ahead, in ten chapters:
             timing, price evidence, the real costs in your state, what to
             prepare, choosing an agent, how to sell, the marketing, offers
-            and settlement. Read it free online, or get the PDF with
-            pointers for where you&rsquo;re up to.
+            and settlement. Read it free online, download the PDF, or have
+            it emailed.
           </HeroLead>
           <div className="hidden lg:block mt-12">
             <GuidePitch />
           </div>
         </PhotoHero>
       </div>
+
+      {/* The optional extra: three quick questions for pointers to the
+          chapters for your stage and the costs and rules in your state
+          (the funnel, unchanged). #guide-funnel is where guideFunnelHref()
+          sends links that carry a suburb. */}
+      <Band tone="quiet">
+        <div className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14">
+          <div className="lg:col-span-5">
+            <SectionHeading size="md" title="Want pointers for where you’re up to?" />
+            <p className="mt-5 text-[16px] leading-[1.7] text-ink-muted">
+              Optional. Answer three quick questions and we’ll point you to
+              the chapters that matter for your stage, with the costs and
+              rules for your state.
+            </p>
+            <p className="mt-6 text-sm font-semibold text-ink mb-2">What happens next</p>
+            <ol className="space-y-1.5 text-sm text-ink-muted leading-snug list-decimal pl-5 marker:text-ink-subtle">
+              <li>Answer three quick questions about where and when</li>
+              <li>Download it straight away, or have it emailed</li>
+              <li>Want an appraisal later? That’s a separate request, only if you ask</li>
+            </ol>
+            <p className="mt-3 text-xs text-ink-subtle leading-relaxed">
+              The guide is free. If you later ask for an agent, they pay us
+              for the introduction; it doesn’t change what you pay them.
+            </p>
+            <PhotoPanel
+              photo="windowDetail"
+              alt={PHOTOS.windowDetail.alt}
+              className="mt-10 hidden aspect-[3/2] lg:block"
+              sizes="(min-width: 1280px) 480px, 38vw"
+            />
+          </div>
+          <div className="lg:col-span-7">
+            {/* relative z-10: the suburb autocomplete's dropdown must
+                paint over whatever follows the card. */}
+            <div id="guide-funnel" className="relative z-10 scroll-mt-24">
+              <Suspense fallback={<div className="tone-light h-64 rounded-xl border border-line bg-white" aria-busy="true" />}>
+                <SellingGuideFunnel source="selling-guide-page" />
+              </Suspense>
+            </div>
+          </div>
+        </div>
+      </Band>
 
       {/* Chapter contents. Doubles as the SEO body for "selling property
           guide" queries and as proof the guide is a real document. */}
@@ -238,7 +260,7 @@ export default function SellingGuidePage() {
         </div>
       </Band>
 
-      <StickyGuideBar />
+      <StickyGuideBar guide="selling" />
       {/* Records the ?from=<page slug> a guide CTA adds to this link in the
           attribution cookie, so the lead says which page sent it. */}
       <GuideEntryCapture />

@@ -54,7 +54,7 @@ const TLDR = [
   "Private treaty (an advertised asking price, offers negotiated privately) is the default in most of Australia. Auction dominates inner Melbourne, Sydney and Canberra, and is rare in Perth and regional markets.",
   "Auction removes the buyer's cooling-off period entirely: the contract is unconditional the moment the hammer falls, with the deposit paid on the day. That certainty is the method's biggest vendor advantage.",
   "Auction costs more: an auctioneer fee (roughly $400 to $1,000) on top of commission, plus a compressed, advertising-heavy campaign that you pay for whether or not the property sells.",
-  "Clearance rates are the market's live temperature gauge. In mid-2026 the combined-capitals preliminary clearance rate dipped to 47.4%, the weakest since April 2020, which means auctions currently only suit genuinely competitive properties.",
+  "Clearance rates are the market's live temperature gauge. Cotality's combined capital-city final clearance rate was 45.4% in the week ending 4 October 2026, against 67.4% a year earlier, which means auctions currently only suit genuinely competitive properties.",
   "Underquoting rules differ sharply by state: NSW regulates the price guide against the agent's written estimate, Victoria requires a Statement of Information with three comparable sales and, from 16 October 2026, a published reserve for auctions, and Queensland bans auction price guides outright.",
   "The right method comes down to scarcity, local auction culture, current clearance rates and your risk tolerance. Asking each agent to justify their recommended method with recent evidence is one of the best agent-selection tests there is.",
 ];
@@ -277,9 +277,9 @@ export default function AuctionVsPrivateTreatyPage() {
       </p>
 
       <KeyFigure
-        value="47.4%"
-        label="Combined capital cities preliminary clearance rate for the week ending 22 June 2026, the weakest reading since April 2020."
-        context="Cotality (CoreLogic) auction data; Sydney 47.4%, Melbourne 50.6% the same week"
+        value="45.4%"
+        label="Combined capital cities final clearance rate for the week ending 4 October 2026, against 67.4% a year earlier."
+        context="Cotality (CoreLogic), 8 October 2026. In June the preliminary rate had already dipped to 47.4%, then the weakest since April 2020."
       />
 
       <p>
@@ -543,6 +543,7 @@ export default function AuctionVsPrivateTreatyPage() {
 const AUCTION_VS_TREATY_SOURCES: readonly SourceItem[] = [
   { label: "Cotality (CoreLogic): weekly auction market results", href: "https://www.cotality.com/au/press-releases/lowest-combined-capital-preliminary-clearance-rate-so-far-this-year", note: "Capital-city auction volumes and clearance rates, March 2026" },
   { label: "Property Update: Australian property market update", href: "https://propertyupdate.com.au/australian-property-market/", note: "Combined-capitals preliminary clearance of 47.4%, week ending 22 June 2026, reporting Cotality data" },
+  { label: "Cotality: Final clearance rates, week ending 4 October 2026", href: "https://www.cotality.com/au/press-releases/final-clearance-rates-week-ending-4-october-2026", note: "8 October 2026. Combined capital-city final clearance rate 45.4%, 67.4% a year earlier." },
   { label: "Domain: national auction results", href: "https://www.domain.com.au/auction-results/", note: "Live weekly clearance rates by city" },
   { label: "NSW Fair Trading: underquoting guidance for property professionals", href: "https://www.nsw.gov.au/housing-and-construction/property-professionals/working-as-an-agent/underquoting-guidance", note: "Estimated selling price rules and current penalties" },
   { label: "NSW Government: underquoting crackdown announcement", href: "https://www.nsw.gov.au/ministerial-releases/nsw-cracks-down-on-underquoting-tough-new-laws", note: "Proposed $110,000 penalties, March 2026" },

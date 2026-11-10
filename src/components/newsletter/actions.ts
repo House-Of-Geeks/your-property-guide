@@ -6,6 +6,9 @@ import { headers } from "next/headers";
 import { db } from "@/lib/db";
 import { checkRateLimit, ipKeyFromHeaders } from "@/lib/rate-limit";
 import { NEWSLETTER_CONSENT } from "@/lib/newsletter";
+import { after } from "next/server";
+import { queueWelcome } from "@/lib/mail/newsletter";
+import { sendQueuedNow } from "@/lib/mail/queue";
 
 const NewsletterSchema = z.object({
   email: z
@@ -29,8 +32,8 @@ interface SubscribeResult {
  *
  * We store newsletter signups in the existing Lead table to avoid a schema
  * migration on every iteration. type="newsletter" + placeholder values for
- * the required name + phone fields. Future: extract to a dedicated
- * NewsletterSubscriber model when we wire to Mailchimp / Resend.
+ * the required name + phone fields. The app sends the newsletter itself,
+ * through SendGrid (src/lib/mail/newsletter.ts).
  *
  * Bot protection mirrors /api/leads: an IP rate limit plus a honeypot,
  * because this form (like the lead forms) is an unauthenticated public
@@ -66,18 +69,43 @@ export async function subscribeToNewsletter(
 
   const normalised = email.trim().toLowerCase();
 
+  // The welcome goes after the response, through the email queue (21 Oct
+  // 2026): what they signed up for, and how to leave.
+  const welcome = (lead: { id: string; email: string; token: string | null }, occasion: string) => {
+    const task = async () => {
+      const q = await queueWelcome(lead, occasion);
+      if (q?.created && q.status === "queued") await sendQueuedNow(q.id);
+    };
+    try {
+      after(task);
+    } catch {
+      void task().catch(() => {});
+    }
+  };
+
   try {
-    // Idempotent: if this email already subscribed, just return ok.
+    // One newsletter row per address. Signing up again after unsubscribing
+    // is a new, explicit consent: the row is reactivated, the marketing
+    // unsubscribe lifted (never a bounce or a spam complaint), and a
+    // welcome sent again.
     const existing = await db.lead.findFirst({
-      where: { email: normalised, type: "newsletter" },
-      select: { id: true },
+      where: { email: { equals: normalised, mode: "insensitive" }, type: "newsletter" },
+      select: { id: true, email: true, token: true, unsubscribedAt: true },
     });
 
     if (existing) {
+      if (existing.unsubscribedAt) {
+        await db.lead.update({
+          where: { id: existing.id },
+          data: { unsubscribedAt: null, marketingConsent: true, consentText: NEWSLETTER_CONSENT, events: { create: { type: "resubscribed", actor: "customer" } } },
+        });
+        await db.emailSuppression.deleteMany({ where: { email: normalised, scope: "marketing", reason: "unsubscribe" } });
+        welcome(existing, `resubscribed-${Date.now()}`);
+      }
       return { ok: true };
     }
 
-    await db.lead.create({
+    const created = await db.lead.create({
       data: {
         type: "newsletter",
         firstName: "newsletter",
@@ -93,7 +121,9 @@ export async function subscribeToNewsletter(
         token: randomBytes(18).toString("base64url"),
         events: { create: { type: "submitted", actor: "customer", detail: { lead: "newsletter" } } },
       },
+      select: { id: true, email: true, token: true },
     });
+    welcome(created, "signup");
 
     return { ok: true };
   } catch (err) {

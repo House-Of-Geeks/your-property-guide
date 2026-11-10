@@ -4,8 +4,8 @@ import { GUIDE_BOOKS, chapterHref, subtitleLine, type GuideBookId } from "@/lib/
 
 // Lead email rendering + scoring, extracted from /api/leads so it can be
 // unit-tested and previewed without booting the route (which imports the
-// Prisma client). This is also the seam where an ESP sync (ActiveCampaign)
-// can hook in later: everything it needs (score, labels, consent) is here.
+// Prisma client). Sending goes through the email queue (src/lib/mail/);
+// these builders only render.
 
 // Structural subset of the route's zod-validated lead. Kept structural so
 // the route's z.infer type assigns to it without coupling this module to
