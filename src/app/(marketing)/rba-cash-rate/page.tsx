@@ -82,7 +82,7 @@ const rateHistory: RateEntry[] = [
   { date: "2020-03-03", rate: 0.50, change: -0.25, note: "Emergency Cut" },
 ];
 
-const upcomingMeetings2026 = [{ dates: "7–8 December", decision: "Dec 8" }];
+const upcomingMeetings2026 = [{ dates: "7 and 8 December", decision: "Dec 8" }];
 
 function formatRateDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString("en-AU", {
