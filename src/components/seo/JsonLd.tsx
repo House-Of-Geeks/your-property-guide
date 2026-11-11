@@ -1,7 +1,7 @@
 import type { Property, Agent, Agency, BlogPost, Suburb, HouseAndLandPackage } from "@/types";
-import { SITE_URL, SITE_NAME, SITE_DESCRIPTION_LONG, SITE_KNOWS_ABOUT } from "@/lib/constants";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION_LONG, SITE_KNOWS_ABOUT, CONTACT_PHONE_E164 } from "@/lib/constants";
 import { resolveBlogCoverPath } from "@/lib/utils/blog-cover";
-import { FOUNDER } from "@/lib/founder";
+import { FOUNDER, FOUNDER_SAME_AS } from "@/lib/founder";
 import { findPerson } from "@/components/guide/people";
 
 function JsonLdScript({ data }: { data: Record<string, unknown> }) {
@@ -53,6 +53,8 @@ export function OrganizationJsonLd() {
           name: SITE_NAME,
           alternateName: "YPG",
           url: SITE_URL,
+          // The number in the site footer (tel: link).
+          telephone: CONTACT_PHONE_E164,
           logo: {
             "@type": "ImageObject",
             "@id": `${SITE_URL}/#logo`,
@@ -80,9 +82,7 @@ export function OrganizationJsonLd() {
             description: FOUNDER.facts.join(" "),
             worksFor: { "@id": `${SITE_URL}/#organization` },
             url: `${SITE_URL}/about`,
-            sameAs: [
-              "https://www.linkedin.com/in/andymcmaster",
-            ],
+            sameAs: [...FOUNDER_SAME_AS],
           },
           employee: [
             {
@@ -658,10 +658,11 @@ export function GuideArticleJsonLd({
 }) {
   // A named person on /about is a Person with their /about @id; anything
   // else (the static guides' "Your Property Guide editorial" byline, or no
-  // author) is the Organization, never a made-up Person.
+  // author) is a bare reference to the Organization node that the layout
+  // already emits, never a made-up Person and never a second Organization copy.
   const authorEntity = author && findPerson(author.name)
     ? personNode(author.name, author.role)
-    : { "@id": `${SITE_URL}/#organization`, "@type": "Organization" as const, name: SITE_NAME, url: SITE_URL };
+    : { "@id": `${SITE_URL}/#organization` };
   const reviewer = reviewedBy && findPerson(reviewedBy.name);
 
   return (
