@@ -6,12 +6,25 @@
  * (Gold Coast, Sunshine Coast, Northern Beaches, Inner West, etc.) and map
  * cleanly to how people search for real estate.
  *
- * Run: npx tsx scripts/seed/import-suburb-regions.ts
+ * LEGACY: superseded by import-suburb-lgas.ts. This script assigns one SA3
+ * per postcode by majority, which is wrong where a postcode spans areas, and
+ * it would overwrite the locality-level council names that import-suburb-lgas.ts
+ * writes. It refuses to run unless --force is passed.
+ *
+ * Run: npx tsx scripts/seed/import-suburb-regions.ts --force
  */
 import { PrismaClient } from "../../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import * as dotenv from "dotenv";
 dotenv.config({ path: ".env" });
+
+if (!process.argv.includes("--force")) {
+  console.error(
+    "import-suburb-regions.ts is legacy and would overwrite locality-level LGA regions. " +
+      "Use import-suburb-lgas.ts, or pass --force to run this anyway.",
+  );
+  process.exit(1);
+}
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const db = new PrismaClient({ adapter });
